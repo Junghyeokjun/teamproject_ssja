@@ -7,7 +7,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ëª¨ë íì¤í¸</title>
+  <title>SSJA</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -96,7 +96,7 @@
   <main>
 
     <div id="main_container" >
-      
+    
       <div id="icon_container" class="d-flex flex-row justify-content-evenly align-items-center">
           <div id="icon_div"><img id="icon_img"src="/images/utilities/icon_fur.png"><div id="icn_txt">가구</div></div>
           <div id="icon_div"><img id="icon_img" src="/images/utilities/icon_fab.png">  <div id="icn_txt">패브릭</div></div>
