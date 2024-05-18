@@ -13,21 +13,21 @@ $(document).ready(function () {
   let $li5 = $("<li>").css("order", "5").text("생활용품").addClass("px-3 py-2").attr("id", "nav-links").appendTo($ul);
 
 //카테고리 별 링크 변수
-  let link1_1 = "https://www.naver.com";
-  let link1_2 = "https://www.naver.com";
-  let link1_3 = "https://www.naver.com";
-  let link2_1 = "https://www.google.com";
-  let link2_2 = "https://www.google.com";
-  let link2_3 = "https://www.google.com";
-  let link3_1 = "https://www.daum.net";
-  let link3_2 = "https://www.daum.net";
-  let link3_3 = "https://www.daum.net";
-  let link4_1 = "https://store.ohou.se/exhibitions/12390";
-  let link4_2 = "https://store.ohou.se/exhibitions/12390";
-  let link4_3 = "https://store.ohou.se/exhibitions/12390";
-  let link5_1 = "https://velog.io/";
-  let link5_2 = "https://velog.io/";
-  let link5_3 = "https://velog.io/";
+  const  link1_1 = "https://www.naver.com";
+  const  link1_2 = "https://www.naver.com";
+  const  link1_3 = "https://www.naver.com";
+  const  link2_1 = "https://www.google.com";
+  const  link2_2 = "https://www.google.com";
+  const  link2_3 = "https://www.google.com";
+  const  link3_1 = "https://www.daum.net";
+  const  link3_2 = "https://www.daum.net";
+  const  link3_3 = "https://www.daum.net";
+  const link4_1 = "https://store.ohou.se/exhibitions/12390";
+  const  link4_2 = "https://store.ohou.se/exhibitions/12390";
+  const link4_3 = "https://store.ohou.se/exhibitions/12390";
+  const link5_1 = "https://velog.io/";
+  const  link5_2 = "https://velog.io/";
+  const link5_3 = "https://velog.io/";
 
   
   let $link1_1 = $("<a>").attr("href", link1_1).addClass("btn").text("침대").css("text-decoration", "none");

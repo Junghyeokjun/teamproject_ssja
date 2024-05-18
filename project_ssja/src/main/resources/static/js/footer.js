@@ -42,11 +42,11 @@ $("<a>").attr("href", "www.naver.com").text("고객 문의 >").attr("id", "custo
     $("<p>").text("평일 : 전체 문의 상담").appendTo($thd_dv);
       $("<p>").text("토요일 :  배송 문의 상담").appendTo($thd_dv);
         $("<p>").text(" 일요일 : 휴무").appendTo($thd_dv);
-          $("<button>").attr("onclick","location.href='http://m.goso.co.kr/'").attr("type","button").css("font-size","0.5em").text("소비자고발센터")
-            .addClass("btn btn-outline-secondary btn-sm w-50").css("margin-bottom","10px").appendTo($thd_dv);
+          $("<button>").attr("onclick","location.href='http://m.goso.co.kr/'").attr("id","footer_d3_btn").attr("type","button").css("font-size","0.5em").text("소비자고발센터")
+            .addClass("btn btn-outline-secondary btn-sm ").css("margin-bottom","10px").attr("style", "font-weight:bold;").appendTo($thd_dv);
             $("<br>").appendTo($thd_dv);
-          $("<button>").attr("onclick","location.href='www.naver.com'").attr("type","button").css("font-size","0.5em").text("이메일 문의")
-            .addClass("btn btn-outline-secondary btn-sm w-50").appendTo($thd_dv);
+          $("<button>").attr("onclick","location.href='www.naver.com'").attr("type","button").attr("id","footer_d3_btn").css("font-size","0.5em").text("이메일 문의")
+            .addClass("btn btn-outline-secondary btn-sm").attr("style", "font-weight:bold;").appendTo($thd_dv);
 
 
 $("#first_footer, #second_footer, #third_footer").css("height", footerHeight + "px");
