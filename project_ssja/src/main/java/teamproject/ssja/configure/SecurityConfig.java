@@ -58,15 +58,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		 
 		auth.inMemoryAuthentication()
-		.withUser("memberajs").password("{noop}1111").roles("USER")
+		.withUser("memberajs").password("1111").roles("USER")
 		.and()
-		.withUser("memberss").password("{noop}1111").roles("USER")
+		.withUser("memberss").password("1111").roles("USER")
 		.and()
-		.withUser("membersjy").password("{noop}1111").roles("USER")
+		.withUser("membersjy").password("1111").roles("USER")
 		.and()
-		.withUser("memberjhj").password("{noop}1111").roles("USER")
+		.withUser("memberjhj").password("1111").roles("USER")
 		.and()
-		.withUser("admin").password("{noop}admin").roles("ADMIN");
+		.withUser("admin").password("admin").roles("ADMIN");
 	
 	}
 	
