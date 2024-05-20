@@ -76,7 +76,7 @@
       <div class="py-2 px-1" id="top-bar">
 
         <button type="toggle-button" class="top_btn" id="top_btn"></button>
-        <a href=""><img id="logo_img" src="/images/utilities/logoSSJA.png"></a>
+        <a id="logo_toHome" href=""><img id="logo_img" src="/images/utilities/logoSSJA.png"></a>
         <form action="http://www.naver.com" id=searchForm method="get">
          
         </form>

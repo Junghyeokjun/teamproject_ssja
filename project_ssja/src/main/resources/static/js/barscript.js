@@ -67,9 +67,9 @@ $(document).ready(function () {
   let $searchImg=$("<img>").attr("src", "/images/utilities/search-32.png").attr("id", "searchImg").appendTo($searchBtn);//검색창 돋보기 이미지 경로
   $searchBtn.appendTo($searchForm);
  
-
+$("#logo_toHome").attr("href", "${pageContext.request.contextPath}/");//로고 링크
   let $cartLink = $("#cart_link").attr("href", " http://www.naver.com");//카트 이미지 버튼 링크
-  let $userLink = $("#user_link").attr("href", " http://www.google.com");//로그인 이미지 버튼 링크
+  let $userLink = $("#user_link").attr("href", "${pageContext.request.contextPath}/login");//로그인 이미지 버튼 링크
   let $cartImgPath = $("#cart_img").attr("src", "/images/utilities/cartShop.png");//카트 이미지 경로
   let $loginImgPath = $("#login_img").attr("src", "/images/utilities/login.png");//로그인 이미지 경로
 
