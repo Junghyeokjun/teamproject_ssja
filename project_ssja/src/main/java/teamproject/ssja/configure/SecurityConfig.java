@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	    .antMatchers("/home/**").permitAll()
 	    .anyRequest().authenticated();
 	    
-	    http.formLogin().usernameParameter("username").passwordParameter("password").defaultSuccessUrl("/").permitAll();;
+	    http.formLogin().usernameParameter("username").passwordParameter("password").defaultSuccessUrl("/").permitAll();
 	    
 	    //.loginPage();	//loginpage()= 로그인을 진행할 페이지의 url
 //	    .usernameParameter("id")
