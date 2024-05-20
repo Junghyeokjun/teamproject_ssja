@@ -34,10 +34,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http.csrf().disable();
 		/* 권한설정 */
 	    http.authorizeRequests()
-	    .antMatchers("/home/**").permitAll()
+	    .antMatchers("/","/test/login","/test/sign_up_before","/test/sign_up","/testrest/**").permitAll()
 	    .anyRequest().authenticated();
 	    
-	    http.formLogin().usernameParameter("username").passwordParameter("password").defaultSuccessUrl("/").permitAll();;
+	    http.formLogin().loginPage("/test/login").usernameParameter("username").passwordParameter("password").defaultSuccessUrl("/").permitAll();;
 	    
 	    //.loginPage();	//loginpage()= 로그인을 진행할 페이지의 url
 //	    .usernameParameter("id")

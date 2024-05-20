@@ -80,7 +80,7 @@
       <div class="py-2 px-1" id="top-bar">
 
         <button type="toggle-button" class="top_btn" id="top_btn"></button>
-        <a href=""><img id="logo_img" src="/images/utilities/logo.png"></a>
+        <a href="${pageContext.request.contextPath}/"><img id="logo_img" src="/images/utilities/logoSSJA.png"></a>
         <form action="http://www.naver.com" id=searchForm method="get">
         
         </form>
@@ -101,7 +101,7 @@
     <div id="main_container" class="d-flex flex-column justify-content-center align-items-center " style="height:800px;">
       <img class="mb-4" src="/images/utilities/big_logo.png" alt="">
       <!-- 실제 사용시 post로 변경 링크추가 -->
-      <form action="">
+      <form action="${loginUrl}" method="post">
         <table class="text-center">
           <tr>
             <!-- 시큐리티 설정에 따라 name 변경 -->
@@ -117,7 +117,7 @@
             <td id="recover">
               <a href="">아이디찾기</a>|
               <a href="">비밀번호찾기</a>|
-              <a href="sing_up_terms.html">회원가입</a>
+              <a href="${pageContext.request.contextPath}/test/sign_up_before">회원가입</a>
             </td>
           </tr>
         </table>

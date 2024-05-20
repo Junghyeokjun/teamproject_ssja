@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/test")
 public class TestController {
 	
-	
 	@RequestMapping("/sign_up_before")
 	public String signUpBefore() {
 		return "sign_up_terms";
@@ -24,6 +23,10 @@ public class TestController {
 	@RequestMapping("/login")
 	public String login() {
 		return "temp_login";
+	}
+	@RequestMapping("/purchase")
+	public String purchase() {
+		return "purchase";
 	}
 
 }
