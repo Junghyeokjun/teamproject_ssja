@@ -2,6 +2,14 @@ $(document).ready(function () {
   let $home_user_bar = $("#home_user_bar").addClass("nav ");
   let $sub_bar = $("#sub_bar");
   let $total_bar = $("#total_bar");
+  
+  //csrf추가
+  let token = $("meta[name='_csrf']").attr("content");
+  let header = $("meta[name='_csrf_header']").attr("content");
+  
+  $(document).ajaxSend(function(e, xhr, options) {
+      xhr.setRequestHeader(header, token);
+  });
 
 
   //상단 카테고리 바 분류
@@ -186,6 +194,7 @@ $(document).ready(function () {
     let $subLi3 = $("<li>").addClass("sub-px-3").appendTo($subUl);
     $link1_3.appendTo($subLi3);
   });
+  
   $li2.mouseenter(function () {
     $sub_bar.css("display", "block");
     $("#sub_bar").children().remove();
@@ -307,7 +316,5 @@ $(document).ready(function () {
   $side_bar.append($side_container1,$side_containerEx, $side_container2,$side_container3,$side_container4);
 
   let browserHeight = window.innerHeight;
-console.log("현재 브라우저의 높이는 " + browserHeight + "픽셀입니다.");
 let currentPosition = window.scrollY;
-console.log("현재 위치의 높이:", currentPosition, "픽셀");
 });

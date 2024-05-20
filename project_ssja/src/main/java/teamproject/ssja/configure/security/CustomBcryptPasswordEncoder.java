@@ -1,11 +1,11 @@
-package teamproject.ssja.configure;
+package teamproject.ssja.configure.security;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class CustomNoOpPasswordEncoder implements PasswordEncoder {
+public class CustomBcryptPasswordEncoder implements PasswordEncoder {
 
 	@Override
 	public String encode(CharSequence rawPassword) {

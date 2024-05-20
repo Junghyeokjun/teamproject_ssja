@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="teamproject.ssja.mapper.MyPageMapper">
+
+   
+<resultMap id="userResultMap" type="UserInfoDTO">
+    <id property="m_No" column="m_No"/>
+    <result property="m_Id" column="m_Id"/>
+    <result property="m_Pw" column="m_Pw"/>
+    <result property="m_Name" column="m_Name"/>
+    <result property="m_Address1" column="m_Address1"/>
+    <result property="m_Address2" column="m_Address2"/>
+    <result property="m_ZipCode" column="m_ZipCode"/>
+    <result property="m_Birth" column="m_Birth"/>
+    <result property="m_Grade" column="m_Grade"/>
+    <result property="m_Email" column="m_Email"/>
+    <result property="m_Phone" column="m_Phone"/>
+    <result property="m_Point" column="m_Point"/>
+    <result property="m_Date" column="m_Date"/>
+</resultMap>
+    <select id="getUserInfoInMyPage" parameterType="String" resultMap="userResultMap">
+ select * from members where m_id = #{username}    
+    </select> 
+
+</mapper>
