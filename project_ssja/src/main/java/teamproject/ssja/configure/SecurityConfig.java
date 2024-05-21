@@ -12,7 +12,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy;
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import teamproject.ssja.dto.logindto.CustomUserDetailsDTO;
 import teamproject.ssja.service.user.CustomUserDetailsService;
@@ -52,7 +57,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	    .logout()
                 .logoutUrl("/logout")//logout 요청 처리 uRL
                 .addLogoutHandler((request, response, authentication) -> {
-                    //로그아웃 시  실행 핸들러
                     HttpSession session = request.getSession();
                     if (session != null) {
                         session.invalidate();
@@ -61,14 +65,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                     response.sendRedirect("/");// 로그아웃 성공 시 리다이렉트
                 }))//로그 아웃 성공 핸들러;
                 .deleteCookies("JSESSIONID")
+                
                 .and()//중복로그인 설정
                 .sessionManagement()
                 .maximumSessions(1)
+                .expiredUrl("/home") 
                 .maxSessionsPreventsLogin(false)
+                .sessionRegistry(sessionRegistry())
                 
                 .and()// 세션 고정 공격 보호
                 .sessionFixation()
-                .changeSessionId();
+                .newSession();
 
 	}	
 	
@@ -80,5 +87,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	        RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
 	        hierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
 	        return hierarchy;
+	    }
+	 
+	 @Bean
+	    public SessionAuthenticationStrategy sessionAuthenticationStrategy() {
+	        return new ConcurrentSessionControlAuthenticationStrategy(sessionRegistry());
+	    }
+	 
+	 @Bean//현재 세션을 추적할 수 있도록 설정
+	    public SessionRegistry sessionRegistry() {
+	        return new SessionRegistryImpl();
+	    }
+	 
+	 @Bean // 세션 생성 및 소멸 이벤트를 처리하는 역할
+	    public HttpSessionEventPublisher httpSessionEventPublisher() {
+	        return new HttpSessionEventPublisher();
 	    }
 }
