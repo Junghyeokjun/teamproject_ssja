@@ -13,10 +13,6 @@
 	<form action="${pageContext.request.contextPath}/board/write" method="post">
 		<table border="1" style="width: 500; background-color: gray;">
 			<tr>
-				<td style="background-color: pink">이름</td>
-				<td style="background-color: white"><input type="text" name="bname" size="50"></td>
-			</tr>
-			<tr>
 				<td style="background-color: pink">제목</td>
 				<td style="background-color: white"><input type="text" name="btitle" size="50"></td>
 			</tr>

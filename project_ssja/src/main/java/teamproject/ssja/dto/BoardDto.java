@@ -27,8 +27,8 @@ import lombok.ToString;
 @ToString
 public class BoardDto {
 	private long bno;
-	private long mno;
-	private long bcno;
+	private long bmno;
+	private long bbcno;
 	private String bwriter;
 	private String btitle;
 	private String bcontent;

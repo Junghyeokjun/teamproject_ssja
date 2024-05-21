@@ -7,6 +7,8 @@
         	SELECT * FROM board ORDER BY b_no desc
         ]]>
 	</select> -->
+	
+<!-- 게시글 -->
 	<select id="read" resultMap="BoardDtoMap">
     	<![CDATA[
         	select * from board where b_no=#{bno}
@@ -15,7 +17,7 @@
 	<insert id="insertBoard" parameterType="BoardDto">
 	    <![CDATA[
         	INSERT INTO board (B_NO, M_NO, B_C_NO, B_WRITER, B_TITLE, B_CONTENT, B_DATE, B_LIKE, B_HIT, B_EVAL, PRO_NO)
-        	VALUES (B_SEQ.NEXTVAL, #{mno}, #{bcno}, #{bwriter}, #{btitle}, #{bcontent}, sysdate, #{blike}, #{bhit}, #{beval}, #{prono})
+        	VALUES (B_SEQ.NEXTVAL, #{bmno}, #{bbcno}, #{bwriter}, #{btitle}, #{bcontent}, sysdate, #{blike}, #{bhit}, #{beval}, #{prono})
         ]]>
 	</insert>
 	<update id="updateBoard" parameterType="BoardDto">
@@ -36,75 +38,50 @@
         	update board set b_hit=b_hit+1 where b_no=#{bno}
         ]]>
 	</update>
+	
+	<!-- 해당 게시글의 좋아요 개수  -->
+	<select id="selectBoardLikes" parameterType="long" resultType="long">
+    	<![CDATA[
+        	SELECT b_like FROM board where b_no = #{bno}
+        ]]>
+	</select>
+	
+	<!-- 게시글 좋아요 관련 +(해당 글에 해당 멤버의 좋아요가 있는지 확인) -->
+	<select id="selectBIsLiked" parameterType="BoardIsLikedDto" resultMap="BoardIsLikedMap">
+    	<![CDATA[
+        	select * from BOARDLIKED where b_no=#{likebno} and m_no=#{likebmno}
+        ]]>
+	</select>
 
-	<!-- 게시글 좋아요 관련 + -->
+	<!-- 게시글 좋아요 관련 +(해당 글에 해당 멤버의 좋아요 추가) -->
+	<insert id="insertBLiked" parameterType="BoardIsLikedDto">
+	    <![CDATA[
+        	INSERT INTO BOARDLIKED (B_NO, M_NO, B_L_DATE)
+        	VALUES (#{likebno}, #{likebmno}, sysdate) 
+        ]]>
+	</insert>
+
+	<!-- 게시글 좋아요 관련 +(총 좋아요 수 증가) -->
 	<update id="updateBLikeUp" parameterType="long">
 		<![CDATA[
         	update board set b_like=b_like+1 where b_no=#{bno}
         ]]>
 	</update>
 	
-	<!-- 게시글 좋아요 관련 - -->
+	<!-- 게시글 좋아요 관련 -(총 좋아요 수 감가) -->
 	<update id="updateBLikeDown" parameterType="long">
 		<![CDATA[
         	update board set b_like=b_like-1 where b_no=#{bno}
         ]]>
 	</update>
 
-	<!-- 댓글 입력. 최신 댓글은 언제나 게시글 바로 아래에 위치한다. -->
-	<insert id="insertReply" parameterType="ReplysDto">
-	    <![CDATA[
-        	insert into replys (r_no, b_no, m_no, r_writer, r_content, r_date, r_like, r_group, r_step, r_indent) 
-			values (r_seq.nextval, #{bno} , #{mno} , #{rwriter}, #{rcontent}, sysdate, #{rlike}, #{rgroup}, #{rstep}+1 , #{rindent}+1 )
-        ]]>
-	</insert>
-	
-	<!-- 기존에 작성되어 있는 댓글들의 bstep을 수정하는 작업 -->
-	<update id="updateShape" parameterType="ReplysDto">
+	<!-- 게시글 좋아요 관련 -(해당 글에 해당 멤버의 좋아요 제거) -->
+	<delete id="deleteBLiked" parameterType="BoardIsLikedDto">
 		<![CDATA[
-        	update replys set r_step = r_step + 1 where r_group = #{r_group} and r_step > #{r_step}
-        ]]>
-	</update>
-
-	<!-- 해당 게시글의 댓글들을 조회하기 -->
-	<select id="selectReplys" resultMap="ReplysDtoMap">
-		<![CDATA[
-        	SELECT * FROM replys where b_no = #{bno} ORDER BY r_no desc, r_step asc
-        ]]>
-	</select>
-	
-	<update id="updateReply" parameterType="ReplysDto">
-		<![CDATA[
-        	update replys set r_title = #{rtitle}, r_content = #{rcontent} where r_no = #{rno}
-        ]]>
-	</update>
-	
-	<delete id="deleteReply" parameterType="ReplysDto">
-		 <![CDATA[
-        	delete from replys where r_no = #{rno}
+        	delete from BOARDLIKED where b_no = #{likebno} and m_no = #{likebmno}
         ]]>
 	</delete>
 	
-	<!-- 댓글 좋아요 관련 + -->
-	<update id="updateRLikeUp" parameterType="long">
-		<![CDATA[
-        	update replys set r_like=r_like+1 where r_no=#{rno}
-        ]]>
-	</update>
-	
-	<!-- 댓글 좋아요 관련 - -->
-	<update id="updateRLikeDown" parameterType="long">
-		<![CDATA[
-        	update replys set r_like=r_like-1 where r_no=#{rno}
-        ]]>
-	</update>
-		
-	<select id="selectReplyLikes" parameterType="long" resultType="long">
-    	<![CDATA[
-        	select * from replys where r_no=#{rno}
-        ]]>
-	</select>
-
 	<!-- 게시글 페이징 -->
 	<select id="selectListWithPaging" resultMap="BoardDtoMap">
     	<![CDATA[
@@ -129,18 +106,11 @@
         ]]>
 	</select>
 
-	<!-- 해당 게시글의 좋아요 개수  -->
-	<select id="selectBoardLikes" parameterType="long" resultType="long">
-    	<![CDATA[
-        	SELECT b_like FROM board where b_no = #{bno}
-        ]]>
-	</select>
-
-
+	<!-- 게시글 맵 -->
 	<resultMap type="teamproject.ssja.dto.BoardDto" id="BoardDtoMap">
 		<id property="bno" column="b_no"/>
-		<result property="mno" column="m_no"/>
-		<result property="bcno" column="b_c_no"/>
+		<result property="bmno" column="m_no"/>
+		<result property="bbcno" column="b_c_no"/>
 		<result property="bwriter" column="b_writer"/>
 		<result property="btitle" column="b_title"/>
 		<result property="bcontent" column="b_content"/>
@@ -151,16 +121,10 @@
 		<result property="prono" column="pro_no"/>
 	</resultMap>
 	
-	<resultMap type="teamproject.ssja.dto.ReplysDto" id="ReplysDtoMap">
-		<id property="rno" column="R_NO"/>
-		<result property="bno" column="B_NO"/>
-		<result property="mno" column="M_NO"/>
-		<result property="rwriter" column="R_WRITER"/>
-		<result property="rcontent" column="R_CONTENT"/>
-		<result property="rdate" column="R_DATE"/>
-		<result property="rlike" column="R_LIKE"/>
-		<result property="rgroup" column="R_GROUP"/>
-		<result property="rstep" column="R_STEP"/>
-		<result property="rindent" column="R_INDENT"/>
+	<!-- 해당 게시글 좋아요 여부 맵 -->
+	<resultMap type="teamproject.ssja.dto.BoardIsLikedDto" id="BoardIsLikedMap">
+		<result property="likebno" column="b_no"/>
+		<result property="likebmno" column="m_no"/>
+		<result property="bldate" column="b_l_date"/>
 	</resultMap>
 </mapper>

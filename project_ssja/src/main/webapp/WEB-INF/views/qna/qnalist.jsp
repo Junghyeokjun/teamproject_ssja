@@ -153,7 +153,6 @@ body {
 				</nav>
 			</div>
 		</div>
-
 	</main>
 
 	<footer>

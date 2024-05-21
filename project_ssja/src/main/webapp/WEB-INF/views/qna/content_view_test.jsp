@@ -1,16 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="sec"
-	uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="_csrf" content="${_csrf.token}"/>
-<meta name="_csrf_header" content="${_csrf.headerName}"/>
 <title>SSJA</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -155,12 +151,12 @@ body {
 						<td style="background-color: pink" colspan="2"><input
 							type="submit" value="수정"> &nbsp;&nbsp;<a
 							href="${pageContext.request.contextPath}/qna/list">되돌아가기</a> <%-- &nbsp;&nbsp;<a href="${pageContext.request.contextPath}/qna/delete?bno=${content_view.bno}">삭제</a> --%>
-							<sec:authorize access="hasRole('ROLE_ADMIN')">
+							<%-- <sec:authorize access="hasRole('ROLE_ADMIN')">
 								&nbsp;&nbsp;<a
 									href="${pageContext.request.contextPath}/qna/${content_view.bno}">답변</a>
 							</sec:authorize> <sec:authorize access="!hasRole('ROLE_ADMIN')">
 
-							</sec:authorize>
+							</sec:authorize> --%>
 						</td>
 					</tr>
 				</table>
@@ -189,21 +185,18 @@ body {
  	        // console.log(JSON.stringify({ no : bno, liked : liked })); 
  	        // console.log(liked);
 	        $.ajax({
-	        	beforeSend: function(xhr){
-                    xhr.setRequestHeader(header, token);
-                },
-                url: '/api/likes/toggle/' + bno,
+	            url: '/api/likes/toggle/' + bno,
 	            type: 'POST',
 	            //contentType: 'application/json', // JSON 형식으로 요청을 보낼 것임을 명시
 	            //data: JSON.stringify({ no : bno, liked : liked }), // JSON 형식으로 데이터 전달
 	            data: {
-	            	'no1' : bno, 'no2' : likebmno            	
+	            	'no1' : bno, 'no2' : likebmno	            	
 	            },
 	            success: function(response) {
 	            	console.log("successed");
 	            	console.log(response);
-	                $('#like-count').text(response);
-	                $('#like-button').text(!liked ? '좋아요 취소' : '좋아요');
+	                $('#like-count').text(response.afterLikes);
+	                $('#like-button').text(response.isLiked == 1  ? '좋아요 취소' : '좋아요');
 	            },
 	            error: function(xhr, status, error) {
 	                console.log("Error: " + error);

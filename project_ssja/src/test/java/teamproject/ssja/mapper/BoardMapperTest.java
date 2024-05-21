@@ -1,5 +1,7 @@
 package teamproject.ssja.mapper;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,7 +13,7 @@ import teamproject.ssja.page.Criteria;
 @Slf4j
 @SpringBootTest
 class BoardMapperTest {
-
+	
 	@Autowired
 	BoardMapper boardMapper;
 
@@ -25,9 +27,8 @@ class BoardMapperTest {
 	@Test
 	void testInsertBoard() {
 		BoardDto boardDto = new BoardDto();
-		boardDto.setBno(200);
-		boardDto.setMno(1);
-		boardDto.setBcno(98);
+		boardDto.setBmno(1);
+		boardDto.setBbcno(98);
 		boardDto.setBwriter("testmember");
 		boardDto.setBtitle("test?");
 		boardDto.setBcontent("test!");
@@ -79,4 +80,30 @@ class BoardMapperTest {
 		boardMapper.read(205);
 	}
 
+	@Test
+	void testUpdateBLikeUp() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testUpdateBLikeDown() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testSelectTotalCount() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testSelectListWithPaging() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testSelectBoardLikes() {
+		long likes = boardMapper.selectBoardLikes(205);
+		assertNotNull(likes);
+		log.info("205번 게시글 좋아요 수 : " + likes);
+	}
 }

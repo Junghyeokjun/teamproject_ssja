@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import teamproject.ssja.dto.BoardDto;
+import teamproject.ssja.dto.BoardIsLikedDto;
+import teamproject.ssja.dto.LikesVO;
 import teamproject.ssja.dto.ReplysDto;
 import teamproject.ssja.page.Criteria;
 
@@ -23,14 +25,10 @@ public interface BoardService {
 	public void setCookie(HttpServletResponse response, String name, String value, int maxAge);
 	public String getCookieValue(HttpServletRequest request, String name);
 	public long getTotal();
-	public List<BoardDto> showListWithPaging(Criteria criteria);
-	public long modifyGetBoardLikes(Boolean liked, long bno);
 	
-	public List<ReplysDto> showReplys();
-	int addReply(ReplysDto replysDto);
-	int modifyReply(ReplysDto replysDto);
-	int removeReply(ReplysDto replysDto);
+	// 페이징
+	public List<BoardDto> showListWithPaging(Criteria criteria);
+	// 해당 게시글 좋아요 처리 및 해당 게시글의 좋아요 수 리턴 
+	public LikesVO modifyGetBoardLikes(String no, String liked);
 
-	// 해당 댓글 좋아요 처리 및 해당 댓글의 좋아요 수 리턴 
-	long modifyGetReplyLikes(Boolean liked, Long rno);
 }

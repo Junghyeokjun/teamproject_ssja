@@ -26,8 +26,8 @@ import lombok.ToString;
 @ToString
 public class ReplysDto {
 	private long rno;
-	private long bno;
-	private long mno;
+	private long rbno;
+	private long rmno;
 	private String rwriter;
 	private String rcontent;
 	private String rdate;

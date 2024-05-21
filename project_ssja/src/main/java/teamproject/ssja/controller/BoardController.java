@@ -15,6 +15,7 @@ import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.page.Criteria;
 import teamproject.ssja.page.PageVO;
 import teamproject.ssja.service.BoardService;
+import teamproject.ssja.service.ReplyService;
 
 @Slf4j
 @Controller
@@ -24,6 +25,9 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 
+	@Autowired
+	private ReplyService replyService;
+	
 	@GetMapping("/list")
 	public String qnaList(Model model, Criteria criteria) {
 		log.info("qnaList()..");
@@ -34,11 +38,18 @@ public class BoardController {
 		return "/qna/qnalist";
 	}
 
+//	@GetMapping("/content_view")
+//	public String showView(HttpServletRequest request, HttpServletResponse response, Model model) {
+//		log.info("showView()..");
+//		model.addAttribute("content_view", boardService.showContent(request, response));
+//		return "/qna/content_view";
+//	}
+	
 	@GetMapping("/content_view")
 	public String showView(HttpServletRequest request, HttpServletResponse response, Model model) {
 		log.info("showView()..");
 		model.addAttribute("content_view", boardService.showContent(request, response));
-		return "/qna/content_view";
+		return "/qna/content_view_test";
 	}
 
 	@GetMapping("/write_view")
