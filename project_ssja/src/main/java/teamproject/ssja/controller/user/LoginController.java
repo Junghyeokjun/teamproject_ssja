@@ -1,27 +1,10 @@
-package teamproject.ssja.controller.login;
+package teamproject.ssja.controller.user;
 
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.extern.slf4j.Slf4j;
-import teamproject.ssja.dto.logindto.CustomUserDetailsDTO;
-import teamproject.ssja.dto.logindto.LoginFormDTO;
-import teamproject.ssja.service.user.CustomUserDetailsService;
+
 @Slf4j
 @Controller
 public class LoginController {
@@ -40,6 +23,7 @@ public class LoginController {
 //	public String checkUser(@AuthenticationPrincipal CustomUserDetailsDTO userDetails) {
 //		
 //		log.info("userDetalis. usename = {}", userDetails.getUsername());
+//		log.info("mNUm = {}", userDetails.getUserInfo().getM_No());
 //		
 //		
 //		 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

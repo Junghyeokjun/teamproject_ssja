@@ -21,5 +21,9 @@ public class UserInfoDTO {
     private int m_Point;
     private Date m_Date;
     private String auth;
+    private String m_NickName;
+    private int countCoupon;
+    private int countWish;
+    private int countPurchase;
 	
 }

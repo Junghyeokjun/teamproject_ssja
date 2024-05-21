@@ -19,7 +19,7 @@
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   
    <meta name="_csrf" content="${_csrf.token}"/>
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
@@ -120,6 +120,7 @@
     #userInfo_dv2 > div{
     font-weight:bold;
     margin-top:1em;
+    margin-bottom:1em;
     padding:5px;
     display:flex;
     flex-direction:column;
@@ -198,166 +199,233 @@
 </body>
 
 <script type="text/javascript">
-					/*
-					 $.ajax({
-					 type : `http method type`,
-					 url : `url`,
-					 data : `서버에 전송할 데이터`,
-					 contentType : "전송할 데이터 타입",
-					 //기본 값 : "application / x-www-form-urlencoded; charset = UTF-8"  
-					 dataType : '서버로 부터 수신할 데이터 타입',
-					 //아무것도 지정하지 않으면 jQuery는 응답의 MIME 유형을 기반으로 해석을 시도
-					 error : `에러 발생시 수행할 함수`,
-					 success : `성공시 수행할 함수`
-					}); 
-					 */
-					  let token = $("meta[name='_csrf']").attr("content");
-					  let header = $("meta[name='_csrf_header']").attr("content");
-				
-					 let myPageUserInfo = function () {
-						    $.ajax({
-						        type: "post",
-						        beforeSend: function(xhr){
-						            xhr.setRequestHeader(header, token);
-						        },
-						        url: "/myPage/user", // 정적인 URL 사용
-						        dataType: "json", // 받을 데이터의 유형 지정
-						        success: function(data) {
-						            let userInfo = data;
-						            console.log(userInfo);
-						            let $h2title = $("<h2>").text("회원 정보");
-						            let $myPageContent = $("#MyPage_content_container").empty();
-						            let $myPageTitle = $("#MyPage_content_name");
-						            $myPageTitle.empty().append($h2title);
-						            
-						            let $userInfo_dv1= $("<div>").attr("id","userInfo_dv1").addClass("w-100 my-3 mx-3");
-						            let $userInfo_name = $("<h2>").css("font-weight","bold").text(userInfo.m_Name);
-						            let $userInfo_txt1 = $("<span>").text('님의 등급은');
-						            let $userInfo_grade = $("<h2>").css("font-weight","bold").text(userInfo.m_Grade);
-						            let $userInfo_txt2 = $("<span>").text('입니다.');
-						           
-						            
-						            $userInfo_dv1.append($userInfo_name,$userInfo_txt1,$userInfo_grade,$userInfo_txt2);
-						            
-						            let $userInfo_dv2= $("<div>").attr("id","userInfo_dv2").addClass(" my-3 mx-3")
-						            .css("background-color","#eee");
-						            let $userInfo_orders = $("<div>").attr("id","userInfo_orders").append($("<h4>").text("구매"));
-						            let $userInfo_wishs = $("<div>").attr("id","userInfo_wishs").append($("<h4>").text("위시리스트"));
-						            let $userInfo_points = $("<div>").attr("id","userInfo_points").append($("<h4>").text("포인트"),$("<span>").text(userInfo.m_Point));
-						            let $userInfo_coupons = $("<div>").attr("id","userInfo_coupons").append($("<h4>").text("쿠폰"));
-						            
-						            $userInfo_dv2.append($userInfo_orders,$userInfo_wishs,$userInfo_points,$userInfo_coupons);
-						            
-						            
-						            let $password_title = $("<h4>").addClass("mx-5 my-3").text("비밀 번호 ");
-						            let $modify_password=$("<a>").attr("href","http://www.naver.com").addClass("btn btn-dark").text("변경하기");
-						            let $userInfo_dv3= $("<div>").attr("id","userInfo_dv3").css("border-top","1px solid #cccc")
-						            .addClass("py-3 my-3 mx-3 d-flex flex-row align-items-center").append($password_title,$modify_password);
-						            
-						            
-						            let $email_title = $("<h4>").addClass("mx-5 my-3").text("이메일");
-						            let $userInfo_email = $("<span>").addClass("p-3").css('background-color','#eee').text(userInfo.m_Email);
-						            let $modify_email=$("<a>").attr("href","http://www.naver.com").addClass("btn btn-dark mx-3").text("수정");
-						            let $userInfo_dv4= $("<div>").attr("id","userInfo_dv4").css("border-top","1px solid #ccc")
-						            .addClass("py-3 my-3 mx-3 d-flex flex-row align-items-center").append($email_title,$userInfo_email,$modify_email);
-						            
-						            
-						            let $address_title = $("<h4>").addClass("mx-5 my-3").text("배송지");
-						            let $userInfo_address1= $("<div>").attr("id","your_address").addClass('mx-5').html(
-						            		'우편번호 :  <input type="text" id="zip_code" name="zip_code" value='+userInfo.m_ZipCode +'><br>'+
-						            		'주소 :         <input type="text" id="address" name="address" style="width:70%"value='+userInfo.m_Address1 +'><br>'+
-						            		'상세 :   <input type="text" id="extra_address" name="extra_address" style="width:70%"value='+userInfo.m_Address2 +'><br>'+
-						            		'요구사항 :  <input type="text" id="detail" name="detail"><br>'
-						          
-						            );
-						            let $modify_address=$("<button>").attr("id","address_modify_btn").addClass("btn btn-dark").text("수정").on('click', function(){
-						            	chang_address();
-						            });
-						            
-						            let $userInfo_dv5= $("<div>").attr("id","userInfo_dv5").css("border-top","1px solid #ccc")
-						            .addClass("py-3 my-3 mx-3 d-flex flex-row align-items-center").append($address_title,$userInfo_address1,$modify_address);
-						            
-						            let $phone_title = $("<h4>").addClass("mx-5 my-3").text("전화 번호 ");
-						            let $modify_phoneNum=$("<a>").attr("href","http://www.naver.com").addClass("btn btn-dark").text("변경하기");
-						            let $userInfo_dv6= $("<div>").attr("id","userInfo_dv6").css("border-top","1px solid #ccc")
-						            .addClass("py-3 my-3 mx-3 d-flex flex-row align-items-center").append($phone_title,$modify_phoneNum);
-						            
-						            
-						           $myPageContent.append($userInfo_dv1,$userInfo_dv2,$userInfo_dv3,$userInfo_dv4,$userInfo_dv5,$userInfo_dv6);
-						           
-						          
-						            
-						        }
-						    });
-						};
-						myPageUserInfo();
-						
-						
-						
-						
-						let chang_address = function(){
-							
-							console.log('눌림');
-							
-					        new daum.Postcode({
-					          onComplete: function (data) {
-					             let addr = ''; // 주소 변수
-					               let   extraAddr = '';
-					            if (data.userSelectedType === 'R') {
-					              addr = data.roadAddress;
-					            } else {
-					              addr = data.jibunAddress;
-					            }
-					            if (data.userSelectedType == 'R') {
-					              if (data.bname !== "" && /[동|로|가]$/g.test(data.bname)) {
-					                extraAddr += databname;
-					              }
-					              if (data.buildingName !== '' && data.apartment === 'Y') {
-					                extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-					              }
-					              if (extraAddr !== '') {
-					                extraAddr = ' (' + extraAddr + ')';
-					              }
-					              document.getElementById("extra_address").value = extraAddr;
-					            } else {
-					              document.getElementById("extra_address").value = '';
-					            }
-					            document.getElementById('zip_code').value = data.zonecode;
-					            document.getElementById("address").value = addr;
-					         
-					            document.getElementById("extra_address").focus();
-					          }
-					        }).open(); 
-						}
-						
-						 
-						 $("#myPage_userInfo_Select").on('click',function(){
-							 myPageUserInfo();
-						 });
-						 $("#myPage_orderInfo_Select").on('click',function(){
-							 let $h2title = $("<h2>").text("주문 사항");
-					            let $myPageContent = $("#MyPage_content_container").empty();
-					            let $myPageTitle = $("#MyPage_content_name");
-					            $myPageTitle.empty().append($h2title);
-						 });
-			
+
+	/*
+	 $.ajax({
+	 type : `http method type`,
+	 url : `url`,
+	 data : `서버에 전송할 데이터`,
+	 contentType : "전송할 데이터 타입",
+	 //기본 값 : "application / x-www-form-urlencoded; charset = UTF-8"  
+	 dataType : '서버로 부터 수신할 데이터 타입',
+	 //아무것도 지정하지 않으면 jQuery는 응답의 MIME 유형을 기반으로 해석을 시도
+	 error : `에러 발생시 수행할 함수`,
+	 success : `성공시 수행할 함수`
+	}); 
+	 */
+	let token = $("meta[name='_csrf']").attr("content");
+	let header = $("meta[name='_csrf_header']").attr("content");
+
+	let myPageUserInfo = function() {
+		$
+				.ajax({
+					type : "post",
+					beforeSend : function(xhr) {
+						xhr.setRequestHeader(header, token);
+					},
+					url : "/user/info", // 정적인 URL 사용
+					dataType : "json", // 받을 데이터의 유형 지정
+					success : function(data) {
+						let userInfo = data;
+						console.log(userInfo);
+						let $h2title = $("<h2>").text("회원 정보");
+						let $myPageContent = $("#MyPage_content_container")
+								.empty();
+						let $myPageTitle = $("#MyPage_content_name");
+						$myPageTitle.empty().append($h2title);
+
+						let $userInfo_dv1 = $("<div>").attr("id",
+								"userInfo_dv1").addClass("w-100 my-3 mx-3");
+						let $userInfo_name = $("<h2>").css("font-weight",
+								"bold").text(userInfo.m_NickName);
+						let $userInfo_txt1 = $("<span>").text('님의 등급은');
+						let $userInfo_grade = $("<h2>").css("font-weight",
+								"bold").text(userInfo.m_Grade);
+						let $userInfo_txt2 = $("<span>").text('입니다.');
+
+						$userInfo_dv1.append($userInfo_name, $userInfo_txt1,
+								$userInfo_grade, $userInfo_txt2);
+
+						let $userInfo_dv2 = $("<div>").attr("id",
+								"userInfo_dv2").addClass(" my-3 mx-3").css(
+								"background-color", "#eee");
+						let $userInfo_orders = $("<div>").attr("id",
+								"userInfo_orders").append($("<h4>").text("구매"),
+								$("<span>").text(userInfo.countPurchase));
+						let $userInfo_wishs = $("<div>").attr("id",
+								"userInfo_wishs").append(
+								$("<h4>").text("위시리스트"),
+								$("<span>").text(userInfo.countWish));
+						let $userInfo_points = $("<div>").attr("id",
+								"userInfo_points").append(
+								$("<h4>").text("포인트"),
+								$("<span>").text(userInfo.m_Point));
+						let $userInfo_coupons = $("<div>").attr("id",
+								"userInfo_coupons").append(
+								$("<h4>").text("쿠폰"),
+								$("<span>").text(userInfo.countCoupon));
+
+						$userInfo_dv2.append($userInfo_orders, $userInfo_wishs,
+								$userInfo_points, $userInfo_coupons);
+
+						let $password_title = $("<h4>").addClass("mx-5 my-3")
+								.text("비밀 번호 ");
+						let $modify_password = $("<a>").attr("href",
+								"${pageContext.request.contextPath}/myPage/password/change")
+								.addClass("btn btn-dark").text("변경하기");
+						let $userInfo_dv3 = $("<div>")
+								.attr("id", "userInfo_dv3")
+								.css("border-top", "1px solid #cccc")
+								.addClass(
+										"py-3 my-3 mx-3 d-flex flex-row align-items-center")
+								.append($password_title, $modify_password);
+
+						let $email_title = $("<h4>").addClass("mx-5 my-3")
+								.text("이메일");
+						let $userInfo_email = $("<span>").addClass("p-3").css(
+								'background-color', '#eee').text(
+								userInfo.m_Email);
+						let $modify_email = $("<a>").attr("href",
+								"http://www.naver.com").addClass(
+								"btn btn-dark mx-3").text("수정");
+						let $userInfo_dv4 = $("<div>")
+								.attr("id", "userInfo_dv4")
+								.css("border-top", "1px solid #ccc")
+								.addClass(
+										"py-3 my-3 mx-3 d-flex flex-row align-items-center")
+								.append($email_title, $userInfo_email,
+										$modify_email);
+
+						let $address_title = $("<h4>").addClass("mx-5 my-3")
+								.text("배송지");
+						let $userInfo_address1 = $("<div>")
+								.attr("id", "your_address")
+								.addClass('mx-5')
+								.html(
+										'우편번호 : <input type="text" id="zip_code" name="zip_code" value="' + userInfo.m_ZipCode + '"><br>' +
+									    '주소 : <input type="text" id="address" name="address" style="width:100%;" value="' + userInfo.m_Address1 + '"><br>' +
+									    '상세 : <input type="text" id="extra_address" name="extra_address" style="width:70%;" value="' + userInfo.m_Address2 + '"><br>' +
+									    '<input type="text" id="address_detail" name="detail"><br>'
+
+								);
+						let $chang_address_btn = $("<button>").attr("id",
+								"chang_address_btn").addClass(
+								"btn btn-dark m-3").text("변경").on('click',function(){
+									change_address();
+								});
+						let $modify_address = $("<button>").attr("id",
+								"address_modify_btn").addClass("btn btn-dark")
+								.text("조회").on('click', function() {
+									search_address();
+								});
+
+						let $userInfo_dv5 = $("<div>")
+								.attr("id", "userInfo_dv5")
+								.css("border-top", "1px solid #ccc")
+								.addClass(
+										"py-3 my-3 mx-3 d-flex flex-row align-items-center")
+								.append($address_title, $userInfo_address1,
+										$modify_address, $chang_address_btn);
+
+						let $phone_title = $("<h4>").addClass("mx-5 my-3")
+								.text("전화 번호 ");
+						let $modify_phoneNum = $("<a>").attr("href",
+								"http://www.naver.com")
+								.addClass("btn btn-dark").text("변경하기");
+						let $userInfo_dv6 = $("<div>")
+								.attr("id", "userInfo_dv6")
+								.css("border-top", "1px solid #ccc")
+								.addClass(
+										"py-3 my-3 mx-3 d-flex flex-row align-items-center")
+								.append($phone_title, $modify_phoneNum);
+
+						$myPageContent.append($userInfo_dv1, $userInfo_dv2,
+								$userInfo_dv3, $userInfo_dv4, $userInfo_dv5,
+								$userInfo_dv6);
+
+					}
+				});
+	};
+	myPageUserInfo();
+
+	let change_address = function() {
+		let address_data = {
+			zip_code : $("#zip_code").val(),
+			address : $("#address").val(),
+			extra_address : $("#extra_address").val()
+		};
+
+		$.ajax({
+			type : "post",
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			data : JSON.stringify(address_data),
+			contentType : "application/json",
+			url : "/user/address",
+			dataType : "json",
+			success : function(data){
+				alert('주소가 변경되었습니다');
+				myPageUserInfo();
+			}
+		})
+	}
+
+	let search_address = function() {
+
+		console.log('눌림');
+
+		new daum.Postcode({
+			onComplete : function(data) {
+				let addr = ''; // 주소 변수
+				let extraAddr = '';
+				if (data.userSelectedType === 'R') {
+					addr = data.roadAddress;
+				} else {
+					addr = data.jibunAddress;
+				}
+				if (data.userSelectedType == 'R') {
+					/* if (data.bname !== "" && /[동|로|가]$/g.test(data.bname)) {
+						extraAddr += databname;
+					} */
+					if (data.buildingName !== '' && data.apartment === 'Y') {
+						extraAddr += (extraAddr !== '' ? ', '
+								+ data.buildingName : data.buildingName);
+					}
+					if (extraAddr !== '') {
+						extraAddr = ' (' + extraAddr + ')';
+					}
+					document.getElementById("extra_address").value = extraAddr;
+				} else {
+					document.getElementById("extra_address").value = '';
+				}
+				document.getElementById('zip_code').value = data.zonecode;
+				document.getElementById("address").value = addr;
+
+				document.getElementById("extra_address").focus();
+			}
+		}).open();
+	}
+
+	$("#myPage_userInfo_Select").on('click', function() {
+		myPageUserInfo();
+	});
+	$("#myPage_orderInfo_Select").on('click', function() {
+		let $h2title = $("<h2>").text("주문 사항");
+		let $myPageContent = $("#MyPage_content_container").empty();
+		let $myPageTitle = $("#MyPage_content_name");
+		$myPageTitle.empty().append($h2title);
+	});
 </script>
 <script>
 					 
-
-  $(document).ready(function () {
-    let MyPage_link1 = "https://www.naver.com";
-    let MyPage_link2 = "https://www.google.com";
-    let MyPage_link3 = "https://www.daum.net";
-    let MyPage_link4 = "https://store.ohou.se/exhibitions/12390";
-    
   let select_dv = $("#select_content");
     
     $("#select_mp_top").on('click', function() {
         select_dv.toggle();
     });
 
-  });
+
 
 </script>
 
