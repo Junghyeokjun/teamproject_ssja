@@ -168,8 +168,7 @@ body {
 						<main class="col-lg-6">
 							<div class="ps-lg-3">
 								<h4 class="title text-dark">
-									Quality Men's Hoodie for Winter, Men's Fashion <br /> Casual
-									Hoodie
+									${product_detail.PRO_NAME}
 								</h4>
 								<div class="d-flex flex-row my-3">
 									<div class="text-warning mb-1 me-2">
@@ -179,13 +178,11 @@ body {
 											4.5 </span>
 									</div>
 									<span class="text-muted"><i
-										class="fas fa-shopping-basket fa-sm mx-1"></i>154 orders</span> <span
-										class="text-success ms-2">In stock</span>
+										class="fas fa-shopping-basket fa-sm mx-1"></i></span>
 								</div>
 
 								<div class="mb-3">
-									<span class="h5">$75.00</span> <span class="text-muted">/per
-										box</span>
+									<span class="h5">${product_detail.PRO_PRICE}</span> 
 								</div>
 
 								<p>Modern look and quality demo item is a

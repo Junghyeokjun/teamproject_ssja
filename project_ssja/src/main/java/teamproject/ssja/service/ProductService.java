@@ -6,9 +6,9 @@ import teamproject.ssja.dto.ProductDto;
 
 public interface ProductService {
 	
-	List<ProductDto> getList();
+//	List<ProductDto> getList();
 
-	ProductDto get(long pRO_NO);
+	List<ProductDto> get(long PRO_NO);
 	
 }
 

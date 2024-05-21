@@ -8,9 +8,7 @@ import teamproject.ssja.dto.ProductDto;
 @Mapper
 public interface ProductMapper {
 	
-	List<ProductDto> getList();
-	
-	ProductDto read(long pRO_NO);
+	List<ProductDto> read(long PRO_NO);
 
 	
 }

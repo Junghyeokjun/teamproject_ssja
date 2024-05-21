@@ -26,9 +26,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class ProductDto {
-	int PRO_NO;
+	long PRO_NO;
 	long V_NO;   
 	long P_C_NO;
+	String PRO_NAME;
 	String PRO_PRICE;
 	String PRO_QUANTITY;
 	String PRO_BANNERIMG;

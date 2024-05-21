@@ -17,15 +17,15 @@ public class ProductServiceImpl implements ProductService{
 	@Autowired
 	private ProductMapper productMapper;
 	
-	@Override
-	public List<ProductDto> getList(){
-		log.info("getList..");
-		
-		return productMapper.getList();
-	}
+//	@Override
+//	public List<ProductDto> getList(){
+//		log.info("getList..");
+//		
+//		return productMapper.getList();
+//	}
 
 	@Override
-	public ProductDto get(long PRO_NO) {
+	public List<ProductDto> get(long PRO_NO) {
 		log.info("read..");
 		return productMapper.read(PRO_NO);
 	}

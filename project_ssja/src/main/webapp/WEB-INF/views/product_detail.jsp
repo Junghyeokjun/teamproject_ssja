@@ -4,7 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,19 +21,17 @@
 </script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="/js/barscript.js">
-	
-</script>
-<script src="/js/footer.js">
-	
-</script>
-
+<script src="/js/barscript.js"></script>
+<script src="/js/footer.js"></script>
+<meta name="_csrf" content="${_csrf.token}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script
 	src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
 <link href="/css/footerstyle.css?after" rel="stylesheet">
 <link href="/css/barstyle.css?after" rel="stylesheet">
-
 <link rel="stylesheet"
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
 <link
@@ -42,7 +39,6 @@
 	rel="stylesheet"
 	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
 	crossorigin="anonymous">
-
 <style>
 @font-face {
 	font-family: 'fonts';
@@ -60,24 +56,21 @@ body {
 	height: 3em;
 }
 
-
-
-
-
+.nav-link-custom {
+	background-color: black;
+	color: white;
+	padding: 20px;
+}
 </style>
-
 </head>
-
 <body>
 	<header>
 		<div id="title_bar" class=" fixed-top">
 			<div class="py-2 px-1" id="top-bar">
-
 				<button type="toggle-button" class="top_btn" id="top_btn"></button>
 				<a href=""><img id="logo_img"
 					src="/images/utilities/logoSSJA.png"></a>
 				<form action="http://www.naver.com" id=searchForm method="get">
-
 				</form>
 				<button id="search_icon"></button>
 				<a id="cart_link"><img id="cart_img"></a> <a id="user_link"><img
@@ -96,7 +89,7 @@ body {
 	</div>
 	<main>
 		<div id="main_container">
-			<div class="row goods">
+			<%-- <div class="row goods">
 				<!-- row 클래스를 추가 -->
 				<div class="goodsImg col-12 col-md-6 col-lg-7">
 					<div id="carouselExampleIndicators" class="carousel slide"
@@ -137,11 +130,8 @@ body {
 					</div>
 				</div>
 				<div class="goodsInfo col-12 col-md-6 col-lg-5">
-					<p class="gdsName">
-						<span>상품명 ${product_detail.PRO_WISH}</span>
-					</p>
 					<p class="cateName">
-						<span>카테고리 ${product_detail.PRO_SELLCOUNT}</span>
+						<span>상품이름 ${product_detail.PRO_NAME}</span>
 					</p>
 					<p class="gdsPrice">
 						<span>가격 <fmt:formatNumber pattern="###,###,###"
@@ -149,7 +139,7 @@ body {
 						</span>
 					</p>
 					<p class="cartStock">
-						<span>구입 수량</span> <input type="number" min="1"
+						<span>수량</span> <input type="number" min="1"
 							max="${product_detail.PRO_QUANTITY}" value="1" />
 					</p>
 					<hr>
@@ -232,26 +222,109 @@ body {
 					</div>
 					<hr>
 					<p class="addToCart">
+						<label class="mb-2">총 금액</label><br>
 						<button type="button">장바구니</button>
 						<button type="button">바로구매</button>
 					</p>
 				</div>
-			</div>
-			
-			<ul class="production-selling-navigation__list">
-				<li><a	href="#production-selling-information">상품정보</a></li>
-				<li><a 	href="#production-selling-review">리뷰<span>1,612</span></a></li>			
-				<li><a 	href="#production-selling-suggestion">사업자정보</a></li>
-			</ul>
-			
-			<img src="/images/product_details/Design1.png" class="d-block w-100"
-				alt="..."> <img src="/images/product_details/Design2.png"
-				class="d-block w-100" alt="..."> <img
-				src="/images/product_details/Design3.png" class="d-block w-100"
-				alt="..."> <img src="/images/product_details/Design4.png"
-				class="d-block w-100" alt="..."> <img
-				src="/images/product_details/Design5.png" class="d-block w-100"
-				alt="...">
+			</div> --%>
+
+			<section class="bg-light border-top py-4">
+				<div class="container">
+					<div class="row gx-4">
+						<div class="col-lg-8 mb-4">
+							<div class="border rounded-2 px-3 py-2 bg-white">
+
+								<ul class="nav nav-pills nav-justified mb-3" id="ex1"
+									role="tablist">
+									<li class="nav-item d-flex" role="presentation"><a
+										class="nav-link nav-link-custom d-flex align-items-center justify-content-center w-100 active"
+										id="ex1-tab-1" data-mdb-toggle="pill" href="#ex1-pills-1"
+										role="tab" aria-controls="ex1-pills-1" aria-selected="true">상품정보</a>
+									</li>
+									<li class="nav-item d-flex" role="presentation"><a
+										class="nav-link nav-link-custom d-flex align-items-center justify-content-center w-100"
+										id="ex1-tab-2" data-mdb-toggle="pill" href="#ex1-pills-2"
+										role="tab" aria-controls="ex1-pills-2" aria-selected="false">리뷰</a>
+									</li>
+									<li class="nav-item d-flex" role="presentation"><a
+										class="nav-link nav-link-custom d-flex align-items-center justify-content-center w-100"
+										id="ex1-tab-3" data-mdb-toggle="pill" href="#ex1-pills-3"
+										role="tab" aria-controls="ex1-pills-3" aria-selected="false">사업자정보</a>
+									</li>
+								</ul>
+
+
+
+								<!-- Pills content -->
+								<div class="tab-content" id="ex1-content">
+									<div class="tab-pane fade show active" id="ex1-pills-1"
+										role="tabpanel" aria-labelledby="ex1-tab-1">
+										<img src="/images/product_details/Design1.png"
+											class="d-block w-100" alt="..."> <img
+											src="/images/product_details/Design3.png"
+											class="d-block w-100" alt="..."> <img
+											src="/images/product_details/Design5.png"
+											class="d-block w-100" alt="...">
+									</div>
+									<div class="tab-pane fade mb-2" id="ex1-pills-2"
+										role="tabpanel" aria-labelledby="ex1-tab-2">상세리뷰</div>
+									<div class="tab-pane fade mb-2" id="ex1-pills-3"
+										role="tabpanel" aria-labelledby="ex1-tab-3">
+										<section class="production-selling-section">
+											<table class="production-selling-table">
+												<tbody>		
+													<tr>
+														<th>사업자번호</th>
+														<td>${vendor.V_NO}</td>
+													</tr>							
+													<tr>
+														<th>사업자이름</th>
+														<td>${vendor.V_BIZNAME}</td>
+													</tr>													
+													<tr>
+														<th>사업자 등록번호</th>
+														<td>${vendor.V_LICENSE}</td>
+													</tr>
+													<tr>
+														<th>사업자 팩스번호</th>
+														<td>${vendor.V_FAX}</td>
+													</tr>
+												</tbody>
+											</table>
+										</section>
+									</div>
+								</div>
+								<!-- Pills content -->
+							</div>
+						</div>
+						<div class="col-lg-4">
+							<div class="px-0 border rounded-2 shadow-0">
+								<div class="card">
+									<label class="mb-2">옵션선택</label> <select
+										class="form-select border border-secondary"
+										style="height: 35px;">
+										<option>Small</option>
+										<option>Medium</option>
+										<option>Large</option>
+									</select>
+									<p class="addToCart">
+										<label class="mb-2">총 금액</label><br>
+										<button type="button">장바구니</button>
+										<button type="button">바로구매</button>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+
+
+
+
+
 		</div>
 	</main>
 
@@ -260,6 +333,11 @@ body {
 		<div id="second_footer"></div>
 		<div id="third_footer"></div>
 	</footer>
+
+	<!-- MDBootstrap JS -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
+
 
 </body>
 

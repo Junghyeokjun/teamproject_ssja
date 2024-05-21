@@ -3,16 +3,43 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="teamproject.ssja.mapper.ProductMapper">
-		<select id="getList" resultType="ProductDto">    
-	    <![CDATA[
-	       select * from product
-	        ]]>
-		</select>
-		
-		<select id="read" resultType="ProductDto">    
+				
+		<!-- <select id="read" resultType="ProductDto">    
     <![CDATA[
       select * from product where PRO_NO=#{PRO_NO}
         ]]>
-	</select>
+	</select> -->
+	
+	<resultMap id="ProductMap" type="ProductDto" >
+	    	<result property="PRO_NO" column="PRO_NO"/>
+	    	<result property="V_NO" column="V_NO"/>
+	    	<result property="P_C_NO" column="P_C_NO"/>
+	    	<result property="PRO_NAME" column="PRO_NAME"/>
+	    	<result property="PRO_PRICE" column="PRO_PRICE"/>
+	    	<result property="PRO_QUANTITY" column="PRO_QUANTITY"/>
+	    	<result property="PRO_BANNERIMG" column="PRO_BANNERIMG"/>
+	    	<result property="PRO_WISH" column="PRO_WISH"/>
+	    	<result property="PRO_SELLCOUNT" column="PRO_SELLCOUNT"/>
+	    	<result property="PRO_HIT" column="PRO_HIT"/>
+	    	<result property="PRO_BIZNAME" column="PRO_BIZNAME"/>  		    	
+	    </resultMap>
+	    
+	     <resultMap id="VendorProductMap" type="VendorProductDto" >
+	    	<result property="V_NO" column="V_NO"/>
+	    	<result property="M_NO" column="M_NO"/>
+	    	<result property="V_BIZNAME" column="V_BIZNAME"/>
+	    	<result property="V_ACCOUNT" column="V_ACCOUNT"/>
+	    	<result property="V_LICENSE" column="V_LICENSE"/>
+	    	<result property="V_FAX" column="V_FAX"/>	    	   	
+	    	<collection property="ProductList" resultMap="ProductMap" />   
+	    	<!-- 1:N일때 collection  resultMap --> 	
+	    </resultMap>
+	    
+	      <!-- VendorDto : ProductDto = 1 : N  -->
+	    <select id="read" resultMap="VendorProductMap">
+	    <![CDATA[		    
+	       SELECT * from PRODUCT P,VENDOR V WHERE P.V_NO = V.V_NO and P.PRO_NO=#{PRO_NO}
+	     ]]>
+	    </select>  
 
 </mapper>
