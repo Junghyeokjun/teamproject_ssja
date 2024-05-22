@@ -12,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -78,6 +79,17 @@ public class UserInfoAsyncController {
 	        }
 	    }
 	 
+	 @DeleteMapping("")
+	 public ResponseEntity<String> deleteUserEnroll(@AuthenticationPrincipal UserDetails userDetails){
+		 String username = userDetails.getUsername();
+		 
+		 log.info("{} 유저 삭제 요청",username);
+		String EnrollDeleteDate= myPageService.deleteUserEnroll(username);
+	
+		 log.info("삭제 등록 날짜 {}",EnrollDeleteDate);
+	            return ResponseEntity.ok(EnrollDeleteDate);
+	      
+	 }
 	 
 	 
 	 

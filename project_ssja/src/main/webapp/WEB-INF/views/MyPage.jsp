@@ -161,25 +161,28 @@
   <div id="side_bar">
     <div id="side_links" class="w-100"></div>
   </div>
+		   <div id="select_MyPage" class="d-flex flex-column">
+		    <div id="select_mp_top" class="text-center">마이 페이지</div>
+		    <div id="select_content">
+		        <button class="MyPage_btn w-100" id="myPage_userInfo_Select" style="border:1px solid #cccccc">회원 정보</button>
+		        <button class="MyPage_btn w-100" id="myPage_orderInfo_Select" style="border:1px solid #cccccc">주문 내역</button>
+		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc">내가 쓴 글</button>
+		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc">판매자 신청</button>
+		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc">문의 및 요청</button>
+		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc">회원 탈퇴</button>
+		    </div>
+		</div>
 
   <main>
     <div id="main_container" class="d-flex flex-row align-items-center justify-content-center" >
       
       <div id="content_dv" >
         
-		   <div id="select_MyPage" class="d-flex flex-column">
-		    <div id="select_mp_top" class="text-center">마이 페이지</div>
-		    <div id="select_content">
-		        <button class="MyPage_btn w-100" id="myPage_userInfo_Select" style="border:1px solid #cccccc">회원 정보</button>
-		        <button class="MyPage_btn w-100" id="myPage_orderInfo_Select" style="border:1px solid #cccccc">주문 사항</button>
-		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc">주문 내역</button>
-		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc">내가 쓴 글</button>
-		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc">문의 및 요청</button>
-		    </div>
-		</div>
 
         <div id="MyPage_content_name" > </div>
+        <div id=main_div>
         <div id="MyPage_content_container" class="border">
+        </div>
        
 
         </div>
@@ -215,6 +218,9 @@
 	 */
 	let token = $("meta[name='_csrf']").attr("content");
 	let header = $("meta[name='_csrf_header']").attr("content");
+	
+	const withdrawl_comment = '회원을 탈퇴하시면 계정이 삭제 되며 내가 쓴글, 구매내역, 리뷰, 채팅 등 모든 정보가 삭제됩니다.<br>' 
+		+'계정 삭제 후 7일 간에 유보기간이 주어지며, 유보기간 동안 마이페이지 > 회원정보로 오셔서 탈퇴 취소를 누르시면 다시 회원으로 지내실 수 있습니다.';
 
 	let myPageUserInfo = function() {
 		$
@@ -305,7 +311,7 @@
 										'우편번호 : <input type="text" id="zip_code" name="zip_code" value="' + userInfo.m_ZipCode + '"><br>' +
 									    '주소 : <input type="text" id="address" name="address" style="width:100%;" value="' + userInfo.m_Address1 + '"><br>' +
 									    '상세 : <input type="text" id="extra_address" name="extra_address" style="width:70%;" value="' + userInfo.m_Address2 + '"><br>' +
-									    '<input type="text" id="address_detail" name="detail"><br>'
+									    '<input type="hidden" id="address_detail" name="detail"><br>'
 
 								);
 						let $chang_address_btn = $("<button>").attr("id",
@@ -339,9 +345,65 @@
 										"py-3 my-3 mx-3 d-flex flex-row align-items-center")
 								.append($phone_title, $modify_phoneNum);
 
+						let $withdrawl_title = $("<h4>").addClass("mx-5 my-3").text("회원 탈퇴");
+						
+						let $withdrawl_btn = $("<button>").attr('id','withdrawl_btn').addClass("btn btn-outline-danger").text('탈퇴하기').on('click',function(){
+							$wd_detail_dv1.empty();
+							
+							let $wd_detail_1 = $("<h4>").text(userInfo.m_NickName+'님과 이별인가요? 너무 아쉬워요')
+							.css('font-weight','bold').addClass("my-3").appendTo($wd_detail_dv1);
+							
+							
+							let $wd_detail_2 = $("<div>").addClass("mx-5").html(withdrawl_comment).appendTo($wd_detail_dv1);
+							
+							let $wd_detail_3 = $("<input>").addClass("my-3").attr("type","checkbox").attr('id',"withdrawl_check").appendTo($wd_detail_dv1);
+							
+							let $wd_detail_4 = $("<p>").text("위에 대해 확인하였고 탈퇴하겠습니다.").appendTo($wd_detail_dv1);
+							let $wd_detail_5 = $("<div>").addClass("d-flex flex-row my-3 justify-conten-center align-items-center").appendTo($wd_detail_dv1);
+							
+							let $delete_ok_btn = $("<button>").addClass('btn btn-dark mx-1').text('탈퇴').on('click', function(){
+								 if($wd_detail_3.is(':checked')===false){
+									$wd_detail_6.text('확인란에 체크해 주시길 바랍니다.');
+									return ;
+								} 
+								 $.ajax({
+										type : "delete",
+										beforeSend : function(xhr) {
+											xhr.setRequestHeader(header, token);
+										},
+										url : "/user",
+										success : function(data){
+											alert('삭제 되었습니다.');
+										},
+										error : function(data){
+											alert('에러 발생');
+										}
+									})
+								
+							});
+							let $delete_no_btn = $("<button>").addClass("btn btn-outline-secondary mx-1").text('취소').on('click',function(){
+								$wd_detail_dv1.empty();
+							});
+							
+							$wd_detail_5.append($delete_ok_btn,$delete_no_btn);
+							
+							let $wd_detail_6 =$("<div>").addClass('text-center').css('color','red').appendTo($wd_detail_dv1);
+						});
+						let $withdrawl_main = $("<div>").addClass("d-flex flex-row align-items-center")
+						.attr("id","withdrawl_main").css("display","flex").append($withdrawl_title,$withdrawl_btn );
+							let $wd_detail_dv1 = $("<div>").addClass("d-flex flex-column align-items-center justify-content-center")
+							.attr("id","wd_detail_dv1").css("widh","90%");
+						
+						let $userInfo_dv7 = $("<div>")
+						.attr("id", "userInfo_dv7")
+						.css("border-top", "1px solid #ccc")
+						.addClass(
+								"py-3 my-3 mx-3 d-flex flex-column justify-content-center").append($withdrawl_main,$wd_detail_dv1);
+						
+						
 						$myPageContent.append($userInfo_dv1, $userInfo_dv2,
 								$userInfo_dv3, $userInfo_dv4, $userInfo_dv5,
-								$userInfo_dv6);
+								$userInfo_dv6,$userInfo_dv7);
 
 					}
 				});

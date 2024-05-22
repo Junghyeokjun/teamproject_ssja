@@ -18,12 +18,13 @@
     <result property="countCoupon" column="couponNum"/>
     <result property="countWish" column="widhNum"/>
     <result property="countPurchase" column="purNum"/>
+    <result property="m_deletedate" column="m_deletedate"/>
     
 	
 </resultMap>
 <select id="getUserInfoInMyPage" parameterType="long" resultMap="userResultMap">
     select m.m_no , m.m_id , m.m_name , m.m_nickname , m.m_address1 , m.m_address2 ,
-     m.m_zipcode , m.m_grade , m.m_email , m.m_phone , m.m_point ,
+     m.m_zipcode , m.m_grade , m.m_email , m.m_phone , m.m_point ,m.m_deletedate,
       nvl(c.countcoupon, 0) as couponNum, nvl(w.countwish, 0) as widhNum, nvl(p.countpurchase, 0) as purNum
     from members m
     left join (select m_no, count(*) as countcoupon from ownedcoupon group by m_no) c 
@@ -45,5 +46,16 @@
 	
 </update>
 
+<update id="deleteUserEnroll" parameterType="String" >
+update members set M_deletedate = sysdate + INTERVAL'7' day  where m_id=#{userId} 
+</update>
+
+
+<delete id="deleteEnrolledUsersAuth" parameterType="List">
+    delete from authority where m_id in 
+    <foreach item="enrolled" collection="enrolledDeleteUsers" open="(" separator="," close=")">
+        #{enrolled}
+    </foreach>
+</delete>
 
 </mapper>

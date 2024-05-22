@@ -25,5 +25,6 @@ public class UserInfoDTO {
     private int countCoupon;
     private int countWish;
     private int countPurchase;
+    private Date m_deletedate;
 	
 }

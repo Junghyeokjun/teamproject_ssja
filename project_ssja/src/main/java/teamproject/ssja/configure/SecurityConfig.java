@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		/* 권한설정 */
 	    http.authorizeRequests()
 	    //.antMatchers("/home/**","/login","/loginCheck","/checkUser","/userInfo").permitAll()
-	    .antMatchers("/logout","/user","/myPage","/myPage/**","/userInfo").hasAnyRole("USER")
+	    .antMatchers("/logout","/user","/myPage","/myPage/**","/userInfo","/user","/user/**").hasAnyRole("USER")
 	    //.antMatchers("/admin").hasAnyRole("ADMIN")
 	    .anyRequest().permitAll();
 	    
