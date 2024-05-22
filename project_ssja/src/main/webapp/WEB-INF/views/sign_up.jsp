@@ -258,7 +258,11 @@
 <body>
     <div class="d-flex align-items-center justify-content-center flex-column">
         <!-- 홈화면링크 -->
+<<<<<<< HEAD
         <a href="${pageContext.request.contextPath}/"><img src="/images/utilities/big_logo.png" alt=""></a>
+=======
+        <a id="logo_toHome" href=""><img src="/images/utilities/big_logo.png" alt=""></a>
+>>>>>>> origin/dev_ajs
         <!-- 실제 적용시 method post로 변경  -->
         <form action="${pageContext.request.contextPath}/testrest/signUp" method="post" onsubmit="return false" id="sign_up_form">
             <table>

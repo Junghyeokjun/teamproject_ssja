@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+   pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -74,7 +76,11 @@
       <div class="py-2 px-1" id="top-bar">
 
         <button type="toggle-button" class="top_btn" id="top_btn"></button>
+<<<<<<< HEAD
         <a href="${pageContext.request.contextPath}/"><img id="logo_img" src="/images/utilities/logoSSJA.png"></a>
+=======
+        <a id="logo_toHome" href=""><img id="logo_img" src="/images/utilities/logoSSJA.png"></a>
+>>>>>>> origin/dev_ajs
         <form action="http://www.naver.com" id=searchForm method="get">
          
         </form>

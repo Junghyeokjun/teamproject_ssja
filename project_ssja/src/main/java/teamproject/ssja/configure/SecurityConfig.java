@@ -1,13 +1,26 @@
 package teamproject.ssja.configure;
 
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy;
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
+
+import teamproject.ssja.dto.logindto.CustomUserDetailsDTO;
+import teamproject.ssja.service.user.CustomUserDetailsService;
 
 
 
@@ -17,9 +30,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 
-//	@Autowired
-//	private EmpUserDetailsService empUserDetailsService;
-
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		
@@ -27,31 +37,66 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		web.ignoring().antMatchers("/css/**","/js/**","/imgx/**","/lib/**","/images/**");
 	}
 	
+	
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		//csrf설정 해제
-		//초기 개발시만 권장
-		http.csrf().disable();
+	
 		/* 권한설정 */
 	    http.authorizeRequests()
+<<<<<<< HEAD
 	    .antMatchers("/","/test/login","/test/sign_up_before","/test/sign_up","/testrest/**").permitAll()
 	    .anyRequest().authenticated();
 	    
 	    http.formLogin().loginPage("/test/login").usernameParameter("username").passwordParameter("password").defaultSuccessUrl("/").permitAll();;
+=======
+	    //.antMatchers("/home/**","/login","/loginCheck","/checkUser","/userInfo").permitAll()
+	    .antMatchers("/logout","/user","/myPage","/myPage/**","/userInfo","/user","/user/**").hasAnyRole("USER")
+	    //.antMatchers("/admin").hasAnyRole("ADMIN")
+	    .anyRequest().permitAll();
 	    
-	    //.loginPage();	//loginpage()= 로그인을 진행할 페이지의 url
-//	    .usernameParameter("id")
-//	    .passwordParameter("pw")
-//	    .defaultSuccessUrl("/")
-//	    .permitAll();//모든유저가 로그인화면은 볼수 있다.
+	    http.formLogin().loginPage("/login")
+	    .usernameParameter("username").passwordParameter("password")
+	    .loginProcessingUrl("/loginCheck")
+	    .defaultSuccessUrl("/").permitAll()
+>>>>>>> origin/dev_ajs
+	    
+	    .and()
+	    .logout()
+                .logoutUrl("/logout")//logout 요청 처리 uRL
+                .addLogoutHandler((request, response, authentication) -> {
+                    HttpSession session = request.getSession();
+                    if (session != null) {
+                        session.invalidate();
+                    }
+                }).logoutSuccessHandler(((request, response, authentication) -> {
+                    response.sendRedirect("/");// 로그아웃 성공 시 리다이렉트
+                }))//로그 아웃 성공 핸들러;
+                .deleteCookies("JSESSIONID")
+                
+                .and()//중복로그인 설정
+                .sessionManagement()
+                .maximumSessions(1)
+                .expiredUrl("/home") 
+                .maxSessionsPreventsLogin(false)
+                .sessionRegistry(sessionRegistry())
+                
+                .and()// 세션 고정 공격 보호
+                .sessionFixation()
+                .newSession();
+
 	}	
 	
-//	@Bean
-//	public PasswordEncoder passwordEncoder() {
-//		return new BCryptPasswordEncoder();
-//		return new NoOpPasswordEncoder();
-//	}
+
+
+	//계층 권한
+	 @Bean
+	    public RoleHierarchy roleHierarchy(){
+	        RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
+	        hierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
+	        return hierarchy;
+	    }
 	 
+<<<<<<< HEAD
 	
 	//테스트용 유저 만들기(인메모리 방식)
 	@Override
@@ -70,4 +115,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	}
 	
+=======
+	 @Bean
+	    public SessionAuthenticationStrategy sessionAuthenticationStrategy() {
+	        return new ConcurrentSessionControlAuthenticationStrategy(sessionRegistry());
+	    }
+	 
+	 @Bean//현재 세션을 추적할 수 있도록 설정
+	    public SessionRegistry sessionRegistry() {
+	        return new SessionRegistryImpl();
+	    }
+	 
+	 @Bean // 세션 생성 및 소멸 이벤트를 처리하는 역할
+	    public HttpSessionEventPublisher httpSessionEventPublisher() {
+	        return new HttpSessionEventPublisher();
+	    }
+>>>>>>> origin/dev_ajs
 }
