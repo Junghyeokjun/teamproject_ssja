@@ -274,7 +274,7 @@ body {
 										<section class="production-selling-section">
 											<table class="production-selling-table">
 												<tbody>		
-												<tr>
+												<%-- <tr>
 														<th>상호명</th>
 														<td>${productdetail.getV_BIZNAME()}</td>
 													</tr>																	
@@ -293,7 +293,7 @@ body {
 													<tr>
 														<th>E-mail</th>
 														<td>${productdetail.getM_EMAIL()}</td>
-													</tr> 	 												
+													</tr> 	 												 --%>
 													<tr>
 														<th>사업자 등록번호</th>
 														<td>${productdetail.getV_LICENSE()}</td>
