@@ -23,6 +23,7 @@
 	
 </resultMap>
 <select id="getUserInfoInMyPage" parameterType="long" resultMap="userResultMap">
+	<![CDATA[
     select m.m_no , m.m_id , m.m_name , m.m_nickname , m.m_address1 , m.m_address2 ,
      m.m_zipcode , m.m_grade , m.m_email , m.m_phone , m.m_point ,m.m_deletedate,
       nvl(c.countcoupon, 0) as couponNum, nvl(w.countwish, 0) as widhNum, nvl(p.countpurchase, 0) as purNum
@@ -34,20 +35,25 @@
     left join (select m_no, count(*) as countpurchase from purchase group by m_no) p 
     on m.m_no = p.m_no
     where m.m_no = #{username}
+    ]]>
 </select>
 
 <update id="changeAddress" parameterType="AddressForm">
+<![CDATA[
 	update members set m_zipcode = #{zip_code}, m_address1 = #{address}, m_address2 = #{extra_address} where m_no = #{userId}
+	]]>
 </update>
 
 <update id="changePasswordProcess" parameterType="Map">
-
+<![CDATA[
 	update members set m_pw = #{newPassword} where m_id = #{username}
-	
+	]]>
 </update>
 
 <update id="deleteUserEnroll" parameterType="String" >
+<![CDATA[
 update members set M_deletedate = sysdate + INTERVAL'7' day  where m_id=#{userId} 
+]]>
 </update>
 
 
