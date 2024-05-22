@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="teamproject.ssja.mapper.BoardMapper">
+<!-- 댓글 -->
+	<!-- 댓글 입력. 최신 댓글은 언제나 게시글 바로 아래에 위치한다. -->
+	<insert id="insertReply" parameterType="ReplysDto">
+	    <![CDATA[
+        	insert into replys (r_no, b_no, m_no, r_writer, r_content, r_date, r_like, r_group, r_step, r_indent) 
+			values (r_seq.nextval, #{rbno} , #{rmno} , #{rwriter}, #{rcontent}, sysdate, #{rlike}, #{rgroup}, #{rstep}+1 , #{rindent}+1 )
+        ]]>
+	</insert>
+	
+	<!-- 기존에 작성되어 있는 댓글들의 bstep을 수정하는 작업 -->
+	<update id="updateShape" parameterType="ReplysDto">
+		<![CDATA[
+        	update replys set r_step = r_step + 1 where r_group = #{rgroup} and r_step > #{rstep}
+        ]]>
+	</update>
+
+	<update id="updateReply" parameterType="ReplysDto">
+		<![CDATA[
+        	update replys set r_title = #{rtitle}, r_content = #{rcontent} where r_no = #{rno}
+        ]]>
+	</update>
+	
+	<delete id="deleteReply" parameterType="ReplysDto">
+		 <![CDATA[
+        	delete from replys where r_no = #{rno}
+        ]]>
+	</delete>
+
+	<!-- 해당 게시글의 댓글들을 조회하기 -->
+	<select id="selectReplys" resultMap="ReplysDtoMap">
+		<![CDATA[
+        	SELECT * FROM replys where b_no = #{rbno} ORDER BY r_no desc, r_step asc
+        ]]>
+	</select>
+
+	<!-- 해당 댓글의 총 좋아요 수 가져오기 -->	
+	<select id="selectReplyLikes" parameterType="long" resultType="long">
+    	<![CDATA[
+        	select R_Like from replys where r_no=#{rno}
+        ]]>
+	</select>
+
+	<!-- 댓글 좋아요 관련 +(해당 글에 해당 멤버의 좋아요가 있는지 확인) -->
+	<select id="selectRIsLiked" parameterType="ReplyIsLikedDto" resultMap="ReplyIsLikedMap">
+    	<![CDATA[
+        	select * from REPLYLIKED where r_no=#{likerno} and m_no=#{likermno}
+        ]]>
+	</select>
+
+	<!-- 댓글 좋아요 관련 +(해당 글 좋아요 수 올리기) -->
+	<update id="updateRLikeUp" parameterType="long">
+		<![CDATA[
+        	update replys set r_like=r_like+1 where r_no=#{rno}
+        ]]>
+	</update>
+	
+	<!-- 댓글 좋아요 관련 +(해당 글에 해당 멤버의 좋아요 추가) -->
+	<insert id="insertRLiked" parameterType="ReplyIsLikedDto">
+	    <![CDATA[
+        	INSERT INTO REPLYLIKED (R_NO, M_NO, R_L_DATE)
+        	VALUES (#{likerno}, #{likermno}, sysdate) 
+        ]]>
+	</insert>
+
+	<!-- 댓글 좋아요 관련 -(해당 글에 해당 멤버의 좋아요 제거) -->
+	<delete id="deleteRLiked" parameterType="ReplyIsLikedDto">
+		<![CDATA[
+        	delete from REPLYLIKED where r_no = #{likerno} and m_no = #{likermno}
+        ]]>
+	</delete>
+	
+	<!-- 댓글 좋아요 관련 - -->
+	<update id="updateRLikeDown" parameterType="long">
+		<![CDATA[
+        	update replys set r_like=r_like-1 where r_no=#{rno}
+        ]]>
+	</update>
+	
+	<!-- 댓글 맵 -->
+	<resultMap type="teamproject.ssja.dto.ReplysDto" id="ReplysDtoMap">
+		<id property="rno" column="R_NO"/>
+		<result property="rbno" column="B_NO"/>
+		<result property="rmno" column="M_NO"/>
+		<result property="rwriter" column="R_WRITER"/>
+		<result property="rcontent" column="R_CONTENT"/>
+		<result property="rdate" column="R_DATE"/>
+		<result property="rlike" column="R_LIKE"/>
+		<result property="rgroup" column="R_GROUP"/>
+		<result property="rstep" column="R_STEP"/>
+		<result property="rindent" column="R_INDENT"/>
+	</resultMap>
+		
+	<!-- 해당 댓글 좋아요 여부 맵 -->	
+	<resultMap type="teamproject.ssja.dto.ReplyIsLikedDto" id="ReplyIsLikedMap">
+		<result property="likerno" column="r_no"/>
+		<result property="likermno" column="m_no"/>
+		<result property="rldate" column="r_l_date"/>
+	</resultMap>
+</mapper>

@@ -52,7 +52,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	    .usernameParameter("username").passwordParameter("password")
 	    .loginProcessingUrl("/loginCheck")
 	    .defaultSuccessUrl("/").permitAll()
-	    
 	    .and()
 	    .logout()
                 .logoutUrl("/logout")//logout 요청 처리 uRL
