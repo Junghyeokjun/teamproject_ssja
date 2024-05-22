@@ -100,39 +100,7 @@
 
   </style>
   <script>
-    var IMP = window.IMP
-    IMP.init('imp22716806')
-    function pay(f_amount){
-      //파라미터로 수정 필요
-      IMP.request_pay({
-          pg : 'html5_inicis',
-          pay_method : 'card', //카드결제
-          merchant_uid : 'merchant_' + new Date().getTime(),
-          name : '결제상품',
-          amount : f_amount, //판매가격
-          buyer_email : 'id', 
-          buyer_name : 'my',
-          buyer_tel : '01012345678 ',
-          buyer_addr : 'gyeonggi',
-          buyer_postcode : '11232'
-        }, function(rsp) {
-          if ( rsp.success ) {
-              var msg = '결제가 완료되었습니다.';
-              msg += '고유ID : ' + rsp.imp_uid;
-              msg += '상점 거래ID : ' + rsp.merchant_uid;
-              msg += '결제 금액 : ' + rsp.paid_amount;
-              msg += '카드 승인번호 : ' + rsp.apply_num;
-              window.alert(msg);
-              console.log(msg);
-              pay_info(rsp);
-              
-          } else {
-              var msg = '결제에 실패하였습니다.';
-              msg += '에러내용 : ' + rsp.error_msg;
-              window.alert(msg);
-          }
-      })
-    }
+   
   //pay함수 호출로 결제 실행
     $(document).ready(function(){
       let point=$("#point");
@@ -148,6 +116,40 @@
       let result_price=$("#result_price");
       let result_price_val=full_amount_val-discount_val;
       let buy_btn=$("#buy_btn");
+      let address=$("#address");
+
+      var IMP = window.IMP
+      IMP.init('imp22716806')
+      function pay(f_amount){
+        //파라미터로 수정 필요
+        IMP.request_pay({
+            pg : 'html5_inicis',
+            pay_method : 'card', //카드결제
+            merchant_uid : 'merchant_' + new Date().getTime(),
+            name : '결제상품',
+            amount : f_amount, //판매가격
+            buyer_email : 'id', 
+            buyer_name : 'my',
+            buyer_tel : '01012345678 ',
+            buyer_addr : address.val(),
+            buyer_postcode : '11232'
+          }, function(rsp) {
+            if ( rsp.success ) {
+                var msg = '결제가 완료되었습니다.';
+                msg += '고유ID : ' + rsp.imp_uid;
+                msg += '상점 거래ID : ' + rsp.merchant_uid;
+                msg += '결제 금액 : ' + rsp.paid_amount;
+                msg += '카드 승인번호 : ' + rsp.apply_num;
+                window.alert(msg);
+                console.log(msg);
+                
+            } else {
+                var msg = '결제에 실패하였습니다.';
+                msg += '에러내용 : ' + rsp.error_msg;
+                window.alert(msg);
+            }
+        })
+      }
 
       post_search_btn.on("click",function(){
           new daum.Postcode({
