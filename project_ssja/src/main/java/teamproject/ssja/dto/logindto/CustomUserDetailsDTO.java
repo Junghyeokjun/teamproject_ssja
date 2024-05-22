@@ -8,7 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Setter;
-import teamproject.ssja.dto.UserInfoDTO;
+import teamproject.ssja.dto.userinfo.UserInfoDTO;
 
 @Setter
 public class CustomUserDetailsDTO implements UserDetails{
