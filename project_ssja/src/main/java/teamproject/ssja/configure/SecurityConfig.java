@@ -45,9 +45,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	    http.authorizeRequests()
 	    .antMatchers("/","/test/login","/test/sign_up_before","/test/sign_up","/testrest/**").permitAll()
 	    .antMatchers("/logout","/user","/myPage","/myPage/**","/userInfo","/user","/user/**").hasAnyRole("USER")
-	    .anyRequest().authenticated();
+	    .anyRequest().permitAll();
 	    
-	    http.formLogin().loginPage("/test/login").usernameParameter("username").passwordParameter("password").defaultSuccessUrl("/").permitAll()
+	    http.formLogin().loginPage("/login")
+	    .usernameParameter("username").passwordParameter("password")
+	    .loginProcessingUrl("/loginCheck")
+	    .defaultSuccessUrl("/").permitAll()
 	    .and()
 	    .logout()
                 .logoutUrl("/logout")//logout 요청 처리 uRL

@@ -27,7 +27,7 @@ public class LikeController {
 
     @PostMapping("/toggle/{bno}")
     //public ResponseEntity<Long> toggleLike(@PathVariable Long bno, @RequestBody LikesVO likes) {
-	public ResponseEntity<LikesVO> toggleLike(@PathVariable Long bno, @RequestParam("bno") String no1, @RequestParam("mno") String no2) {
+	public ResponseEntity<LikesVO> toggleLike(@PathVariable Long bno, @RequestParam("no1") String no1, @RequestParam("no2") String no2) {
         try {
         	LikesVO currentLikes = boardService.modifyGetBoardLikes(no1, no2);            
             log.info("Current likes: " + currentLikes);
