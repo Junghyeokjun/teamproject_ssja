@@ -1,4 +1,4 @@
-package teamproject.ssja.service;
+package teamproject.ssja.service.signup;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,7 +7,7 @@ import teamproject.ssja.dto.MembersDto;
 import teamproject.ssja.mapper.TestMapper;
 
 @Service
-public class TestServiceImpl implements TestService {
+public class SignUpServiceImpl implements SignUpService {
 
 	@Autowired
 	TestMapper testMapper;
