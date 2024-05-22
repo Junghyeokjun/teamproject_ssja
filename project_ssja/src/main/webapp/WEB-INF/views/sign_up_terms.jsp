@@ -83,7 +83,6 @@
 <body>
     <div class="d-flex align-items-center justify-content-center flex-column">
         <!-- 홈화면링크 -->
-        <a href="${pageContext.request.contextPath}/"><img src="/images/utilities/big_logo.png" alt=""></a>
         <!-- 실제 적용시 method post로 변경, 링크 변경  -->
         <form action="${pageContext.request.contextPath}/test/sign_up" method="post">
             <table>

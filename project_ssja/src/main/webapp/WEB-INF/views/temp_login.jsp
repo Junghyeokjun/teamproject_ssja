@@ -106,24 +106,16 @@
     <div class="error">${errorMessage}</div>
 </c:if>
       <!-- 실제 사용시 post로 변경 링크추가 -->
-<<<<<<< HEAD
-      <form action="${loginUrl}" method="post">
-=======
       <form action="${pageContext.request.contextPath}/loginCheck" method="post">
->>>>>>> origin/dev_ajs
         <table class="text-center">
           <tr>
             <!-- 시큐리티 설정에 따라 name 변경 -->
             <td><input type="text" name="username" class="mb-3 form-control" id="id" size="26" placeholder="아이디"></td>
           </tr>
           <tr>
-<<<<<<< HEAD
             <td><input type="password" name="password" class="mb-3 form-control" id="pw" size="26"placeholder="비밀번호" aria-describedby="passwordHelpBlock"></td>
-=======
-            <td><input type="password" name="password" class="mb-3 form-control" id="pw" size="26"placeholder="비밀번호">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
             </td>
->>>>>>> origin/dev_ajs
           </tr>
           <tr>
             <td><input type="submit" class="w-100 btn btn-dark mb-1" value="로그인" ></td>

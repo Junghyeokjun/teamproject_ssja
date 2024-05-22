@@ -40,10 +40,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-	
+	http.csrf().disable();
 		/* 권한설정 */
 	    http.authorizeRequests()
-	    .antMatchers("/","/test/login","/test/sign_up_before","/test/sign_up","/testrest/**").permitAll()
 	    .antMatchers("/logout","/user","/myPage","/myPage/**","/userInfo","/user","/user/**").hasAnyRole("USER")
 	    .anyRequest().permitAll();
 	    
@@ -87,24 +86,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	        return hierarchy;
 	    }
 	 
-	
-	//테스트용 유저 만들기(인메모리 방식)
-	@Override
-	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-		 
-		auth.inMemoryAuthentication()
-		.withUser("memberajs").password("1111").roles("USER")
-		.and()
-		.withUser("memberss").password("1111").roles("USER")
-		.and()
-		.withUser("membersjy").password("1111").roles("USER")
-		.and()
-		.withUser("memberjhj").password("1111").roles("USER")
-		.and()
-		.withUser("admin").password("admin").roles("ADMIN");
-	
-	}
-	
 	 @Bean
 	    public SessionAuthenticationStrategy sessionAuthenticationStrategy() {
 	        return new ConcurrentSessionControlAuthenticationStrategy(sessionRegistry());

@@ -28,5 +28,10 @@ public class ProductDetailController {
 		model.addAttribute("productdetail",productDetailService.get(PRO_NO));		
 		return "/product_detail2";
 	}
+	@GetMapping("/123")
+	public String sad() {
+		
+		return "index";
+	}
 
 }

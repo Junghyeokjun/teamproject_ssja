@@ -76,11 +76,7 @@
       <div class="py-2 px-1" id="top-bar">
 
         <button type="toggle-button" class="top_btn" id="top_btn"></button>
-<<<<<<< HEAD
-        <a href="${pageContext.request.contextPath}/"><img id="logo_img" src="/images/utilities/logoSSJA.png"></a>
-=======
         <a id="logo_toHome" href=""><img id="logo_img" src="/images/utilities/logoSSJA.png"></a>
->>>>>>> origin/dev_ajs
         <form action="http://www.naver.com" id=searchForm method="get">
          
         </form>
@@ -111,7 +107,7 @@
           <div id="icon_div"><img id="icon_img" src="/images/utilities/icon_life.png"><div id="icn_txt">생활용품</div></div>
 
     </div>
-
+</div>
   </main>
 
   <footer>
