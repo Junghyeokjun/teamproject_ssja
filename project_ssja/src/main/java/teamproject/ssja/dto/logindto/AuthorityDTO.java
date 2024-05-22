@@ -3,7 +3,7 @@ package teamproject.ssja.dto.logindto;
 import lombok.Data;
 
 @Data
-public class AuthDTO {
+public class AuthorityDTO {
 	private String m_id;
 	private String auth;
 	
