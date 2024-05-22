@@ -16,6 +16,7 @@ public class ProjectSsjaApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ProjectSsjaApplication.class, args);
+		//test
 	}
 	
 	 @Bean
