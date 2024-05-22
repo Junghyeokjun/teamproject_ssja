@@ -9,15 +9,16 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class HomeController {
 	
-	@RequestMapping("/login")
-	public String login() {
-		
-		return "temp_login";
-	}
+	
 	@RequestMapping("/home")
 	public String goHomePage() {
 		
 		return "index";
+	}
+	
+	@RequestMapping("/logout")
+	public String logoutP() {
+		return "redirect:/";
 	}
 
 }

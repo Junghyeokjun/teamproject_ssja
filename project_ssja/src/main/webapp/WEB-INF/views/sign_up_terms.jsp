@@ -83,9 +83,8 @@
 <body>
     <div class="d-flex align-items-center justify-content-center flex-column">
         <!-- 홈화면링크 -->
-        <a href=""><img src="/images/utilities/big_logo.png" alt=""></a>
         <!-- 실제 적용시 method post로 변경, 링크 변경  -->
-        <form action="sing_up.html">
+        <form action="${pageContext.request.contextPath}/test/sign_up" method="post">
             <table>
                 <tr>
                     <td colspan="2">
@@ -106,7 +105,7 @@
             </table>
             <div class="text-center mt-3">
                 <input type="submit" class="btn btn-outline-dark me-3" id="agree" value="동의" disabled>
-                <a href=""><input type="button" class="btn" value="취소" style="background-color: #bec1c4; color: white;"></a> 
+                <a href="${pageContext.request.contextPath}/"><input type="button" class="btn" value="취소" style="background-color: #bec1c4; color: white;"></a> 
                 <!-- 홈화면링크 -->
             </div>
         </form>

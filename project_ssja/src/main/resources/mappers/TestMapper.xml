@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="teamproject.ssja.mapper.TestMapper">
+	
+	<select id="getMid" resultType="String">
+		<![CDATA[
+			select M_ID from members where M_ID=#{mid}
+		]]>
+	</select>
+	
+	<select id="getMName" resultType="String">
+		<![CDATA[
+			select M_NAME from members where M_NAME=#{mName}
+		]]>
+	</select>
+
+	
+	<insert id="insertMember">
+		<![CDATA[
+			INSERT INTO members(M_NO,M_ID,M_PW,M_NAME,M_ADDRESS1,M_ADDRESS2,M_ZIPCODE,M_BIRTH,M_EMAIL,M_PHONE,M_DATE) 
+			VALUES(M_SEQ.nextval,#{M_ID},#{M_PW},#{M_NAME},#{M_ADDRESS1},#{M_ADDRESS2},#{M_ZIPCODE},#{M_BIRTH},#{M_EMAIL},#{M_PHONE},SYSDATE)
+		]]>
+	</insert>
+	
+	<insert id="insertUserAuth">
+		<![CDATA[
+			INSERT INTO authority(M_ID) VALUES(#{mid})
+		]]>
+	</insert>
+	
+</mapper>

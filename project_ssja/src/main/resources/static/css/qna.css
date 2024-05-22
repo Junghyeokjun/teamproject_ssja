@@ -1,0 +1,42 @@
+a{
+	text-decoration: none;
+	color: black;
+}
+
+#qna_title:hover {
+	color : #d3bf0b;
+}
+
+.ch-col.pagination{
+	border : 0px;
+	font-color : black;
+}
+
+.page-link {
+	color: #000; 
+  	background-color: #fff;
+}
+
+.page-link:hover{
+	background-color : lightgray;
+	border-color: lightgray;
+	font-weight : bold;
+	color : white;
+}
+
+.page-link.ch-col{
+	background-color : tomato;
+	border-color: tomato;
+}
+
+.ch-col.pagination > .active > a, 
+.ch-col.pagination > .active > span, 
+.ch-col.pagination > .active > a:hover, 
+.ch-col.pagination > .active > span:hover, 
+.ch-col.pagination > .active > a:focus, 
+.ch-col.pagination > .active > span:focus {
+	color : white;
+	font-weight : bold;
+  	background-color : gray;
+  	border-color: gray;
+}

@@ -2,6 +2,15 @@ $(document).ready(function () {
   let $home_user_bar = $("#home_user_bar").addClass("nav ");
   let $sub_bar = $("#sub_bar");
   let $total_bar = $("#total_bar");
+  
+  //csrf추가
+  let token = $("meta[name='_csrf']").attr("content");
+  let header = $("meta[name='_csrf_header']").attr("content");
+  console.log(token);
+  console.log(header);
+  $(document).ajaxSend(function(e, xhr, options) {
+      xhr.setRequestHeader(header, token);
+  });
 
 
   //상단 카테고리 바 분류
@@ -59,9 +68,9 @@ $(document).ready(function () {
   let $searchImg=$("<img>").attr("src", "/images/utilities/search-32.png").attr("id", "searchImg").appendTo($searchBtn);//검색창 돋보기 이미지 경로
   $searchBtn.appendTo($searchForm);
  
-
+$("#logo_toHome").attr("href", "/home");//로고 링크
   let $cartLink = $("#cart_link").attr("href", " http://www.naver.com");//카트 이미지 버튼 링크
-  let $userLink = $("#user_link").attr("href", " http://www.google.com");//로그인 이미지 버튼 링크
+  let $userLink = $("#user_link").attr("href", "/myPage");//로그인 이미지 버튼 링크
   let $cartImgPath = $("#cart_img").attr("src", "/images/utilities/cartShop.png");//카트 이미지 경로
   let $loginImgPath = $("#login_img").attr("src", "/images/utilities/login.png");//로그인 이미지 경로
 
@@ -186,6 +195,7 @@ $(document).ready(function () {
     let $subLi3 = $("<li>").addClass("sub-px-3").appendTo($subUl);
     $link1_3.appendTo($subLi3);
   });
+  
   $li2.mouseenter(function () {
     $sub_bar.css("display", "block");
     $("#sub_bar").children().remove();
@@ -307,7 +317,5 @@ $(document).ready(function () {
   $side_bar.append($side_container1,$side_containerEx, $side_container2,$side_container3,$side_container4);
 
   let browserHeight = window.innerHeight;
-console.log("현재 브라우저의 높이는 " + browserHeight + "픽셀입니다.");
 let currentPosition = window.scrollY;
-console.log("현재 위치의 높이:", currentPosition, "픽셀");
 });
