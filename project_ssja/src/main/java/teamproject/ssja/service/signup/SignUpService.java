@@ -1,8 +1,8 @@
-package teamproject.ssja.service;
+package teamproject.ssja.service.signup;
 
 import teamproject.ssja.dto.MembersDto;
 
-public interface TestService {
+public interface SignUpService {
 	boolean idCheck(String id);
 	boolean nameCheck(String name);
 	boolean signUp(MembersDto member);

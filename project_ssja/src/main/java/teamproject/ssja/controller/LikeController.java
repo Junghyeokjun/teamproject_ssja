@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.LikesVO;
-import teamproject.ssja.service.BoardService;
+import teamproject.ssja.service.Board.BoardService;
 
 @Slf4j
 @RestController

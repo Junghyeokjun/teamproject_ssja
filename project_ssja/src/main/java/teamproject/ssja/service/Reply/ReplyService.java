@@ -1,4 +1,4 @@
-package teamproject.ssja.service;
+package teamproject.ssja.service.Reply;
 
 import java.util.List;
 
