@@ -44,7 +44,9 @@
       font-family: 'fonts', NanumSquare;
       background-color: #f7f0e8;
     }
-
+    input[type=password]{
+      font-family: sans-serif;
+    }
     #logo_img {
       width: 3.5em;
       height: 3em;
@@ -108,7 +110,7 @@
             <td><input type="text" name="username" class="mb-3 form-control" id="id" size="26" placeholder="아이디"></td>
           </tr>
           <tr>
-            <td><input type="password" name="password" class="mb-3 form-control" id="pw" size="26"placeholder="비밀번호"></td>
+            <td><input type="password" name="password" class="mb-3 form-control" id="pw" size="26"placeholder="비밀번호" aria-describedby="passwordHelpBlock"></td>
           </tr>
           <tr>
             <td><input type="submit" class="w-100 btn btn-dark mb-1" value="로그인" ></td>
