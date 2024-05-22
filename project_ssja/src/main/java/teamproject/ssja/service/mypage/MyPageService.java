@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-import teamproject.ssja.dto.AddressForm;
-import teamproject.ssja.dto.UserInfoDTO;
+import teamproject.ssja.dto.userinfo.AddressForm;
+import teamproject.ssja.dto.userinfo.UserInfoDTO;
 
 @Service
 public interface MyPageService {

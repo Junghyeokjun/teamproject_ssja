@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
-import teamproject.ssja.dto.AddressForm;
 import teamproject.ssja.dto.ChangePasswordForm;
-import teamproject.ssja.dto.UserInfoDTO;
 import teamproject.ssja.dto.UserRoleAndAuthDTO;
 import teamproject.ssja.dto.logindto.CustomUserDetailsDTO;
+import teamproject.ssja.dto.userinfo.AddressForm;
+import teamproject.ssja.dto.userinfo.UserInfoDTO;
 import teamproject.ssja.service.mypage.MyPageService;
 import teamproject.ssja.service.user.CustomUserDetailsService;
 @Slf4j
@@ -90,8 +90,6 @@ public class UserInfoAsyncController {
 	            return ResponseEntity.ok(EnrollDeleteDate);
 	      
 	 }
-	 
-	 
 	 
 	 
 	 //jwt토큰 때문에 일단 뒤로

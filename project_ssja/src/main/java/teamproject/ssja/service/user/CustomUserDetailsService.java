@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import teamproject.ssja.dto.ChangePasswordForm;
-import teamproject.ssja.dto.UserInfoDTO;
 import teamproject.ssja.dto.logindto.CustomUserDetailsDTO;
+import teamproject.ssja.dto.userinfo.UserInfoDTO;
 import teamproject.ssja.mapper.LoginMapper;
 import teamproject.ssja.mapper.MyPageMapper;
 

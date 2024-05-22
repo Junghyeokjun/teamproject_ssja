@@ -12,7 +12,7 @@ public class MyPageController {
 	
 	@GetMapping("")
 	public String myPageP() {
-		return "MyPage";
+		return "/myPage/MyPage";
 	}
 	
 	@GetMapping("/password/check")
@@ -22,7 +22,7 @@ public class MyPageController {
 	
 	@RequestMapping("/password/change")
 	public String pwChangeP() {
-		return "changePassWord";
+		return "/myPage/changePassWord";
 	}
 
 }

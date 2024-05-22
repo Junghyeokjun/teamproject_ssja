@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
-import teamproject.ssja.dto.AddressForm;
-import teamproject.ssja.dto.UserInfoDTO;
+import teamproject.ssja.dto.userinfo.AddressForm;
+import teamproject.ssja.dto.userinfo.UserInfoDTO;
 import teamproject.ssja.mapper.MyPageMapper;
 
 @Slf4j

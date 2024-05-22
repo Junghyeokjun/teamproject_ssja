@@ -1,4 +1,4 @@
-package teamproject.ssja.dto;
+package teamproject.ssja.dto.userinfo;
 
 import java.sql.Date;
 
