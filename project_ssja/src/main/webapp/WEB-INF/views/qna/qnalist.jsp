@@ -26,12 +26,8 @@
 <script src="/js/footer.js">
 
   </script>
-<script src="/js/datetuning.js">
-
-  </script>
 <link href="/css/footerstyle.css?after" rel="stylesheet">
 <link href="/css/barstyle.css?after" rel="stylesheet">
-<link href="/css/qna.css?after" rel="stylesheet">
 
 <link rel="stylesheet"
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
@@ -109,35 +105,32 @@ body {
 	<main style="margin: 0 auto;">
 		<a href="${pageContext.request.contextPath}/qna/write_view">글작성</a>
 		<div id="main_container" style="margin: 0 auto;">
-			<table class="table table-hover" style="text-align: center;">
-				<thead class="table-dark">
+			<table width="700" cellpadding="0" cellspacing="0" border="1"
+				style="text-align: center;">
+				<tr>
+					<td>번호</td>
+					<td>제목</td>
+					<td>이름</td>
+					<td>날짜</td>
+				</tr>
+				<c:forEach var="qna" items="${qnas}">
 					<tr>
-						<td>번호</td>
-						<td>제목</td>
-						<td>이름</td>
-						<td>날짜</td>
+						<td>${qna.bno}</td>
+						<td>
+            				<a href="${pageContext.request.contextPath}/qna/content_view?bno=${qna.bno}" >${qna.btitle}</a>
+						</td>
+						<td>${qna.bwriter}</td>
+						<td>${qna.bdate}</td>
+						<%-- <td><button type="button" onclick="location.href='/dept/remove?deptno=${dept.deptno}';">삭제</button></td> --%>
 					</tr>
-				</thead>
-				<tbody>
-					<c:forEach var="qna" items="${qnas}">
-						<tr>
-							<td>${qna.bno}</td>
-							<td>
-	            				<a id="qna_title" class="" href="${pageContext.request.contextPath}/qna/content_view?bno=${qna.bno}" >${qna.btitle}</a>
-							</td>
-							<td>${qna.bwriter}</td>
-							<td class="date_str">${qna.bdate}</td>
-							<%-- <td><button type="button" onclick="location.href='/dept/remove?deptno=${dept.deptno}';">삭제</button></td> --%>
-						</tr>
-					</c:forEach>
-				</tbody>
+				</c:forEach>
 			</table>
 			<div>
 				<nav aria-label="Page navigation example">
-					<ul class="pagination ch-col justify-content-center">
+					<ul class="pagination justify-content-center">
 						<c:if test="${pageMaker.prev}">
-							<li class="page-item"><a class="page-link ch-col"
-								href="${pageContext.request.contextPath}/qna/list${pageMaker.makeQuery(pageMaker.startPage-1)}"><</a></li>
+							<li class="page-item"><a class="page-link"
+								href="${pageContext.request.contextPath}/qna/list${pageMaker.makeQuery(pageMaker.startPage-1)}">Previous</a></li>
 						</c:if>
 						<c:forEach var="idx" begin="${pageMaker.startPage}"
 							end="${pageMaker.endPage}">

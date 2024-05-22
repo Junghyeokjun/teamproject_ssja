@@ -1,0 +1,133 @@
+body {
+  position: relative;
+ display: flex;
+ flex-direction: column;
+}
+
+footer p {
+  padding: 0;
+  font-size: 0.8em;
+  margin: 5px;
+}
+
+#biz_name,
+#customer_QnA {
+  font-size: 1em;
+  font-weight: bold;
+}
+header{
+  position: relative;
+}
+
+
+footer {
+  position: relative;
+  width: 100%;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background-color: #dddddd;
+  height: auto;
+  border-top:1px solid #cccccc;
+  
+}
+
+footer > div {
+  width: 22%;
+  height: 100%;
+  min-width: 200px;
+}
+
+#first_footer{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#second_footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  border-left: 1px solid #cccccc;
+}
+
+footer a {
+  text-decoration: none;
+  font-size: 0.8em;
+  margin: 5px;
+  color: black;
+}
+
+#s_f_d1,
+#s_f_d2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+#third_footer {
+  border-left: 1px solid #cccccc;
+ 
+  padding:10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: 1em;
+}
+@media screen and (max-width: 640px) {
+  footer {
+    display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  flex-grow: 1;
+  padding: 0 ;
+}
+#first_footer,#third_footer, #second_footer{
+  border:0;
+  flex-grow: 1;
+  margin: 0;
+  padding: 0;
+
+  width:100%;
+
+}
+#third_footer, #second_footer{
+
+  border-top: 1px solid #cccccc;
+}
+main{
+  overflow: hidden;
+}
+
+}
+@media screen and (max-width: 1120px){
+  #first_footer,#third_footer, #second_footer{
+    border:0;
+    flex-grow: 1;
+    margin: 0;
+    padding: 0;
+  
+    width:100%;
+  
+  }
+}
+@media screen and (max-width: 1480px){
+  #first_footer,#third_footer, #second_footer{
+    width:100%;
+  
+  }
+}
+
+#footer_d3_btn{
+	width:80%;
+	height:2em;
+	padding:0 auto;
+	margin:5px;
+	fon-weight:bold;
+}

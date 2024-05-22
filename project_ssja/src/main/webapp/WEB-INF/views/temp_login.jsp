@@ -14,8 +14,8 @@
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
-
+<meta name="_csrf" content="${_csrf.token}"/>
+<meta name="_csrf_header" content="${_csrf.headerName}"/>
 
  
   <script src="/js/footer.js">
@@ -44,7 +44,9 @@
       font-family: 'fonts', NanumSquare;
       background-color: #f7f0e8;
     }
-
+    input[type=password]{
+      font-family: sans-serif;
+    }
     #logo_img {
       width: 3.5em;
       height: 3em;
@@ -80,7 +82,7 @@
       <div class="py-2 px-1" id="top-bar">
 
         <button type="toggle-button" class="top_btn" id="top_btn"></button>
-        <a href=""><img id="logo_img" src="/images/utilities/logo.png"></a>
+        <a href="${pageContext.request.contextPath}/"><img id="logo_img" src="/images/utilities/logoSSJA.png"></a>
         <form action="http://www.naver.com" id=searchForm method="get">
         
         </form>
@@ -98,17 +100,22 @@
   <div id="side_bar"></div>
   <main style="background-color: #f7f0e8;">
     <!--로그인추가부 -->
-    <div id="main_container" class="d-flex flex-column justify-content-center align-items-center " style="height:800px;">
+    <div id="main_container" class="d-flex flex-column justify-content-center align-items-center " >
       <img class="mb-4" src="/images/utilities/big_logo.png" alt="">
+      <c:if test="${not empty errorMessage}">
+    <div class="error">${errorMessage}</div>
+</c:if>
       <!-- 실제 사용시 post로 변경 링크추가 -->
-      <form action="">
+      <form action="${pageContext.request.contextPath}/loginCheck" method="post">
         <table class="text-center">
           <tr>
             <!-- 시큐리티 설정에 따라 name 변경 -->
             <td><input type="text" name="username" class="mb-3 form-control" id="id" size="26" placeholder="아이디"></td>
           </tr>
           <tr>
-            <td><input type="password" name="password" class="mb-3 form-control" id="pw" size="26"placeholder="비밀번호"></td>
+            <td><input type="password" name="password" class="mb-3 form-control" id="pw" size="26"placeholder="비밀번호" aria-describedby="passwordHelpBlock"></td>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+            </td>
           </tr>
           <tr>
             <td><input type="submit" class="w-100 btn btn-dark mb-1" value="로그인" ></td>
@@ -117,10 +124,11 @@
             <td id="recover">
               <a href="">아이디찾기</a>|
               <a href="">비밀번호찾기</a>|
-              <a href="sing_up_terms.html">회원가입</a>
+              <a href="${pageContext.request.contextPath}/test/sign_up_before">회원가입</a>
             </td>
           </tr>
         </table>
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}" /> 
 
         <div class="border-bottom text-center my-3">
           <p class="mb-1" style="font-size: 1.3rem;">다른 방법으로 로그인</p>

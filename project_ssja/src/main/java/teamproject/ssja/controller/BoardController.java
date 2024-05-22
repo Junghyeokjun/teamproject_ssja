@@ -14,8 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.page.Criteria;
 import teamproject.ssja.page.PageVO;
-import teamproject.ssja.service.BoardService;
-import teamproject.ssja.service.ReplyService;
+import teamproject.ssja.service.Board.BoardService;
+import teamproject.ssja.service.Reply.ReplyService;
 
 @Slf4j
 @Controller
