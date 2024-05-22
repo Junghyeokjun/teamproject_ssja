@@ -70,11 +70,7 @@ $(document).ready(function () {
  
 $("#logo_toHome").attr("href", "/home");//로고 링크
   let $cartLink = $("#cart_link").attr("href", " http://www.naver.com");//카트 이미지 버튼 링크
-<<<<<<< HEAD
-  let $userLink = $("#user_link").attr("href", " /test/login");//로그인 이미지 버튼 링크
-=======
   let $userLink = $("#user_link").attr("href", "/myPage");//로그인 이미지 버튼 링크
->>>>>>> origin/dev_ajs
   let $cartImgPath = $("#cart_img").attr("src", "/images/utilities/cartShop.png");//카트 이미지 경로
   let $loginImgPath = $("#login_img").attr("src", "/images/utilities/login.png");//로그인 이미지 경로
 
