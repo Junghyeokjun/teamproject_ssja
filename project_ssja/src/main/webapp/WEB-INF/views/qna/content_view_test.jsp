@@ -110,7 +110,7 @@ body {
 			<form action="${pageContext.request.contextPath}/qna/modify_view"
 				method="post">
 				<input type="hidden" name="bno" value="${content_view.bno}">
-				<table border="1" style="width: 500; background-color: gray;">
+				<table class="table" border="1" style="width: 500; background-color: gray;">
 					<tr>
 						<td style="background-color: pink">번호</td>
 						<td style="background-color: white">${content_view.bno}</td>
@@ -190,7 +190,7 @@ body {
 	            //contentType: 'application/json', // JSON 형식으로 요청을 보낼 것임을 명시
 	            //data: JSON.stringify({ no : bno, liked : liked }), // JSON 형식으로 데이터 전달
 	            data: {
-	            	'no1' : bno, 'no2' : likebmno	            	
+	            	'bno' : bno, 'mno' : likebmno	            	
 	            },
 	            success: function(response) {
 	            	console.log("successed");
