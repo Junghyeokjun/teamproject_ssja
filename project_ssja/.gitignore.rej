@@ -1,9 +1,9 @@
 diff a/project_ssja/.gitignore b/project_ssja/.gitignore	(rejected hunks)
-@@ -12,7 +12,6 @@
+@@ -12,6 +12,7 @@
  .settings
  .springBeans
  .sts4-cache
--application.properties
- # application.properties
++# application.properties
  
  ### IntelliJ IDEA ###
+ .idea
