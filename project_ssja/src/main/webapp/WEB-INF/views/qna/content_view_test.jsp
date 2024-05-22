@@ -25,10 +25,15 @@
 	
 </script>
 <script src="/js/footer.js">
+
+
 	
 </script>
+
+
 <link href="/css/footerstyle.css?after" rel="stylesheet">
 <link href="/css/barstyle.css?after" rel="stylesheet">
+<link href="/css/qna.css?after" rel="stylesheet">
 
 <link rel="stylesheet"
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
@@ -78,6 +83,32 @@ body {
 .table{
 	border : 0;
 }
+
+#qna_textarea{
+	width : 100%;
+	height: 30em;
+    border: none;
+    resize: none;
+}
+
+.main_whitespace{
+	width : 100%;
+	height : 5em;
+}
+</style>
+
+<style>
+.table{
+	border : 0;
+}
+
+#qna_textarea{
+	width : 100%;
+	height: 30em;
+    border: none;
+    resize: none;
+}
+
 </style>
 </head>
 
@@ -109,19 +140,18 @@ body {
 	</div>
 	<main>
 		<div id="main_container">
-			<div>
-			
+			<div class="main_whitespace">
+				
 			</div>
 			<form action="${pageContext.request.contextPath}/qna/modify_view" method="post">
 				<div class="input-group">
 					<input type="hidden" class="form-control" name="bno" value="${content_view.bno}">
 				</div>
-				<table class="table"  style="width: 500; background-color: gray;">
+				<table class="table" >
 					<tr>
 						<td colspan="2">
-							<div class="input-group">
-								<span class="input-group-text">제목</span>
-	    						<input type="text" class="form-control" name="btitle" value="${content_view.btitle}" readonly="readonly">
+							<div class="input-group no-border">
+	    						<input type="text" class="form-control text-center" name="btitle" value="${content_view.btitle}" readonly="readonly">
 	    					</div>
 						</td>
 					</tr>
@@ -130,7 +160,7 @@ body {
 						</td>
 						<td >
 							<div class="d-flex justify-content-end">
-								<div class="input-group w-25 ">
+								<div class="input-group no-border w-25">
 									<span class="input-group-text">조회수</span>
 		    						<input type="text" class="form-control" name="bhit" value="${content_view.bhit}" readonly="readonly">
 		    					</div>
@@ -142,7 +172,7 @@ body {
 						</td>
 						<td>
 							<div class="d-flex justify-content-end">
-							<div class="input-group w-25">
+							<div class="input-group no-border w-25">
 								<span class="input-group-text">작성자</span>
 	    						<input type="text" class="form-control" name="bwriter" value="${content_view.bwriter}" readonly="readonly">
 	    					</div>
@@ -152,7 +182,7 @@ body {
 					<tr>
 						<td colspan="2">
 							<div class="input-group">
-								<textarea name="bcontent" class="form-control" rows="10" readonly="readonly">${content_view.bcontent}</textarea>	    				
+								<textarea id="qna_textarea" name="bcontent" class="form-control" rows="10" readonly="readonly">${content_view.bcontent}</textarea>	    				
 	    					</div>
 						</td>		
 					</tr>
@@ -162,6 +192,9 @@ body {
 								<!-- data-likebmno 값 변경 필요 -->
 								<button id="like-button" data-likebno="${content_view.bno}" data-likebmno="${content_view.bmno}">좋아요</button>
 							</div>
+					</tr>
+					<tr>
+						<td  colspan="2">
 							<div class="text-center">
 								<p>
 									좋아요 수 : <span id="like-count">${content_view.blike}</span>
@@ -170,9 +203,9 @@ body {
 						</td>
 					</tr>
 					<tr>
-						<td  colspan="2"><input
-							type="submit" value="수정"> &nbsp;&nbsp;<a
-							href="${pageContext.request.contextPath}/qna/list">되돌아가기</a> <%-- &nbsp;&nbsp;<a href="${pageContext.request.contextPath}/qna/delete?bno=${content_view.bno}">삭제</a> --%>
+						<td  colspan="2">
+							<input type="submit" value="수정"> &nbsp;&nbsp;<button><a
+							href="${pageContext.request.contextPath}/qna/list">되돌아가기</a></button> <%-- &nbsp;&nbsp;<a href="${pageContext.request.contextPath}/qna/delete?bno=${content_view.bno}">삭제</a> --%>
 							<%-- <sec:authorize access="hasRole('ROLE_ADMIN')">
 								&nbsp;&nbsp;<a
 									href="${pageContext.request.contextPath}/qna/${content_view.bno}">답변</a>
@@ -183,9 +216,7 @@ body {
 					</tr>
 				</table>
 			</form>
-			</div>
 		</div>
-
 	</main>
 
 	<footer>
