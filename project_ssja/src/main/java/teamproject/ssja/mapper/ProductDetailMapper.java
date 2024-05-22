@@ -1,15 +1,12 @@
 package teamproject.ssja.mapper;
 
-import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
-
-import teamproject.ssja.dto.ProductDto;
+import teamproject.ssja.dto.ProductDetailDto;
 
 @Mapper
-public interface ProductMapper {
+public interface ProductDetailMapper {
 	
-	List<ProductDto> read(long PRO_NO);
-
+	ProductDetailDto read(long PRO_NO);
 	
 }
 

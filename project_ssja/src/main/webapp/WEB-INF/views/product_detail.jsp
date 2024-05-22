@@ -89,7 +89,7 @@ body {
 	</div>
 	<main>
 		<div id="main_container">
-			<%-- <div class="row goods">
+			 <div class="row goods">
 				<!-- row 클래스를 추가 -->
 				<div class="goodsImg col-12 col-md-6 col-lg-7">
 					<div id="carouselExampleIndicators" class="carousel slide"
@@ -105,15 +105,15 @@ body {
 						</div>
 						<div class="carousel-inner">
 							<div class="carousel-item active">
-								<img src="/images/product/${product_detail.PRO_BANNERIMG}"
+								<img src="/images/product/${productdetail.PRO_BANNERIMG}"
 									class="d-block w-100" alt="...">
 							</div>
 							<div class="carousel-item">
-								<img src="/images/product/${product_detail.PRO_BANNERIMG}"
+								<img src="/images/product/${productdetail.PRO_BANNERIMG}"
 									class="d-block w-100" alt="...">
 							</div>
 							<div class="carousel-item">
-								<img src="/images/product/${product_detail.PRO_BANNERIMG}"
+								<img src="/images/product/${productdetail.PRO_BANNERIMG}"
 									class="d-block w-100" alt="...">
 							</div>
 						</div>
@@ -131,16 +131,16 @@ body {
 				</div>
 				<div class="goodsInfo col-12 col-md-6 col-lg-5">
 					<p class="cateName">
-						<span>상품이름 ${product_detail.PRO_NAME}</span>
+						<span>상품이름 ${productdetail.PRO_NAME}</span>
 					</p>
 					<p class="gdsPrice">
 						<span>가격 <fmt:formatNumber pattern="###,###,###"
-								value="${product_detail.PRO_PRICE}" /> 원
+								value="${productdetail.PRO_PRICE}" /> 원
 						</span>
 					</p>
 					<p class="cartStock">
 						<span>수량</span> <input type="number" min="1"
-							max="${product_detail.PRO_QUANTITY}" value="1" />
+							max="${productdetail.PRO_QUANTITY}" value="1" />
 					</p>
 					<hr>
 					<div class="production-selling-header__info-wrap">
@@ -227,7 +227,7 @@ body {
 						<button type="button">바로구매</button>
 					</p>
 				</div>
-			</div> --%>
+			</div> 
 
 			<section class="bg-light border-top py-4">
 				<div class="container">
@@ -274,22 +274,30 @@ body {
 										<section class="production-selling-section">
 											<table class="production-selling-table">
 												<tbody>		
-													<tr>
-														<th>사업자번호</th>
-														<td>${vendor.V_NO}</td>
-													</tr>							
+												<tr>
+														<th>상호명</th>
+														<td>${productdetail.getV_BIZNAME()}</td>
+													</tr>																	
 													<tr>
 														<th>사업자이름</th>
-														<td>${vendor.V_BIZNAME}</td>
-													</tr>													
+														<td>${productdetail.getM_NAME()}</td>
+													</tr>	
+													<tr>
+														<th>사업장소재지</th>
+														<td></td>
+													</tr>
+													<tr>
+														<th>사업장전화번호</th>
+														<td>${productdetail.getM_PHONE()}</td>
+													</tr> 	
+													<tr>
+														<th>E-mail</th>
+														<td>${productdetail.getM_EMAIL()}</td>
+													</tr> 	 												
 													<tr>
 														<th>사업자 등록번호</th>
-														<td>${vendor.V_LICENSE}</td>
-													</tr>
-													<tr>
-														<th>사업자 팩스번호</th>
-														<td>${vendor.V_FAX}</td>
-													</tr>
+														<td>${productdetail.getV_LICENSE()}</td>
+													</tr> 
 												</tbody>
 											</table>
 										</section>
@@ -319,12 +327,6 @@ body {
 					</div>
 				</div>
 			</section>
-
-
-
-
-
-
 		</div>
 	</main>
 
