@@ -40,12 +40,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-	
+	http.csrf().disable();
 		/* 권한설정 */
 	    http.authorizeRequests()
-	    //.antMatchers("/home/**","/login","/loginCheck","/checkUser","/userInfo").permitAll()
 	    .antMatchers("/logout","/user","/myPage","/myPage/**","/userInfo","/user","/user/**").hasAnyRole("USER")
-	    //.antMatchers("/admin").hasAnyRole("ADMIN")
 	    .anyRequest().permitAll();
 	    
 	    http.formLogin().loginPage("/login")

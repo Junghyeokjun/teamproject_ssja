@@ -107,7 +107,7 @@
           <div id="icon_div"><img id="icon_img" src="/images/utilities/icon_life.png"><div id="icn_txt">생활용품</div></div>
 
     </div>
-
+</div>
   </main>
 
   <footer>

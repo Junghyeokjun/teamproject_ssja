@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.BoardDto;
@@ -96,6 +97,7 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.selectListWithPaging(criteria);
 	}
 
+	@Transactional
 	@Override
 	public LikesVO modifyGetBoardLikes(String bno, String mno) {
 		long bnoLong = Long.valueOf(bno);

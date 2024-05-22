@@ -9,8 +9,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="_csrf" content="${_csrf.token}"/>
-<meta name="_csrf_header" content="${_csrf.headerName}"/>
+<meta name="_csrf" content="${_csrf.token}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
 <title>SSJA</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -31,9 +31,6 @@
 <script src="/js/footer.js">
 	
 </script>
-<script src="/js/datetuning.js">
-
-  </script>
 <link href="/css/footerstyle.css?after" rel="stylesheet">
 <link href="/css/barstyle.css?after" rel="stylesheet">
 
@@ -81,6 +78,10 @@ body {
 #icn_txt {
 	text-align: center;
 }
+
+.table {
+	border: 0;
+}
 </style>
 </head>
 
@@ -117,7 +118,8 @@ body {
 			<form action="${pageContext.request.contextPath}/qna/modify_view"
 				method="post">
 				<input type="hidden" name="bno" value="${content_view.bno}">
-				<table border="1" style="width: 500; background-color: gray;">
+				<table class="table" border="1"
+					style="width: 500; background-color: gray;">
 					<tr>
 						<td style="background-color: pink">번호</td>
 						<td style="background-color: white">${content_view.bno}</td>
@@ -148,7 +150,8 @@ body {
 					<tr>
 						<td style="background-color: white" colspan="2">
 							<!-- data-likebmno 값 변경 필요 -->
-							<button id="like-button" data-likebno="${content_view.bno}" data-likebmno="${content_view.bmno}">좋아요</button>
+							<button id="like-button" data-likebno="${content_view.bno}"
+								data-likebmno="${content_view.bmno}">좋아요</button>
 							<p>
 								좋아요 수: <span id="like-count">${content_view.blike}</span>
 							</p>
@@ -158,13 +161,12 @@ body {
 						<td style="background-color: pink" colspan="2"><input
 							type="submit" value="수정"> &nbsp;&nbsp;<a
 							href="${pageContext.request.contextPath}/qna/list">되돌아가기</a> <%-- &nbsp;&nbsp;<a href="${pageContext.request.contextPath}/qna/delete?bno=${content_view.bno}">삭제</a> --%>
-							<sec:authorize access="hasRole('ROLE_ADMIN')">
+							<%-- <sec:authorize access="hasRole('ROLE_ADMIN')">
 								&nbsp;&nbsp;<a
 									href="${pageContext.request.contextPath}/qna/${content_view.bno}">답변</a>
 							</sec:authorize> <sec:authorize access="!hasRole('ROLE_ADMIN')">
 
-							</sec:authorize>
-						</td>
+							</sec:authorize> --%></td>
 					</tr>
 				</table>
 			</form>
@@ -180,41 +182,49 @@ body {
 
 </body>
 <script>
-	$(document).ready(function() {
-	    $('#like-button').click(function() {
-	    	// 기본 제출 동작 방지
-	    	event.preventDefault();
-	    	
-	        let bno = $(this).data('likebno');
-	        console.log(bno);
-	        let likebmno = $(this).data('likebmno'); // 현재 상태 확인
-			console.log(likebmno);
- 	        // console.log(JSON.stringify({ no : bno, liked : liked })); 
- 	        // console.log(liked);
-	        $.ajax({
-	        	beforeSend: function(xhr){
-                    xhr.setRequestHeader(header, token);
-                },
-                url: '/api/likes/toggle/' + bno,
-	            type: 'POST',
-	            //contentType: 'application/json', // JSON 형식으로 요청을 보낼 것임을 명시
-	            //data: JSON.stringify({ no : bno, liked : liked }), // JSON 형식으로 데이터 전달
-	            data: {
-	            	'no1' : bno, 'no2' : likebmno            	
-	            },
-	            success: function(response) {
-	            	console.log("successed");
-	            	console.log(response);
-	                $('#like-count').text(response);
-	                $('#like-button').text(!liked ? '좋아요 취소' : '좋아요');
-	            },
-	            error: function(xhr, status, error) {
-	                console.log("Error: " + error);
-	                console.log("Response: " + xhr.responseText);
-	                alert('좋아요를 변경하는 중 오류가 발생했습니다.');
-	            }
-	        });
-	    });
-	});
+	$(document).ready(
+			function() {
+				$('#like-button').click(
+						function() {
+							// 기본 제출 동작 방지
+							event.preventDefault();
+
+							let bno = $(this).data('likebno');
+							console.log(bno);
+							let likebmno = $(this).data('likebmno'); // 현재 상태 확인
+							console.log(likebmno);
+							// console.log(JSON.stringify({ no : bno, liked : liked })); 
+							// console.log(liked); : bno, liked : liked })); 
+							// console.log(liked);
+							$.ajax({
+								beforeSend : function(xhr) {
+									xhr.setRequestHeader(header, token);
+								},
+								url : '/api/likes/toggle/' + bno,
+								type : 'POST',
+								//contentType: 'application/json', // JSON 형식으로 요청을 보낼 것임을 명시
+								//data: JSON.stringify({ no : bno, liked : liked }), // JSON 형식으로 데이터 전달
+								data : {
+									'bno' : bno,
+									'mno' : likebmno
+								},
+								success : function(response) {
+									console.log("successed");
+									console.log(response);
+									$('#like-count').text(response.afterLikes);
+									$('#like-button').text(
+											response.isLiked == 1 ? '좋아요 취소'
+													: '좋아요');
+								},
+								error : function(xhr, status, error) {
+									console.log("Error: " + error);
+									console
+											.log("Response: "
+													+ xhr.responseText);
+									alert('좋아요를 변경하는 중 오류가 발생했습니다.');
+								}
+							});
+						});
+			});
 </script>
 </html>

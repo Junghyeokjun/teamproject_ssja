@@ -41,9 +41,7 @@
 </update>
 
 <update id="changePasswordProcess" parameterType="Map">
-
 	update members set m_pw = #{newPassword} where m_id = #{username}
-	
 </update>
 
 <update id="deleteUserEnroll" parameterType="String" >

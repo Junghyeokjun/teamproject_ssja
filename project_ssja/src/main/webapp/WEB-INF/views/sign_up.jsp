@@ -51,8 +51,24 @@
             let post_search_btn=$("#post_search_btn");
             //아이디 중복여부 확인
             id_check.on("click",function(){
-                //아이디 중복확인 함수
-                id_limit.text("중복되지 않은 아이디입니다.").css("color","blue")
+            	$.ajax({    type : 'GET',           
+   						    url : '/testrest/idCheck',
+   						    async : true,
+   						    headers : { 
+   						    	"Content-Type" : "application/json; charset:UTF-8" },
+   						    dataType : 'text',
+   						    data :{
+										id : id.val()},    
+							success : function(result) {
+                                console.log(result);
+                                    if(result=="true"){
+                                        id_limit.text("중복되지 않은 아이디입니다.").css("color","blue")
+                                    }else{
+                                        id_limit.text("중복된 아이디입니다.").css("color","red")
+                                    }
+                                },    
+							error : function(request, status, error) {
+								 console.log(error)    }})
             })
             //아이디 변경시 중복여부 확인 초기화
             id.on("keyup",function(){
@@ -71,7 +87,24 @@
              //닉네임 중복여부 확인
              nickname_check.on("click",function(){
                 //닉네임 중복확인 함수
-                nickname_limit.text("중복되지 않은 닉네임입니다.").css("color","blue")
+                $.ajax({    type : 'GET',           
+   						    url : '/testrest/nameCheck',
+   						    async : true,
+   						    headers : {
+   						    	"Content-Type" : "application/json; charset:UTF-8" },
+   						    dataType : 'text',
+   						    data :{
+										name : nickname.val()},    
+							success : function(result) {
+                                console.log(result);
+                                    if(result=="true"){
+                                        nickname_limit.text("중복되지 않은 닉네임입니다.").css("color","blue")
+                                    }else{
+                                        nickname_limit.text("중복된 닉네임입니다.").css("color","red")
+                                    }
+                                },    
+							error : function(request, status, error) {
+								 console.log(error)    }})
             })
             //닉네임 변경시 중복여부 확인 초기화
             nickname.on("keyup",function(){
@@ -170,7 +203,7 @@
                 }else if(id_limit.text()==="ㅤ"){
                     alert("아이디 중복확인을 완료해주세요")
                     id.focus();
-                }else if(id_limit.text()==="중복된 아이디입니다"){
+                }else if(id_limit.text()==="중복된 아이디입니다."){
                     alert("중복되지 않은 아이디를 사용해주세요");
                     id.focus();
                 }else if(password.val()===""){
@@ -185,7 +218,7 @@
                 }else if(nickname_limit.text()==="ㅤ"){
                     alert("닉네임 중복확인을 완료해주세요")
                     nickname.focus();
-                }else if(nickname_limit.text()==="중복된 닉네임입니다"){
+                }else if(nickname_limit.text()==="중복된 닉네임입니다."){
                     alert("중복되지 않은 닉네임를 사용해주세요");
                     nickname.focus();
                 }else if(password_limit.text()==="패스워드가 동일하지 않습니다."){
@@ -227,12 +260,12 @@
         <!-- 홈화면링크 -->
         <a id="logo_toHome" href=""><img src="/images/utilities/big_logo.png" alt=""></a>
         <!-- 실제 적용시 method post로 변경  -->
-        <form action="#" method="get" onsubmit="return false" id="sign_up_form">
+        <form action="${pageContext.request.contextPath}/testrest/signUp" method="post" onsubmit="return false" id="sign_up_form">
             <table>
                 <tr>
                     <td><p>아이디</p></td>
-                    <!-- 시큐리티 설정값에 따라 name 변경 -->
-                    <td><input type="text" size="24" id="id" name="username" placeholder="몇자이상의 아이디를 입력해주세요"></td>
+                    <!-- dto와 name을 맞춰준다. -->
+                    <td><input type="text" size="24" id="id" name="M_ID" placeholder="몇자이상의 아이디를 입력해주세요"></td>
                     <td><input type="button"value="중복확인" id="id_check"></td>
                 </tr>
                 <tr>
@@ -241,7 +274,7 @@
                 </tr>
                 <tr>
                     <td><p class="mb-1">비밀번호</p></td>
-                    <td><input type="password" size="24" class="mb-1" id="password" name="password" placeholder="특정 규약에 맞춰 패스워드를 입력해주세요"></td>
+                    <td><input type="password" size="24" class="mb-1" id="password" name="M_PW" placeholder="특정 규약에 맞춰 패스워드를 입력해주세요"></td>
                 </tr>
                 <tr>
                     <td>비밀번호 확인ㅤ</td>
@@ -253,7 +286,7 @@
                 </tr>
                 <tr>
                     <td>닉네임</td>
-                    <td><input type="text" size="24" id="nickname" name="nickname" placeholder="중복되지 않은 닉네임을 입력해주세요"></td>
+                    <td><input type="text" size="24" id="nickname" name="M_NAME" placeholder="중복되지 않은 닉네임을 입력해주세요"></td>
                     <td><input type="button"value="중복확인" id="nickname_check"></td>
                 </tr>
                 <tr>
@@ -291,30 +324,30 @@
                 <tr>
                     <td>전화번호</td>
                     <td>
-                        <input type="text" size="24" class="mb-2" id="tel" placeholder="-를 제외한 전화번호를 입력해주세요"> 
+                        <input type="text" size="24" class="mb-2" id="tel" name="M_PHONE" placeholder="-를 제외한 전화번호를 입력해주세요"> 
                     </td>
                 </tr>
 
                 <tr>
                     <td><p class="mb-3">생년월일</p></td>
-                    <td><input type="text" size="24" class="mb-3" id="birth" name="birth" placeholder="ex)000000"></td>
+                    <td><input type="text" size="24" class="mb-3" id="birth" name="M_BIRTH" placeholder="ex)000000"></td>
                 </tr>
 
                 <tr>
                     <td><p class="mb-1">우편번호</p></td>
                     <td>
-                        <input type="text" size="10" class="mb-1" id="post" name="zipcode">
+                        <input type="text" size="10" class="mb-1" id="post" name="M_ZIPCODE">
                         <input type="button" value="우편번호 찾기" class="mb-1" id="post_search_btn">
                     </td>
                 </tr>
                 <tr>
                     <td><p class="mb-1">주소</p></td>
-                    <td><input type="text" size="24" class="mb-1" id="address" name="address"></td>
+                    <td><input type="text" size="24" class="mb-1" id="address" name="M_ADDRESS1"></td>
                 </tr>                
                 <tr>
                     <td><p class="mb-1">상세주소</p></td>
                     <td>
-                        <input type="text" size="10" class="mb-1" id="detail_address" name="detail_address">
+                        <input type="text" size="10" class="mb-1" id="detail_address" name="M_ADDRESS2">
                         <input type="text" size="6" class="mb-1" id="extra_address" name="extra_address">
                     </td>
                 </tr>
@@ -323,7 +356,7 @@
             
             <div class="text-center mt-3">
                 <input type="submit" class="btn btn-dark me-3" id="sign_up" value="회원가입">
-                <a href=""><input type="button" class="btn" value="취소" style="background-color: #bec1c4; color: white;"></a> 
+                <a href="${pageContext.request.contextPath}/"><input type="button" class="btn" value="취소" style="background-color: #bec1c4; color: white;"></a> 
                 <!-- 홈화면링크 -->
             </div>
         </form>

@@ -74,6 +74,10 @@ body {
 #icn_txt {
 	text-align: center;
 }
+
+.table{
+	border : 0;
+}
 </style>
 </head>
 
@@ -105,50 +109,68 @@ body {
 	</div>
 	<main>
 		<div id="main_container">
-
-			<h1>글 보기</h1>
-			<form action="${pageContext.request.contextPath}/qna/modify_view"
-				method="post">
-				<input type="hidden" name="bno" value="${content_view.bno}">
-				<table class="table" border="1" style="width: 500; background-color: gray;">
+			<div>
+			
+			</div>
+			<form action="${pageContext.request.contextPath}/qna/modify_view" method="post">
+				<div class="input-group">
+					<input type="hidden" class="form-control" name="bno" value="${content_view.bno}">
+				</div>
+				<table class="table"  style="width: 500; background-color: gray;">
 					<tr>
-						<td style="background-color: pink">번호</td>
-						<td style="background-color: white">${content_view.bno}</td>
-					</tr>
-					<tr>
-						<td style="background-color: pink">조회수</td>
-						<td style="background-color: white"><input type="text"
-							name="bhit" size="50" value="${content_view.bhit}"
-							readonly="readonly"></td>
-					</tr>
-					<tr>
-						<td style="background-color: pink">이름</td>
-						<td style="background-color: white"><input type="text"
-							name="bwriter" size="50" value="${content_view.bwriter}"
-							readonly="readonly"></td>
-					</tr>
-					<tr>
-						<td style="background-color: pink">제목</td>
-						<td style="background-color: white"><input type="text"
-							name="btitle" size="50" value="${content_view.btitle}"
-							readonly="readonly"></td>
-					</tr>
-					<tr>
-						<td style="background-color: pink">내용</td>
-						<td style="background-color: white"><textarea name="bcontent"
-								rows="10" readonly="readonly">${content_view.bcontent}</textarea></td>
-					</tr>
-					<tr>
-						<td style="background-color: white" colspan="2">
-							<!-- data-likebmno 값 변경 필요 -->
-							<button id="like-button" data-likebno="${content_view.bno}" data-likebmno="${content_view.bmno}">좋아요</button>
-							<p>
-								좋아요 수: <span id="like-count">${content_view.blike}</span>
-							</p>
+						<td colspan="2">
+							<div class="input-group">
+								<span class="input-group-text">제목</span>
+	    						<input type="text" class="form-control" name="btitle" value="${content_view.btitle}" readonly="readonly">
+	    					</div>
 						</td>
 					</tr>
 					<tr>
-						<td style="background-color: pink" colspan="2"><input
+						<td>
+						</td>
+						<td >
+							<div class="d-flex justify-content-end">
+								<div class="input-group w-25 ">
+									<span class="input-group-text">조회수</span>
+		    						<input type="text" class="form-control" name="bhit" value="${content_view.bhit}" readonly="readonly">
+		    					</div>
+		    				</div>					
+						</td>
+					</tr>
+					<tr>
+						<td>
+						</td>
+						<td>
+							<div class="d-flex justify-content-end">
+							<div class="input-group w-25">
+								<span class="input-group-text">작성자</span>
+	    						<input type="text" class="form-control" name="bwriter" value="${content_view.bwriter}" readonly="readonly">
+	    					</div>
+	    					</div>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<div class="input-group">
+								<textarea name="bcontent" class="form-control" rows="10" readonly="readonly">${content_view.bcontent}</textarea>	    				
+	    					</div>
+						</td>		
+					</tr>
+					<tr>
+						<td  colspan="2">
+							<div class="d-flex justify-content-center">
+								<!-- data-likebmno 값 변경 필요 -->
+								<button id="like-button" data-likebno="${content_view.bno}" data-likebmno="${content_view.bmno}">좋아요</button>
+							</div>
+							<div class="text-center">
+								<p>
+									좋아요 수 : <span id="like-count">${content_view.blike}</span>
+								</p>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td  colspan="2"><input
 							type="submit" value="수정"> &nbsp;&nbsp;<a
 							href="${pageContext.request.contextPath}/qna/list">되돌아가기</a> <%-- &nbsp;&nbsp;<a href="${pageContext.request.contextPath}/qna/delete?bno=${content_view.bno}">삭제</a> --%>
 							<%-- <sec:authorize access="hasRole('ROLE_ADMIN')">
@@ -161,6 +183,7 @@ body {
 					</tr>
 				</table>
 			</form>
+			</div>
 		</div>
 
 	</main>

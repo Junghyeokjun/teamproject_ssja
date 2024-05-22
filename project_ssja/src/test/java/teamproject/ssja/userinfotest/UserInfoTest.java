@@ -1,4 +1,4 @@
-package com.example.demo.UserInfoTest;
+package teamproject.ssja.userinfotest;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
