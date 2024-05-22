@@ -43,23 +43,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 		/* 권한설정 */
 	    http.authorizeRequests()
-<<<<<<< HEAD
 	    .antMatchers("/","/test/login","/test/sign_up_before","/test/sign_up","/testrest/**").permitAll()
+	    .antMatchers("/logout","/user","/myPage","/myPage/**","/userInfo","/user","/user/**").hasAnyRole("USER")
 	    .anyRequest().authenticated();
 	    
-	    http.formLogin().loginPage("/test/login").usernameParameter("username").passwordParameter("password").defaultSuccessUrl("/").permitAll();;
-=======
-	    //.antMatchers("/home/**","/login","/loginCheck","/checkUser","/userInfo").permitAll()
-	    .antMatchers("/logout","/user","/myPage","/myPage/**","/userInfo","/user","/user/**").hasAnyRole("USER")
-	    //.antMatchers("/admin").hasAnyRole("ADMIN")
-	    .anyRequest().permitAll();
-	    
-	    http.formLogin().loginPage("/login")
-	    .usernameParameter("username").passwordParameter("password")
-	    .loginProcessingUrl("/loginCheck")
-	    .defaultSuccessUrl("/").permitAll()
->>>>>>> origin/dev_ajs
-	    
+	    http.formLogin().loginPage("/test/login").usernameParameter("username").passwordParameter("password").defaultSuccessUrl("/").permitAll()
 	    .and()
 	    .logout()
                 .logoutUrl("/logout")//logout 요청 처리 uRL
@@ -96,7 +84,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	        return hierarchy;
 	    }
 	 
-<<<<<<< HEAD
 	
 	//테스트용 유저 만들기(인메모리 방식)
 	@Override
@@ -115,7 +102,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	}
 	
-=======
 	 @Bean
 	    public SessionAuthenticationStrategy sessionAuthenticationStrategy() {
 	        return new ConcurrentSessionControlAuthenticationStrategy(sessionRegistry());
@@ -130,5 +116,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	    public HttpSessionEventPublisher httpSessionEventPublisher() {
 	        return new HttpSessionEventPublisher();
 	    }
->>>>>>> origin/dev_ajs
 }
