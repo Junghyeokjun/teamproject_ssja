@@ -289,19 +289,40 @@
 
 						let $email_title = $("<h4>").addClass("mx-5 my-3")
 								.text("이메일");
-						let $userInfo_email = $("<span>").addClass("p-3").css(
-								'background-color', '#eee').text(
-								userInfo.m_Email);
-						let $modify_email = $("<a>").attr("href",
-								"http://www.naver.com").addClass(
-								"btn btn-dark mx-3").text("수정");
+						
+						let $modi_email_auth_btn = $("<button>");
+						let $modi_email_change_btn = $("<button>");
+						
+						let $userInfo_email = $("<input>").addClass("mx-1").attr("id","modi_email_input")
+						.val(userInfo.m_Email).prop("disabled",true);
+						
+						let $email_change_btn = $("<button>").addClass("btn btn-dark").text("변경");
+						let $email_auth_input = $("<input>").attr("id","email_auth_input");
+						
+						let $modi_email_btn = $("<button>") .attr("id", "modify_email_btn").addClass("btn btn-dark mx-3")
+					    .text("수정").on('click', function() {
+					    	$email_change_btn.remove();
+					    	$email_auth_input.remove();
+					    	
+					        $userInfo_email.prop('disabled', false).focus();
+					        $userInfo_dv4.append($email_auth_input, $email_change_btn);
+					        $(this).removeClass("btn-dark").addClass("btn-outline-secondary").text("인증").on('click',function(e){
+					        	$(this).addClass("btn-secondary");
+					        	$email_auth_input.focus();
+					        	
+					        	request_email_auth();
+					        });
+					        
+					    });
+						
+						
 						let $userInfo_dv4 = $("<div>")
 								.attr("id", "userInfo_dv4")
 								.css("border-top", "1px solid #ccc")
 								.addClass(
 										"py-3 my-3 mx-3 d-flex flex-row align-items-center")
-								.append($email_title, $userInfo_email,
-										$modify_email);
+								.append($email_title, $userInfo_email,$modi_email_btn
+										);
 
 						let $address_title = $("<h4>").addClass("mx-5 my-3")
 								.text("배송지");
@@ -336,15 +357,13 @@
 
 						let $phone_title = $("<h4>").addClass("mx-5 my-3")
 								.text("전화 번호 ");
-						let $modify_phoneNum = $("<a>").attr("href",
-								"http://www.naver.com")
-								.addClass("btn btn-dark").text("변경하기");
+						
 						let $userInfo_dv6 = $("<div>")
 								.attr("id", "userInfo_dv6")
 								.css("border-top", "1px solid #ccc")
 								.addClass(
 										"py-3 my-3 mx-3 d-flex flex-row align-items-center")
-								.append($phone_title, $modify_phoneNum);
+								.append($phone_title);
 
 						let $withdrawl_title = $("<h4>").addClass("mx-5 my-3").text("회원 탈퇴");
 						
@@ -420,6 +439,21 @@
 			}
 		})
 	}
+	
+	let request_email_auth = function() {
+	    $.ajax({
+	        type: "post",
+	        beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			  data: JSON.stringify({'receiver': $("#modi_email_input").val()}),
+	        contentType: "application/json",
+	        url: "/user/email/auth",
+	        success: function(data) {
+	            alert('해당 이메일로 인증번호를 전송하였습니다. \n 인증을 완료해주세요.');
+	        }
+	    });
+	};
 
 	let search_address = function() {
 
