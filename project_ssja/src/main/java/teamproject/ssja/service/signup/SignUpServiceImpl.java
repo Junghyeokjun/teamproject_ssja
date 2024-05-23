@@ -29,6 +29,12 @@ public class SignUpServiceImpl implements SignUpService {
 		//반환값이 null일시 테이블에 존재하지 않는다는것이므로 사용가능(true)
 		return testMapper.getMEmail(email)==null;
 	}
+
+	@Override
+	public boolean quantityCheck(long proNo, int quantity) {
+		//반환값이 구매수량(quantity)보다 크면 구매가 가능하다는것이므로 true
+		return (testMapper.getProQuantity(proNo)>=quantity);
+	}
 	
 	@Override
 	public boolean signUp(MembersDto member) {

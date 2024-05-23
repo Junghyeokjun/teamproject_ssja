@@ -49,6 +49,12 @@ class TestRestControllerTest {
 		mockMvc.perform(MockMvcRequestBuilders.get("/testrest/emailCheck?email=user@naver.com"))
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andDo(print());	}
+	@Disabled
+	@Test
+	void testQuantityCheck() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get("/testrest/quantityCheck?proNo=1&quantity=3"))
+			   .andExpect(MockMvcResultMatchers.status().isOk())
+			   .andDo(print());	}
 
 //	차후 수정
 //	@Test
