@@ -55,6 +55,7 @@
     margin-left:2em;
     margin-right:2em;
     }
+   
   </style>
 
 </head>
@@ -93,16 +94,24 @@
 		<h3>이벤트</h3>
 		</div>
 		
-		<div id="event_top_next" style="border-bottom:1px solid #cccc;" class="d-flex justify-content-between align-items-center py-2"> 
-		<span>상태 | </span>
-		<span>기간 :  까지</span>
+		<div id="event_top_next" style="border-bottom:1px solid #cccc;" class="my-3 d-flex justify-content-between align-items-center py-2"> 
+		<span>상태 | 
+		<c:choose>
+		
+   				 <c:when test="${evPageInfo.ev_status == 1}"> 진행 중 </c:when>
+    			<c:when test="${evPageInfo.ev_status == 0}">  종료</c:when>
+   			 	<c:otherwise> 상태 정보 없음</c:otherwise>
+    
+		</c:choose>
+		</span>
+		<span>기간 :  ${evPageInfo.ev_duedate } 까지</span>
 		</div>
 		
-		<img src="" class="w-100 " style="height:auto;" id="event_main_content">
+		<img src="/images/event/page/event_page_${evPageInfo.ev_no}.jpg" class="w-100 " style="height:auto;" id="event_main_content">
 		
 		<div id="event_bottom" style="border-bottom:1px solid #cccc;border-top:1px solid #cccc;" class="d-flex flex-row my-3 py-3"> 
 		<span class="mx-3">작성자 :  관리자 </span>
-		<span class="mx-3">등록일 : </span>
+		<span class="mx-3">등록일 :${evPageInfo.ev_startdate } </span>
 		</div>
 		
 		</div>

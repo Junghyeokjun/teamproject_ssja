@@ -100,6 +100,8 @@ public class BoardServiceImpl implements BoardService {
 	@Transactional
 	@Override
 	public LikesVO modifyGetBoardLikes(String bno, String mno) {
+		try {
+			
 		long bnoLong = Long.valueOf(bno);
 		long mnoLong = Long.valueOf(mno);
 
@@ -118,10 +120,14 @@ public class BoardServiceImpl implements BoardService {
 			boardMapper.updateBLikeUp(bnoLong);
 			boardMapper.insertBLiked(boardIsLiked);
 		}
+		
 
 		long afterlikes = boardMapper.selectBoardLikes(bnoLong);
 		
 		LikesVO likes = new LikesVO(beforelikes, afterlikes, (afterlikes - beforelikes));
 		return likes;
+		} catch (Exception e) {
+			throw new RuntimeException();
+		}
 	}
 }

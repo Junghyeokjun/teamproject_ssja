@@ -14,5 +14,6 @@ public class EventInfoDTO {
 	private Date ev_duedate;
 	private String ev_banner;
 	private String ev_page;
+	//private String ev_status;
 
 }

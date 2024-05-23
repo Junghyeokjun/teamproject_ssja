@@ -4,6 +4,7 @@ import java.util.*;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.EventInfoDTO;
+import teamproject.ssja.dto.EventPageDTO;
 import teamproject.ssja.mapper.EventMapper;
 @Slf4j
 @Transactional
@@ -21,7 +23,7 @@ class EventServiceTest {
 	EventService eventService;
 	@Autowired
 	EventMapper eventMapper;
-	//@Disabled
+	@Disabled
 	@Test
 	void eventListTest() {
 		List<EventInfoDTO> eventList = eventService.getEventList();
@@ -32,7 +34,7 @@ class EventServiceTest {
 		
 		Assertions.assertThat(eventList.size()).isEqualTo(3);
 	}
-	//@Disabled
+	@Disabled
 	@Test
 	void eventListMapperTest() {
 		List<EventInfoDTO> eventList = eventMapper.getEventList();
@@ -44,4 +46,12 @@ class EventServiceTest {
 		Assertions.assertThat(eventList.size()).isEqualTo(3);
 	}
 
+	//@Disabled
+	@Test
+	@DisplayName("이벤트 이미지 데이터 가죠오기 테스트")
+	void evnetPageTest() {
+		EventPageDTO ev = eventService.getEventPageInfo(2);
+		log.info("ev {} ", ev);
+		Assertions.assertThat(ev.getEv_no()).isEqualTo(2);
+	}
 }

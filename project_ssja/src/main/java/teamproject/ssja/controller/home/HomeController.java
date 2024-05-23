@@ -1,5 +1,6 @@
 package teamproject.ssja.controller.home;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,10 +8,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.extern.slf4j.Slf4j;
+import teamproject.ssja.dto.EventPageDTO;
+import teamproject.ssja.mapper.EventMapper;
 
 @Slf4j
 @Controller
 public class HomeController {
+	
+	@Autowired
+	EventMapper eventMapper;
 	
 	
 	@RequestMapping("/home")
@@ -27,10 +33,11 @@ public class HomeController {
 	@GetMapping("/event/page")
 	public String eventP(@RequestParam("event") int eventNum,Model model) {
 		
-		if(eventNum == 0) return "sign_up_terms";
+		if(eventNum <= 0) return "sign_up_terms";
 			
 		
-		model.addAttribute("eventNum",eventNum);
+		EventPageDTO evPageInfo = eventMapper.getEventInfoToPage(eventNum);
+		model.addAttribute("evPageInfo",evPageInfo);
 		
 		return "event_page";
 	}
