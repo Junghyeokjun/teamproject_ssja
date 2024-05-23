@@ -26,8 +26,12 @@
 <script src="/js/footer.js">
 
   </script>
+<script src="/js/board.js">
+
+  </script>
 <link href="/css/footerstyle.css?after" rel="stylesheet">
 <link href="/css/barstyle.css?after" rel="stylesheet">
+<link href="/css/board.css?after" rel="stylesheet">
 
 <link rel="stylesheet"
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
@@ -73,6 +77,7 @@ body {
 #icn_txt {
 	text-align: center;
 }
+
 </style>
 </head>
 
@@ -80,7 +85,6 @@ body {
 	<header>
 		<div id="title_bar" class=" fixed-top">
 			<div class="py-2 px-1" id="top-bar">
-
 				<button type="toggle-button" class="top_btn" id="top_btn"></button>
 				<a href=""><img id="logo_img"
 					src="/images/utilities/logoSSJA.png"></a>
@@ -102,65 +106,64 @@ body {
 	<div id="side_bar">
 		<div id="side_links" class="w-100"></div>
 	</div>
-	<main>
-		<div id="main_container">
-			<table width="700" cellpadding="0" cellspacing="0" border="1"
-				style="text-align: center;">
-				<tr>
-					<td>번호</td>
-					<td>제목</td>
-					<td>이름</td>
-					<td>날짜</td>
-					<td>조회수</td>
-				</tr>
-				<c:forEach var="board" items="${boards}">
+	<main style="margin: 0 auto;">
+		<a href="${pageContext.request.contextPath}/qna/write_view">글작성</a>
+		<div id="main_container" style="margin: 0 auto;">
+			<table class="table table-hover" style="text-align: center;">
+				<thead class="table-dark">
 					<tr>
-						<td>${board.bno}</td>
-						<td><c:forEach begin="1" end="${board.bindent}">[Re]</c:forEach>
-							<a
-							href="${pageContext.request.contextPath}/board/content_view?bid=${board.bid}">${board.btitle}</a>
-						</td>
-						<td>${board.bwriter}</td>
-						<td>${board.bdate}</td>
-						<td>${board.bhit}</td>
-						<%-- <td><button type="button" onclick="location.href='/dept/remove?deptno=${dept.deptno}';">삭제</button></td> --%>
+						<td>번호</td>
+						<td>제목</td>
+						<td>이름</td>
+						<td>날짜</td>
 					</tr>
-				</c:forEach>
-				<tr>
-					<td colspan="6"><a
-						href="${pageContext.request.contextPath}/board/write_view">글작성</a></td>
-				</tr>
+				</thead>
+				<tbody>
+					<c:forEach var="qna" items="${qnas}">
+						<tr>
+							<td>${qna.bno}</td>
+							<td>
+	            				<a id="qna_title" class="" href="${pageContext.request.contextPath}/qna/content_view?bno=${qna.bno}" >${qna.btitle}</a>
+							</td>
+							<td>${qna.bwriter}</td>
+							<td class="date_str">${qna.bdate}</td>
+							<%-- <td><button type="button" onclick="location.href='/dept/remove?deptno=${dept.deptno}';">삭제</button></td> --%>
+						</tr>
+					</c:forEach>
+				</tbody>
 			</table>
-			<div class="">
+			<div>
 				<nav aria-label="Page navigation example">
-					<ul class="pagination justify-content-center">
+					<ul class="pagination ch-col justify-content-center">
 						<c:if test="${pageMaker.prev}">
-							<li class="page-item"><a class="page-link"
-								href="${pageContext.request.contextPath}/board/list2${pageMaker.makeQuery(pageMaker.startPage-1)}">Previous</a></li>
+							<li class="page-item"><a class="page-link ch-col"
+								href="${pageContext.request.contextPath}/qna/list${pageMaker.makeQuery(pageMaker.startPage-1)}"><</a></li>
 						</c:if>
 						<c:forEach var="idx" begin="${pageMaker.startPage}"
 							end="${pageMaker.endPage}">
 							<c:choose>
 								<c:when test="${pageMaker.criteria.pageNum == idx}">
 									<li class="page-item active"><a class="page-link"
-										href="${pageContext.request.contextPath}/board/list2${pageMaker.makeQuery(idx)}">${idx}</a></li>
+										href="${pageContext.request.contextPath}/qna/list${pageMaker.makeQuery(idx)}">${idx}</a></li>
 								</c:when>
 								<c:otherwise>
 									<li class="page-item"><a class="page-link"
-										href="${pageContext.request.contextPath}/board/list2${pageMaker.makeQuery(idx)}">${idx}</a></li>
+										href="${pageContext.request.contextPath}/qna/list${pageMaker.makeQuery(idx)}">${idx}</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 						<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-							<li class="page-item"><a class="page-link"
-								href="${pageContext.request.contextPath}/board/list2${pageMaker.makeQuery(pageMaker.endPage+1)}">Next</a></li>
+							<li class="page-item"><a class="page-link ch-col"
+								href="${pageContext.request.contextPath}/qna/list${pageMaker.makeQuery(pageMaker.endPage+1)}">></a></li>
 						</c:if>
 					</ul>
 				</nav>
 			</div>
 		</div>
-
 	</main>
+	<script type="text/javascript">
+
+	</script>
 
 	<footer>
 		<div id="first_footer" class="p-3"></div>

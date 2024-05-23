@@ -1,4 +1,4 @@
-package teamproject.ssja.service;
+package teamproject.ssja.service.Product;
 
 import teamproject.ssja.dto.ProductDetailDto;
 

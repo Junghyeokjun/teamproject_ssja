@@ -1,4 +1,4 @@
-package teamproject.ssja.service;
+package teamproject.ssja.service.Reply;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import teamproject.ssja.page.Criteria;
 
 
 public interface ReplyService {	
-	public List<ReplysDto> showReplys();
+	public List<ReplysDto> showReplys(long bno);
 	int addReply(ReplysDto replysDto);
 	int modifyReply(ReplysDto replysDto);
 	int removeReply(ReplysDto replysDto);

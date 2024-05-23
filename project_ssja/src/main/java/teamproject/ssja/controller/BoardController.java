@@ -14,8 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.page.Criteria;
 import teamproject.ssja.page.PageVO;
-import teamproject.ssja.service.BoardService;
-import teamproject.ssja.service.ReplyService;
+import teamproject.ssja.service.Board.BoardService;
+import teamproject.ssja.service.Reply.ReplyService;
 
 @Slf4j
 @Controller
@@ -24,9 +24,6 @@ public class BoardController {
 
 	@Autowired
 	private BoardService boardService;
-
-	@Autowired
-	private ReplyService replyService;
 	
 	@GetMapping("/list")
 	public String qnaList(Model model, Criteria criteria) {
@@ -49,7 +46,7 @@ public class BoardController {
 	public String showView(HttpServletRequest request, HttpServletResponse response, Model model) {
 		log.info("showView()..");
 		model.addAttribute("content_view", boardService.showContent(request, response));
-		return "/qna/content_view_test";
+		return "/qna/content_view";
 	}
 
 	@GetMapping("/write_view")

@@ -28,11 +28,11 @@ $(document).ready(function (){
          success: function(result){
             console.log(result);
          },
-           beforeSend : function(xhr){
-               //ajax호출 중 처리
-               //글로벌 변수로 설정한 csrf token 셋팅
-               xhr.setRequestHeader(header,token);
-           },
+         beforeSend : function(xhr){
+             //ajax호출 중 처리
+             //글로벌 변수로 설정한 csrf token 셋팅
+             xhr.setRequestHeader(header,token);
+         },
          error: function(e){
             console.log(e);
          }

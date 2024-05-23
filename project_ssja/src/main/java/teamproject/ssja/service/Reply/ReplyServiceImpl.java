@@ -1,4 +1,4 @@
-package teamproject.ssja.service;
+package teamproject.ssja.service.Reply;
 
 import java.util.List;
 
@@ -28,8 +28,8 @@ public class ReplyServiceImpl implements ReplyService {
 	ReplyMapper replyMapper;
 
 	@Override
-	public List<ReplysDto> showReplys() {
-		return replyMapper.selectReplys();
+	public List<ReplysDto> showReplys(long bno) {
+		return replyMapper.selectReplys(bno);
 	}
 
 	@Override
