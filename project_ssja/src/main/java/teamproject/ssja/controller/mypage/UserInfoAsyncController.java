@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
-import teamproject.ssja.dto.ChangePasswordForm;
 import teamproject.ssja.dto.UserRoleAndAuthDTO;
 import teamproject.ssja.dto.logindto.CustomUserDetailsDTO;
 import teamproject.ssja.dto.userinfo.AddressForm;
+import teamproject.ssja.dto.userinfo.ChangePasswordForm;
 import teamproject.ssja.dto.userinfo.UserInfoDTO;
 import teamproject.ssja.service.mypage.MyPageService;
 import teamproject.ssja.service.user.CustomUserDetailsService;

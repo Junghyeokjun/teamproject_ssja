@@ -19,7 +19,8 @@ public class MyPageUserInfoService implements MyPageService{
 	@Autowired
 	MyPageMapper myPageMapper;
 	
-	@Override
+
+@Override
 	public UserInfoDTO getUserInfo(long username) {
 		
 		return myPageMapper.getUserInfoInMyPage(username);
@@ -65,6 +66,8 @@ public class MyPageUserInfoService implements MyPageService{
 		myPageMapper.deleteEnrolledUsersAuth(enrolledDeleteUsers);
 		
 	}
+
+	
 
 	
 	

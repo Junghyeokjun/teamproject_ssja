@@ -28,7 +28,7 @@ $("<a>").attr("href", "www.naver.com").text("신고센터").appendTo($sec_ft_dv2
 $("<a>").attr("href", "www.naver.com").text("고객센터").appendTo($sec_ft_dv2);
 $("<p>").text("배송파트너 안내").appendTo($sec_ft_dv2);
 $("<p>").text("상품 광고 소개").appendTo($sec_ft_dv2);
-$("<a>").attr("href", "www.naver.com").text("고객문의").appendTo($sec_ft_dv2);
+$("<a>").attr("href", "/link_source").text("이벤트 이미지 출처").appendTo($sec_ft_dv2);
 
 $sec_ft.append($sec_ft_dv1, $sec_ft_dv2);
 

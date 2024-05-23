@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.ProjectSsjaApplication;
-import teamproject.ssja.dto.ChangePasswordForm;
 import teamproject.ssja.dto.userinfo.AddressForm;
+import teamproject.ssja.dto.userinfo.ChangePasswordForm;
 import teamproject.ssja.dto.userinfo.UserInfoDTO;
 import teamproject.ssja.service.mypage.MyPageService;
 import teamproject.ssja.service.user.CustomUserDetailsService;
