@@ -18,8 +18,7 @@
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-	crossorigin="anonymous">
-	
+	crossorigin="anonymous">	
 </script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -32,6 +31,29 @@
 	src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const priceElement = document.querySelector(".gdsPrice span");
+    const quantityInput = document.getElementById("quantity");
+    const totalPriceElement = document.getElementById("totalPrice");
+
+    // 상품 가격을 가져오기
+    const productPrice = parseFloat(priceElement.textContent.replace(/[^\d]/g, ''));
+
+    // 수량이 변경될 때 총 금액을 계산하는 함수
+    function updateTotalPrice() {
+        const quantity = parseInt(quantityInput.value);
+        const totalPrice = productPrice * quantity;
+        totalPriceElement.textContent = totalPrice.toLocaleString() + " 원";
+    }
+
+    // 수량 입력 값이 변경될 때마다 총 금액 업데이트
+    quantityInput.addEventListener("input", updateTotalPrice);
+
+    // 페이지 로드 시 초기 총 금액 설정
+    updateTotalPrice();
+});
+</script>
 <link href="/css/footerstyle.css?after" rel="stylesheet">
 <link href="/css/barstyle.css?after" rel="stylesheet">
 <link rel="stylesheet"
@@ -91,7 +113,7 @@ body {
 	</div>
 	<main>
 		<div id="main_container">
-			 <div class="row goods">
+			<div class="row goods">
 				<!-- row 클래스를 추가 -->
 				<div class="goodsImg col-12 col-md-6 col-lg-7">
 					<div id="carouselExampleIndicators" class="carousel slide"
@@ -141,8 +163,8 @@ body {
 						</span>
 					</p>
 					<p class="cartStock">
-						<span>수량</span> <input type="number" min="1"
-							max="${productdetail.PRO_QUANTITY}" value="1" />
+						<span>수량</span>
+						    <input type="number" id="quantity" min="1" max="${productdetail.PRO_QUANTITY}" value="1" />
 					</p>
 					<hr>
 					<div class="production-selling-header__info-wrap">
@@ -205,8 +227,7 @@ body {
 													<path fill-rule="evenodd" clip-rule="evenodd"
 														d="M10.197 4.628a.5.5 0 00-.394 0L4.269 7 10 9.456 15.73 7l-2.427-1.04-3.106-1.332zM3.5 14.341V7.758l6 2.572v6.912L3.803 14.8a.5.5 0 01-.303-.46zm7 2.9l1.534-.657a5 5 0 014.466-5.56V7.759l-6 2.572v6.912zm.09 1.05l1.664-.713A5.002 5.002 0 0022 16a5 5 0 00-4.5-4.975V7.659a1.5 1.5 0 00-.91-1.378l-2.893-1.24-3.106-1.332a1.5 1.5 0 00-1.182 0l-6 2.572A1.5 1.5 0 002.5 7.659v6.682c0 .6.358 1.142.91 1.378l6 2.572a1.5 1.5 0 001.18 0zM17 20a4 4 0 100-8 4 4 0 000 8zm.5-6.5a.5.5 0 00-1 0v2H15a.5.5 0 000 1h2a.5.5 0 00.5-.5v-2.5z"
 														fill="#3F474D"></path></svg>
-												<span class="text"><span class="date">5/22(수)<!-- -->
-												</span>도착 예정</span>
+											
 												<svg class="information-icon" width="18" height="18"
 													viewBox="0 0 18 18" fill="none"
 													preserveAspectRatio="xMidYMid meet">
@@ -224,12 +245,14 @@ body {
 					</div>
 					<hr>
 					<p class="addToCart">
-						<label class="mb-2">총 금액</label><br>
+						<label class="mb-2">총 금액</label><br> 
+						<span id="totalPrice">
+						<fmt:formatNumber pattern="###,###,###" value="${productdetail.PRO_PRICE}" /> 원</span><br>
 						<button type="button">장바구니</button>
 						<button type="button">바로구매</button>
 					</p>
 				</div>
-			</div> 
+			</div>
 
 			<section class="bg-light border-top py-4">
 				<div class="container">
@@ -270,36 +293,178 @@ body {
 											class="d-block w-100" alt="...">
 									</div>
 									<div class="tab-pane fade mb-2" id="ex1-pills-2"
-										role="tabpanel" aria-labelledby="ex1-tab-2">상세리뷰</div>
-									<div class="tab-pane fade mb-2" id="ex1-pills-3"
+										role="tabpanel" aria-labelledby="ex1-tab-2">
+									
+									<table width="700" cellpadding="0" cellspacing="0" border="1"  style="text-align: center;">
+				<tr>
+					<td>이름</td>
+					<td>날짜</td>
+					<td>내용</td>
+				</tr>
+				<c:forEach var="productdetailreply" items="${productdetailreplys}">
+					<tr>
+						<td>${productdetailreply.getB_WRITER()}</td>
+						<td><fmt:formatDate value="${productdetailreply.getB_DATE()}" pattern="yyyy-MM-dd" /></td>
+						
+<%-- 											<td>${productdetailreply.getB_DATE()}</td>  --%>	
+										<td>${productdetailreply.getB_CONTENT()}</td>
+					</tr>
+				</c:forEach>
+			</table>
+			<%-- <div class="">
+				<nav aria-label="Page navigation example">
+					<ul class="pagination justify-content-center">
+						<c:if test="${pageMaker.prev}">
+							<li class="page-item"><a class="page-link"
+								href="${pageContext.request.contextPath}/board/list2${pageMaker.makeQuery(pageMaker.startPage-1)}">Previous</a></li>
+						</c:if>
+						<c:forEach var="idx" begin="${pageMaker.startPage}"
+							end="${pageMaker.endPage}">
+							<c:choose>
+								<c:when test="${pageMaker.criteria.pageNum == idx}">
+									<li class="page-item active"><a class="page-link"
+										href="${pageContext.request.contextPath}/board/list2${pageMaker.makeQuery(idx)}">${idx}</a></li>
+								</c:when>
+								<c:otherwise>
+									<li class="page-item"><a class="page-link"
+										href="${pageContext.request.contextPath}/board/list2${pageMaker.makeQuery(idx)}">${idx}</a></li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+						<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+							<li class="page-item"><a class="page-link"
+								href="${pageContext.request.contextPath}/board/list2${pageMaker.makeQuery(pageMaker.endPage+1)}">Next</a></li>
+						</c:if>
+					</ul>
+				</nav>
+			</div>
+		</div> --%>
+								
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+							</div>
+								<div class="tab-pane fade mb-2" id="ex1-pills-3"
 										role="tabpanel" aria-labelledby="ex1-tab-3">
 										<section class="production-selling-section">
+											<header class="production-selling-section__header">
+												<h1 class="production-selling-section__title">배송</h1>
+											</header>
 											<table class="production-selling-table">
-												<tbody>		
-												<%-- <tr>
+												<tbody>
+													<tr>
+														<th>배송</th>
+														<td>일반택배</td>
+													</tr>
+													<tr>
+														<th>배송비</th>
+														<td>3,000원 <small>(30,000원 이상 구매시 무료배송)</small></td>
+													</tr>
+													<tr>
+														<th>도서산간 추가 배송비</th>
+														<td>3,000원</td>
+													</tr>
+													<tr>
+														<th>배송불가 지역</th>
+														<td>배송불가 지역이 없습니다.</td>
+													</tr>
+												</tbody>
+											</table>
+										</section>
+										<section class="production-selling-section">
+											<header class="production-selling-section__header">
+												<h1 class="production-selling-section__title">교환/환불</h1>
+											</header>
+											<div class="production-selling-refund">
+												<table
+													class="production-selling-table production-selling-refund__table">
+													<tbody>
+														<tr>
+															<th>반품배송비</th>
+															<td>3,000원 (최초 배송비가 무료인 경우 6,000원 부과)</td>
+														</tr>
+														<tr>
+															<th>교환배송비</th>
+															<td>6,000원</td>
+														</tr>
+														<tr>
+															<th>보내실 곳</th>
+															<td>(10010) 경기 김포시 통진읍 월하로 519 (귀전리) K100 센터</td>
+														</tr>
+													</tbody>
+												</table>
+												<h2 class="production-selling-refund__title">반품/교환 사유에
+													따른 요청 가능 기간</h2>
+												<p class="production-selling-refund__note">반품 시 먼저 판매자와
+													연락하셔서 반품사유, 택배사, 배송비, 반품지 주소 등을 협의하신 후 반품상품을 발송해 주시기 바랍니다.</p>
+												<ol class="production-selling-refund__list">
+													<li>구매자 단순 변심은 상품 수령 후 7일 이내&nbsp;<small>(구매자
+															반품배송비 부담)</small></li>
+													<li>표시/광고와 상이, 계약내용과 다르게 이행된 경우 상품 수령 후 3개월 이내, 그 사실을
+														안 날 또는 알 수 있었던 날로부터 30일 이내.<br>둘 중 하나 경과 시 반품/교환
+														불가&nbsp;<small>(판매자 반품배송비 부담)</small>
+													</li>
+												</ol>
+												<h2 class="production-selling-refund__title">반품/교환 불가능
+													사유</h2>
+												<p class="production-selling-refund__note">아래와 같은 경우
+													반품/교환이 불가능합니다.</p>
+												<ol class="production-selling-refund__list">
+													<li>반품요청기간이 지난 경우</li>
+													<li>구매자의 책임 있는 사유로 상품 등이 멸실 또는 훼손된 경우&nbsp;<small>(단,
+															상품의 내용을 확인하기 위하여 포장 등을 훼손한 경우는 제외)</small></li>
+													<li>포장을 개봉하였으나 포장이 훼손되어 상품가치가 현저히 상실된 경우&nbsp;<small>(예:
+															식품, 화장품)</small></li>
+													<li>구매자의 사용 또는 일부 소비에 의하여 상품의 가치가 현저히 감소한 경우&nbsp;<small>(라벨이
+															떨어진 의류 또는 태그가 떨어진 명품관 상품인 경우)</small></li>
+													<li>시간의 경과에 의하여 재판매가 곤란할 정도로 상품 등의 가치가 현저히 감소한
+														경우&nbsp;<small>(예: 식품, 화장품)</small>
+													</li>
+													<li>고객주문 확인 후 상품제작에 들어가는 주문제작상품</li>
+													<li>복제가 가능한 상품 등의 포장을 훼손한 경우&nbsp;<small>(CD/DVD/GAME/도서의
+															경우 포장 개봉 시)</small></li>
+												</ol>
+											</div>
+										</section>
+										<section class="production-selling-section">
+											<table class="production-selling-table">
+												<tbody>
+													<tr>
 														<th>상호명</th>
 														<td>${productdetail.getV_BIZNAME()}</td>
-													</tr>																	
+													</tr>
 													<tr>
 														<th>사업자이름</th>
 														<td>${productdetail.getM_NAME()}</td>
-													</tr>	
+													</tr>
 													<tr>
 														<th>사업장소재지</th>
-														<td></td>
+														<td>${productdetail.getM_ADDRESS1()}&nbsp;${productdetail.getM_ADDRESS2()}&nbsp;${productdetail.getM_ZIPCODE()}</td>
 													</tr>
 													<tr>
 														<th>사업장전화번호</th>
 														<td>${productdetail.getM_PHONE()}</td>
-													</tr> 	
+													</tr>
 													<tr>
 														<th>E-mail</th>
 														<td>${productdetail.getM_EMAIL()}</td>
-													</tr> 	 												 --%>
+													</tr>
 													<tr>
 														<th>사업자 등록번호</th>
 														<td>${productdetail.getV_LICENSE()}</td>
-													</tr> 
+													</tr>
 												</tbody>
 											</table>
 										</section>
@@ -337,6 +502,12 @@ body {
 		<div id="second_footer"></div>
 		<div id="third_footer"></div>
 	</footer>
+
+
+
+
+
+
 
 	<!-- MDBootstrap JS -->
 	<script

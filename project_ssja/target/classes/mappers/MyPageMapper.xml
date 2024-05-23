@@ -36,7 +36,10 @@
     where m.m_no = #{username}
 </select>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/dev_sjy
 <update id="changeAddress" parameterType="teamproject.ssja.dto.userinfo.AddressForm">
 	update members set m_zipcode = #{zip_code}, m_address1 = #{address}, m_address2 = #{extra_address} where m_no = #{userId}
 </update>
