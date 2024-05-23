@@ -1,4 +1,4 @@
-package teamproject.ssja.dto;
+package teamproject.ssja.dto.userinfo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
