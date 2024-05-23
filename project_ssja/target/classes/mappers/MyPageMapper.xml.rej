@@ -1,9 +1,0 @@
-diff a/project_ssja/target/classes/mappers/MyPageMapper.xml b/project_ssja/target/classes/mappers/MyPageMapper.xml	(rejected hunks)
-@@ -23,7 +23,6 @@
- 	
- </resultMap>
- <select id="getUserInfoInMyPage" parameterType="long" resultMap="userResultMap">
--	<![CDATA[
-     select m.m_no , m.m_id , m.m_name , m.m_nickname , m.m_address1 , m.m_address2 ,
-      m.m_zipcode , m.m_grade , m.m_email , m.m_phone , m.m_point ,m.m_deletedate,
-       nvl(c.countcoupon, 0) as couponNum, nvl(w.countwish, 0) as widhNum, nvl(p.countpurchase, 0) as purNum
