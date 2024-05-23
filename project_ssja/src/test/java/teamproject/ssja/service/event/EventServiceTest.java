@@ -11,8 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
-import teamproject.ssja.dto.EventInfoDTO;
-import teamproject.ssja.dto.EventPageDTO;
+import teamproject.ssja.dto.event.EventInfoDTO;
+import teamproject.ssja.dto.event.EventPageDTO;
 import teamproject.ssja.mapper.EventMapper;
 @Slf4j
 @Transactional

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
-import teamproject.ssja.dto.EventInfoDTO;
+import teamproject.ssja.dto.event.EventInfoDTO;
 import teamproject.ssja.mapper.EventMapper;
 
 @RestController

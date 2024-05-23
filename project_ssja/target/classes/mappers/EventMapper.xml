@@ -10,7 +10,7 @@
 	</select>
 	
 	
-	<select id="getEventInfoToPage" resultType="EventPageDTO">
+	<select id="getEventInfoToPage" resultType="teamproject.ssja.dto.event.EventPageDTO">
     	<![CDATA[
 		select ev_no, ev_startdate, ev_duedate, 
 		case
@@ -22,7 +22,7 @@
 	</select>
 
 
-	<resultMap id="eventInfoMap" type="EventInfoDTO">
+	<resultMap id="eventInfoMap" type="teamproject.ssja.dto.event.EventInfoDTO">
 	
 		<id property="ev_no" column="EV_NO" />
 		<result property="ev_startdate" column="EV_STARTDATE" />

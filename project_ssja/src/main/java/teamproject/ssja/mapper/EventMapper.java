@@ -4,8 +4,8 @@ import java.util.*;
 
 import org.apache.ibatis.annotations.Select;
 
-import teamproject.ssja.dto.EventInfoDTO;
-import teamproject.ssja.dto.EventPageDTO;
+import teamproject.ssja.dto.event.EventInfoDTO;
+import teamproject.ssja.dto.event.EventPageDTO;
 
 public interface EventMapper {
 	

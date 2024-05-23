@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.extern.slf4j.Slf4j;
-import teamproject.ssja.dto.EventPageDTO;
+import teamproject.ssja.dto.event.EventPageDTO;
 import teamproject.ssja.mapper.EventMapper;
 
 @Slf4j
@@ -39,7 +39,14 @@ public class HomeController {
 		EventPageDTO evPageInfo = eventMapper.getEventInfoToPage(eventNum);
 		model.addAttribute("evPageInfo",evPageInfo);
 		
-		return "event_page";
+		return "/event/event_page";
+	}
+	
+	@RequestMapping("/link_source")
+	public String linkSourceP() {
+		
+		
+		return "/event/link_source";
 	}
 	
 
