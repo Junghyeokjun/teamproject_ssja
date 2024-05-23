@@ -58,6 +58,8 @@ public class PageVO {
 		this.next = this.endPage < realEnd;
 	}
 
+	// @Controller get 방식
+	// @RestController에서는 사용하지 않기
 	public String makeQuery(int page) {
 		UriComponents uriComponentsBuilder = 
 				UriComponentsBuilder.newInstance()

@@ -170,7 +170,9 @@ body {
 						<td  colspan="2">
 							<div class="d-flex justify-content-center">
 								<!-- data-likebmno 값 변경 필요 -->
-								<button id="like-button" data-likebno="${content_view.bno}" data-likebmno="${content_view.bmno}">좋아요</button>
+								<button id="like-button" class="btn" data-likebno="${content_view.bno}" data-likebmno="${content_view.bmno}">
+									<img class="board-like" >
+								</button>
 							</div>
 					</tr>
 					<tr>
@@ -206,25 +208,30 @@ body {
 								<nav aria-label="Page navigation example">
 									<ul class="pagination justify-content-center">
 										<c:if test="${pageMaker.prev}">
-											<li class="page-item"><a class="page-link"
-												href="${pageContext.request.contextPath}/board/list2${pageMaker.makeQuery(pageMaker.startPage-1)}"><<a></li>
+											<li class="page-item">
+												<a class="page-link" href="${pageContext.request.contextPath}/api/page/${pageMaker.startPage-1}">&lt;<a>
+											</li>
 										</c:if>
-										<c:forEach var="idx" begin="${pageMaker.startPage}"
-											end="${pageMaker.endPage}">
-											<c:choose>						
+										<c:forEach var="idx" begin="${pageMaker.startPage}"	end="${pageMaker.endPage}">
+											<c:choose>																		
 												<c:when test="${pageMaker.criteria.pageNum == idx}">
-													<li class="page-item active"><a class="page-link"
-														href="${pageContext.request.contextPath}/board/list2${pageMaker.makeQuery(idx)}">${idx}</a></li>
+													<li class="page-item active">
+														<a class="page-link"
+														href="${pageContext.request.contextPath}/api/page/${pageMaker.makeQuery(idx)}">${idx}</a>
+													</li>
 												</c:when>
-												<c:otherwise>
+												<c:when test="${pageMaker.criteria.pageNum != idx && idx > 0}">
 													<li class="page-item"><a class="page-link"
-														href="${pageContext.request.contextPath}/board/list2${pageMaker.makeQuery(idx)}">${idx}</a></li>
+														href="${pageContext.request.contextPath}/api/page/${pageMaker.makeQuery(idx)}">${idx}</a></li>
+												</c:when>
+												<c:otherwise>													
 												</c:otherwise>
 											</c:choose>
 										</c:forEach>
 										<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-											<li class="page-item"><a class="page-link"
-												href="${pageContext.request.contextPath}/board/list2${pageMaker.makeQuery(pageMaker.endPage+1)}">></a></li>
+											<li class="page-item">
+												<a class="page-link" href="${pageContext.request.contextPath}/api/page/${pageMaker.makeQuery(pageMaker.endPage+1)}">&gt;</a>
+											</li>
 										</c:if>
 									</ul>
 								</nav>

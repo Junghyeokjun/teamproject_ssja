@@ -7,6 +7,16 @@
  * - 시, 분, 월, 일은 10 이하에서는 한 자리만 뜨고 10이상일 땐 두 자리가 뜬다. 
  */
 
+//  //csrf추가
+  let token = $("meta[name='_csrf']").attr("content");
+  let header = $("meta[name='_csrf_header']").attr("content");
+  console.log(token);
+  console.log(header);
+  $(document).ajaxSend(function(e, xhr, options) {
+      xhr.setRequestHeader(header, token);
+  });
+
+
 $(document).ready(function() {
 	function getBdateStr(bdate) {
 		// 오늘 날짜를 "yyyy-MM-dd" 형식으로 가져오기
@@ -78,7 +88,7 @@ $(document).ready(function() {
             	console.log("successed");
             	console.log(response);
                 $('#like-count').text(response.afterLikes);
-                $('#like-button').text(response.isLiked == 1  ? '좋아요 취소' : '좋아요');
+                $('#board-like').attr(response.isLiked == 1  ? '좋아요 취소' : '좋아요');
             },
             error: function(xhr, status, error) {
                 console.log("Error: " + error);

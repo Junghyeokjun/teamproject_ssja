@@ -83,17 +83,18 @@ public class BoardServiceImpl implements BoardService {
 		return null;
 	}
 
-	// 페이징 관련
-
 	@Override
-	public long getTotal() {
+	public long getTotal(long category) {
 		log.info("getTotal()..");
-		return boardMapper.selectTotalCount();
+		return boardMapper.selectTotalCount(20);
 	}
 
+	
+	// 페이징
 	@Override
 	public List<BoardDto> showListWithPaging(Criteria criteria) {
 		log.info("showListWithPaging()..");
+		criteria.setBoardCategory(20);
 		return boardMapper.selectListWithPaging(criteria);
 	}
 

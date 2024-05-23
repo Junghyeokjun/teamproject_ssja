@@ -83,7 +83,7 @@
 	</delete>
 	
 	<!-- 게시글 페이징 -->
-	<select id="selectListWithPaging" resultMap="BoardDtoMap">
+	<select id="selectListWithPaging"  resultMap="BoardDtoMap">
     	<![CDATA[
         	select * from 
         	(
@@ -92,7 +92,7 @@
 			    from 
 			    (select
 			     * 
-		    	 from board order by b_no desc) A 
+		    	 from board where b_c_no=#{boardCategory} order by b_no desc) A 
 		    	where rownum <= #{pageNum} * #{amount} 
 		    )
 			where rnum > (#{pageNum}-1) * #{amount}
@@ -100,9 +100,9 @@
 	</select>
 
 	<!-- 게시글 총 개수  -->
-	<select id="selectTotalCount" resultType="long">
+	<select id="selectTotalCount" parameterType="long" resultType="long">
     	<![CDATA[
-        	SELECT count(*) FROM board
+        	SELECT count(*) FROM board where B_C_NO = #{bcno}
         ]]>
 	</select>
 

@@ -20,7 +20,7 @@ public interface BoardMapper {
 	int updateBoard(BoardDto boardDto);
 	int updateHit(long bno);
 	
-	long selectTotalCount();
+	long selectTotalCount(long bcno);
 	List<BoardDto> selectListWithPaging(Criteria criteria);
 	
 	// 해당 게시글의 총 좋아요 수 가져오기

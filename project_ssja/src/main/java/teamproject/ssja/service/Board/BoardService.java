@@ -24,7 +24,7 @@ public interface BoardService {
 	public void upHit(HttpServletRequest request, HttpServletResponse response, Long bno);
 	public void setCookie(HttpServletResponse response, String name, String value, int maxAge);
 	public String getCookieValue(HttpServletRequest request, String name);
-	public long getTotal();
+	public long getTotal(long category);
 	
 	// 페이징
 	public List<BoardDto> showListWithPaging(Criteria criteria);

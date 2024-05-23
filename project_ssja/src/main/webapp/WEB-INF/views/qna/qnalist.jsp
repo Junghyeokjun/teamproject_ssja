@@ -77,7 +77,6 @@ body {
 #icn_txt {
 	text-align: center;
 }
-
 </style>
 </head>
 
@@ -122,8 +121,8 @@ body {
 					<c:forEach var="qna" items="${qnas}">
 						<tr>
 							<td>${qna.bno}</td>
-							<td>
-	            				<a id="qna_title" class="" href="${pageContext.request.contextPath}/qna/content_view?bno=${qna.bno}" >${qna.btitle}</a>
+							<td><a id="qna_title" class=""
+								href="${pageContext.request.contextPath}/qna/content_view?bno=${qna.bno}">${qna.btitle}</a>
 							</td>
 							<td>${qna.bwriter}</td>
 							<td class="date_str">${qna.bdate}</td>
@@ -144,11 +143,14 @@ body {
 							<c:choose>
 								<c:when test="${pageMaker.criteria.pageNum == idx}">
 									<li class="page-item active"><a class="page-link"
+										href="${pageContext.request.contextPath}/qna/list${pageMaker.makeQuery(idx)}">${idx}</a>
+									</li>
+								</c:when>
+								<c:when test="${pageMaker.criteria.pageNum != idx}">
+									<li class="page-item"><a class="page-link"
 										href="${pageContext.request.contextPath}/qna/list${pageMaker.makeQuery(idx)}">${idx}</a></li>
 								</c:when>
 								<c:otherwise>
-									<li class="page-item"><a class="page-link"
-										href="${pageContext.request.contextPath}/qna/list${pageMaker.makeQuery(idx)}">${idx}</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>

@@ -104,7 +104,7 @@ class BoardMapperTest {
 
 	@Test
 	void testSelectTotalCount() {
-		log.info("총 게시글 수는 " + boardMapper.selectTotalCount() + "개입니다.");
+		log.info("총 게시글 수는 " + boardMapper.selectTotalCount(20) + "개입니다.");
 	}
 
 	@Test

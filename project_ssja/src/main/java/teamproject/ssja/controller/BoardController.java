@@ -28,9 +28,12 @@ public class BoardController {
 	@GetMapping("/list")
 	public String qnaList(Model model, Criteria criteria) {
 		log.info("qnaList()..");
+		// 해당 함수도 임시로 숫자를 부여하여 처리한 상태.
+		// 수정 필요
 		model.addAttribute("qnas",  boardService.showListWithPaging(criteria));
 		
-		long total = boardService.getTotal();
+		// 임시로 카테고리 숫자 넣음
+		long total = boardService.getTotal(20);
 		model.addAttribute("pageMaker", new PageVO(total, criteria));
 		return "/qna/qnalist";
 	}
