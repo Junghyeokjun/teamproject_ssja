@@ -9,6 +9,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="_csrf" content="${_csrf.token}"/>
+  <meta name="_csrf_header" content="${_csrf.headerName}"/>
   <title>T 9</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
@@ -102,6 +104,11 @@
 
   </style>
   <script>
+    //csrf토큰 변수
+    var header = $("meta[name='_csrf_header']").attr('content');
+    var token = $("meta[name='_csrf']").attr('content');
+
+    //결제모듈 연동 코드
     var IMP = window.IMP
     IMP.init('imp22716806')
     function pay(f_amount){
@@ -135,6 +142,38 @@
           }
       })
     }
+    //남은 수량 체크 함수
+    function quantity_check(proNo,quantity,proName){
+      //남은 수량의 여부를 저장할 변수
+      let temp_tf=true;
+
+      $.ajax({
+          type : 'GET',         
+          beforeSend: function(xhr){
+            xhr.setRequestHeader(header, token);
+          },  
+          url : '/testrest/quantityCheck',
+          async : false,
+          headers : { 
+            "Content-Type" : "application/json; charset:UTF-8" },
+          dataType : 'json',
+          data :{
+            proNo : Number(proNo),
+            quantity : Number(quantity)
+          },    
+          success : function(result) {
+            if(result==false){
+              //남은 수량이 적을시 실행될 함수
+              alert(proName+" 상품의 남은 수량이 구매 수량보다 적습니다.")
+              temp_tf=false;
+            }
+          },    
+          error : function(request, status, error) {
+          console.log(error)    
+          }
+        })
+      return temp_tf;
+    }
   //pay함수 호출로 결제 실행
     $(document).ready(function(){
       let point=$("#point");
@@ -144,7 +183,7 @@
       let coupon=$("#coupon");
       let coupon_discount=0;
       let full_amount=$("#full_amount");
-      let full_amount_val=10000;
+      let full_amount_val=0;
       let discount=$("#discount");
       let discount_val=0;
       let result_price=$("#result_price");
@@ -199,11 +238,15 @@
           }).open();
       })
       //결제 관련 가격들을 세팅하는 메서드
+      $(".product").each(function(idx, item){
+        full_amount_val+=Number(item.querySelector(".product_price").innerHTML)*Number(item.querySelector(".product_pcs").innerHTML);
+      })
       full_amount.text(full_amount_val);
       discount.text(discount_val);
+      result_price_val=full_amount_val-discount_val;
       result_price.text(result_price_val);
       //포인트 입력제한을 소지 포인트로 거는 메서드
-      point.attr("max",10001);
+      point.attr("max",88000);
 
       //쿠폰사용시 이벤트
       coupon.on("change",function(){
@@ -267,6 +310,18 @@
         result_price.text(result_price_val);
       })
       buy_btn.on("click",function(){
+        //상품의 수량을 체크하는 부분
+        let quantity_tf;
+        $(".product").each(function(idx, item){
+          quantity_tf=quantity_check(item.querySelector(".product_no").value,item.querySelector(".product_pcs").innerHTML,item.querySelector(".product_name").innerHTML);
+          if(!quantity_tf){
+            return false; 
+          }
+        })
+        
+        if(!quantity_tf){
+          return;
+        }
         if(result_price_val>=100){
           pay(result_price_val);
         }else if(result_price_val==0){
@@ -336,12 +391,16 @@
       <div class="ms-3" style="margin-right: 30%;">
         <h3 class="my-3 border-bottom">주문상품</h3>
         <!-- 아래부터 c:foreach로 반복 -->
-        <div>
-          <img src="/images/utilities/logoSSJA.png" alt="" style="width: 150px;height: 150px; float: left;">
-          <div class="m-2 pt-3 fs-4"><span id="product_name">상품명:</span></div>
-          <div class="m-2 fs-4"><span>옵션 :</span><span id="product_opt">네이비블루</span></div>
-          <div class="m-2 fs-4"><span>금액:</span><span id="product_price">1000원</span> <span>수량:</span> <span id="product_pcs">1개</span></div>
-        </div>
+        <c:forEach var="product" items="${products}">
+        	<div class="product" style="height:150px;">
+            <input class="product_no" type="hidden" value="${product.PRO_NO}">
+	          <img src="/images/utilities/logoSSJA.png" alt="" style="width: 150px;height: 150px; float: left;">
+	          <div class="m-2 pt-3 fs-4"><span class="product_name">${product.PRO_NAME}</span></div>
+	          <!-- <div class="m-2 fs-4"><span>옵션 :</span><span id="product_opt">네이비블루</span></div> -->
+	          <div class="m-2 fs-4"><span>금액:</span><span class="product_price">${product.PRO_PRICE}</span>원 <span>수량:</span> <span class="product_pcs">${product.PRO_QUANTITY}</span>개</div>
+	        </div>
+        </c:forEach>
+        
       </div>
       <div class="ms-3" style="margin-right: 30%;">
         <h3 class="my-3 border-bottom">쿠폰</h3>
@@ -353,7 +412,7 @@
           <option value="coupon3" discount="30">쿠폰3</option>
         </select>
       </div>
-      <div class="ms-3" style="margin-right: 30%;">
+      <div class="ms-3 mb-3" style="margin-right: 30%;">
         <h3 class="my-3 border-bottom">포인트</h3>
         <input type="number" class="ms-3 me-0 form-control w-25 d-inline" id="point" value="0" min="0" max="200">
         <button class="ms-0 btn btn-primary" id="full_use_btn">전액사용</button>

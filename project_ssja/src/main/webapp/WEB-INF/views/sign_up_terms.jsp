@@ -111,6 +111,7 @@
                 <a href="${pageContext.request.contextPath}/"><input type="button" class="btn" value="취소" style="background-color: #bec1c4; color: white;"></a> 
                 <!-- 홈화면링크 -->
             </div>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         </form>
     </div>
 </body>

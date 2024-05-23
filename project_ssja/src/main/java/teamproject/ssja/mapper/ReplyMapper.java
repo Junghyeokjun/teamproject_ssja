@@ -12,12 +12,18 @@ import teamproject.ssja.page.Criteria;
 
 @Mapper
 public interface ReplyMapper {	
-	// 댓글 
+	// 댓글 입력 
 	int insertReply(ReplysDto replysDto);
+	
+	int insertReReply(ReplysDto replysDto);
+	
 	int updateShape(ReplysDto replysDto);
+	
 	int updateReply(ReplysDto replysDto);
+	
 	int deleteReply(ReplysDto replysDto);
-	List<ReplysDto> selectReplys();
+	
+	List<ReplysDto> selectReplys(long bno);
 
 
 	

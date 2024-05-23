@@ -8,6 +8,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <title>Document</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,6 +29,10 @@
     }
    </style>
    <script>
+        //csrf토큰 변수
+        var header = $("meta[name='_csrf_header']").attr('content');
+        var token = $("meta[name='_csrf']").attr('content');
+        
         $(document).ready(function(){
             let sign_up_form=$("#sign_up_form");
             let id=$("#id");
@@ -44,7 +50,8 @@
             let send=$("#send");
             let auth=$("#auth");
             let auth_check=$("#auth_check");
-            let tel=$("#tel")
+            let name=$("#name");
+            let tel=$("#tel");
             let birth=$("#birth");
             let post=$("#post");
             let address=$("#address");
@@ -53,7 +60,10 @@
             let post_search_btn=$("#post_search_btn");
             //아이디 중복여부 확인
             id_check.on("click",function(){
-            	$.ajax({    type : 'GET',           
+            	$.ajax({    type : 'GET',         
+                            beforeSend: function(xhr){
+                              xhr.setRequestHeader(header, token);
+                            },  
    						    url : '/testrest/idCheck',
    						    async : true,
    						    headers : { 
@@ -89,14 +99,17 @@
              //닉네임 중복여부 확인
              nickname_check.on("click",function(){
                 //닉네임 중복확인 함수
-                $.ajax({    type : 'GET',           
-   						    url : '/testrest/nameCheck',
+                $.ajax({    type : 'GET',         
+                            beforeSend: function(xhr){
+                              xhr.setRequestHeader(header, token);
+                            },  
+   						    url : '/testrest/nickNameCheck',
    						    async : true,
    						    headers : {
    						    	"Content-Type" : "application/json; charset:UTF-8" },
    						    dataType : 'text',
    						    data :{
-										name : nickname.val()},    
+                                    nickName : nickname.val()},    
 							success : function(result) {
                                 console.log(result);
                                     if(result=="true"){
@@ -130,14 +143,39 @@
             })
             //전송버튼 클릭시
             send.on("click",function(){
-                if(send.val()==="전송"){
-                    send.val("재전송");
+                if(email.val()=="" || domain.val()==""){
+                    alert("올바른 이메일 형식을 입력해주세요");
+                    return;
                 }
-                send.attr("disabled","disabled")
-                setTimeout(function(){
-                    send.removeAttr("disabled");
-                }, 5000)
-                // 랜덤값생성과 이메일요청함수
+                $.ajax({    type : 'GET',         
+                    beforeSend: function(xhr){
+                        xhr.setRequestHeader(header, token);
+                    },  
+                    url : '/testrest/emailCheck',
+                    async : true,
+                    headers : {
+                        "Content-Type" : "application/json; charset:UTF-8" },
+                    dataType : 'text',
+                    data :{
+                            email : email.val()+"@"+domain.val()},    
+                    success : function(result) {
+                        console.log(email.val()+"@"+domain.val());
+                            if(result=="false"){
+                                window.alert("이미 가입된 이메일 입니다.");
+                            }else{
+                                if(send.val()==="전송"){
+                                    send.val("재전송");
+                                }
+                                send.attr("disabled","disabled")
+                                setTimeout(function(){
+                                    send.removeAttr("disabled");
+                                }, 5000)
+                                // 랜덤값생성과 이메일요청함수
+                            }
+                        },
+                    error : function(request, status, error) {
+                            console.log(error)    }})
+
             })
             //인증버튼 클릭시
             auth.on("click",function(){
@@ -234,6 +272,9 @@
                 }else if(tel.val()===""){
                     alert("전화번호 입력을 완료해주세요.")
                     tel.focus();
+                }else if(name.val()===""){
+                    alert("이름 입력을 완료해주세요.")
+                    name.focus();
                 }else if(birth.val()===""||birth.val().length!=6){
                     alert("생년월일 입력을 완료해주세요.")
                     birth.focus();
@@ -288,7 +329,7 @@
                 </tr>
                 <tr>
                     <td>닉네임</td>
-                    <td><input type="text" size="24" id="nickname" name="M_NAME" placeholder="중복되지 않은 닉네임을 입력해주세요"></td>
+                    <td><input type="text" size="24" id="nickname" name="M_NICKNAME" placeholder="중복되지 않은 닉네임을 입력해주세요"></td>
                     <td><input type="button"value="중복확인" id="nickname_check"></td>
                 </tr>
                 <tr>
@@ -322,6 +363,12 @@
                 <tr>
                     <td></td>
                     <td><p style="font-size: 10px;" class="mb-2" id="auth_check">ㅤ</p></td>
+                </tr>
+                <tr>
+                    <td>이름</td>
+                    <td>
+                        <input type="text" size="24" class="mb-2" id="name" name="M_NAME"> 
+                    </td>
                 </tr>
                 <tr>
                     <td>전화번호</td>
@@ -361,6 +408,7 @@
                 <a href="${pageContext.request.contextPath}/"><input type="button" class="btn" value="취소" style="background-color: #bec1c4; color: white;"></a> 
                 <!-- 홈화면링크 -->
             </div>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         </form>
     </div>
 </body>

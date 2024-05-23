@@ -19,11 +19,23 @@ public class SignUpServiceImpl implements SignUpService {
 	}
 
 	@Override
-	public boolean nameCheck(String name) {
+	public boolean nickNameCheck(String nickName) {
 		//반환값이 null일시 테이블에 존재하지 않는다는것이므로 사용가능(true)
-		return testMapper.getMName(name)==null;
+		return testMapper.getMNickName(nickName)==null;
 	}
 
+	@Override
+	public boolean emailCheck(String email) {
+		//반환값이 null일시 테이블에 존재하지 않는다는것이므로 사용가능(true)
+		return testMapper.getMEmail(email)==null;
+	}
+
+	@Override
+	public boolean quantityCheck(long proNo, int quantity) {
+		//반환값이 구매수량(quantity)보다 크면 구매가 가능하다는것이므로 true
+		return (testMapper.getProQuantity(proNo)>=quantity);
+	}
+	
 	@Override
 	public boolean signUp(MembersDto member) {
 		//가입에 성공했을시 권한테이블에 추가후 true반환
@@ -35,6 +47,7 @@ public class SignUpServiceImpl implements SignUpService {
 			return false;
 		}
 	}
+
 	
 	
 }

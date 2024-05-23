@@ -33,13 +33,24 @@ class TestServiceImplTest {
 	@Disabled
 	@Test
 	void testNameCheck() {
-		log.info(signUpService.nameCheck("testUser1")+"");
+		log.info(signUpService.nickNameCheck("tam")+"");
 	}
 
 	@Disabled
 	@Test
+	void testEmailCheck() {
+		log.info(signUpService.emailCheck("user@gmail.com")+"");
+	}
+	
+	@Disabled
+	@Test
+	void testQuantityCheck() {
+		log.info(signUpService.quantityCheck(1,3)+"");
+	}
+	@Disabled
+	@Test
 	void testSignUp() {
-		MembersDto member= new MembersDto(0,"testUser2","testUser2","testUser2","수원시","팔달구","21231","990408",null,"user@naver.com","01023451234",0,null);
+		MembersDto member= new MembersDto(0,"testUser2","testUser2","testUser2","수원시","팔달구","21231","990408",null,"user@naver.com","01023451234",0,null,"pop");
 		log.info(signUpService.signUp(member)+"");
 	}
 
