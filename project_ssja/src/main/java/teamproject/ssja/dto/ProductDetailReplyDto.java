@@ -30,4 +30,5 @@ public class ProductDetailReplyDto {
 	String B_WRITER;	
 	Timestamp B_DATE;
 	String B_CONTENT;
+	//추적확인용 주석
 }
