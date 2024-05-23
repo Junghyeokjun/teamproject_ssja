@@ -41,12 +41,6 @@ class TestServiceImplTest {
 	void testEmailCheck() {
 		log.info(signUpService.emailCheck("user@gmail.com")+"");
 	}
-	
-	@Disabled
-	@Test
-	void testQuantityCheck() {
-		log.info(signUpService.quantityCheck(1,3)+"");
-	}
 	@Disabled
 	@Test
 	void testSignUp() {

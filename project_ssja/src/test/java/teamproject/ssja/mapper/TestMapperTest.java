@@ -38,14 +38,6 @@ class TestMapperTest {
 		String mName=testMapper.getMNickName("tam");
 		log.info(mName);
 	}
-	
-	@Disabled
-	@Test
-	void SelectQuantityTest() {
-		long quantity=testMapper.getProQuantity(1);
-		log.info(quantity+"");
-	}
-	
 	@Disabled
 	@Test
 	void SelectMEmailTest() {

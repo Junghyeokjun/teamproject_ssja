@@ -21,12 +21,6 @@
 			select M_EMAIL from members where M_EMAIL=#{mEmail}
 		]]>
 	</select>
-	
-	<select id="getProQuantity" resultType="int">
-		<![CDATA[
-			select PRO_QUANTITY from product where PRO_NO=#{proNo}
-		]]>
-	</select>
 
 	
 	<insert id="insertMember">
