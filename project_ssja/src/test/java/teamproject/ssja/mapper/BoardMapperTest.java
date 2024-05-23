@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.BoardDto;
@@ -24,6 +25,7 @@ class BoardMapperTest {
 //		}
 //	}
 
+	@Transactional
 	@Test
 	void testInsertBoard() {
 		BoardDto boardDto = new BoardDto();
@@ -82,22 +84,35 @@ class BoardMapperTest {
 
 	@Test
 	void testUpdateBLikeUp() {
-		fail("Not yet implemented");
+		BoardDto dto = boardMapper.read(130);
+		log.info("dto's like before up : " + dto.getBlike());
+		boardMapper.updateBLikeUp(dto.getBno());
+		
+		dto = boardMapper.read(130);
+		log.info("dto's like up after : " + dto.getBlike());		
 	}
 
 	@Test
 	void testUpdateBLikeDown() {
-		fail("Not yet implemented");
+		BoardDto dto = boardMapper.read(130);
+		log.info("dto's like before down : " + dto.getBlike());
+		boardMapper.updateBLikeDown(dto.getBno());
+		
+		dto = boardMapper.read(130);
+		log.info("dto's like down after : " + dto.getBlike());	
 	}
 
 	@Test
 	void testSelectTotalCount() {
-		fail("Not yet implemented");
+		log.info("총 게시글 수는 " + boardMapper.selectTotalCount() + "개입니다.");
 	}
 
 	@Test
 	void testSelectListWithPaging() {
-		fail("Not yet implemented");
+		// 기본 criteria : 1페이지에 출력되는 10개  
+		for(BoardDto dto : boardMapper.selectListWithPaging(new Criteria())) {
+			log.info("dto : " + dto);
+		}
 	}
 
 	@Test

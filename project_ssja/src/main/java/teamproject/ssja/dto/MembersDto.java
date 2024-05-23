@@ -21,6 +21,7 @@ import lombok.ToString;
 //M_PHONE    NOT NULL VARCHAR2(25)  
 //M_POINT    NOT NULL NUMBER(10)    
 //M_DATE     NOT NULL TIMESTAMP(6)  
+//M_NICKNAME NOT NULL VARCHAR2(40) 
 
 @Getter
 @Setter
@@ -41,4 +42,5 @@ public class MembersDto {
 	private String M_PHONE;
 	private int M_POINT;
 	private String M_DATE;
+	private String M_NICKNAME;
 }

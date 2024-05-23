@@ -115,7 +115,7 @@
             <td><input type="text" name="username" class="mb-3 form-control" id="id" size="26" placeholder="아이디"></td>
           </tr>
           <tr>
-            <td><input type="password" name="password" class="mb-3 form-control" id="pw" size="26"placeholder="비밀번호" aria-describedby="passwordHelpBlock"></td>
+            <td><input type="password" name="password" class="mb-3 form-control" id="pw" size="26" placeholder="비밀번호" aria-describedby="passwordHelpBlock"></td>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
             </td>
           </tr>

@@ -39,7 +39,20 @@ class TestRestControllerTest {
 	@Disabled
 	@Test
 	void testNameCheck() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get("/testrest/nameCheck?name=testUser1"))
+		mockMvc.perform(MockMvcRequestBuilders.get("/testrest/nickNameCheck?nickName=testUser1"))
+			   .andExpect(MockMvcResultMatchers.status().isOk())
+			   .andDo(print());	}
+
+	@Disabled
+	@Test
+	void testEmailCheck() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get("/testrest/emailCheck?email=user@naver.com"))
+			   .andExpect(MockMvcResultMatchers.status().isOk())
+			   .andDo(print());	}
+	@Disabled
+	@Test
+	void testQuantityCheck() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get("/testrest/quantityCheck?proNo=1&quantity=3"))
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andDo(print());	}
 

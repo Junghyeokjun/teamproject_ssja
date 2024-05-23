@@ -53,4 +53,38 @@ $(document).ready(function() {
 		let formattedDate = getBdateStr(bdateStr);
 		$(this).text(formattedDate);
 	});
+	
+	
+	// 글 좋아요 처리
+	$('#like-button').click(function(event) {
+    	// 기본 제출 동작 방지
+    	event.preventDefault();
+    	
+        let bno = $(this).data('likebno');
+        console.log(bno);
+        let likebmno = $(this).data('likebmno'); // 현재 상태 확인
+		console.log(likebmno);
+	        // console.log(JSON.stringify({ no : bno, liked : liked })); 
+	        // console.log(liked);
+        $.ajax({
+            url: '/api/likes/toggle/' + bno,
+            type: 'POST',
+            //contentType: 'application/json', // JSON 형식으로 요청을 보낼 것임을 명시
+            //data: JSON.stringify({ no : bno, liked : liked }), // JSON 형식으로 데이터 전달
+            data: {
+            	'bno' : bno, 'mno' : likebmno	            	
+            },
+            success: function(response) {
+            	console.log("successed");
+            	console.log(response);
+                $('#like-count').text(response.afterLikes);
+                $('#like-button').text(response.isLiked == 1  ? '좋아요 취소' : '좋아요');
+            },
+            error: function(xhr, status, error) {
+                console.log("Error: " + error);
+                console.log("Response: " + xhr.responseText);
+                alert('좋아요를 할 수 없는 상태입니다. 로그인하십시오.');
+            }
+        });
+    });
 });
