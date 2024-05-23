@@ -12,11 +12,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +25,7 @@ import teamproject.ssja.dto.logindto.CustomUserDetailsDTO;
 import teamproject.ssja.dto.userinfo.AddressForm;
 import teamproject.ssja.dto.userinfo.ChangePasswordForm;
 import teamproject.ssja.dto.userinfo.UserInfoDTO;
+import teamproject.ssja.service.mypage.MailService;
 import teamproject.ssja.service.mypage.MyPageService;
 import teamproject.ssja.service.user.CustomUserDetailsService;
 @Slf4j
@@ -39,6 +39,8 @@ public class UserInfoAsyncController {
 	CustomUserDetailsService userService;
 	@Autowired
 	PasswordEncoder passwordEncoder;
+	@Autowired
+	MailService mailService;
 	
 	@PostMapping("/info")
 	public ResponseEntity<UserInfoDTO> myPageUser(@AuthenticationPrincipal CustomUserDetailsDTO userDetails) {
@@ -94,12 +96,21 @@ public class UserInfoAsyncController {
 	 }
 	 
 	 @PostMapping("/email/auth")
-	 public ResponseEntity<String> requestEmailAuth(@RequestBody MailDTO email) {
+	 public ResponseEntity<MailDTO> requestEmailAuth(@RequestBody MailDTO email) {
 		 
 		 log.info("email {}", email.getReceiver());
 		 
+		 MailDTO autheticatedMail = mailService.CreateMailRequestAuth(email);
+		 log.info("autheticatedMail{}",autheticatedMail);
 		 
-		return ResponseEntity.ok("success");
+		 return ResponseEntity.ok().body(autheticatedMail);
+	 }
+	 
+	 @PatchMapping("/email")
+	 public ResponseEntity<String> chagneEmail(@RequestBody String email){
+		 
+		 log.info("email = {}",email);
+		 return ResponseEntity.ok("seccess chang email!!");
 	 }
 	 
 	 

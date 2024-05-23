@@ -220,8 +220,12 @@
 	let token = $("meta[name='_csrf']").attr("content");
 	let header = $("meta[name='_csrf_header']").attr("content");
 	
+	let email_auth_code='00000000';
 	const withdrawl_comment = '회원을 탈퇴하시면 계정이 삭제 되며 내가 쓴글, 구매내역, 리뷰, 채팅 등 모든 정보가 삭제됩니다.<br>' 
 		+'계정 삭제 후 7일 간에 유보기간이 주어지며, 유보기간 동안 마이페이지 > 회원정보로 오셔서 탈퇴 취소를 누르시면 다시 회원으로 지내실 수 있습니다.';
+		let $modi_email_auth_btn = $("<button>");
+		let $modi_email_change_btn = $("<button>").css("width",'90px');
+		
 
 	let myPageUserInfo = function() {
 		
@@ -290,13 +294,20 @@
 						let $email_title = $("<h4>").addClass("mx-5 my-3")
 								.text("이메일");
 						
-						let $modi_email_auth_btn = $("<button>");
-						let $modi_email_change_btn = $("<button>");
+						
 						
 						let $userInfo_email = $("<input>").addClass("mx-1").attr("id","modi_email_input")
 						.val(userInfo.m_Email).prop("disabled",true);
 						
-						let $email_change_btn = $("<button>").addClass("btn btn-dark").text("변경");
+						let $email_change_btn = $("<button>").addClass("btn btn-dark").text("변경").on('click',function(){
+							if(email_auth_code !== $userInfo_email.val()){
+								console.log('다름');
+								return;
+								}
+							
+							request_email_change();
+						})
+						;
 						let $email_auth_input = $("<input>").attr("id","email_auth_input");
 						
 						let $modi_email_btn = $("<button>") .attr("id", "modify_email_btn").addClass("btn btn-dark mx-3")
@@ -450,7 +461,26 @@
 	        contentType: "application/json",
 	        url: "/user/email/auth",
 	        success: function(data) {
+	        	console.log(data);
+	        	
 	            alert('해당 이메일로 인증번호를 전송하였습니다. \n 인증을 완료해주세요.');
+	            email_auth_code = data.authNum;
+	            console.log(email_auth_code);
+	        }
+	    });
+	};
+	let request_email_change = function() {
+	    $.ajax({
+	        type: "PATCH",
+	        beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+		    data: JSON.stringify({ "email": $("#modi_email_input").val() }),
+	        contentType: "application/json",
+	        url: "/user/email",
+	        success: function(data) {
+	        	alert('이메일이 변경되었습니다.');
+	        	myPageUserInfo();
 	        }
 	    });
 	};
