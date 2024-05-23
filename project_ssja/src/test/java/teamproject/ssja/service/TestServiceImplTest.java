@@ -38,6 +38,11 @@ class TestServiceImplTest {
 
 	@Disabled
 	@Test
+	void testEmailCheck() {
+		log.info(signUpService.emailCheck("user@gmail.com")+"");
+	}
+	@Disabled
+	@Test
 	void testSignUp() {
 		MembersDto member= new MembersDto(0,"testUser2","testUser2","testUser2","수원시","팔달구","21231","990408",null,"user@naver.com","01023451234",0,null,"pop");
 		log.info(signUpService.signUp(member)+"");

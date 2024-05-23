@@ -5,5 +5,6 @@ import teamproject.ssja.dto.MembersDto;
 public interface SignUpService {
 	boolean idCheck(String id);
 	boolean nickNameCheck(String nickName);
+	boolean emailCheck(String email);
 	boolean signUp(MembersDto member);
 }

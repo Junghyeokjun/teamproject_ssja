@@ -15,6 +15,12 @@
 			select M_NICKNAME from members where M_NICKNAME=#{mNickName}
 		]]>
 	</select>
+	
+	<select id="getMEmail" resultType="String">
+		<![CDATA[
+			select M_EMAIL from members where M_EMAIL=#{mEmail}
+		]]>
+	</select>
 
 	
 	<insert id="insertMember">
