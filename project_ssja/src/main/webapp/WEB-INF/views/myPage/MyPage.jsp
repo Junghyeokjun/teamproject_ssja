@@ -169,7 +169,6 @@
 		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc">내가 쓴 글</button>
 		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc">판매자 신청</button>
 		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc">문의 및 요청</button>
-		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc">회원 탈퇴</button>
 		    </div>
 		</div>
 
@@ -223,8 +222,8 @@
 		+'계정 삭제 후 7일 간에 유보기간이 주어지며, 유보기간 동안 마이페이지 > 회원정보로 오셔서 탈퇴 취소를 누르시면 다시 회원으로 지내실 수 있습니다.';
 
 	let myPageUserInfo = function() {
-		$
-				.ajax({
+		
+		$.ajax({
 					type : "post",
 					beforeSend : function(xhr) {
 						xhr.setRequestHeader(header, token);
@@ -232,7 +231,7 @@
 					url : "/user/info", // 정적인 URL 사용
 					dataType : "json", // 받을 데이터의 유형 지정
 					success : function(data) {
-						let userInfo = data;
+						const userInfo = data;
 						console.log(userInfo);
 						let $h2title = $("<h2>").text("회원 정보");
 						let $myPageContent = $("#MyPage_content_container")
@@ -348,7 +347,7 @@
 						let $withdrawl_title = $("<h4>").addClass("mx-5 my-3").text("회원 탈퇴");
 						
 						let $withdrawl_btn = $("<button>").attr('id','withdrawl_btn').addClass("btn btn-outline-danger").text('탈퇴하기').on('click',function(){
-							$wd_detail_dv1.empty();
+							$("#wd_detail_dv1").empty();
 							
 							let $wd_detail_1 = $("<h4>").text(userInfo.m_NickName+'님과 이별인가요? 너무 아쉬워요')
 							.css('font-weight','bold').addClass("my-3").appendTo($wd_detail_dv1);
@@ -361,26 +360,7 @@
 							let $wd_detail_4 = $("<p>").text("위에 대해 확인하였고 탈퇴하겠습니다.").appendTo($wd_detail_dv1);
 							let $wd_detail_5 = $("<div>").addClass("d-flex flex-row my-3 justify-conten-center align-items-center").appendTo($wd_detail_dv1);
 							
-							let $delete_ok_btn = $("<button>").addClass('btn btn-dark mx-1').text('탈퇴').on('click', function(){
-								 if($wd_detail_3.is(':checked')===false){
-									$wd_detail_6.text('확인란에 체크해 주시길 바랍니다.');
-									return ;
-								} 
-								 $.ajax({
-										type : "delete",
-										beforeSend : function(xhr) {
-											xhr.setRequestHeader(header, token);
-										},
-										url : "/user",
-										success : function(data){
-											alert('삭제 되었습니다.');
-										},
-										error : function(data){
-											alert('에러 발생');
-										}
-									})
-								
-							});
+							let $delete_ok_btn = $("<button>").addClass('btn btn-dark mx-1').text('탈퇴').on('click', );
 							let $delete_no_btn = $("<button>").addClass("btn btn-outline-secondary mx-1").text('취소').on('click',function(){
 								$wd_detail_dv1.empty();
 							});
@@ -388,7 +368,8 @@
 							$wd_detail_5.append($delete_ok_btn,$delete_no_btn);
 							
 							let $wd_detail_6 =$("<div>").addClass('text-center').css('color','red').appendTo($wd_detail_dv1);
-						});
+						}
+						);
 						let $withdrawl_main = $("<div>").addClass("d-flex flex-row align-items-center")
 						.attr("id","withdrawl_main").css("display","flex").append($withdrawl_title,$withdrawl_btn );
 							let $wd_detail_dv1 = $("<div>").addClass("d-flex flex-column align-items-center justify-content-center")
@@ -411,6 +392,11 @@
 	myPageUserInfo();
 
 	let change_address = function() {
+		
+		if($("#extra_address").val() == null || $("#extra_address").val() == ""){
+			alert("상세주소를 입력해주세요.");
+			return;
+		}
 		let address_data = {
 			zip_code : $("#zip_code").val(),
 			address : $("#address").val(),
@@ -478,6 +464,8 @@
 		let $myPageTitle = $("#MyPage_content_name");
 		$myPageTitle.empty().append($h2title);
 	});
+	
+	
 </script>
 <script>
 					 
