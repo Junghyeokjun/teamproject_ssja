@@ -10,17 +10,17 @@
 		]]>
 	</select>
 	
-	<select id="getMName" resultType="String">
+	<select id="getMNickName" resultType="String">
 		<![CDATA[
-			select M_NAME from members where M_NAME=#{mName}
+			select M_NICKNAME from members where M_NICKNAME=#{mNickName}
 		]]>
 	</select>
 
 	
 	<insert id="insertMember">
 		<![CDATA[
-			INSERT INTO members(M_NO,M_ID,M_PW,M_NAME,M_ADDRESS1,M_ADDRESS2,M_ZIPCODE,M_BIRTH,M_EMAIL,M_PHONE,M_DATE) 
-			VALUES(M_SEQ.nextval,#{M_ID},#{M_PW},#{M_NAME},#{M_ADDRESS1},#{M_ADDRESS2},#{M_ZIPCODE},#{M_BIRTH},#{M_EMAIL},#{M_PHONE},SYSDATE)
+			INSERT INTO members(M_NO,M_ID,M_PW,M_NAME,M_ADDRESS1,M_ADDRESS2,M_ZIPCODE,M_BIRTH,M_EMAIL,M_PHONE,M_DATE,M_NICKNAME) 
+			VALUES(M_SEQ.nextval,#{M_ID},#{M_PW},#{M_NAME},#{M_ADDRESS1},#{M_ADDRESS2},#{M_ZIPCODE},#{M_BIRTH},#{M_EMAIL},#{M_PHONE},SYSDATE,#{M_NICKNAME})
 		]]>
 	</insert>
 	

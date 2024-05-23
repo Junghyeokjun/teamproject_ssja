@@ -28,21 +28,21 @@ class TestMapperTest {
 	@Disabled
 	@Test
 	void SelectMidTest() {
-		String mid=testMapper.getMid("admin");
+		String mid=testMapper.getMid("testUser1");
 		log.info(mid);
 	}
 	
 	@Disabled
 	@Test
 	void SelectMnameTest() {
-		String mName=testMapper.getMName("admin");
+		String mName=testMapper.getMNickName("tam");
 		log.info(mName);
 	}
 	
 	@Disabled
 	@Test
 	void insertMnameTest() {
-		MembersDto member= new MembersDto(0,"testUser1","testUser1","testUser1","수원시","팔달구","21231","990408",null,"user@naver.com","01023451234",0,null);
+		MembersDto member= new MembersDto(0,"testUser1","testUser1","testUser1","수원시","팔달구","21231","990408",null,"user@gmail.com","01023451234",0,null,"tam");
 		int result=testMapper.insertMember(member);
 		log.info(result+"");
 	}

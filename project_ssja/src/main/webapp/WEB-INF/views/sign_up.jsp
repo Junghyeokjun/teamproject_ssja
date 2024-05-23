@@ -88,13 +88,13 @@
              nickname_check.on("click",function(){
                 //닉네임 중복확인 함수
                 $.ajax({    type : 'GET',           
-   						    url : '/testrest/nameCheck',
+   						    url : '/testrest/nickNameCheck',
    						    async : true,
    						    headers : {
    						    	"Content-Type" : "application/json; charset:UTF-8" },
    						    dataType : 'text',
    						    data :{
-										name : nickname.val()},    
+                                    nickName : nickname.val()},    
 							success : function(result) {
                                 console.log(result);
                                     if(result=="true"){
@@ -286,7 +286,7 @@
                 </tr>
                 <tr>
                     <td>닉네임</td>
-                    <td><input type="text" size="24" id="nickname" name="M_NAME" placeholder="중복되지 않은 닉네임을 입력해주세요"></td>
+                    <td><input type="text" size="24" id="nickname" name="M_NICKNAME" placeholder="중복되지 않은 닉네임을 입력해주세요"></td>
                     <td><input type="button"value="중복확인" id="nickname_check"></td>
                 </tr>
                 <tr>
@@ -320,6 +320,12 @@
                 <tr>
                     <td></td>
                     <td><p style="font-size: 10px;" class="mb-2" id="auth_check">ㅤ</p></td>
+                </tr>
+                <tr>
+                    <td>이름</td>
+                    <td>
+                        <input type="text" size="24" class="mb-2" id="tel" name="M_NAME"> 
+                    </td>
                 </tr>
                 <tr>
                     <td>전화번호</td>
@@ -359,6 +365,7 @@
                 <a href="${pageContext.request.contextPath}/"><input type="button" class="btn" value="취소" style="background-color: #bec1c4; color: white;"></a> 
                 <!-- 홈화면링크 -->
             </div>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         </form>
     </div>
 </body>

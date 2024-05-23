@@ -29,10 +29,10 @@ public class TestRestController {
 		return signUpService.idCheck(id);
 	}
 	
-	@GetMapping("/nameCheck")
-	public boolean nameCheck(String name) {
+	@GetMapping("/nickNameCheck")
+	public boolean nameCheck(String nickName) {
 		System.out.println(222);
-		return signUpService.nameCheck(name);
+		return signUpService.nickNameCheck(nickName);
 	}
 	
 	@PostMapping("/signUp")

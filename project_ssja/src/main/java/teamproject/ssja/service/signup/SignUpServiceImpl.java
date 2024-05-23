@@ -19,9 +19,9 @@ public class SignUpServiceImpl implements SignUpService {
 	}
 
 	@Override
-	public boolean nameCheck(String name) {
+	public boolean nickNameCheck(String nickName) {
 		//반환값이 null일시 테이블에 존재하지 않는다는것이므로 사용가능(true)
-		return testMapper.getMName(name)==null;
+		return testMapper.getMNickName(nickName)==null;
 	}
 
 	@Override
