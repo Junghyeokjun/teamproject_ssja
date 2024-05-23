@@ -22,6 +22,8 @@
   <script src="/js/footer.js">
 
   </script>
+   <meta name="_csrf" content="${_csrf.token}"/>
+<meta name="_csrf_header" content="${_csrf.headerName}"/>
   <link href="/css/footerstyle.css?after" rel="stylesheet">
   <link href="/css/barstyle.css?after" rel="stylesheet">
 
@@ -65,7 +67,10 @@
 #icn_txt{
   text-align: center;
 }
-
+#event_banners{
+width:100% auto;
+height:30em;
+}
 
   </style>
 </head>
@@ -96,8 +101,31 @@
     <div id="side_links" class="w-100"></div>
 </div>
   <main>
-
     <div id="main_container" >
+    
+ 	   <div id="carouselExampleIndicators" class="carousel slide">
+				<div class="carousel-indicators">
+					<button type="button" data-bs-target="#carouselExampleIndicators"data-bs-slide-to="0" 
+						class="active" aria-current="true"aria-label="Slide 1"></button>
+				</div>
+				<div class="carousel-inner" id="event_banner_content">
+					<div class="carousel-item active">
+					<a href="/event/page?event=0">
+						<img src="/images/event/banner/event_banner_img_default.jpg" id="event_banners" class="d-block w-100" alt="Event1...">
+					</a>
+					</div>
+					
+				</div>
+				<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+    
     
       <div id="icon_container" class="d-flex flex-row justify-content-evenly align-items-center">
           <div id="icon_div"><img id="icon_img"src="/images/utilities/icon_fur.png"><div id="icn_txt">가구</div></div>
@@ -105,7 +133,6 @@
           <div id="icon_div"><img id="icon_img" src="/images/utilities/icon_inte.png"> <div id="icn_txt">인테리어</div></div>
           <div id="icon_div"><img id="icon_img" src="/images/utilities/icon_cook.png"><div id="icn_txt">주방용품</div></div>
           <div id="icon_div"><img id="icon_img" src="/images/utilities/icon_life.png"><div id="icn_txt">생활용품</div></div>
-
     </div>
 </div>
   </main>
@@ -117,5 +144,51 @@
   </footer>
 
 </body>
+<script>
+
+
+
+console.log("요");
+
+let homePageRender = function(){
+	
+	$.ajax({
+	    type: "get",
+	    url: "/home/event-banners",
+	   
+	    success: function(data) {
+	    	
+	        data.forEach(function(e,index){
+	        	let now_slide= index + 1;
+	        	console.log(e.ev_no + "s now lide" +now_slide);
+	        	let next_slide = index + 2;
+	        	console.log(e.ev_no + "s next lide" +next_slide);
+	        	
+	        	 let $event_car_btn = $("<button>").attr("type", "button")
+                 .attr("data-bs-target", "#carouselExampleIndicators")
+                 .attr("data-bs-slide-to", now_slide)
+                 .attr("aria-label", "Slide " + next_slide);
+
+$(".carousel-indicators").append($event_car_btn);
+	        	
+	        	let $event_contents = $("<div>").addClass("carousel-item").append(
+	        		    $("<a>").attr("href", e.ev_page).append(
+	        		        $("<img>").attr("id",'event_banners').attr("src", e.ev_banner).addClass("d-block w-100").attr("alt", "Event Banner")
+	        		    )
+	        		);
+	        		$("#event_banner_content").append($event_contents);
+	        		
+	        		
+	        
+	        })
+	    },
+	    error: function(xhr, status, error) {
+	        console.log("실패" ,error);
+	    }
+	});
+};
+
+homePageRender();
+</script>
 
 </html>
