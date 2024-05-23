@@ -25,21 +25,24 @@ public class TestRestController {
 
 	@GetMapping("/idCheck")
 	public boolean idCheck(String id) {
-		System.out.println(111);
+		
 		return signUpService.idCheck(id);
 	}
 	
 	@GetMapping("/nickNameCheck")
 	public boolean nickNameCheck(String nickName) {
-		System.out.println(222);
 		return signUpService.nickNameCheck(nickName);
 	}
 
-	
+
 	@GetMapping("/emailCheck")
 	public boolean emailCheck(String email) {
-		System.out.println(email);
 		return signUpService.emailCheck(email);
+	}
+
+	@GetMapping("/quantityCheck")
+	public boolean quantityCheck(long proNo,int quantity) {
+		return signUpService.quantityCheck(proNo,quantity);
 	}
 	
 	@PostMapping("/signUp")
@@ -51,5 +54,5 @@ public class TestRestController {
 		return signUpService.signUp(member);
 		
 	}
-
+	
 }
