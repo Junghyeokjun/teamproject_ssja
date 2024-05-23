@@ -300,14 +300,15 @@
 						.val(userInfo.m_Email).prop("disabled",true);
 						
 						let $email_change_btn = $("<button>").addClass("btn btn-dark").text("변경").on('click',function(){
+							
+							console.log(email_auth_code);
 							if(email_auth_code !== $userInfo_email.val()){
 								console.log('다름');
 								return;
 								}
-							
+							console.log("보냄");
 							request_email_change();
-						})
-						;
+						});
 						let $email_auth_input = $("<input>").attr("id","email_auth_input");
 						
 						let $modi_email_btn = $("<button>") .attr("id", "modify_email_btn").addClass("btn btn-dark mx-3")
@@ -392,7 +393,26 @@
 							let $wd_detail_4 = $("<p>").text("위에 대해 확인하였고 탈퇴하겠습니다.").appendTo($wd_detail_dv1);
 							let $wd_detail_5 = $("<div>").addClass("d-flex flex-row my-3 justify-conten-center align-items-center").appendTo($wd_detail_dv1);
 							
-							let $delete_ok_btn = $("<button>").addClass('btn btn-dark mx-1').text('탈퇴').on('click', );
+							let $delete_ok_btn = $("<button>").addClass('btn btn-dark mx-1').text('탈퇴').on('click',function(){
+								 if($wd_detail_3.is(':checked')===false){
+										$wd_detail_6.text('확인란에 체크해 주시길 바랍니다.');
+										return ;
+									} 
+									 $.ajax({
+											type : "delete",
+											beforeSend : function(xhr) {
+												xhr.setRequestHeader(header, token);
+											},
+											url : "/user",
+											success : function(data){
+												alert('삭제 되었습니다.');
+											},
+											error : function(data){
+												alert('에러 발생');
+											}
+										})
+									
+								});
 							let $delete_no_btn = $("<button>").addClass("btn btn-outline-secondary mx-1").text('취소').on('click',function(){
 								$wd_detail_dv1.empty();
 							});
@@ -475,6 +495,7 @@
 	        beforeSend : function(xhr) {
 				xhr.setRequestHeader(header, token);
 			},
+			async:false,
 		    data: JSON.stringify({ "email": $("#modi_email_input").val() }),
 	        contentType: "application/json",
 	        url: "/user/email",
