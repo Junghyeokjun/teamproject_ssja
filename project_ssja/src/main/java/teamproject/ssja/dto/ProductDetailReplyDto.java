@@ -12,6 +12,8 @@ package teamproject.ssja.dto;
 //PRO_HIT       NOT NULL NUMBER(10)    
 //PRO_BIZNAME   NOT NULL VARCHAR2(30)  
 
+import java.sql.Timestamp;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,25 +25,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ProductDetailDto {
-	long PRO_NO;
-	long V_NO;   
-	String PRO_NAME;
-	String PRO_PRICE;
-	String PRO_QUANTITY;
-	String PRO_BANNERIMG;
-	long PRO_WISH;
-	long PRO_SELLCOUNT;
-	long PRO_HIT;
-	String PRO_BIZNAME;
-	long M_NO;   
-	String V_BIZNAME;
-	String V_LICENSE;
-	String M_NAME;
-	String M_ADDRESS1;
-	String M_ADDRESS2;
-	String M_ZIPCODE;
-	String M_EMAIL;
-	String M_PHONE;
+public class ProductDetailReplyDto {
+	long PRO_NO;	
 	String B_WRITER;	
+	Timestamp B_DATE;
+	String B_CONTENT;
 }

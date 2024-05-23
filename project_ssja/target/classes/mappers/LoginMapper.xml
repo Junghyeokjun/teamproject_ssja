@@ -3,7 +3,7 @@
 <mapper namespace="teamproject.ssja.mapper.LoginMapper">
 
    
-<resultMap id="userResultMap" type="UserInfoDTO">
+<resultMap id="userResultMap" type="teamproject.ssja.dto.userinfo.UserInfoDTO">
     <id property="m_No" column="m_No"/>
     <result property="m_Id" column="m_Id"/>
     <result property="m_Pw" column="m_Pw"/>
