@@ -299,16 +299,7 @@
 						let $userInfo_email = $("<input>").addClass("mx-1").attr("id","modi_email_input")
 						.val(userInfo.m_Email).prop("disabled",true);
 						
-						let $email_change_btn = $("<button>").addClass("btn btn-dark").text("변경").on('click',function(){
-							
-							console.log(email_auth_code);
-							if(email_auth_code !== $userInfo_email.val()){
-								console.log('다름');
-								return;
-								}
-							console.log("보냄");
-							request_email_change();
-						});
+						let $email_change_btn = $("<button>").addClass("btn btn-dark").text("변경");
 						let $email_auth_input = $("<input>").attr("id","email_auth_input");
 						
 						let $modi_email_btn = $("<button>") .attr("id", "modify_email_btn").addClass("btn btn-dark mx-3")
@@ -317,7 +308,17 @@
 					    	$email_auth_input.remove();
 					    	
 					        $userInfo_email.prop('disabled', false).focus();
-					        $userInfo_dv4.append($email_auth_input, $email_change_btn);
+					        $userInfo_dv4.append($email_auth_input, $email_change_btn.on('click',function(){
+								
+								console.log(email_auth_code);
+								console.log($userInfo_email.val());
+								if(email_auth_code !== $email_auth_input.val()){
+									console.log('다름');
+									return;
+									}
+								console.log("보냄");
+								request_email_change();
+							}));
 					        $(this).removeClass("btn-dark").addClass("btn-outline-secondary").text("인증").on('click',function(e){
 					        	$(this).addClass("btn-secondary");
 					        	$email_auth_input.focus();
@@ -481,7 +482,7 @@
 	        contentType: "application/json",
 	        url: "/user/email/auth",
 	        success: function(data) {
-	        	console.log(data);
+	        	console.log(email_auth_code);
 	        	
 	            alert('해당 이메일로 인증번호를 전송하였습니다. \n 인증을 완료해주세요.');
 	            email_auth_code = data.authNum;
