@@ -24,9 +24,6 @@ public class BoardController {
 
 	@Autowired
 	private BoardService boardService;
-
-	@Autowired
-	private ReplyService replyService;
 	
 	@GetMapping("/list")
 	public String qnaList(Model model, Criteria criteria) {
@@ -49,7 +46,7 @@ public class BoardController {
 	public String showView(HttpServletRequest request, HttpServletResponse response, Model model) {
 		log.info("showView()..");
 		model.addAttribute("content_view", boardService.showContent(request, response));
-		return "/qna/content_view_test";
+		return "/qna/content_view";
 	}
 
 	@GetMapping("/write_view")

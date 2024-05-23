@@ -8,7 +8,9 @@ import teamproject.ssja.dto.MembersDto;
 public interface TestMapper {
 	
 	String getMid(String mid);
-	String getMName(String mName);
+	String getMNickName(String mNickName);
+	String getMEmail(String mEmail);
+	int getProQuantity(long proNo);
 	int insertMember(MembersDto member);
 	int insertUserAuth(String mid);
 }
