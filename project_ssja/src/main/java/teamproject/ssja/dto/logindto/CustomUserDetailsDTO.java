@@ -28,7 +28,7 @@ public class CustomUserDetailsDTO implements UserDetails{
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<GrantedAuthority> authorities = new ArrayList<>() ;
 		
-		 authorities.add(new SimpleGrantedAuthority(userInfo.getAuth()));
+		authorities.add(new SimpleGrantedAuthority(userInfo.getAuth()));
 		return authorities;
 	}
 

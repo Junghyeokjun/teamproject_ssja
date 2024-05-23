@@ -11,6 +11,8 @@ public class Criteria {
 	// 페이징 처리를 위해서는 페이지 번호, 한 페이지당 몇 개의 데이터를 보여줄 것인지 결정되어야 함.
 	private int pageNum; // 페이지 번호
 	private int amount; // 한 페이지당 보여줄 데이터 개수
+	private long bno;
+	
 	
 	public Criteria() {
 		this(1,10); // 기본값 1페이지 10개로 지정

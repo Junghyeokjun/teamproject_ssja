@@ -29,15 +29,15 @@
 	
 </script>
 <script src="/js/footer.js">
-
-
+	
+</script>
+<script src="/js/board.js">
 	
 </script>
 
-
 <link href="/css/footerstyle.css?after" rel="stylesheet">
 <link href="/css/barstyle.css?after" rel="stylesheet">
-<link href="/css/qna.css?after" rel="stylesheet">
+<link href="/css/board.css?after" rel="stylesheet">
 
 <link rel="stylesheet"
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
@@ -84,35 +84,10 @@ body {
 	text-align: center;
 }
 
-.table{
-	border : 0;
-}
-
-#qna_textarea{
-	width : 100%;
-	height: 30em;
-    border: none;
-    resize: none;
-}
-
 .main_whitespace{
 	width : 100%;
 	height : 5em;
 }
-</style>
-
-<style>
-.table{
-	border : 0;
-}
-
-#qna_textarea{
-	width : 100%;
-	height: 30em;
-    border: none;
-    resize: none;
-}
-
 </style>
 </head>
 
@@ -150,6 +125,7 @@ body {
 			<form action="${pageContext.request.contextPath}/qna/modify_view" method="post">
 				<div class="input-group">
 					<input type="hidden" class="form-control" name="bno" value="${content_view.bno}">
+					<sec:csrfInput />
 				</div>
 				<table class="table" >
 					<tr>
@@ -198,7 +174,7 @@ body {
 							</div>
 					</tr>
 					<tr>
-						<td  colspan="2">
+						<td  colspan="2" style="border: none;">
 							<div class="text-center">
 								<p>
 									좋아요 수 : <span id="like-count">${content_view.blike}</span>
@@ -208,14 +184,51 @@ body {
 					</tr>
 					<tr>
 						<td  colspan="2">
-							<input type="submit" value="수정"> &nbsp;&nbsp;<button><a
-							href="${pageContext.request.contextPath}/qna/list">되돌아가기</a></button> <%-- &nbsp;&nbsp;<a href="${pageContext.request.contextPath}/qna/delete?bno=${content_view.bno}">삭제</a> --%>
+							<div class="d-flex justify-content-between">
+								<input type="submit" class="btn btn-danger customed-ssja" value="수정">
+								<a class="btn btn-primary customed-ssja" href="${pageContext.request.contextPath}/qna/list">되돌아가기</a>								
+								<%-- &nbsp;&nbsp;<a href="${pageContext.request.contextPath}/qna/delete?bno=${content_view.bno}">삭제</a> --%>
 							<%-- <sec:authorize access="hasRole('ROLE_ADMIN')">
 								&nbsp;&nbsp;<a
 									href="${pageContext.request.contextPath}/qna/${content_view.bno}">답변</a>
 							</sec:authorize> <sec:authorize access="!hasRole('ROLE_ADMIN')">
 
 							</sec:authorize> --%>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<div class="">
+							
+							</div>
+							<div>
+								<nav aria-label="Page navigation example">
+									<ul class="pagination justify-content-center">
+										<c:if test="${pageMaker.prev}">
+											<li class="page-item"><a class="page-link"
+												href="${pageContext.request.contextPath}/board/list2${pageMaker.makeQuery(pageMaker.startPage-1)}"><<a></li>
+										</c:if>
+										<c:forEach var="idx" begin="${pageMaker.startPage}"
+											end="${pageMaker.endPage}">
+											<c:choose>						
+												<c:when test="${pageMaker.criteria.pageNum == idx}">
+													<li class="page-item active"><a class="page-link"
+														href="${pageContext.request.contextPath}/board/list2${pageMaker.makeQuery(idx)}">${idx}</a></li>
+												</c:when>
+												<c:otherwise>
+													<li class="page-item"><a class="page-link"
+														href="${pageContext.request.contextPath}/board/list2${pageMaker.makeQuery(idx)}">${idx}</a></li>
+												</c:otherwise>
+											</c:choose>
+										</c:forEach>
+										<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+											<li class="page-item"><a class="page-link"
+												href="${pageContext.request.contextPath}/board/list2${pageMaker.makeQuery(pageMaker.endPage+1)}">></a></li>
+										</c:if>
+									</ul>
+								</nav>
+							</div>
 						</td>
 					</tr>
 				</table>
@@ -230,42 +243,4 @@ body {
 	</footer>
 
 </body>
-<script>
-	$(document).ready(function() {
-	    $('#like-button').click(function() {
-	    	// 기본 제출 동작 방지
-	    	event.preventDefault();
-	    	
-	        let bno = $(this).data('likebno');
-	        console.log(bno);
-	        let likebmno = $(this).data('likebmno'); // 현재 상태 확인
-			console.log(likebmno);
- 	        // console.log(JSON.stringify({ no : bno, liked : liked })); 
- 	        // console.log(liked);
-	        $.ajax({
-	        	beforeSend : function(xhr) {
-	        		xhr.setRequestHeader(header, token);
-	        	}
-	            url: '/api/likes/toggle/' + bno,
-	            type: 'POST',
-	            //contentType: 'application/json', // JSON 형식으로 요청을 보낼 것임을 명시
-	            //data: JSON.stringify({ no : bno, liked : liked }), // JSON 형식으로 데이터 전달
-	            data: {
-	            	'bno' : bno, 'mno' : likebmno	            	
-	            },
-	            success: function(response) {
-	            	console.log("successed");
-	            	console.log(response);
-	                $('#like-count').text(response.afterLikes);
-	                $('#like-button').text(response.isLiked == 1  ? '좋아요 취소' : '좋아요');
-	            },
-	            error: function(xhr, status, error) {
-	                console.log("Error: " + error);
-	                console.log("Response: " + xhr.responseText);
-	                alert('좋아요를 변경하는 중 오류가 발생했습니다.');
-	            }
-	        });
-	    });
-	});
-</script>
 </html>
