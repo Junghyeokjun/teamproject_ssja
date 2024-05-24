@@ -107,10 +107,15 @@ public class UserInfoAsyncController {
 	 }
 	 
 	 @PatchMapping("/email")
-	 public ResponseEntity<String> chagneEmail(@RequestBody String email){
+	 public ResponseEntity<String> chagneEmail(@RequestBody String email,@AuthenticationPrincipal UserDetails userDetails){
+		 String userId = userDetails.getUsername();
 		 
-		 log.info("email = {}",email);
+		 
+		 myPageService.modifyUserEmail(email, userId);
+		 
 		 return ResponseEntity.ok("seccess chang email!!");
+		 
+		 
 	 }
 	 
 	 

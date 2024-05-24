@@ -23,4 +23,5 @@ public interface MyPageMapper {
 	List<String> findDeleteEnrolledUsers();
 	
 	void deleteEnrolledUsersAuth(List<String> enrolledDeleteUsers);
+	void modifyUserEmail(Map<String,String> params);
 }

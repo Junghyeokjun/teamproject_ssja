@@ -21,4 +21,5 @@ public interface MyPageService {
 	List<String> findDeleteEnrolledUsers();
 	
 	void deleteEnrolledUsersAuth(List<String> enrolledDeleteUsers);
+	void modifyUserEmail(String email, String username);
 }
