@@ -47,12 +47,14 @@ public class TestRestController {
 	}
 	
 	@PostMapping("/signUp")
-	public boolean signUp(MembersDto member,String email, String domain) {
+	public ModelAndView signUp(MembersDto member,String email, String domain ,ModelAndView mv) {
 //		패스워드 엔코더 추가후
 //		member.setM_PW(passwordEncoder.encode(member.getM_PW()));
 		System.out.println(member);
 		member.setM_EMAIL(email+"@"+domain);
-		return signUpService.signUp(member);
+		signUpService.signUp(member);
+		mv.setViewName("temp_login");
+		return mv;
 		
 	}
 

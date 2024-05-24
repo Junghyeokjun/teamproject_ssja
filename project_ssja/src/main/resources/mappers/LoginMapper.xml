@@ -22,5 +22,7 @@
         from members m , AUTHORITY a WHERE m.M_ID=a.M_ID ) where m_Id = #{username}
        
     </select> 
-
+	<select id="findId" resultType="String">
+       select M_ID from members where m_Email = #{email}
+    </select>
 </mapper>

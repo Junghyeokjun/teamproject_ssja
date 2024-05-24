@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.UserRoleAndAuthDTO;
@@ -104,6 +105,19 @@ public class UserInfoAsyncController {
 		 log.info("autheticatedMail{}",autheticatedMail);
 		 
 		 return ResponseEntity.ok().body(autheticatedMail);
+	 }
+
+	 
+	 @PostMapping("/findId")
+	 public ModelAndView findId(ModelAndView mv,String email) {
+		 
+		 MailDTO mail=new MailDTO();
+		 mail.setReceiver(email);
+		 log.info("email {}", mail.getReceiver());
+		 
+		 mailService.findIDMail(mail);
+		 
+		 return mv;
 	 }
 	 
 	 @PatchMapping("/email")

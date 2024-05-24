@@ -7,5 +7,5 @@ import teamproject.ssja.dto.userinfo.UserInfoDTO;
 public interface LoginMapper {
 	
 	UserInfoDTO findByUsername(String username);
-	
+	String findId(String email);
 }
