@@ -296,7 +296,7 @@
 						
 						
 						
-						let $userInfo_email = $("<input>").addClass("mx-1").attr("id","modi_email_input")
+						let $userInfo_email = $("<input>").attr("type","email").addClass("mx-1").attr("id","modi_email_input")
 						.val(userInfo.m_Email).prop("disabled",true);
 						
 						let $email_change_btn = $("<button>").addClass("btn btn-dark").text("변경");
