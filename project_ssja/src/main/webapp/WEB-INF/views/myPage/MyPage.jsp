@@ -310,13 +310,9 @@
 					        $userInfo_email.prop('disabled', false).focus();
 					        $userInfo_dv4.append($email_auth_input, $email_change_btn.on('click',function(){
 								
-								console.log(email_auth_code);
-								console.log($userInfo_email.val());
 								if(email_auth_code !== $email_auth_input.val()){
-									console.log('다름');
 									return;
 									}
-								console.log("보냄");
 								request_email_change();
 							}));
 					        $(this).removeClass("btn-dark").addClass("btn-outline-secondary").text("인증").on('click',function(e){
@@ -496,8 +492,8 @@
 	        beforeSend : function(xhr) {
 				xhr.setRequestHeader(header, token);
 			},
-			async:false,
-		    data: JSON.stringify({ "email": $("#modi_email_input").val() }),
+			//async:false,
+		    data: $("#modi_email_input").val(),
 	        contentType: "application/json",
 	        url: "/user/email",
 	        success: function(data) {

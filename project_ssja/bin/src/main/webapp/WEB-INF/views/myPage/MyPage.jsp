@@ -311,7 +311,7 @@
 					        $userInfo_dv4.append($email_auth_input, $email_change_btn.on('click',function(){
 								
 								console.log(email_auth_code);
-								console.log($userInfo_email.val());
+								console.log($email_auth_input.val());
 								if(email_auth_code !== $email_auth_input.val()){
 									console.log('다름');
 									return;
@@ -496,7 +496,7 @@
 	        beforeSend : function(xhr) {
 				xhr.setRequestHeader(header, token);
 			},
-			async:false,
+			//async:false,
 		    data: JSON.stringify({ "email": $("#modi_email_input").val() }),
 	        contentType: "application/json",
 	        url: "/user/email",

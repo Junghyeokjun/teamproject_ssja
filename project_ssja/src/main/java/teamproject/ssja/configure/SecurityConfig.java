@@ -2,19 +2,24 @@ package teamproject.ssja.configure;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
+
+import teamproject.ssja.service.user.CustomUserDetailsService;
 
 
 
@@ -24,7 +29,18 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 @EnableWebSecurity//스프링 시큐리티 필터가 스프링 필터체인에 등록됨
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
+	   @Autowired
+	    private CustomUserDetailsService customUserDetailsService;
+	   
+	   @Autowired
+	   private PasswordEncoder passwordEncoder;
 
+
+	 @Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		    auth.userDetailsService(customUserDetailsService)
+	        .passwordEncoder(passwordEncoder);
+	}
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		
@@ -34,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	
 	@Override
-	public void configure(HttpSecurity http) throws Exception {
+	protected void configure(HttpSecurity http) throws Exception {
 	//http.csrf().disable();
 		/* 권한설정 */
 	    http.authorizeRequests()
@@ -75,24 +91,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	//계층 권한
 	 @Bean
-	    public RoleHierarchy roleHierarchy(){
+	    protected RoleHierarchy roleHierarchy(){
 	        RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
 	        hierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
 	        return hierarchy;
 	    }
 	 
 	 @Bean
-	    public SessionAuthenticationStrategy sessionAuthenticationStrategy() {
+	 protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
 	        return new ConcurrentSessionControlAuthenticationStrategy(sessionRegistry());
 	    }
 	 
 	 @Bean//현재 세션을 추적할 수 있도록 설정
-	    public SessionRegistry sessionRegistry() {
+	 protected SessionRegistry sessionRegistry() {
 	        return new SessionRegistryImpl();
 	    }
 	 
 	 @Bean // 세션 생성 및 소멸 이벤트를 처리하는 역할
-	    public HttpSessionEventPublisher httpSessionEventPublisher() {
+	 protected HttpSessionEventPublisher httpSessionEventPublisher() {
 	        return new HttpSessionEventPublisher();
 	    }
 }
