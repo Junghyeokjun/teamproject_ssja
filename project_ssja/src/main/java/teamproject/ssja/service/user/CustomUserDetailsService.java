@@ -7,14 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.logindto.CustomUserDetailsDTO;
 import teamproject.ssja.dto.userinfo.ChangePasswordForm;
 import teamproject.ssja.dto.userinfo.UserInfoDTO;
 import teamproject.ssja.mapper.LoginMapper;
 import teamproject.ssja.mapper.MyPageMapper;
-
+@Slf4j
 @Service
 public class CustomUserDetailsService implements UserDetailsService{
 
@@ -22,11 +24,16 @@ public class CustomUserDetailsService implements UserDetailsService{
 	LoginMapper loginMapper;
 	@Autowired
 	MyPageMapper myPageMapper;
+	@Autowired
+	PasswordEncoder passwordEncoder;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserInfoDTO userData = loginMapper.findByUsername(username);
 		if(userData != null) {
+			
+		
+			
 		CustomUserDetailsDTO userDetailsDTO = new CustomUserDetailsDTO(userData);
 	
 		return userDetailsDTO;
@@ -37,10 +44,13 @@ public class CustomUserDetailsService implements UserDetailsService{
 	
 	public Boolean changePasswordProcess(String username, ChangePasswordForm passwordForm) {
 		
+		log.info("before passwordForm{}",passwordForm);
+		
 		UserInfoDTO userData = loginMapper.findByUsername(username);
+	
+		passwordForm.setNewPassword(passwordEncoder.encode(passwordForm.getNewPassword()));
 		
-		
-		if(userData.getM_Pw().equals(passwordForm.getCurrentPassword()) && userData != null) {
+		if(passwordEncoder.matches(passwordForm.getCurrentPassword(), userData.getM_Pw()) && userData != null) {
 			
 			Map<String, String> params = new HashMap<>();
 			params.put("username",username);
