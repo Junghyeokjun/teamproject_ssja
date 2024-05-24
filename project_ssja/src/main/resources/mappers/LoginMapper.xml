@@ -8,14 +8,17 @@
     <result property="m_Id" column="m_Id"/>
     <result property="m_Pw" column="m_Pw"/>
     <result property="m_Name" column="m_Name"/>
+    <result property="m_Address1" column="m_Address1"/>
+    <result property="m_Address2" column="m_Address2"/>
     <result property="m_Birth" column="m_Birth"/>
     <result property="m_Grade" column="m_Grade"/>
     <result property="m_Email" column="m_Email"/>
+    <result property="m_Point" column="m_Point"/>
     <result property="m_NickName" column="m_NickName"/>
     <result property="auth" column="auth"/>
 </resultMap>
     <select id="findByUsername" parameterType="String" resultMap="userResultMap">
-       select * from (select m_No, m.M_ID as m_Id, m_Pw,m_Name,m_Birth, m_Grade,m_Email,m_NickName,auth
+       select * from (select m_No, m.M_ID as m_Id, m_Pw,m_Name,m_Address1,m_Address2,m_Birth, m_Grade,m_Email,m_Point,m_NickName,auth
         from members m , AUTHORITY a WHERE m.M_ID=a.M_ID ) where m_Id = #{username}
        
     </select> 

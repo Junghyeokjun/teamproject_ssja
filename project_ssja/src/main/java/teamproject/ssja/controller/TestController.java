@@ -45,9 +45,4 @@ public class TestController {
 		mv.setViewName("purchase");
 		return mv;
 	}
-	@RequestMapping("/purchase_complete")
-	public String purchaseComplete() {
-		return "purchase_complete";
-	}
-
 }
