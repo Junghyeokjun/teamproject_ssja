@@ -1,5 +1,6 @@
 package teamproject.ssja.configure.security;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.extern.slf4j.Slf4j;
@@ -7,12 +8,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CustomBcryptPasswordEncoder implements PasswordEncoder {
 
+	private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+	
 	@Override
 	public String encode(CharSequence rawPassword) {
-		
-		log.warn("before encode: " + rawPassword);
-		
-		return rawPassword.toString();
+		String encodedPw = encoder.encode(rawPassword);
+		log.warn(" encode: " + encodedPw);
+		return encodedPw;
 	}
 
 	@Override
@@ -20,7 +22,7 @@ public class CustomBcryptPasswordEncoder implements PasswordEncoder {
 		
 		log.warn("matches: " + rawPassword + " : " + encodedPassword);
 		
-		return rawPassword.toString().equals(encodedPassword);
+		return encoder.matches(rawPassword, encodedPassword);
 	}
 
 }

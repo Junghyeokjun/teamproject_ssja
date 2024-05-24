@@ -45,21 +45,46 @@
     #logo_img {
       width: 3.5em;
       height: 3em;
+      width:90%;
     }
     
-    #event_top{
-    border-bottom:1px solid #cccccc;
-    text-aling:center;
-    margin-top:2em;
-    margin-bottom:1em;
-    }
-    #event_top_next > sapn{
-    margin-left:2em;
-    margin-right:2em;
-    }
-   
-  </style>
+/* 추가 */
+#product_search_select{
+font-size:0.8em;
+width:100%;
+display:flex;
+flex-direction:column;
+align-items:center;
+}
+#product_search_select > div{
+display:flex;
+flex-direction:row;
+align-items:center;
+width:100%;
+border-bottom:1px solid #ccc;
+margin-top:1em;
+margin-bottom:1em;
+}
+#product_search_select > div > button{
+marigin-right:1.5em;
+marigin-left:1.5em;
+border:none;
+background-color:white;
+}
 
+#product_search_select > div > input{
+
+width:7em;
+}
+#product_search_select > div > span{
+marign-right:1em;
+marign-left:1em;
+}
+
+  </style>
+  <style>
+
+  </style>
 </head>
 
 <body>
@@ -88,45 +113,63 @@
     <div id="side_links" class="w-100"></div>
 </div>
 
-
-	<main>
-		<div id="main_container">
-		
-		<div id="event_top" class="d-flex justify-content-center">
-		<h3>이벤트</h3>
-		</div>
-		
-		<div id="event_top_next" style="border-bottom:1px solid #cccc;" class="my-3 d-flex justify-content-between align-items-center py-2"> 
-		<span>상태 | 
-		<c:choose>
-		
-   				 <c:when test="${evPageInfo.ev_status == 1}"> 진행 중 </c:when>
-    			<c:when test="${evPageInfo.ev_status == 0}">  종료</c:when>
-   			 	<c:otherwise> 상태 정보 없음</c:otherwise>
+  <main>
+    <div id="main_container" >
     
-		</c:choose>
-		</span>
-		<span>기간 :  ${evPageInfo.ev_duedate } 까지</span>
+    <div id="product_search_select" class="" style=" width:100%;">
+		<div class="m-3"style="border-bottom:1px solid #ccc" ><h3>세부 조회</h3></div>
+		
+		<div class="w-100 mx-3">
+		<h5>이름 별</h5>
+		<span>|</span>
+		<button>가나다순</button>
+		<button>가나다역순</button>
+		<button>이름 길이 순</button>
+		<button>이름 길이 짧은 순</button>
 		</div>
 		
-		<img src="/images/event/page/event_page_${evPageInfo.ev_no}.jpg" class="w-100 " style="height:auto;" id="event_main_content">
+		<div class="w-100 mx-3">
+		<h5>가격 별</h5>
+		<span>|</span>
+		<button>0 ~ 3만원대</button>
+		<button>3 ~ 5만원대</button>
+		<button>5 ~ 10 만원대</button>
+		<button>10 ~ 20만원대</button>
 		
-		<div id="event_bottom" style="border-bottom:1px solid #cccc;border-top:1px solid #cccc;" class="d-flex flex-row my-3 py-3"> 
-		<span class="mx-3">작성자 :  관리자 </span>
-		<span class="mx-3">등록일 :${evPageInfo.ev_startdate } </span>
+		<input>
+		<span>원~</span>
+		<input>
+		<span>원</span>
+		<form class="mb-1 my-auto"><button id="search_custom_money_btn" class="btn btn-dark" style="width:4em;height:2em;">검색</button></form>
+		
 		</div>
 		
+		
+		<div class="w-100 mx-3">
+		<h5>분류 별</h5>
+		<span>|</span>
+		<button>인기 순</button>
+		<button>별점 순</button>
+		<button>후기 순</button>
+		<button>위시 순</button>
+		<button>신상품 순</button>
 		</div>
-	</main>
+    </div>
+    
+    <div id="product_content" class="my-5">
+    
+    </div>
+ 	 
+</div>
+  </main>
 
-
-	<footer>
+  <footer>
     <div id="first_footer" class="p-3"></div>
     <div id="second_footer"></div>
     <div id="third_footer"></div>
   </footer>
+ 
 
 </body>
-
-
+<script src="/js/product/getListProduct.js"></script>
 </html>

@@ -171,11 +171,12 @@ let homePageRender = function(){
                  .attr("data-bs-slide-to", now_slide)
                  .attr("aria-label", "Slide " + next_slide);
 
-$(".carousel-indicators").append($event_car_btn);
+			$(".carousel-indicators").append($event_car_btn);
 	        	
 	        	let $event_contents = $("<div>").addClass("carousel-item").append(
 	        		    $("<a>").attr("href", e.ev_page).append(
-	        		        $("<img>").attr("id",'event_banners').attr("src", e.ev_banner).addClass("d-block w-100").attr("alt", "Event Banner")
+	        		        $("<img>").attr("id",'event_banners').attr("src", e.ev_banner)
+	        		        .addClass("d-block w-100").attr("alt", "Event Banner")
 	        		    )
 	        		);
 	        		$("#event_banner_content").append($event_contents);

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.UserRoleAndAuthDTO;
@@ -105,12 +106,18 @@ public class UserInfoAsyncController {
 		 
 		 return ResponseEntity.ok().body(autheticatedMail);
 	 }
+
 	 
 	 @PatchMapping("/email")
-	 public ResponseEntity<String> chagneEmail(@RequestBody String email){
+	 public ResponseEntity<String> chagneEmail(@RequestBody String email,@AuthenticationPrincipal UserDetails userDetails){
+		 String userId = userDetails.getUsername();
 		 
-		 log.info("email = {}",email);
+		 
+		 myPageService.modifyUserEmail(email, userId);
+		 
 		 return ResponseEntity.ok("seccess chang email!!");
+		 
+		 
 	 }
 	 
 	 

@@ -296,7 +296,7 @@
 						
 						
 						
-						let $userInfo_email = $("<input>").addClass("mx-1").attr("id","modi_email_input")
+						let $userInfo_email = $("<input>").attr("type","email").addClass("mx-1").attr("id","modi_email_input")
 						.val(userInfo.m_Email).prop("disabled",true);
 						
 						let $email_change_btn = $("<button>").addClass("btn btn-dark").text("변경");
@@ -310,13 +310,9 @@
 					        $userInfo_email.prop('disabled', false).focus();
 					        $userInfo_dv4.append($email_auth_input, $email_change_btn.on('click',function(){
 								
-								console.log(email_auth_code);
-								console.log($email_auth_input.val());
 								if(email_auth_code !== $email_auth_input.val()){
-									console.log('다름');
 									return;
 									}
-								console.log("보냄");
 								request_email_change();
 							}));
 					        $(this).removeClass("btn-dark").addClass("btn-outline-secondary").text("인증").on('click',function(e){
@@ -497,7 +493,7 @@
 				xhr.setRequestHeader(header, token);
 			},
 			//async:false,
-		    data: JSON.stringify({ "email": $("#modi_email_input").val() }),
+		    data: $("#modi_email_input").val(),
 	        contentType: "application/json",
 	        url: "/user/email",
 	        success: function(data) {

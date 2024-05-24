@@ -24,5 +24,13 @@ public class ProductDetailController {
 		
 		return "/product_detail";
 	}		
+	@GetMapping("/product_detail2")
+	public String product_detail2(@RequestParam("PRO_NO") long PRO_NO,Model model) {
+		log.info("product_detail()..");
+		model.addAttribute("productdetail",productDetailService.get(PRO_NO));
+		model.addAttribute("productdetailreplys",productDetailService.getReply(PRO_NO));
+		
+		return "/product_detail2";
+	}
 
 }

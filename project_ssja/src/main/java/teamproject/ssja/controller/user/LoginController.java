@@ -18,7 +18,6 @@ public class LoginController {
 	}
 	
 	
-	
 //	@RequestMapping("/checkUser")
 //	public String checkUser(@AuthenticationPrincipal CustomUserDetailsDTO userDetails) {
 //		
