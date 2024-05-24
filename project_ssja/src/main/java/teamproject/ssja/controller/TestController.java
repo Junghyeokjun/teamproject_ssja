@@ -31,6 +31,14 @@ public class TestController {
 	public String login() {
 		return "temp_login";
 	}
+	@RequestMapping("/findId")
+	public String findId() {
+		return "find_id";
+	}
+	@RequestMapping("/findPw")
+	public String findPw() {
+		return "find_pw";
+	}
 	@RequestMapping("/purchase")
 	public String purchase() {
 		return "purchase";
@@ -45,9 +53,4 @@ public class TestController {
 		mv.setViewName("purchase");
 		return mv;
 	}
-	@RequestMapping("/purchase_complete")
-	public String purchaseComplete() {
-		return "purchase_complete";
-	}
-
 }

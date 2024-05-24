@@ -2,9 +2,10 @@ package teamproject.ssja.service.mypage;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,8 @@ public class MyPageUserInfoService implements MyPageService{
 
 	@Autowired
 	MyPageMapper myPageMapper;
+	@Autowired
+	PasswordEncoder passwordEncoder;
 	
 
 @Override
@@ -64,6 +67,16 @@ public class MyPageUserInfoService implements MyPageService{
 	@Override
 	public void deleteEnrolledUsersAuth(List<String> enrolledDeleteUsers) {
 		myPageMapper.deleteEnrolledUsersAuth(enrolledDeleteUsers);
+		
+	}
+
+	@Override
+	public void modifyUserEmail(String email, String username) {
+		Map<String,String> params = new HashMap<>();
+		
+		params.put("userId",username);
+		params.put("email",email);
+		myPageMapper.modifyUserEmail(params);
 		
 	}
 

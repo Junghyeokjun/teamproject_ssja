@@ -33,6 +33,7 @@
         var header = $("meta[name='_csrf_header']").attr('content');
         var token = $("meta[name='_csrf']").attr('content');
         
+
         $(document).ready(function(){
             let sign_up_form=$("#sign_up_form");
             let id=$("#id");
@@ -58,6 +59,38 @@
             let detail_address=$("#detail_address");
             let sign_up=$("#sign_up");
             let post_search_btn=$("#post_search_btn");
+            let random;
+
+            //이메일 인증번호 전송 메서드
+            
+            function email_auth(){
+                $.ajax({    type : 'GET',         
+                    beforeSend: function(xhr){
+                        xhr.setRequestHeader(header, token);
+                    },  
+                    url : '/testrest/email_auth',
+                    async : true,
+                    headers : { 
+                        "Content-Type" : "application/json; charset:UTF-8" },
+                    dataType : 'text',
+                    data :{
+                                email : email.val()+"@"+domain},    
+                    success : function(result) {
+                        console.log(result);
+                            if(result=="true"){
+                                id_limit.text("중복되지 않은 아이디입니다.").css("color","blue")
+                            }else{
+                                id_limit.text("중복된 아이디입니다.").css("color","red")
+                            }
+                        },    
+                    error : function(request, status, error) {
+                       console.log(error)    }
+                })
+            }
+            
+
+
+            
             //아이디 중복여부 확인
             id_check.on("click",function(){
             	$.ajax({    type : 'GET',         
@@ -163,6 +196,7 @@
                             if(result=="false"){
                                 window.alert("이미 가입된 이메일 입니다.");
                             }else{
+
                                 if(send.val()==="전송"){
                                     send.val("재전송");
                                 }
@@ -170,7 +204,6 @@
                                 setTimeout(function(){
                                     send.removeAttr("disabled");
                                 }, 5000)
-                                // 랜덤값생성과 이메일요청함수
                             }
                         },
                     error : function(request, status, error) {
@@ -357,7 +390,7 @@
                     <td>
                         <input type="text" size="11" placeholder="인증번호를 입력해주세요"> 
                         <input type="button" value="전송" id="send">
-                        <input type="button" value="인증" id="auth">
+                        <input type="button" value="인증" id="auth" disabled="disabled">
                     </td>
                 </tr>
                 <tr>

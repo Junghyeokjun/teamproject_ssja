@@ -48,6 +48,10 @@
 update members set M_deletedate = sysdate + INTERVAL'7' day  where m_id=#{userId} 
 </update>
 
+<update id="modifyUserEmail" parameterType="Map" >
+update members set m_email = #{email} where m_id = #{userId}
+</update>
+
 
 <delete id="deleteEnrolledUsersAuth" parameterType="List">
     delete from authority where m_id in 
