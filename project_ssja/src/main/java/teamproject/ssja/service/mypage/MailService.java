@@ -42,7 +42,6 @@ public class MailService {
 	   
 
 	   public void findIDMail(MailDTO mail){
-		   System.out.println(javaMailSender);
 		   mail.setTitle("SSJA 아이디 메일");
 		   String authNum = UUID.randomUUID().toString().substring(0, 6);
 		   mail.setAuthNum(authNum);
@@ -58,4 +57,22 @@ public class MailService {
 
 	        javaMailSender.send(message);
 	    }
+
+
+		public String randomNumMail(MailDTO mail) {
+			String randNum=(int)(Math.random()*999999)+1+"";
+			mail.setTitle("SSJA 인증번호 메일");
+		   String authNum = UUID.randomUUID().toString().substring(0, 6);
+		   mail.setAuthNum(authNum);		   
+		   mail.setContent("안녕하세요 SSJA 쇼핑몰입니다. \n 인증번호는 "+randNum+" 입니다");
+
+	        SimpleMailMessage message = new SimpleMailMessage();
+	        message.setTo(mail.getReceiver());
+	        message.setFrom(senderEmail);
+	        message.setSubject(mail.getTitle());
+	        message.setText(mail.getContent());
+
+	        javaMailSender.send(message);
+	        return randNum;
+		}
 }

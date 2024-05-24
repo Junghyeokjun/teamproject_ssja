@@ -64,11 +64,19 @@ public class TestRestController {
 
 	 @PostMapping("/findId")
 	 public void findId(String email) {
-		 System.out.println(email);
 		 MailDTO mail=new MailDTO();
 		 mail.setReceiver(email);
 		 
 		 mailService.findIDMail(mail);
+		 
+	 }
+	 
+	 @PostMapping("/findPw")
+	 public void findPw(String email,String id) {
+		 MailDTO mail=new MailDTO();
+		 mail.setReceiver(email);
+		 
+//		 mailService.(mail,id);
 		 
 	 }
 	 

@@ -35,6 +35,10 @@ public class TestController {
 	public String findId() {
 		return "find_id";
 	}
+	@RequestMapping("/findPw")
+	public String findPw() {
+		return "find_pw";
+	}
 	@RequestMapping("/purchase")
 	public String purchase() {
 		return "purchase";

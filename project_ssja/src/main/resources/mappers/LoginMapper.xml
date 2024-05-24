@@ -24,5 +24,8 @@
     </select> 
 	<select id="findId" resultType="String">
        select M_ID from members where M_EMAIL = #{email}
+    </select> 
+	<select id="findPw" resultType="String">
+       select M_Pw from members where M_EMAIL = #{email} and M_ID = #{id}
     </select>
 </mapper>

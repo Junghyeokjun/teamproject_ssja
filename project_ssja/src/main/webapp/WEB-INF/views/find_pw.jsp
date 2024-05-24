@@ -38,6 +38,7 @@
         $(document).ready(function(){
             let find_id_btn=$("#find_id");
             let email=$("#email");
+            let id=$("#id");
             find_id_btn.on("click",function(){
                 console.log(email.val())
                 $.ajax({
@@ -45,14 +46,15 @@
                     beforeSend: function(xhr){
                         xhr.setRequestHeader(header, token);
                     },  
-                    url : '/testrest/findId',
+                    url : '/testrest/findPw',
                     async : false,
                     dataType : 'text',
                     data :{
-                        email : email.val()
+                        email : email.val(),
+                        id : id.val()
                     },    
                     success : function(result) {
-                        alert("해당 이메일로 아이디를 전송하였습니다.");
+                        alert("해당 이메일로 비밀번호 재설정링크를 전송하였습니다.");
                     },    
                     error : function(request, status, error) {
                         alert("에러가 발생하였습니다.")  
@@ -70,11 +72,12 @@
         <a id="logo_toHome" href=""><img src="/images/utilities/big_logo.png" alt=""></a>
         <!-- 실제 적용시 method post로 변경  -->
         <br>
-        <h3>이메일정보를 입력해주세요</h3>
+        <h3>이메일정보와 아이디를 입력해주세요</h3>
         <br>
-        <input id="email" type="text" class="form-control" style="width: 300px;">
+        <input id="email" type="text" class="form-control mb-2" style="width: 300px;" placeholder="이메일">
+        <input id="id" type="text" class="form-control" style="width: 300px;" placeholder="아이디">
         <br>
-        <button id="find_id" class="btn btn-dark">아이디 찾기</button>
+        <button id="find_id" class="btn btn-dark">비밀번호 찾기</button>
     </div>
 </body>
 </html>

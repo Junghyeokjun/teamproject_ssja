@@ -9,4 +9,5 @@ public interface LoginMapper {
 	
 	UserInfoDTO findByUsername(String username);
 	String findId(String email);
+	String findPw(String email, String id);
 }

@@ -82,11 +82,15 @@
   </style>
   <script>
     $(document).ready(function(){
-    let find_id_btn=$('#findId');
+      let find_id_btn=$('#findId');
+      let find_pw_btn=$('#findPw');
     
-    find_id_btn.on("click",function(){
-      var popup=window.open("/test/findId","_blank", "width=500, height=700");
-    })
+      find_id_btn.on("click",function(){
+        var popup=window.open("/test/findId","_blank", "width=500, height=700");
+      })
+      find_pw_btn.on("click",function(){
+        var popup=window.open("/test/findPw","_blank", "width=500, height=700");
+      })
   })
   </script>
 </head>
