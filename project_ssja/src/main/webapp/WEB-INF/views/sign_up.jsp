@@ -48,6 +48,7 @@
             let email=$("#email");
             let domain=$("#domain");
             let domain_select=$("#domain_select");
+            let auth_num=$("#auth_num");
             let send=$("#send");
             let auth=$("#auth");
             let auth_check=$("#auth_check");
@@ -59,38 +60,41 @@
             let detail_address=$("#detail_address");
             let sign_up=$("#sign_up");
             let post_search_btn=$("#post_search_btn");
+            let timeout_id;
             let random;
 
             //이메일 인증번호 전송 메서드
             
             function email_auth(){
-                $.ajax({    type : 'GET',         
+                $.ajax({    type : 'POST',         
                     beforeSend: function(xhr){
                         xhr.setRequestHeader(header, token);
                     },  
                     url : '/testrest/emailAuth',
-                    async : true,
-                    headers : { 
-                        "Content-Type" : "application/json; charset:UTF-8" },
+                    async : false,
                     dataType : 'text',
                     data :{
-                                email : email.val()+"@"+domain},    
+                                email : email.val()+"@"+domain.val()},    
                     success : function(result) {
-                        console.log(result);
-                            if(result=="true"){
-                                id_limit.text("중복되지 않은 아이디입니다.").css("color","blue")
-                            }else{
-                                id_limit.text("중복된 아이디입니다.").css("color","red")
+                            random=result;
+                            if(send.val()==="전송"){
+                                send.val("재전송");
                             }
+                            send.attr("disabled","disabled");
+                            auth.removeAttr("disabled");
+                            clearTimeout(timeout_id);
+                            setTimeout(function(){
+                                send.removeAttr("disabled");
+                            }, 5000)
+                            timeout_id=setTimeout(function(){
+                                random="";
+                            }, 1000*60*3)
                         },    
                     error : function(request, status, error) {
                        console.log(error)    }
                 })
             }
-            
 
-
-            
             //아이디 중복여부 확인
             id_check.on("click",function(){
             	$.ajax({    type : 'GET',         
@@ -105,7 +109,6 @@
    						    data :{
 										id : id.val()},    
 							success : function(result) {
-                                console.log(result);
                                     if(result=="true"){
                                         id_limit.text("중복되지 않은 아이디입니다.").css("color","blue")
                                     }else{
@@ -144,7 +147,6 @@
    						    data :{
                                     nickName : nickname.val()},    
 							success : function(result) {
-                                console.log(result);
                                     if(result=="true"){
                                         nickname_limit.text("중복되지 않은 닉네임입니다.").css("color","blue")
                                     }else{
@@ -166,6 +168,14 @@
                     password_limit.text("패스워드가 동일하지 않습니다.").css("color","red")
                 }
             })
+            //이메일값 변경시
+            email.on("change",function(){
+                auth.attr("disabled","disabled");
+            })
+            //도메인값 변경시
+            domain.on("change",function(){
+                auth.attr("disabled","disabled");
+            })
             //도메인셀렉트박스의 값이 바뀔시
             domain_select.on("change",function(){
                 if(domain_select.val()==="직접입력"){
@@ -173,6 +183,7 @@
                 }else{
                     domain.val(domain_select.val()).attr("readonly","readonly");
                 }
+                auth.attr("disabled","disabled");
             })
             //전송버튼 클릭시
             send.on("click",function(){
@@ -192,18 +203,10 @@
                     data :{
                             email : email.val()+"@"+domain.val()},    
                     success : function(result) {
-                        console.log(email.val()+"@"+domain.val());
                             if(result=="false"){
                                 window.alert("이미 가입된 이메일 입니다.");
                             }else{
-
-                                if(send.val()==="전송"){
-                                    send.val("재전송");
-                                }
-                                send.attr("disabled","disabled")
-                                setTimeout(function(){
-                                    send.removeAttr("disabled");
-                                }, 5000)
+                                email_auth()
                             }
                         },
                     error : function(request, status, error) {
@@ -212,13 +215,20 @@
             })
             //인증버튼 클릭시
             auth.on("click",function(){
-                //랜덤값과 인증값 비교함수
-
-                //인증이 성공했을시
-                email.attr("readonly","readonly");
-                domain.attr("readonly","readonly");
-                domain_select.attr("disabled","disabled")
-                auth_check.text("인증이 완료되었습니다.").css("color","blue")
+                //랜덤값과 인증값 비교
+                if(random==auth_num.val()){
+                    //인증이 성공했을시
+                    email.attr("readonly","readonly");
+                    domain.attr("readonly","readonly");
+                    domain_select.attr("disabled","disabled");
+                    send.attr("disabled","disabled");
+                    auth.attr("disabled","disabled");
+                    auth_num.attr("disabled","disabled");
+                    auth_check.text("인증이 완료되었습니다.").css("color","blue")
+                }else{
+                    auth_check.text("올바른 인증번호가 아닙니다.").css("color","red")
+                }
+                
             })
             post_search_btn.on("click",function(){
                 new daum.Postcode({
@@ -388,7 +398,7 @@
                 <tr>
                     <td>인증번호</td>
                     <td>
-                        <input type="text" size="11" placeholder="인증번호를 입력해주세요"> 
+                        <input type="text" size="11" id="auth_num" placeholder="인증번호를 입력해주세요"> 
                         <input type="button" value="전송" id="send">
                         <input type="button" value="인증" id="auth" disabled="disabled">
                     </td>

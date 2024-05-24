@@ -41,6 +41,11 @@ class TestServiceImplTest {
 	void testEmailCheck() {
 		log.info(signUpService.emailCheck("user@gmail.com")+"");
 	}
+	@Disabled
+	@Test
+	void testSelcteEmail() {
+		log.info(signUpService.getEmail("test"));
+	}
 	
 	@Disabled
 	@Test

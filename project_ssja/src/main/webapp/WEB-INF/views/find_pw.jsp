@@ -36,11 +36,12 @@
     var token = $("meta[name='_csrf']").attr('content');
 
         $(document).ready(function(){
-            let find_id_btn=$("#find_id");
-            let email=$("#email");
+            let send=$("#send");
+            let find_pw=$("#find_pw");
             let id=$("#id");
-            find_id_btn.on("click",function(){
-                console.log(email.val())
+            let auth_num=$("#auth_num");
+            let random;
+            send.on("click",function(){
                 $.ajax({
                     type : 'POST',      
                     beforeSend: function(xhr){
@@ -50,17 +51,34 @@
                     async : false,
                     dataType : 'text',
                     data :{
-                        email : email.val(),
                         id : id.val()
                     },    
                     success : function(result) {
-                        alert("해당 이메일로 비밀번호 재설정링크를 전송하였습니다.");
+                        console.log(result);
+                        if(result==""){
+                            alert("해당 아이디는 존재하지 않습니다.");
+                            window.close();
+                        }else{
+                            alert("해당 아이디를 가입할때 사용하신 이메일로 인증번호를 전송하였습니다.")
+                            id.attr("hidden","hidden");
+                            auth_num.removeAttr("hidden");
+                            send.attr("hidden","hidden");
+                            find_pw.removeAttr("hidden");
+                        }
+                        random==result;
                     },    
                     error : function(request, status, error) {
                         alert("에러가 발생하였습니다.")  
                     }
                 })
-                window.close();
+            })
+            find_pw.on("click",function(){
+                if(random==auth_num.val()){
+                    document.location("/test/password_reset?id="+id.val());
+                }else{
+                    alert("올바른 인증번호가 아닙니다.")
+                    window.close();
+                }
             })
         })    
     
@@ -72,12 +90,13 @@
         <a id="logo_toHome" href=""><img src="/images/utilities/big_logo.png" alt=""></a>
         <!-- 실제 적용시 method post로 변경  -->
         <br>
-        <h3>이메일정보와 아이디를 입력해주세요</h3>
+        <h3>아이디를 입력해주세요</h3>
         <br>
-        <input id="email" type="text" class="form-control mb-2" style="width: 300px;" placeholder="이메일">
         <input id="id" type="text" class="form-control" style="width: 300px;" placeholder="아이디">
+        <input id="auth_num" type="text" class="form-control" style="width: 300px;" placeholder="인증번호" hidden="hidden">
         <br>
-        <button id="find_id" class="btn btn-dark">비밀번호 찾기</button>
+        <button id="send" class="btn btn-dark">인증번호 전송</button>
+        <button id="find_pw" class="btn btn-dark" hidden="hidden">비밀번호 재설정</button>
     </div>
 </body>
 </html>

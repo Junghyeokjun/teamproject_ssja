@@ -52,6 +52,12 @@ class TestMapperTest {
 		String mEmail=testMapper.getMEmail("user@gmail.com");
 		log.info(mEmail);
 	}
+	@Disabled
+	@Test
+	void SelectEmailTest() {
+		String mEmail=testMapper.selectEmail("test");
+		log.info(mEmail);
+	}
 	
 	@Disabled
 	@Test

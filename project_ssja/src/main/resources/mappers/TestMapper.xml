@@ -22,6 +22,12 @@
 		]]>
 	</select>
 	
+	<select id="selectEmail" resultType="String">
+		<![CDATA[
+			select M_EMAIL from members where M_ID=#{mid}
+		]]>
+	</select>
+	
 	<select id="getProQuantity" resultType="int">
 		<![CDATA[
 			select PRO_QUANTITY from product where PRO_NO=#{proNo}

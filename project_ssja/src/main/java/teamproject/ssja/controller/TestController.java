@@ -43,6 +43,13 @@ public class TestController {
 	public String purchase() {
 		return "purchase";
 	}
+	
+	@RequestMapping("/password_reset")
+	public ModelAndView passwordReset(ModelAndView mv,String id) {
+		mv.setViewName("password_reset");
+		mv.addObject("id",id);
+		return mv;
+	}
 	@RequestMapping("/test_purchase")
 	public ModelAndView testPurchase(ModelAndView mv) {
 		List<ProductDto> dtos=new ArrayList<>();

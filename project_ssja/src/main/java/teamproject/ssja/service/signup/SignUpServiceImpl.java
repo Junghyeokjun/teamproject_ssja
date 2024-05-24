@@ -35,6 +35,11 @@ public class SignUpServiceImpl implements SignUpService {
 		//반환값이 구매수량(quantity)보다 크면 구매가 가능하다는것이므로 true
 		return (testMapper.getProQuantity(proNo)>=quantity);
 	}
+
+	@Override
+	public String getEmail(String mid) {
+		return testMapper.selectEmail(mid);
+	}
 	
 	@Override
 	public boolean signUp(MembersDto member) {
@@ -47,6 +52,7 @@ public class SignUpServiceImpl implements SignUpService {
 			return false;
 		}
 	}
+
 
 	
 	
