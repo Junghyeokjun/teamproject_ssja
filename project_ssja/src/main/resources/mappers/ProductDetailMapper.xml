@@ -45,12 +45,13 @@
 		<result property="B_WRITER" column="B_WRITER" />
 		<result property="B_DATE" column="B_DATE" />
 		<result property="B_CONTENT" column="B_CONTENT" />
+		<result property="B_EVAL" column="B_EVAL" />
 
 	</resultMap>
 
 	<select id="readReply" resultMap="ProductDetailReplyMap">
 	    <![CDATA[	
-	    SELECT  P.PRO_NO, B.B_WRITER, B_DATE, B_CONTENT
+	    SELECT  P.PRO_NO, B.B_WRITER, B_DATE, B_CONTENT, B_EVAL
 	    FROM PRODUCT P
 	    INNER JOIN BOARD B ON P.PRO_NO = B.PRO_NO
 	    WHERE P.PRO_NO = #{PRO_NO}
