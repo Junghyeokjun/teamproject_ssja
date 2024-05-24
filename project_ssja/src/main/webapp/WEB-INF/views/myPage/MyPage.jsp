@@ -220,8 +220,12 @@
 	let token = $("meta[name='_csrf']").attr("content");
 	let header = $("meta[name='_csrf_header']").attr("content");
 	
+	let email_auth_code='00000000';
 	const withdrawl_comment = '회원을 탈퇴하시면 계정이 삭제 되며 내가 쓴글, 구매내역, 리뷰, 채팅 등 모든 정보가 삭제됩니다.<br>' 
 		+'계정 삭제 후 7일 간에 유보기간이 주어지며, 유보기간 동안 마이페이지 > 회원정보로 오셔서 탈퇴 취소를 누르시면 다시 회원으로 지내실 수 있습니다.';
+		let $modi_email_auth_btn = $("<button>");
+		let $modi_email_change_btn = $("<button>").css("width",'90px');
+		
 
 	let myPageUserInfo = function() {
 		
@@ -289,19 +293,49 @@
 
 						let $email_title = $("<h4>").addClass("mx-5 my-3")
 								.text("이메일");
-						let $userInfo_email = $("<span>").addClass("p-3").css(
-								'background-color', '#eee').text(
-								userInfo.m_Email);
-						let $modify_email = $("<a>").attr("href",
-								"http://www.naver.com").addClass(
-								"btn btn-dark mx-3").text("수정");
+						
+						
+						
+						let $userInfo_email = $("<input>").addClass("mx-1").attr("id","modi_email_input")
+						.val(userInfo.m_Email).prop("disabled",true);
+						
+						let $email_change_btn = $("<button>").addClass("btn btn-dark").text("변경");
+						let $email_auth_input = $("<input>").attr("id","email_auth_input");
+						
+						let $modi_email_btn = $("<button>") .attr("id", "modify_email_btn").addClass("btn btn-dark mx-3")
+					    .text("수정").on('click', function() {
+					    	$email_change_btn.remove();
+					    	$email_auth_input.remove();
+					    	
+					        $userInfo_email.prop('disabled', false).focus();
+					        $userInfo_dv4.append($email_auth_input, $email_change_btn.on('click',function(){
+								
+								console.log(email_auth_code);
+								console.log($email_auth_input.val());
+								if(email_auth_code !== $email_auth_input.val()){
+									console.log('다름');
+									return;
+									}
+								console.log("보냄");
+								request_email_change();
+							}));
+					        $(this).removeClass("btn-dark").addClass("btn-outline-secondary").text("인증").on('click',function(e){
+					        	$(this).addClass("btn-secondary");
+					        	$email_auth_input.focus();
+					        	
+					        	request_email_auth();
+					        });
+					        
+					    });
+						
+						
 						let $userInfo_dv4 = $("<div>")
 								.attr("id", "userInfo_dv4")
 								.css("border-top", "1px solid #ccc")
 								.addClass(
 										"py-3 my-3 mx-3 d-flex flex-row align-items-center")
-								.append($email_title, $userInfo_email,
-										$modify_email);
+								.append($email_title, $userInfo_email,$modi_email_btn
+										);
 
 						let $address_title = $("<h4>").addClass("mx-5 my-3")
 								.text("배송지");
@@ -336,15 +370,13 @@
 
 						let $phone_title = $("<h4>").addClass("mx-5 my-3")
 								.text("전화 번호 ");
-						let $modify_phoneNum = $("<a>").attr("href",
-								"http://www.naver.com")
-								.addClass("btn btn-dark").text("변경하기");
+						
 						let $userInfo_dv6 = $("<div>")
 								.attr("id", "userInfo_dv6")
 								.css("border-top", "1px solid #ccc")
 								.addClass(
 										"py-3 my-3 mx-3 d-flex flex-row align-items-center")
-								.append($phone_title, $modify_phoneNum);
+								.append($phone_title);
 
 						let $withdrawl_title = $("<h4>").addClass("mx-5 my-3").text("회원 탈퇴");
 						
@@ -362,7 +394,26 @@
 							let $wd_detail_4 = $("<p>").text("위에 대해 확인하였고 탈퇴하겠습니다.").appendTo($wd_detail_dv1);
 							let $wd_detail_5 = $("<div>").addClass("d-flex flex-row my-3 justify-conten-center align-items-center").appendTo($wd_detail_dv1);
 							
-							let $delete_ok_btn = $("<button>").addClass('btn btn-dark mx-1').text('탈퇴').on('click', );
+							let $delete_ok_btn = $("<button>").addClass('btn btn-dark mx-1').text('탈퇴').on('click',function(){
+								 if($wd_detail_3.is(':checked')===false){
+										$wd_detail_6.text('확인란에 체크해 주시길 바랍니다.');
+										return ;
+									} 
+									 $.ajax({
+											type : "delete",
+											beforeSend : function(xhr) {
+												xhr.setRequestHeader(header, token);
+											},
+											url : "/user",
+											success : function(data){
+												alert('삭제 되었습니다.');
+											},
+											error : function(data){
+												alert('에러 발생');
+											}
+										})
+									
+								});
 							let $delete_no_btn = $("<button>").addClass("btn btn-outline-secondary mx-1").text('취소').on('click',function(){
 								$wd_detail_dv1.empty();
 							});
@@ -420,6 +471,41 @@
 			}
 		})
 	}
+	
+	let request_email_auth = function() {
+	    $.ajax({
+	        type: "post",
+	        beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			  data: JSON.stringify({'receiver': $("#modi_email_input").val()}),
+	        contentType: "application/json",
+	        url: "/user/email/auth",
+	        success: function(data) {
+	        	console.log(email_auth_code);
+	        	
+	            alert('해당 이메일로 인증번호를 전송하였습니다. \n 인증을 완료해주세요.');
+	            email_auth_code = data.authNum;
+	            console.log(email_auth_code);
+	        }
+	    });
+	};
+	let request_email_change = function() {
+	    $.ajax({
+	        type: "PATCH",
+	        beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			//async:false,
+		    data: JSON.stringify({ "email": $("#modi_email_input").val() }),
+	        contentType: "application/json",
+	        url: "/user/email",
+	        success: function(data) {
+	        	alert('이메일이 변경되었습니다.');
+	        	myPageUserInfo();
+	        }
+	    });
+	};
 
 	let search_address = function() {
 
