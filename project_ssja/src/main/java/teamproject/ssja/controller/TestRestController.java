@@ -80,6 +80,15 @@ public class TestRestController {
 		 
 	 }
 	 
+	 @PostMapping("/emailAuth")
+	 public String emailAuth(String email) {
+		 MailDTO mail=new MailDTO();
+		 mail.setReceiver(email);
+		 
+		 String AuthNum =mailService.randomNumMail(mail);
+		 return AuthNum;
+	 }
+	 
 	@PostMapping("/purchase_complete")
 	public ModelAndView purchaseComplete(ModelAndView mv) {
 		

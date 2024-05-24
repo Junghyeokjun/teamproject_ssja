@@ -68,7 +68,7 @@
                     beforeSend: function(xhr){
                         xhr.setRequestHeader(header, token);
                     },  
-                    url : '/testrest/email_auth',
+                    url : '/testrest/emailAuth',
                     async : true,
                     headers : { 
                         "Content-Type" : "application/json; charset:UTF-8" },
