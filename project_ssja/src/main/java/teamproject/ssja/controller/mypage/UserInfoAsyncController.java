@@ -108,18 +108,6 @@ public class UserInfoAsyncController {
 	 }
 
 	 
-	 @PostMapping("/findId")
-	 public ModelAndView findId(ModelAndView mv,String email) {
-		 
-		 MailDTO mail=new MailDTO();
-		 mail.setReceiver(email);
-		 log.info("email {}", mail.getReceiver());
-		 
-		 mailService.findIDMail(mail);
-		 
-		 return mv;
-	 }
-	 
 	 @PatchMapping("/email")
 	 public ResponseEntity<String> chagneEmail(@RequestBody String email,@AuthenticationPrincipal UserDetails userDetails){
 		 String userId = userDetails.getUsername();

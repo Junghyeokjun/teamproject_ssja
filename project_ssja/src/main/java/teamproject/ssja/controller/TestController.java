@@ -31,6 +31,10 @@ public class TestController {
 	public String login() {
 		return "temp_login";
 	}
+	@RequestMapping("/findId")
+	public String findId() {
+		return "find_id";
+	}
 	@RequestMapping("/purchase")
 	public String purchase() {
 		return "purchase";

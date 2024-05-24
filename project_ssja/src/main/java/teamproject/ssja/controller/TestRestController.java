@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import teamproject.ssja.dto.MembersDto;
+import teamproject.ssja.dto.email.MailDTO;
+import teamproject.ssja.service.mypage.MailService;
 import teamproject.ssja.service.signup.SignUpService;
 
 @Controller
@@ -18,6 +20,8 @@ public class TestRestController {
 	
 	@Autowired
 	SignUpService signUpService;
+	@Autowired
+	MailService mailService;
 	
 //	패스워드 엔코더 추가후
 //	@Autowired 
@@ -58,6 +62,16 @@ public class TestRestController {
 		
 	}
 
+	 @PostMapping("/findId")
+	 public void findId(String email) {
+		 System.out.println(email);
+		 MailDTO mail=new MailDTO();
+		 mail.setReceiver(email);
+		 
+		 mailService.findIDMail(mail);
+		 
+	 }
+	 
 	@PostMapping("/purchase_complete")
 	public ModelAndView purchaseComplete(ModelAndView mv) {
 		

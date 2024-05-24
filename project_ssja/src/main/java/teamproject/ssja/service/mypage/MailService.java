@@ -15,6 +15,7 @@ import teamproject.ssja.mapper.LoginMapper;
 @Service
 @RequiredArgsConstructor
 public class MailService {
+	
 	 private final JavaMailSender javaMailSender;
 	 
 	   private static final String senderEmail="ssja@gmail.com";
@@ -41,6 +42,7 @@ public class MailService {
 	   
 
 	   public void findIDMail(MailDTO mail){
+		   System.out.println(javaMailSender);
 		   mail.setTitle("SSJA 아이디 메일");
 		   String authNum = UUID.randomUUID().toString().substring(0, 6);
 		   mail.setAuthNum(authNum);

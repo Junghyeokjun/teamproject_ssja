@@ -58,6 +58,10 @@
       color: black;
       text-decoration: none;
     }
+    #recover button{
+      background-color: transparent; 
+      border-color: transparent;
+    }
     #social_login button{
       width: 50px;
       height: 50px;
@@ -76,6 +80,15 @@
       background-size: cover;
     }
   </style>
+  <script>
+    $(document).ready(function(){
+    let find_id_btn=$('#findId');
+    
+    find_id_btn.on("click",function(){
+      var popup=window.open("/test/findId","_blank", "width=500, height=700");
+    })
+  })
+  </script>
 </head>
 
 <body>
@@ -124,8 +137,8 @@
           </tr>
           <tr>
             <td id="recover">
-              <a href="">아이디찾기</a>|
-              <a href="">비밀번호찾기</a>|
+              <button id="findId" type="button">아이디찾기</button>|
+              <button id="findPw" type="button">비밀번호찾기</button>|
               <a href="${pageContext.request.contextPath}/test/sign_up_before">회원가입</a>
             </td>
           </tr>
