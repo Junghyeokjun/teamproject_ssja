@@ -5,6 +5,7 @@ import java.util.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.ProductDto;
@@ -14,9 +15,10 @@ import teamproject.ssja.dto.ProductDto;
 @RequestMapping("/product")
 public class ProductReseachController {
 
-//	@GetMapping("/search")
-//	public List<ProductDto> getSearchProductList(){
-//		
-//	}
+	@GetMapping("/search")
+	public String getSearchProductList(@RequestParam("category")int categoryNum ){
+		
+		return "/product/search_products";
+	}
 	
 }
