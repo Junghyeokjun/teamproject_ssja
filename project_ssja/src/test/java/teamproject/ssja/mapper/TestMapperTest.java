@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.AuthDto;
 import teamproject.ssja.dto.MembersDto;
+import teamproject.ssja.dto.PurchaseDto;
 
 @Slf4j
 @SpringBootTest
@@ -74,7 +75,6 @@ class TestMapperTest {
 		int result=testMapper.insertUserAuth(auth.getM_ID());
 		log.info(result+"");
 	}
-	
 	@Disabled
 	@Test
 	void updatePw() {

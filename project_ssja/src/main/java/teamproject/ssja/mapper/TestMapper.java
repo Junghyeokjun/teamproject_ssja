@@ -3,6 +3,7 @@ package teamproject.ssja.mapper;
 import org.apache.ibatis.annotations.Mapper;
 
 import teamproject.ssja.dto.MembersDto;
+import teamproject.ssja.dto.PurchaseDto;
 
 @Mapper
 public interface TestMapper {

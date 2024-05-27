@@ -8,15 +8,16 @@ import lombok.ToString;
 
 //이름            널?       유형            
 //------------- -------- ------------- 
-//PUR_NO        NOT NULL NUMBER(20)    
-//M_NO          NOT NULL NUMBER(20)    
-//PUR_TOT       NOT NULL NUMBER(20)    
-//PUR_DC        NOT NULL NUMBER(20)    
-//PUR_PAY       NOT NULL NUMBER(20)    
-//PUR_PAYMENT   NOT NULL VARCHAR2(30)  
-//PUR_DATE      NOT NULL TIMESTAMP(6)  
-//PUR_DVADDRESS NOT NULL VARCHAR2(200) 
-//PUR_DV        NOT NULL VARCHAR2(30)
+//O_NO        NOT NULL NUMBER(20)   
+//PUR_NO      NOT NULL NUMBER(20)   
+//PRO_NO      NOT NULL NUMBER(20)   
+//O_QUANTITY  NOT NULL NUMBER(10)   
+//O_DISCOUNT  NOT NULL NUMBER(20)   
+//O_PRICE     NOT NULL NUMBER(20)   
+//O_PAY       NOT NULL NUMBER(20)   
+//O_USECOUPON NOT NULL NUMBER(20)   
+//O_STATE     NOT NULL VARCHAR2(20) 
+
 
 @Getter
 @Setter
@@ -24,14 +25,14 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class OrdersDto {
+	private long O_NO;
 	private long PUR_NO;
-	private long M_NO;
-	private long PUR_TOT;
-	private long PUR_DC;
+	private long PRO_NO;
+	private long O_QUANTITY;
+	private long O_DISCOUNT;
+	private long O_PAY;
 	private long PUR_PAY;
-	private String PUR_PAYMENT;
-	private String PUR_DATE;
-	private String PUR_DVADDRESS;
-	private String PUR_DV;
-
+	private long O_USECOUPON;
+	private String O_STATE;
+	
 }

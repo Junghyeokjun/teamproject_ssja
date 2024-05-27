@@ -60,4 +60,19 @@
 		]]>
 	</insert>
 	
+	<insert id="insertPurchase">
+		INSERT INTO PURCHASE 
+		VALUES(PUR_SEQ.nextval,#{M_NO},#{PUR_TOT},#{PUR_DC},#{PUR_PAY},#{PUR_PAYMENT},SYSDATE,#{PUR_DVADDRESS},#{PUR_DV})
+			
+		<selectKey keyProperty="PUR_NO" resultType="int" order="AFTER">
+			select PUR_NO
+			from (SELECT PUR_NO ,rowNum
+			FROM PURCHASE
+			WHERE M_NO=#{M_NO}
+			order by PUR_NO desc)
+			where rownum=1
+		</selectKey>
+	
+	</insert>
+	
 </mapper>
