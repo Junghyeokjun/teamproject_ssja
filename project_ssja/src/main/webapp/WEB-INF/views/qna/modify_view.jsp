@@ -28,8 +28,12 @@
 <script src="/js/footer.js">
 
   </script>
+<script src="/js/board.js">
+
+  </script>
 <link href="/css/footerstyle.css?after" rel="stylesheet">
 <link href="/css/barstyle.css?after" rel="stylesheet">
+<link href="/css/board.css?after" rel="stylesheet">
 
 <link rel="stylesheet"
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
@@ -106,8 +110,8 @@ body {
 	</div>
 	<main>
 		<div id="main_container">
-			<div class="main_whitespace">
-				
+			<div class="main_whitespace p-5">
+				<h1 class="h3 text-center">내용 수정하기</h1>
 			</div>
 			<form action="${pageContext.request.contextPath}/qna/modify" method="post">
 				<div class="input-group">
@@ -130,7 +134,7 @@ body {
 						</td>		
 					</tr>
 					<tr>
-						<td  colspan="2">
+						<td colspan="2">
 							<div class="d-flex justify-content-between">
 								<input type="submit" class="btn btn-danger customed-ssja" value="수정">
 								<a class="btn btn-primary customed-ssja" href="${pageContext.request.contextPath}/qna/list">취소</a>								
@@ -139,6 +143,9 @@ body {
 					</tr>
 				</table>
 			</form>
+			<div class="main_whitespace p-5">
+				
+			</div>
 		</div>
 	</main>
 	<footer>

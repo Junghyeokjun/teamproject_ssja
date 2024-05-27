@@ -85,11 +85,6 @@ body {
 #icn_txt {
 	text-align: center;
 }
-
-.main_whitespace{
-	width : 100%;
-	height : 5em;
-}
 </style>
 </head>
 
@@ -229,7 +224,7 @@ body {
 	    					</div>
 	    					<div>	    						
 								<nav aria-label="Page navigation example">
-									<ul class="pagination justify-content-center">
+									<ul id="pagination" class="pagination justify-content-center">
 										<c:if test="${pageMaker.prev}">
 											<li class="page-item">
 												<a class="page-link" href="${pageContext.request.contextPath}/api/replys/${pageMaker.startPage-1}">&lt;<a>
@@ -258,12 +253,14 @@ body {
 										</c:if>
 									</ul>
 								</nav>
-							</div>
-						
+							</div>						
 						</td>
 					</tr>
 				</table>
 			</form>
+			<div class="main_whitespace p-5">
+				
+			</div>
 		</div>
 	</main>
 	<footer>

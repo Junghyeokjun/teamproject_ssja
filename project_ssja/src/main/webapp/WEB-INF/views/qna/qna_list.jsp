@@ -108,8 +108,13 @@ body {
 		<div id="side_links" class="w-100"></div>
 	</div>
 	<main style="margin: 0 auto;">
-		<a href="${pageContext.request.contextPath}/qna/write_view">글작성</a>
+		<div class="main_whitespace p-5 my-2">
+			<h1 class="h3 text-center">QnA게시판</h1>
+		</div>
 		<div id="main_container" style="margin: 0 auto;">
+			<div class="d-flex justify-content-end p-1">
+				<a href="${pageContext.request.contextPath}/qna/write_view" class="btn btn-primary btn-tuning">글 작성</a>
+			</div>
 			<table class="table table-hover" style="text-align: center;">
 				<thead class="table-dark">
 					<tr>
@@ -162,7 +167,10 @@ body {
 						</c:if>
 					</ul>
 				</nav>
-			</div>
+			</div>			
+		</div>
+		<div class="main_whitespace p-5 my-2">
+			
 		</div>
 	</main>
 	<script type="text/javascript">

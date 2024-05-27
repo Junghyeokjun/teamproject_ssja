@@ -120,8 +120,8 @@ body {
 	</div>
 	<main>
 		<div id="main_container">
-			<div class="main_whitespace">
-				
+			<div class="main_whitespace p-5">
+				<h1 class="h3 text-center">새로 작성하기</h1>
 			</div>
 			<form action="${pageContext.request.contextPath}/qna/write" method="post">
 				<div class="input-group">
@@ -153,6 +153,11 @@ body {
 					</tr>
 				</table>
 			</form>
+			<div class="main_whitespace p-5">
+				
+			</div>
+		</div>
+	</main>
 	<footer>
 		<div id="first_footer" class="p-3"></div>
 		<div id="second_footer"></div>

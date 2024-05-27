@@ -104,4 +104,17 @@ a{
 	width: 15%
 }
 
+.main_whitespace{
+	width : 100%;
+	height : 5em;
+}
 
+.btn-primary.btn-tuning{
+	background-color: #3e831e;
+	border-color: #3e831e;
+}
+
+.btn-primary.btn-tuning:hover{
+	background-color: #5dc52d;
+	border-color: #5dc52d;
+}
