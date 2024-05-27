@@ -40,22 +40,34 @@
 	     ]]>
 	</select>
 
-	<resultMap id="ProductDetailReplyMap"  type="ProductDetailReplyDto">
+	 <resultMap id="ProductDetailReplyMap"  type="ProductDetailReplyDto">
 		<id property="PRO_NO" column="PRO_NO" />
 		<result property="B_WRITER" column="B_WRITER" />
 		<result property="B_DATE" column="B_DATE" />
 		<result property="B_CONTENT" column="B_CONTENT" />
 		<result property="B_EVAL" column="B_EVAL" />
-
 	</resultMap>
 
-	<select id="readReply" resultMap="ProductDetailReplyMap">
-	    <![CDATA[	
-	    SELECT  P.PRO_NO, B.B_WRITER, B_DATE, B_CONTENT, B_EVAL
+	<select id="getTotalCount" resultType="long">    
+    <![CDATA[
+      select count(*) from ( SELECT  P.PRO_NO, B.B_WRITER, B_DATE, B_CONTENT, B_EVAL
 	    FROM PRODUCT P
 	    INNER JOIN BOARD B ON P.PRO_NO = B.PRO_NO
-	    WHERE P.PRO_NO = #{PRO_NO}
-	     ]]>
+	    WHERE P.PRO_NO = #{PRO_NO})
+        ]]>
+	</select>
+	
+	<select id="getListWithPaging" resultMap="ProductDetailReplyMap">    
+    <![CDATA[
+	SELECT * FROM (
+    	SELECT ROWNUM AS RNUM, A.* FROM (
+        	select * from ( SELECT  P.PRO_NO, B.B_WRITER, B_DATE, B_CONTENT, B_EVAL
+	    FROM PRODUCT P
+	    INNER JOIN BOARD B ON P.PRO_NO = B.PRO_NO
+	    WHERE P.PRO_NO = #{PRO_NO})
+   		) A WHERE ROWNUM <= #{pageNum}*#{amount}
+	)WHERE RNUM > (#{pageNum}-1)*#{amount}
+    ]]>
 	</select>
 
 </mapper>
