@@ -14,6 +14,16 @@ a{
     resize: none;
 }
 
+.form-control{
+	border : none;
+}
+
+.input-group-text{
+	border : none;
+	background-color: white;
+	font-weight: bold;
+}
+
 .btn-danger.customed-ssja{
 	background-color : #48bb12;
 	border-color: #48bb12;
@@ -72,3 +82,26 @@ a{
   	background-color : gray;
   	border-color: gray;
 }
+
+.board-like{
+	width: 55px;
+	
+	height: 55px;
+	border: 0px;
+	content: url("/images/board/before_boardlike.png");
+}
+
+.board-like:hover{
+	width: 55px;
+	
+	height: 55px;
+	border: 0px;
+	content: url("/images/board/hover_before_boardlike.png");
+}
+
+.bg-replywriter{
+	background-color: #d7d8da;
+	width: 15%
+}
+
+

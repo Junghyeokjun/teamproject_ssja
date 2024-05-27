@@ -19,6 +19,9 @@ public interface ReplyService {
 	int modifyReply(ReplysDto replysDto);
 	int removeReply(ReplysDto replysDto);
 
+	// 해당 글의 총 댓글 개수
+	long getTotal(long bno);
+	
 	// 해당 댓글 좋아요 처리 및 해당 댓글의 좋아요 수 리턴 
 	LikesVO modifyGetReplyLikes(String no, String liked);
 }
