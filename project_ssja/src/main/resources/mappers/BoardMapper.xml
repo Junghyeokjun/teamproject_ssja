@@ -7,7 +7,18 @@
         	SELECT * FROM board ORDER BY b_no desc
         ]]>
 	</select> -->
+<!-- 게시글 카테고리 -->
+	<select id="selectBoardCategorys" resultMap="BoardCategoryDtoMap">
+    	<![CDATA[
+        	select * from board_category
+        ]]>
+	</select>
 	
+	<select id="selectBoardCategory" resultMap="BoardCategoryDtoMap">
+    	<![CDATA[
+        	select * from board_category where b_c_name=#{bcname}
+        ]]>
+	</select>
 <!-- 게시글 -->
 	<select id="read" resultMap="BoardDtoMap">
     	<![CDATA[
@@ -83,7 +94,7 @@
 	</delete>
 	
 	<!-- 게시글 페이징 -->
-	<select id="selectListWithPaging"  resultMap="BoardDtoMap">
+	<select id="selectListWithPaging" resultMap="BoardDtoMap">
     	<![CDATA[
         	select * from 
         	(
@@ -105,6 +116,11 @@
         	SELECT count(*) FROM board where B_C_NO = #{bcno}
         ]]>
 	</select>
+
+	<resultMap type="teamproject.ssja.dto.BoardCategoryDto" id="BoardCategoryDtoMap">
+		<id property="bcno" column="b_c_no"/>
+		<result property="bcname" column="b_c_name"/>
+	</resultMap>
 
 	<!-- 게시글 맵 -->
 	<resultMap type="teamproject.ssja.dto.BoardDto" id="BoardDtoMap">

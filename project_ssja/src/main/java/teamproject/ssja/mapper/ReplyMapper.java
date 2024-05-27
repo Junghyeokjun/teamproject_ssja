@@ -26,6 +26,9 @@ public interface ReplyMapper {
 	List<ReplysDto> selectReplys(long bno);
 
 
+	// 해당 게시글의 총 댓글 개수 가져오기
+	long selectReplyCount(long bno);
+	
 	
 	// 해당 댓글의 총 좋아요 수 가져오기
 	long selectReplyLikes(long rno);

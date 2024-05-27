@@ -33,8 +33,7 @@ public class BoardController {
 		model.addAttribute("qnas",  boardService.showListWithPaging(criteria));
 		
 		// 임시로 카테고리 숫자 넣음
-		long total = boardService.getTotal(20);
-		model.addAttribute("pageMaker", new PageVO(total, criteria));
+		model.addAttribute("pageMaker", new PageVO(boardService.getTotal(20), criteria));
 		return "/qna/qnalist";
 	}
 
@@ -53,7 +52,7 @@ public class BoardController {
 	}
 
 	@GetMapping("/write_view")
-	public String writeView() {
+	public String writeView(Model model) {
 		log.info("writeView()..");
 		return "/qna/write_view";
 	}

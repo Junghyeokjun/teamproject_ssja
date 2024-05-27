@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
+import teamproject.ssja.dto.BoardCategoryDto;
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.page.Criteria;
 
@@ -120,5 +121,12 @@ class BoardMapperTest {
 		long likes = boardMapper.selectBoardLikes(205);
 		assertNotNull(likes);
 		log.info("205번 게시글 좋아요 수 : " + likes);
+	}
+	
+	@Test
+	void TestSelectBoardCategorys() {
+		for(BoardCategoryDto dto : boardMapper.selectBoardCategorys()) {
+			log.info("BC dto : " + dto);
+		}
 	}
 }

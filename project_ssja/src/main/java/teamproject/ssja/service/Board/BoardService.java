@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import teamproject.ssja.dto.BoardCategoryDto;
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.BoardIsLikedDto;
 import teamproject.ssja.dto.LikesVO;
@@ -15,6 +16,8 @@ import teamproject.ssja.page.Criteria;
 
 public interface BoardService {
 	//List<BoardDto> showList();
+	List<BoardCategoryDto> showBoardCategorys();
+	
 	int addBoard(BoardDto boardDto);
 	int removeBoard(BoardDto boardDto);	
 	BoardDto showContent(HttpServletRequest request, HttpServletResponse response); 

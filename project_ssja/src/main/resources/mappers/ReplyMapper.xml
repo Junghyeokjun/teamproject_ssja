@@ -38,6 +38,14 @@
         ]]>
 	</delete>
 
+	<!-- 해당 게시글의 모든 댓글 수 가져오기 -->
+	<select id="selectReplyCount" parameterType="long" resultType="long">
+		<![CDATA[
+        	SELECT count(*) FROM replys where b_no = #{bno}
+        ]]>
+	</select>
+	
+
 	<!-- 해당 게시글의 댓글들을 조회하기 -->
 	<select id="selectReplys" parameterType="long" resultMap="ReplysDtoMap">
 		<![CDATA[

@@ -189,11 +189,7 @@ body {
 					<tr>
 						<td  colspan="2">
 							<div class="d-flex justify-content-between">
-								<div>
-									<input type="submit" class="btn btn-danger customed-ssja" value="수정">
-									<a href="${pageContext.request.contextPath}/qna/delete?bno=${content_view.bno}" class="btn btn-danger">삭제</a>
-								</div>
-								
+								<input type="submit" class="btn btn-danger customed-ssja" value="수정">
 								<a class="btn btn-primary customed-ssja" href="${pageContext.request.contextPath}/qna/list">되돌아가기</a>								
 								<%-- &nbsp;&nbsp;<a href="${pageContext.request.contextPath}/qna/delete?bno=${content_view.bno}">삭제</a> --%>
 							<%-- <sec:authorize access="hasRole('ROLE_ADMIN')">
@@ -225,37 +221,12 @@ body {
 								</c:forEach>												
 								<span id="rwriter" class="input-group-text bg-replywriter">${reply_view.rwriter}</span>
 	    						<input id="rcontent" type="text" class="form-control" data-bno="${content_view.bno}" value="${reply_view.rcontent}" readonly="readonly">
-	    						<span class="input-group-text"><button id="reply-likes" class="btn">좋아요</button></span>
+	    						<span class="input-group-text bg-replywriter"><button id="reply-likes" class="btn">좋아요</button></span>
 	    					</div>
 	    					<div>	    						
 								<nav aria-label="Page navigation example">
 									<ul class="pagination justify-content-center">
-										<c:if test="${pageMaker.prev}">
-											<li class="page-item">
-												<a class="page-link" href="${pageContext.request.contextPath}/api/replys/${pageMaker.startPage-1}">&lt;<a>
-											</li>
-										</c:if>
-										<c:forEach var="idx" begin="${pageMaker.startPage}"	end="${pageMaker.endPage}">
-											<c:choose>																		
-												<c:when test="${pageMaker.criteria.pageNum == idx}">
-													<li class="page-item active">
-														<a class="page-link"
-														href="${pageContext.request.contextPath}/api/replys/${pageMaker.makeQuery(idx)}">${idx}</a>
-													</li>
-												</c:when>
-												<c:when test="${pageMaker.criteria.pageNum != idx && idx > 0}">
-													<li class="page-item"><a class="page-link"
-														href="${pageContext.request.contextPath}/api/replys/${pageMaker.makeQuery(idx)}">${idx}</a></li>
-												</c:when>
-												<c:otherwise>													
-												</c:otherwise>
-											</c:choose>
-										</c:forEach>
-										<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-											<li class="page-item">
-												<a class="page-link" href="${pageContext.request.contextPath}/api/replys/${pageMaker.makeQuery(pageMaker.endPage+1)}">&gt;</a>
-											</li>
-										</c:if>
+										
 									</ul>
 								</nav>
 							</div>
@@ -266,6 +237,63 @@ body {
 			</form>
 		</div>
 	</main>
+<script>
+/* 예시 스크립트 코드 */
+$(document).ready(function() {
+    const bno = /* your board number */;
+    const boardCategory = /* your board category */;
+
+    function loadPage(pageNum, amount) {
+        $.ajax({
+            url: '/api/page',
+            type: 'GET',
+            data: {
+                pageNum: pageNum,
+                amount: amount,
+                bno: bno,
+                boardCategory: boardCategory
+            },
+            success: function(response) {
+                $('#rcontent').html(response.content);
+                updatePagination(response.pageMaker);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error: ' + error);
+            }
+        });
+    }
+
+    function updatePagination(pageMaker) {
+        const pagination = $('#pagination');
+        pagination.empty();
+
+        if (pageMaker.prev) {
+            pagination.append(`<li class="page-item"><a class="page-link" data-page="${pageMaker.startPage - 1}">&lt;</a></li>`);
+        }
+
+        for (let idx = pageMaker.startPage; idx <= pageMaker.endPage; idx++) {
+            if (pageMaker.criteria.pageNum === idx) {
+                pagination.append(`<li class="page-item active"><a class="page-link" data-page="${idx}">${idx}</a></li>`);
+            } else {
+                pagination.append(`<li class="page-item"><a class="page-link" data-page="${idx}">${idx}</a></li>`);
+            }
+        }
+
+        if (pageMaker.next && pageMaker.endPage > 0) {
+            pagination.append(`<li class="page-item"><a class="page-link" data-page="${pageMaker.endPage + 1}">&gt;</a></li>`);
+        }
+    }
+
+    $(document).on('click', '.page-link', function(event) {
+        event.preventDefault();
+        const pageNum = $(this).data('page');
+        loadPage(pageNum, /* your default amount value, e.g., 10 */);
+    });
+
+    // Initial page load
+    loadPage(1, /* your default amount value, e.g., 10 */);
+});
+</script>
 	<footer>
 		<div id="first_footer" class="p-3"></div>
 		<div id="second_footer"></div>

@@ -74,4 +74,9 @@ public class ReplyServiceImpl implements ReplyService {
 		return likes;
 	}
 
+	@Override
+	public long getTotal(long bno) {
+		return replyMapper.selectReplyCount(bno);
+	}
+
 }

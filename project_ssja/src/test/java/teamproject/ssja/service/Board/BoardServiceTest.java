@@ -1,4 +1,4 @@
-package teamproject.ssja.service;
+package teamproject.ssja.service.Board;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import lombok.extern.slf4j.Slf4j;
-import teamproject.ssja.service.Board.BoardService;
+import teamproject.ssja.dto.BoardCategoryDto;
 
 @Slf4j
 @SpringBootTest
@@ -16,6 +16,13 @@ class BoardServiceTest {
 	@Autowired
 	BoardService boardService;
 	
+	@Test
+	void testShowBoardCategorys() {
+		for(BoardCategoryDto dto : boardService.showBoardCategorys()) {
+			log.info("BS BC dto : " + dto);
+		}
+	}
+
 	@Test
 	void testAddBoard() {
 		fail("Not yet implemented");
@@ -63,31 +70,6 @@ class BoardServiceTest {
 
 	@Test
 	void testModifyGetBoardLikes() {
-
-	}
-
-	@Test
-	void testShowReplys() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testAddReply() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testModifyReply() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testRemoveReply() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testModifyGetReplyLikes() {
 		fail("Not yet implemented");
 	}
 
