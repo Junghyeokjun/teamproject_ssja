@@ -70,14 +70,36 @@ public class TestRestController {
 		 mailService.findIDMail(mail);
 		 
 	 }
-	 
+
 	 @PostMapping("/findPw")
-	 public void findPw(String email,String id) {
+	 public String findPw(String id) {
+		 
+		 String email=signUpService.getEmail(id);
+		 if(email==null) {
+			 return null;
+		 }
+		 MailDTO mail=new MailDTO();
+		 mail.setReceiver(email);
+		 String randomNum=mailService.randomNumMail(mail);
+		 
+		 return randomNum;
+		 		 
+	 }
+	 
+	 @PostMapping("/resetPw")
+	 public void resetPw(String id,String pw) {
+		 signUpService.resetPw(id,pw);
+		 
+		 		 
+	 }
+	 
+	 @PostMapping("/emailAuth")
+	 public String emailAuth(String email) {
 		 MailDTO mail=new MailDTO();
 		 mail.setReceiver(email);
 		 
-//		 mailService.(mail,id);
-		 
+		 String AuthNum =mailService.randomNumMail(mail);
+		 return AuthNum;
 	 }
 	 
 	@PostMapping("/purchase_complete")

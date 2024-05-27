@@ -174,31 +174,7 @@
         })
       return temp_tf;
     }
-  //결제성공시 ajax요청을 보내는 함수
-  //제작예정
-  function pay_succese(){
-      $.ajax({
-          type : 'POST',         
-          beforeSend: function(xhr){
-            xhr.setRequestHeader(header, token);
-          },  
-          url : '/testrest/purchase_complete',
-          async : false,
-          headers : { 
-            "Content-Type" : "application/json; charset:UTF-8" },
-          dataType : 'json',
-          data :{
-            proNo : Number(proNo),
-            quantity : Number(quantity)
-          },    
-          success : function(result) {
-
-          },    
-          error : function(request, status, error) {
-          console.log(error)    
-          }
-        })
-    }
+  
 
   //pay함수 호출로 결제 실행
     $(document).ready(function(){
@@ -214,8 +190,52 @@
       let discount_val=0;
       let result_price=$("#result_price");
       let result_price_val=full_amount_val-discount_val;
+      let payment='discount';
+      let address_val=$("#address").val();
+      let detail_address_val=$("#detail_address").val();
       let buy_btn=$("#buy_btn");
+    
 
+      //결제성공시 ajax요청을 보내는 함수
+    //제작예정
+    function pay_succese(){
+        let product = [];
+        $(".product").each(function(idx, item){
+          product.push({"product_no" : item.querySelector(".product_no").value,
+                        "price" : item.querySelector(".product_price").innerHTML*item.querySelector(".product_pcs").innerHTML,
+                        "quantity" : item.querySelector(".product_pcs").innerHTML,
+                        "discount" : discount_val/full_amount_val*item.querySelector(".product_price").innerHTML*item.querySelector(".product_pcs").innerHTML,
+                        "pay" : result_price_val/full_amount_val*item.querySelector(".product_price").innerHTML*item.querySelector(".product_pcs").innerHTML,
+                        "coupon" : $('#coupon option:selected').val()
+                      });
+        })
+
+        $.ajax({
+            type : 'GET',         
+            beforeSend: function(xhr){
+              xhr.setRequestHeader(header, token);
+            },  
+            url : '/purchase/succese',
+            async : false,
+            dataType : 'json',
+            data :JSON.stringify({
+              M_NO : $("#M_NO").val(),
+              PUR_TOT : full_amount_val,
+              PUR_DC : discount_val,
+              PUR_PAY : result_price_val,
+              PUR_PAYMENT : payment,
+              PUR_DVADDRESS : address_val+detail_address_val,
+              PUR_DV : '대한통운',
+              products : product
+            }),    
+            success : function(result) {
+              location=("/purchase/complete?price="+result_price_val);
+            },    
+            error : function(request, status, error) {
+              alert(error);
+            }
+          })
+      }
       //주소 api 부분
       post_search_btn.on("click",function(){
           new daum.Postcode({
@@ -279,7 +299,7 @@
       amountSet();
       
       //포인트 입력제한을 소지 포인트로 거는 부분
-      // point.attr("max",88000);
+      point.attr("max",88000);
 
       //수량증가 부분
       $(document).on('click','.pcs_plus',function(){
@@ -392,8 +412,11 @@
         }
         if(result_price_val>=100){
           pay(result_price_val);
+          payment='card';
+          pay_succese();
         }else if(result_price_val==0){
           window.alert("결제가 완료되었습니다.")
+          pay_succese();
           //리다이렉트 추가
         }else{
           window.alert("최소 결제단위는 100원입니다.")
@@ -427,7 +450,7 @@
     <sec:authorize access="isAuthenticated()">
     	<sec:authentication property="principal" var="principal"/>
     </sec:authorize>
-    <input type="hidden" id="" value="">
+    <input type="hidden" id="M_NO" value="${principal.userInfo.m_No}">
   </header>
 
   <div id="side_bar"></div>
@@ -446,7 +469,6 @@
             </td>
             <td>
               <input type="text" size="35" class="mb-1 form-control" id="address" name="M_ADDRESS1" value="${principal.userInfo.m_Address1}">
-              <div sec:authentication="principal.authorities"></div>
             </td>
           </tr>
           
@@ -469,7 +491,7 @@
         <c:forEach var="product" items="${products}">
         	<div class="product" style="height:150px;">
             <input class="product_no" type="hidden" value="${product.PRO_NO}">
-	          <img src="/images/utilities/logoSSJA.png" alt="" style="width: 150px;height: 150px; float: left;">
+	          <img src="${product.PRO_BANNERIMG}" alt="" style="width: 150px;height: 150px; float: left;">
 	          <div class="m-2 pt-3 fs-4"><span class="product_name">${product.PRO_NAME}</span></div>
 	          <!-- <div class="m-2 fs-4"><span>옵션 :</span><span id="product_opt">네이비블루</span></div> -->
 	          <div class="m-2 fs-4"><span>금액:</span><span class="product_price">${product.PRO_PRICE}</span>원 <span>수량:</span> <span class="product_pcs">${product.PRO_QUANTITY}</span>개</div>

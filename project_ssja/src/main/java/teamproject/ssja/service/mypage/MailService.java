@@ -60,7 +60,7 @@ public class MailService {
 
 
 		public String randomNumMail(MailDTO mail) {
-			String randNum=(int)(Math.random()*999999)+1+"";
+			String randNum=String.format("%06d", (int)(Math.random()*999999)+1);
 			mail.setTitle("SSJA 인증번호 메일");
 		   String authNum = UUID.randomUUID().toString().substring(0, 6);
 		   mail.setAuthNum(authNum);		   
