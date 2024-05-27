@@ -1,0 +1,107 @@
+a{
+	text-decoration: none;
+	color: black;
+}
+
+.table{
+	border : 0;
+}
+
+#qna_textarea{
+	width : 100%;
+	height: 30em;
+    border: none;
+    resize: none;
+}
+
+.form-control{
+	border : none;
+}
+
+.input-group-text{
+	border : none;
+	background-color: white;
+	font-weight: bold;
+}
+
+.btn-danger.customed-ssja{
+	background-color : #48bb12;
+	border-color: #48bb12;
+}
+
+.btn-danger.customed-ssja:hover{
+	background-color : #3e831e;
+	border-color: #3e831e;
+}
+
+.btn-primary.customed-ssja{
+	background-color : #d3bf0b;
+	border-color: #d3bf0b;
+}
+
+.btn-primary.customed-ssja:hover{
+	background-color : #91851f;
+	border-color: #91851f;
+}
+
+
+#qna_title:hover {
+	color : #d3bf0b;
+}
+
+.ch-col.pagination{
+	border : 0px;
+	font-color : black;
+}
+
+.page-link {
+	color: #000; 
+  	background-color: #fff;
+}
+
+.page-link:hover{
+	background-color : lightgray;
+	border-color: lightgray;
+	font-weight : bold;
+	color : white;
+}
+
+.page-link.ch-col{
+	background-color : tomato;
+	border-color: tomato;
+}
+
+.ch-col.pagination > .active > a, 
+.ch-col.pagination > .active > span, 
+.ch-col.pagination > .active > a:hover, 
+.ch-col.pagination > .active > span:hover, 
+.ch-col.pagination > .active > a:focus, 
+.ch-col.pagination > .active > span:focus {
+	color : white;
+	font-weight : bold;
+  	background-color : gray;
+  	border-color: gray;
+}
+
+.board-like{
+	width: 55px;
+	
+	height: 55px;
+	border: 0px;
+	content: url("/images/board/before_boardlike.png");
+}
+
+.board-like:hover{
+	width: 55px;
+	
+	height: 55px;
+	border: 0px;
+	content: url("/images/board/hover_before_boardlike.png");
+}
+
+.bg-replywriter{
+	background-color: #d7d8da;
+	width: 15%
+}
+
+

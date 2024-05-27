@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="teamproject.ssja.mapper.TestMapper">
+	
+	<select id="getMid" resultType="String">
+		<![CDATA[
+			select M_ID from members where M_ID=#{mid}
+		]]>
+	</select>
+	
+	<select id="getMNickName" resultType="String">
+		<![CDATA[
+			select M_NICKNAME from members where M_NICKNAME=#{mNickName}
+		]]>
+	</select>
+	
+	<select id="getMEmail" resultType="String">
+		<![CDATA[
+			select M_EMAIL from members where M_EMAIL=#{mEmail}
+		]]>
+	</select>
+	
+	<select id="selectEmail" resultType="String">
+		<![CDATA[
+			select M_EMAIL from members where M_ID=#{mid}
+		]]>
+	</select>
+	
+	<select id="selectPW" resultType="String">
+		<![CDATA[
+			select M_PW from members where M_ID=#{mid}
+		]]>
+	</select>
+	
+	<update id="updatePw">
+		<![CDATA[
+			UPDATE members SET M_PW=#{pw} WHERE M_ID = #{id}
+		]]>
+	</update>
+	
+	<select id="getProQuantity" resultType="int">
+		<![CDATA[
+			select PRO_QUANTITY from product where PRO_NO=#{proNo}
+		]]>
+	</select>
+
+	
+	<insert id="insertMember">
+		<![CDATA[
+			INSERT INTO members(M_NO,M_ID,M_PW,M_NAME,M_ADDRESS1,M_ADDRESS2,M_ZIPCODE,M_BIRTH,M_EMAIL,M_PHONE,M_DATE,M_NICKNAME) 
+			VALUES(M_SEQ.nextval,#{M_ID},#{M_PW},#{M_NAME},#{M_ADDRESS1},#{M_ADDRESS2},#{M_ZIPCODE},#{M_BIRTH},#{M_EMAIL},#{M_PHONE},SYSDATE,#{M_NICKNAME})
+		]]>
+	</insert>
+	
+	<insert id="insertUserAuth">
+		<![CDATA[
+			INSERT INTO authority(M_ID) VALUES(#{mid})
+		]]>
+	</insert>
+	
+	<insert id="insertPurchase">
+		INSERT INTO PURCHASE 
+		VALUES(PUR_SEQ.nextval,#{M_NO},#{PUR_TOT},#{PUR_DC},#{PUR_PAY},#{PUR_PAYMENT},SYSDATE,#{PUR_DVADDRESS},#{PUR_DV})
+			
+		<selectKey keyProperty="PUR_NO" resultType="int" order="AFTER">
+			select PUR_NO
+			from (SELECT PUR_NO ,rowNum
+			FROM PURCHASE
+			WHERE M_NO=#{M_NO}
+			order by PUR_NO desc)
+			where rownum=1
+		</selectKey>
+	
+	</insert>
+	
+</mapper>
