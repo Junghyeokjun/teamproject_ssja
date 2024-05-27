@@ -20,12 +20,17 @@ public class ScheduledProcesser {
 	@Transactional
 	@Scheduled(cron = "0 0 0 * * *")
 	void deleteEnrolledUser() {
+		try {
 		List<String> enrolledDeleteUsers = myPageService.findDeleteEnrolledUsers();
 
 		if (enrolledDeleteUsers.size() > 0) {
 			myPageService.deleteEnrolledUsersAuth(enrolledDeleteUsers);
 
 			myPageService.deleteEnrolled();
+		}
+			
+		} catch (Exception e) {
+			throw new RuntimeException();
 		}
 	}
 

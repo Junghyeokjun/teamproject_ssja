@@ -2,14 +2,15 @@ package teamproject.ssja.service.mypage;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
-import teamproject.ssja.dto.AddressForm;
-import teamproject.ssja.dto.UserInfoDTO;
+import teamproject.ssja.dto.userinfo.AddressForm;
+import teamproject.ssja.dto.userinfo.UserInfoDTO;
 import teamproject.ssja.mapper.MyPageMapper;
 
 @Slf4j
@@ -18,8 +19,11 @@ public class MyPageUserInfoService implements MyPageService{
 
 	@Autowired
 	MyPageMapper myPageMapper;
+	@Autowired
+	PasswordEncoder passwordEncoder;
 	
-	@Override
+
+@Override
 	public UserInfoDTO getUserInfo(long username) {
 		
 		return myPageMapper.getUserInfoInMyPage(username);
@@ -65,6 +69,18 @@ public class MyPageUserInfoService implements MyPageService{
 		myPageMapper.deleteEnrolledUsersAuth(enrolledDeleteUsers);
 		
 	}
+
+	@Override
+	public void modifyUserEmail(String email, String username) {
+		Map<String,String> params = new HashMap<>();
+		
+		params.put("userId",username);
+		params.put("email",email);
+		myPageMapper.modifyUserEmail(params);
+		
+	}
+
+	
 
 	
 	

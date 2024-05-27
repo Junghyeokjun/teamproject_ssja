@@ -6,8 +6,8 @@ import org.apache.ibatis.annotations.Select;
 
 import java.util.*;
 
-import teamproject.ssja.dto.AddressForm;
-import teamproject.ssja.dto.UserInfoDTO;
+import teamproject.ssja.dto.userinfo.AddressForm;
+import teamproject.ssja.dto.userinfo.UserInfoDTO;
 @Mapper
 public interface MyPageMapper {
 	
@@ -23,4 +23,5 @@ public interface MyPageMapper {
 	List<String> findDeleteEnrolledUsers();
 	
 	void deleteEnrolledUsersAuth(List<String> enrolledDeleteUsers);
+	void modifyUserEmail(Map<String,String> params);
 }

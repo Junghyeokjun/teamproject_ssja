@@ -37,5 +37,11 @@ public class ProductDetailDto {
 	long M_NO;   
 	String V_BIZNAME;
 	String V_LICENSE;
-	
+	String M_NAME;
+	String M_ADDRESS1;
+	String M_ADDRESS2;
+	String M_ZIPCODE;
+	String M_EMAIL;
+	String M_PHONE;
+	String B_WRITER;	
 }

@@ -20,18 +20,17 @@ public class ProductDetailController {
 	public String product_detail(@RequestParam("PRO_NO") long PRO_NO,Model model) {
 		log.info("product_detail()..");
 		model.addAttribute("productdetail",productDetailService.get(PRO_NO));
+		model.addAttribute("productdetailreplys",productDetailService.getReply(PRO_NO));
+		
 		return "/product_detail";
-	}	
+	}		
 	@GetMapping("/product_detail2")
 	public String product_detail2(@RequestParam("PRO_NO") long PRO_NO,Model model) {
-		log.info("product_detail2()..");
-		model.addAttribute("productdetail",productDetailService.get(PRO_NO));		
-		return "/product_detail2";
-	}
-	@GetMapping("/123")
-	public String sad() {
+		log.info("product_detail()..");
+		model.addAttribute("productdetail",productDetailService.get(PRO_NO));
+		model.addAttribute("productdetailreplys",productDetailService.getReply(PRO_NO));
 		
-		return "index";
+		return "/product_detail2";
 	}
 
 }

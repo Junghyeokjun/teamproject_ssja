@@ -19,8 +19,8 @@ import org.springframework.security.web.authentication.session.ConcurrentSession
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
-import teamproject.ssja.dto.logindto.CustomUserDetailsDTO;
 import teamproject.ssja.service.user.CustomUserDetailsService;
+
 
 
 
@@ -29,7 +29,18 @@ import teamproject.ssja.service.user.CustomUserDetailsService;
 @EnableWebSecurity//스프링 시큐리티 필터가 스프링 필터체인에 등록됨
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
+	   @Autowired
+	    private CustomUserDetailsService customUserDetailsService;
+	   
+	   @Autowired
+	   private PasswordEncoder passwordEncoder;
 
+
+	 @Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		    auth.userDetailsService(customUserDetailsService)
+	        .passwordEncoder(passwordEncoder);
+	}
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		
@@ -39,8 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	
 	@Override
-	public void configure(HttpSecurity http) throws Exception {
-	http.csrf().disable();
+	protected void configure(HttpSecurity http) throws Exception {
+	//http.csrf().disable();
 		/* 권한설정 */
 	    http.authorizeRequests()
 	    .antMatchers("/logout","/user","/myPage","/myPage/**","/userInfo","/user","/user/**").hasAnyRole("USER")
@@ -80,24 +91,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	//계층 권한
 	 @Bean
-	    public RoleHierarchy roleHierarchy(){
+	    protected RoleHierarchy roleHierarchy(){
 	        RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
 	        hierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
 	        return hierarchy;
 	    }
 	 
 	 @Bean
-	    public SessionAuthenticationStrategy sessionAuthenticationStrategy() {
+	 protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
 	        return new ConcurrentSessionControlAuthenticationStrategy(sessionRegistry());
 	    }
 	 
 	 @Bean//현재 세션을 추적할 수 있도록 설정
-	    public SessionRegistry sessionRegistry() {
+	 protected SessionRegistry sessionRegistry() {
 	        return new SessionRegistryImpl();
 	    }
 	 
 	 @Bean // 세션 생성 및 소멸 이벤트를 처리하는 역할
-	    public HttpSessionEventPublisher httpSessionEventPublisher() {
+	 protected HttpSessionEventPublisher httpSessionEventPublisher() {
 	        return new HttpSessionEventPublisher();
 	    }
 }

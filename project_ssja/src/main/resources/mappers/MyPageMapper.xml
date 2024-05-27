@@ -3,7 +3,7 @@
 <mapper namespace="teamproject.ssja.mapper.MyPageMapper">
 
    
-<resultMap id="userResultMap" type="UserInfoDTO">
+<resultMap id="userResultMap" type="teamproject.ssja.dto.userinfo.UserInfoDTO">
     <id property="m_No" column="m_no"/>
     <result property="m_Id" column="m_id"/>
     <result property="m_Name" column="m_name"/>
@@ -36,7 +36,7 @@
     where m.m_no = #{username}
 </select>
 
-<update id="changeAddress" parameterType="AddressForm">
+<update id="changeAddress" parameterType="teamproject.ssja.dto.userinfo.AddressForm">
 	update members set m_zipcode = #{zip_code}, m_address1 = #{address}, m_address2 = #{extra_address} where m_no = #{userId}
 </update>
 
@@ -46,6 +46,10 @@
 
 <update id="deleteUserEnroll" parameterType="String" >
 update members set M_deletedate = sysdate + INTERVAL'7' day  where m_id=#{userId} 
+</update>
+
+<update id="modifyUserEmail" parameterType="Map" >
+update members set m_email = #{email} where m_id = #{userId}
 </update>
 
 
