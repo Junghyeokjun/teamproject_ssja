@@ -7,6 +7,11 @@
  * - 시, 분, 월, 일은 10 이하에서는 한 자리만 뜨고 10이상일 땐 두 자리가 뜬다. 
  */
 
+//  //csrf추가
+  let token = $("meta[name='_csrf']").attr("content");
+  let header = $("meta[name='_csrf_header']").attr("content");
+
+
 $(document).ready(function() {
 	function getBdateStr(bdate) {
 		// 오늘 날짜를 "yyyy-MM-dd" 형식으로 가져오기
@@ -69,6 +74,11 @@ $(document).ready(function() {
         $.ajax({
             url: '/api/likes/toggle/' + bno,
             type: 'POST',
+            beforeSend : function(xhr){
+                //ajax호출 중 처리
+                //글로벌 변수로 설정한 csrf token 셋팅
+                xhr.setRequestHeader(header,token);
+            },
             //contentType: 'application/json', // JSON 형식으로 요청을 보낼 것임을 명시
             //data: JSON.stringify({ no : bno, liked : liked }), // JSON 형식으로 데이터 전달
             data: {
@@ -78,7 +88,7 @@ $(document).ready(function() {
             	console.log("successed");
             	console.log(response);
                 $('#like-count').text(response.afterLikes);
-                $('#like-button').text(response.isLiked == 1  ? '좋아요 취소' : '좋아요');
+                $('#board-like').attr(response.isLiked == 1  ? '좋아요 취소' : '좋아요');
             },
             error: function(xhr, status, error) {
                 console.log("Error: " + error);

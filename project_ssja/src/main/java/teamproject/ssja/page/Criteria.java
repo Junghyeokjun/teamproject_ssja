@@ -12,7 +12,7 @@ public class Criteria {
 	private int pageNum; // 페이지 번호
 	private int amount; // 한 페이지당 보여줄 데이터 개수
 	private long bno;
-	
+	private long boardCategory;
 	
 	public Criteria() {
 		this(1,10); // 기본값 1페이지 10개로 지정

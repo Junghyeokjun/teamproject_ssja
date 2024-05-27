@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+pom.properties
+=======
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
@@ -36,3 +39,4 @@ build/
 ### VS Code ###
 
 .vscode/
+>>>>>>> c867845639ddeaf4caa3b9ac799b0f04b5222d96

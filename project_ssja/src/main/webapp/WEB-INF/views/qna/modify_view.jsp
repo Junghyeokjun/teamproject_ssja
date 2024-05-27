@@ -106,41 +106,46 @@ body {
 	</div>
 	<main>
 		<div id="main_container">
-		
-	<h1>글 보기</h1>
-	<form action="${pageContext.request.contextPath}/qna/modify" method="post">
-		<input type="hidden" name="bno" value="${modify_view.bno}">	
-		<table border="1" style="width: 500; background-color: gray;">
-			<tr>
-				<td style="background-color: pink">이름</td>
-				<td style="background-color: white"><input type="text" name="bwriter" size="50" value="${modify_view.bwriter}" readonly="readonly"></td>
-			</tr>
-			<tr>
-				<td style="background-color: pink">제목</td>
-				<td style="background-color: white"><input type="text" name="btitle" size="50" value="${modify_view.btitle}" ></td>
-			</tr>
-			<tr>
-				<td style="background-color: pink">내용</td>
-				<td style="background-color: white"><textarea name="bcontent" rows="10">${modify_view.bcontent}</textarea></td>
-			</tr>
-			<tr>
-				<td style="background-color: pink" colspan="2">
-					<input type="submit" value="수정">
-					&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/qna/list">취소</a>
-					<%-- &nbsp;&nbsp;<a href="${pageContext.request.contextPath}/qna/delete?bno=${modify_view.bno}">삭제</a> --%> 
-				</td>
-			</tr>
-		</table>
-	</form>
+			<div class="main_whitespace">
+				
+			</div>
+			<form action="${pageContext.request.contextPath}/qna/modify" method="post">
+				<div class="input-group">
+					<input type="hidden" class="form-control" name="bbcno" value="${write_view.bcno}">				
+					<sec:csrfInput />
+				</div>
+				<table class="table" >
+					<tr>
+						<td colspan="2">
+							<div class="input-group no-border">
+	    						<input type="text" class="form-control" name="btitle" value="${modify_view.btitle}">
+	    					</div>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<div class="input-group">
+								<textarea id="qna_textarea" name="bcontent" class="form-control" rows="10" placeholder="내용을 입력하세요.">${modify_view.bcontent}</textarea>	    				
+	    					</div>
+						</td>		
+					</tr>
+					<tr>
+						<td  colspan="2">
+							<div class="d-flex justify-content-between">
+								<input type="submit" class="btn btn-danger customed-ssja" value="수정">
+								<a class="btn btn-primary customed-ssja" href="${pageContext.request.contextPath}/qna/list">취소</a>								
+							</div>
+						</td>
+					</tr>
+				</table>
+			</form>
 		</div>
-
 	</main>
-
 	<footer>
 		<div id="first_footer" class="p-3"></div>
 		<div id="second_footer"></div>
 		<div id="third_footer"></div>
-	</footer>
+	</footer>	
 
 </body>
 </html>
