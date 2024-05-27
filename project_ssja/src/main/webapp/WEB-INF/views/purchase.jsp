@@ -201,24 +201,27 @@
     function pay_succese(){
         let product = [];
         $(".product").each(function(idx, item){
-          product.push({"product_no" : item.querySelector(".product_no").value,
-                        "price" : item.querySelector(".product_price").innerHTML*item.querySelector(".product_pcs").innerHTML,
-                        "quantity" : item.querySelector(".product_pcs").innerHTML,
-                        "discount" : discount_val/full_amount_val*item.querySelector(".product_price").innerHTML*item.querySelector(".product_pcs").innerHTML,
-                        "pay" : result_price_val/full_amount_val*item.querySelector(".product_price").innerHTML*item.querySelector(".product_pcs").innerHTML,
-                        "coupon" : $('#coupon option:selected').val()
+          product.push({product_no : item.querySelector(".product_no").value,
+                        price : item.querySelector(".product_price").innerHTML*item.querySelector(".product_pcs").innerHTML,
+                        quantity : item.querySelector(".product_pcs").innerHTML,
+                        discount : discount_val/full_amount_val*item.querySelector(".product_price").innerHTML*item.querySelector(".product_pcs").innerHTML,
+                        pay : result_price_val/full_amount_val*item.querySelector(".product_price").innerHTML*item.querySelector(".product_pcs").innerHTML,
+                        coupon : $('#coupon option:selected').val()
                       });
         })
 
         $.ajax({
-            type : 'GET',         
+            type : 'POST',         
             beforeSend: function(xhr){
               xhr.setRequestHeader(header, token);
-            },  
+            },
+            headers : {
+              "Content-Type" : "application/json; charset:UTF-8" 
+            },    
             url : '/purchase/succese',
             async : false,
             dataType : 'json',
-            data :JSON.stringify({
+            data :{
               M_NO : $("#M_NO").val(),
               PUR_TOT : full_amount_val,
               PUR_DC : discount_val,
@@ -227,7 +230,7 @@
               PUR_DVADDRESS : address_val+detail_address_val,
               PUR_DV : '대한통운',
               products : product
-            }),    
+            },    
             success : function(result) {
               location=("/purchase/complete?price="+result_price_val);
             },    

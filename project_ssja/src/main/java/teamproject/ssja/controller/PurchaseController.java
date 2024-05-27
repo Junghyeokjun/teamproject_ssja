@@ -42,7 +42,7 @@ public class PurchaseController {
 		mv.setViewName("purchase");
 		return mv;
 	}
-	@GetMapping("/succese")
+	@PostMapping("/succese")
 	public void succese(PurchaseDto purchase,@RequestParam(value="products")List<Map<String,Object>> products) {
 		System.out.println(purchase);
 		System.out.println(products);
