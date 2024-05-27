@@ -174,6 +174,32 @@
         })
       return temp_tf;
     }
+  //결제성공시 ajax요청을 보내는 함수
+  //제작예정
+  function pay_succese(){
+      $.ajax({
+          type : 'POST',         
+          beforeSend: function(xhr){
+            xhr.setRequestHeader(header, token);
+          },  
+          url : '/testrest/purchase_complete',
+          async : false,
+          headers : { 
+            "Content-Type" : "application/json; charset:UTF-8" },
+          dataType : 'json',
+          data :{
+            proNo : Number(proNo),
+            quantity : Number(quantity)
+          },    
+          success : function(result) {
+
+          },    
+          error : function(request, status, error) {
+          console.log(error)    
+          }
+        })
+    }
+
   //pay함수 호출로 결제 실행
     $(document).ready(function(){
       let point=$("#point");
@@ -190,6 +216,7 @@
       let result_price_val=full_amount_val-discount_val;
       let buy_btn=$("#buy_btn");
 
+      //주소 api 부분
       post_search_btn.on("click",function(){
           new daum.Postcode({
               oncomplete: function(data) {
@@ -237,16 +264,59 @@
               }
           }).open();
       })
-      //결제 관련 가격들을 세팅하는 메서드
+      //결제 가격 세팅 메서드
+      function amountSet(){
+        full_amount.text(full_amount_val);
+        discount.text(discount_val);
+        result_price.text(result_price_val);
+      }
+
+      //결제 관련 가격들을 세팅하는 부분
       $(".product").each(function(idx, item){
         full_amount_val+=Number(item.querySelector(".product_price").innerHTML)*Number(item.querySelector(".product_pcs").innerHTML);
       })
-      full_amount.text(full_amount_val);
-      discount.text(discount_val);
       result_price_val=full_amount_val-discount_val;
-      result_price.text(result_price_val);
-      //포인트 입력제한을 소지 포인트로 거는 메서드
-      point.attr("max",88000);
+      amountSet();
+      
+      //포인트 입력제한을 소지 포인트로 거는 부분
+      // point.attr("max",88000);
+
+      //수량증가 부분
+      $(document).on('click','.pcs_plus',function(){
+        var pcs=this.parentNode.parentNode.querySelector(".product_pcs");
+        var amount=this.parentNode.parentNode.querySelector(".product_price");
+        pcs.innerHTML=Number(pcs.innerHTML)+1;
+        full_amount_val=Number(full_amount_val)+Number(amount.innerHTML);
+        discount_val=full_amount_val/100*coupon_discount;
+        result_price_val=full_amount_val-discount_val;
+        amountSet();
+      })
+      
+      //수량감소 부분
+      $(document).on('click','.pcs_minus',function(){
+        var pcs=this.parentNode.parentNode.querySelector(".product_pcs");
+        var amount=this.parentNode.parentNode.querySelector(".product_price");
+        if(pcs.innerHTML=="0"){
+          return;
+        }
+        pcs.innerHTML=Number(pcs.innerHTML)-1;
+        full_amount_val=Number(full_amount_val)-Number(amount.innerHTML);
+        discount_val=full_amount_val/100*coupon_discount;
+        result_price_val=full_amount_val-discount_val;
+        amountSet();
+      })
+
+      //상품제거 부분
+      $(document).on('click','.pro_rm',function(){
+        var product=this.parentNode.parentNode
+        var pcs=this.parentNode.parentNode.querySelector(".product_pcs");
+        var amount=this.parentNode.parentNode.querySelector(".product_price");
+        full_amount_val-=Number(amount.innerHTML)*Number(pcs.innerHTML);
+        discount_val=full_amount_val/100*coupon_discount;
+        result_price_val=full_amount_val-discount_val;
+        amountSet();
+        product.remove();
+      })
 
       //쿠폰사용시 이벤트
       coupon.on("change",function(){
@@ -256,9 +326,8 @@
         //할인액 계산
         coupon_discount=$('#coupon option:selected').attr("discount")
         discount_val=full_amount_val/100*coupon_discount;
-        discount.text(discount_val);
         result_price_val=full_amount_val-discount_val;
-        result_price.text(result_price_val);
+        amountSet();
       })
 
       //포인트 최대값 제한 이벤트, 디스카운트 변경이벤트
@@ -282,10 +351,9 @@
         use_point=point.val();
         //할인액 수정
         discount_val=full_amount_val/100*coupon_discount+Number(use_point);
-        discount.text(discount_val);
         //결제액 수정
         result_price_val=full_amount_val-discount_val;
-        result_price.text(result_price_val);
+        amountSet();
       })
       //클릭시 소지포인트가 가격을 초과하지 않는다면 소지포인트의 전액, 초과한다면 가격으로 포인트를 설정해주는 이벤트
       full_use_btn.on("click",function(){
@@ -355,6 +423,11 @@
       <div id="home_user_bar"> </div>
       <div id="sub_bar"></div>
     </nav>
+    <!-- 유저 정보를 사용하기 위한 코드 -->
+    <sec:authorize access="isAuthenticated()">
+    	<sec:authentication property="principal" var="principal"/>
+    </sec:authorize>
+    <input type="hidden" id="" value="">
   </header>
 
   <div id="side_bar"></div>
@@ -372,15 +445,17 @@
               <span>주소</span>
             </td>
             <td>
-              <input type="text" size="35" class="mb-1 form-control" id="address" name="M_ADDRESS1">
+              <input type="text" size="35" class="mb-1 form-control" id="address" name="M_ADDRESS1" value="${principal.userInfo.m_Address1}">
+              <div sec:authentication="principal.authorities"></div>
             </td>
           </tr>
+          
           <tr>
             <td>
               <span>상세주소ㅤ</span>
             </td>
             <td>
-              <input type="text" size="23" class=" mb-1 form-control w-50 d-inline" id="detail_address" name="M_ADDRESS2">
+              <input type="text" size="23" class=" mb-1 form-control w-50 d-inline" id="detail_address" name="M_ADDRESS2" value="${principal.userInfo.m_Address2}" >
               <input type="text" size="6" class="mb-1 d-none" id="extra_address" name="extra_address" >
               <input type="text" size="10" class="mb-1 d-none" id="post" name="M_ZIPCODE">
               <input type="button" value="주소 찾기" class="mb-1 ms-3 btn btn-primary" id="post_search_btn">
@@ -398,7 +473,12 @@
 	          <div class="m-2 pt-3 fs-4"><span class="product_name">${product.PRO_NAME}</span></div>
 	          <!-- <div class="m-2 fs-4"><span>옵션 :</span><span id="product_opt">네이비블루</span></div> -->
 	          <div class="m-2 fs-4"><span>금액:</span><span class="product_price">${product.PRO_PRICE}</span>원 <span>수량:</span> <span class="product_pcs">${product.PRO_QUANTITY}</span>개</div>
-	        </div>
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <button type="button" class="btn btn-primary pcs_plus">1개추가</button>
+              <button type="button" class="btn btn-secondary pcs_minus">1개감소</button>
+              <button type="button" class="btn btn-danger pro_rm">빼기</button>
+            </div>
+          </div>
         </c:forEach>
         
       </div>
@@ -414,7 +494,7 @@
       </div>
       <div class="ms-3 mb-3" style="margin-right: 30%;">
         <h3 class="my-3 border-bottom">포인트</h3>
-        <input type="number" class="ms-3 me-0 form-control w-25 d-inline" id="point" value="0" min="0" max="200">
+        <input type="number" class="ms-3 me-0 form-control w-25 d-inline" id="point" value="0" min="0" max="${principal.userInfo.m_Point}">
         <button class="ms-0 btn btn-primary" id="full_use_btn">전액사용</button>
       </div>
       <div id="payment_bar">

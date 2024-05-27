@@ -172,7 +172,9 @@ body {
 						<td  colspan="2">
 							<div class="d-flex justify-content-center">
 								<!-- data-likebmno 값 변경 필요 -->
-								<button id="like-button" data-likebno="${content_view.bno}" data-likebmno="${content_view.bmno}">좋아요</button>
+								<button id="like-button" class="btn" data-likebno="${content_view.bno}" data-likebmno="${content_view.bmno}">
+									<img class="board-like" >
+								</button>
 							</div>
 					</tr>
 					<tr>
@@ -200,37 +202,60 @@ body {
 						</td>
 					</tr>
 					<tr>
+						<td colspan="2"></td>
+					</tr>
+					<tr>
 						<td colspan="2">
-							<div class="">
-							
-							</div>
-							<div>
+							<h2 class="h5 m-1 p-1">댓글</h2>		
+							<div class="input-group border">								
+	    						<input id="inputreplyCon" type="text" class="form-control" name="rcontent" data-rbno="${content_view.bno}" data-rmno="${}" placeholder="댓글을 입력하세요.">
+	    						<span class="input-group-text"><button class="btn btn-primary">입력</button></span>
+	    					</div>	   						    					
+						</td>					
+					</tr>
+					<tr>
+						<td colspan="2">							
+							<div id="replys" class="input-group border">
+								<c:forEach var="re" begin="1" end="${reply_view.rindent}">
+									<img src="">
+								</c:forEach>												
+								<span id="rwriter" class="input-group-text bg-replywriter">${reply_view.rwriter}</span>
+	    						<input id="rcontent" type="text" class="form-control" data-bno="${content_view.bno}" value="${reply_view.rcontent}" readonly="readonly">
+	    						<span class="input-group-text bg-replywriter"><button id="reply-likes" class="btn">좋아요</button></span>
+	    					</div>
+	    					<div>	    						
 								<nav aria-label="Page navigation example">
 									<ul class="pagination justify-content-center">
-										<c:if test="${pageMaker.prev}">
-											<li class="page-item"><a class="page-link"
-												href="${pageContext.request.contextPath}/board/list2${pageMaker.makeQuery(pageMaker.startPage-1)}"><<a></li>
+										<%-- <c:if test="${pageMaker.prev}">
+											<li class="page-item">
+												<a class="page-link" href="${pageContext.request.contextPath}/api/page/${pageMaker.startPage-1}">&lt;<a>
+											</li>
 										</c:if>
-										<c:forEach var="idx" begin="${pageMaker.startPage}"
-											end="${pageMaker.endPage}">
-											<c:choose>						
+										<c:forEach var="idx" begin="${pageMaker.startPage}"	end="${pageMaker.endPage}">
+											<c:choose>																		
 												<c:when test="${pageMaker.criteria.pageNum == idx}">
-													<li class="page-item active"><a class="page-link"
-														href="${pageContext.request.contextPath}/board/list2${pageMaker.makeQuery(idx)}">${idx}</a></li>
+													<li class="page-item active">
+														<a class="page-link"
+														href="${pageContext.request.contextPath}/api/page/${pageMaker.makeQuery(idx)}">${idx}</a>
+													</li>
 												</c:when>
-												<c:otherwise>
+												<c:when test="${pageMaker.criteria.pageNum != idx && idx > 0}">
 													<li class="page-item"><a class="page-link"
-														href="${pageContext.request.contextPath}/board/list2${pageMaker.makeQuery(idx)}">${idx}</a></li>
+														href="${pageContext.request.contextPath}/api/page/${pageMaker.makeQuery(idx)}">${idx}</a></li>
+												</c:when>
+												<c:otherwise>													
 												</c:otherwise>
 											</c:choose>
 										</c:forEach>
 										<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-											<li class="page-item"><a class="page-link"
-												href="${pageContext.request.contextPath}/board/list2${pageMaker.makeQuery(pageMaker.endPage+1)}">></a></li>
-										</c:if>
+											<li class="page-item">
+												<a class="page-link" href="${pageContext.request.contextPath}/api/page/${pageMaker.makeQuery(pageMaker.endPage+1)}">&gt;</a>
+											</li>
+										</c:if> --%>
 									</ul>
 								</nav>
 							</div>
+						
 						</td>
 					</tr>
 				</table>
@@ -243,6 +268,6 @@ body {
 		<div id="second_footer"></div>
 		<div id="third_footer"></div>
 	</footer>
-
+	
 </body>
 </html>
