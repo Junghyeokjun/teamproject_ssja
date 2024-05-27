@@ -6,15 +6,12 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import teamproject.ssja.dto.ProductDetailDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.PurchaseDto;
 import teamproject.ssja.service.Purchase.PurchaseService;
@@ -42,15 +39,30 @@ public class PurchaseController {
 		mv.setViewName("purchase");
 		return mv;
 	}
-	@PostMapping("/succese")
-	public void succese(PurchaseDto purchase,@RequestParam(value="products")List<Map<String,Object>> products) {
-		System.out.println(purchase);
-		System.out.println(products);
+//	@RequestMapping("/success")
+//	public void succese(@RequestParam("M_NO") long M_NO,
+//			            @RequestParam("PUR_TOT") long PUR_TOT,
+//			            @RequestParam("PUR_DC") long PUR_DC,
+//			            @RequestParam("PUR_PAY") long PUR_PAY,
+//			            @RequestParam("PUR_PAYMENT") String PUR_PAYMENT,
+//			            @RequestParam("PUR_DVADDRESS") String PUR_DVADDRESS,
+//			            @RequestParam("PUR_DV") String PUR_DV,
+//			            @RequestParam("products") List<Map<String, Object>> products) {
+//		PurchaseDto purchase=new PurchaseDto(0, M_NO, PUR_TOT, PUR_DC, PUR_PAY, PUR_PAYMENT, null, PUR_DVADDRESS, PUR_DV);
+//		System.out.println(purchase); 
+//		System.out.println(products);
+////		purchaseService.Purchase(purchase);
+//	}
+	@RequestMapping("/success" )
+	public String succese(@RequestParam Map<String, Object> data) {
+		System.out.println(data); 
+		return "true"; 
 //		purchaseService.Purchase(purchase);
 	}
 	@RequestMapping("/complete")
-	public ModelAndView complete(ModelAndView mv) {
-		System.out.println();
+	public ModelAndView complete(ModelAndView mv,long price) {
+		System.out.println(price);
+		mv.addObject("price", price+"원");
 		mv.setViewName("purchase_complete");
 		return mv;
 	}

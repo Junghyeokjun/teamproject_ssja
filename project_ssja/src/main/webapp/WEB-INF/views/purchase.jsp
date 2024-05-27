@@ -111,7 +111,7 @@
     //결제모듈 연동 코드
     var IMP = window.IMP
     IMP.init('imp22716806')
-    function pay(f_amount){
+    function pay(f_amount,func){
       //파라미터로 수정 필요
       IMP.request_pay({
           pg : 'html5_inicis',
@@ -133,8 +133,7 @@
               msg += '카드 승인번호 : ' + rsp.apply_num;
               window.alert(msg);
               console.log(msg);
-              pay_info(rsp);
-              
+              func();
           } else {
               var msg = '결제에 실패하였습니다.';
               msg += '에러내용 : ' + rsp.error_msg;
@@ -194,14 +193,14 @@
       let address_val=$("#address").val();
       let detail_address_val=$("#detail_address").val();
       let buy_btn=$("#buy_btn");
-    
+      let M_NO_val=$("#M_NO").val();
 
       //결제성공시 ajax요청을 보내는 함수
     //제작예정
     function pay_succese(){
         let product = [];
         $(".product").each(function(idx, item){
-          product.push({product_no : item.querySelector(".product_no").value,
+          product.push({product_no:item.querySelector(".product_no").value,
                         price : item.querySelector(".product_price").innerHTML*item.querySelector(".product_pcs").innerHTML,
                         quantity : item.querySelector(".product_pcs").innerHTML,
                         discount : discount_val/full_amount_val*item.querySelector(".product_price").innerHTML*item.querySelector(".product_pcs").innerHTML,
@@ -215,21 +214,18 @@
             beforeSend: function(xhr){
               xhr.setRequestHeader(header, token);
             },
-            headers : {
-              "Content-Type" : "application/json; charset:UTF-8" 
-            },    
-            url : '/purchase/succese',
+            url : '/purchase/success',
             async : false,
             dataType : 'json',
             data :{
-              M_NO : $("#M_NO").val(),
-              PUR_TOT : full_amount_val,
-              PUR_DC : discount_val,
-              PUR_PAY : result_price_val,
-              PUR_PAYMENT : payment,
-              PUR_DVADDRESS : address_val+detail_address_val,
-              PUR_DV : '대한통운',
-              products : product
+                M_NO : M_NO_val,
+                PUR_TOT : full_amount_val,
+                PUR_DC : discount_val,
+                PUR_PAY : result_price_val,
+                PUR_PAYMENT : payment,
+                PUR_DVADDRESS : address_val+detail_address_val,
+                PUR_DV : '대한통운',
+                products: product  
             },    
             success : function(result) {
               location=("/purchase/complete?price="+result_price_val);
@@ -414,9 +410,8 @@
           return;
         }
         if(result_price_val>=100){
-          pay(result_price_val);
           payment='card';
-          pay_succese();
+          pay(result_price_val,pay_succese);
         }else if(result_price_val==0){
           window.alert("결제가 완료되었습니다.")
           pay_succese();
@@ -494,7 +489,7 @@
         <c:forEach var="product" items="${products}">
         	<div class="product" style="height:150px;">
             <input class="product_no" type="hidden" value="${product.PRO_NO}">
-	          <img src="${product.PRO_BANNERIMG}" alt="" style="width: 150px;height: 150px; float: left;">
+	          <img src="${product.PRO_BANNERIMG}" alt="" class="me-2" style="width: 150px;height: 150px; float: left;">
 	          <div class="m-2 pt-3 fs-4"><span class="product_name">${product.PRO_NAME}</span></div>
 	          <!-- <div class="m-2 fs-4"><span>옵션 :</span><span id="product_opt">네이비블루</span></div> -->
 	          <div class="m-2 fs-4"><span>금액:</span><span class="product_price">${product.PRO_PRICE}</span>원 <span>수량:</span> <span class="product_pcs">${product.PRO_QUANTITY}</span>개</div>
