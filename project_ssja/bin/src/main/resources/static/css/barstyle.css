@@ -101,10 +101,7 @@ main {
   margin-top: 0.5em;
 }
 
-
-
 .sub-nav {
-
   list-style: none;
   display: flex;
   flex-direction: row;

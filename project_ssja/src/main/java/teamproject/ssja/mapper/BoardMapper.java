@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import teamproject.ssja.dto.BoardCategoryDto;
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.BoardIsLikedDto;
 import teamproject.ssja.dto.ReplyIsLikedDto;
@@ -13,6 +14,7 @@ import teamproject.ssja.page.Criteria;
 @Mapper
 public interface BoardMapper {
 	// List<BoardDto> selectList();
+	
 	// 게시글 
 	int insertBoard(BoardDto boardDto);
 	int deleteBoard(BoardDto boardDto);
@@ -20,7 +22,10 @@ public interface BoardMapper {
 	int updateBoard(BoardDto boardDto);
 	int updateHit(long bno);
 	
-	long selectTotalCount();
+	List<BoardCategoryDto> selectBoardCategorys(); 
+	BoardCategoryDto selectBoardCategory(String category);
+	
+	long selectTotalCount(long bcno);
 	List<BoardDto> selectListWithPaging(Criteria criteria);
 	
 	// 해당 게시글의 총 좋아요 수 가져오기

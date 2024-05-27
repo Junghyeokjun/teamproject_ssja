@@ -7,6 +7,16 @@
  * - 시, 분, 월, 일은 10 이하에서는 한 자리만 뜨고 10이상일 땐 두 자리가 뜬다. 
  */
 
+//  //csrf추가
+  let token = $("meta[name='_csrf']").attr("content");
+  let header = $("meta[name='_csrf_header']").attr("content");
+  console.log(token);
+  console.log(header);
+  $(document).ajaxSend(function(e, xhr, options) {
+      xhr.setRequestHeader(header, token);
+  });
+
+
 $(document).ready(function() {
 	// 글 좋아요 처리
 	$('#like-button').click(function(event) {

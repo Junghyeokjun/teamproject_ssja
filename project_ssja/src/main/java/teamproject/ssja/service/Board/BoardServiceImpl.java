@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
+import teamproject.ssja.dto.BoardCategoryDto;
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.BoardIsLikedDto;
 import teamproject.ssja.dto.LikesVO;
@@ -83,17 +84,18 @@ public class BoardServiceImpl implements BoardService {
 		return null;
 	}
 
-	// 페이징 관련
-
 	@Override
-	public long getTotal() {
+	public long getTotal(long category) {
 		log.info("getTotal()..");
-		return boardMapper.selectTotalCount();
+		return boardMapper.selectTotalCount(20);
 	}
 
+	
+	// 페이징
 	@Override
 	public List<BoardDto> showListWithPaging(Criteria criteria) {
 		log.info("showListWithPaging()..");
+		criteria.setBoardCategory(20);
 		return boardMapper.selectListWithPaging(criteria);
 	}
 
@@ -129,5 +131,11 @@ public class BoardServiceImpl implements BoardService {
 		} catch (Exception e) {
 			throw new RuntimeException();
 		}
+	}
+
+	// 게시글 카테고리 가져오기
+	@Override
+	public List<BoardCategoryDto> showBoardCategorys() {
+		return boardMapper.selectBoardCategorys();
 	}
 }
