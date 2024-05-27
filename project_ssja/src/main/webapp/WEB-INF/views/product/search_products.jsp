@@ -144,11 +144,11 @@ color:#aaa;
 		<button id="select_price_5to10">5 ~ 10 만원대</button>
 		<button id="select_price_10to20">10 ~ 20만원대</button>
 		
-		<input>
-		<span id="start_price">원~</span>
-		<input>
-		<span id="end_price">원</span>
-		<form class="mb-1 my-auto"><button id="search_custom_money_btn" class="btn btn-dark" style="width:4em;height:2em;">검색</button></form>
+		<input id="start_price">
+		<span >원~</span>
+		<input id="end_price">
+		<span >원</span>
+		<div class="mb-1 my-auto"><button id="search_custom_money_btn" class="btn btn-dark" style="width:4em;height:2em;">검색</button></div>
 		
 		</div>
 		
@@ -157,7 +157,8 @@ color:#aaa;
 		<h5>분류 별</h5>
 		<span>|</span>
 		<button id="select_hot">인기 순</button>
-		<button id="select_eval">별점 순</button>
+		<button id="select_rowPrice">저렴 순</button>
+		<button id="select_rating">별점 순</button>
 		<button id="select_review">후기 순</button>
 		<button id="select_wish">위시 순</button>
 		<button id="select_new">신상품 순</button>

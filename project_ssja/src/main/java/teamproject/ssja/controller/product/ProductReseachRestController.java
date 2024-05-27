@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
-import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.product.ProductCondition;
 import teamproject.ssja.dto.product.ProductWithConditionDTO;
 import teamproject.ssja.service.Product.ProductService;
@@ -28,7 +27,7 @@ public class ProductReseachRestController {
 		ProductCondition conditionItems = productService.getTotalItemsCount(productCondition);
 		ProductWithConditionDTO items = new ProductWithConditionDTO(conditionItems);
 		items.setItemList(productService.getProductList(conditionItems));
-		log.info("productCondition is {}", productCondition);
+		log.warn("productCondition is {}", productCondition);
 		
 		return ResponseEntity.ok().body(items);
 	}

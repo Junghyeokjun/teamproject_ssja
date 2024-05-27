@@ -150,7 +150,6 @@ height:30em;
 
 
 
-console.log("요");
 
 let homePageRender = function(){
 	
@@ -162,9 +161,7 @@ let homePageRender = function(){
 	    	
 	        data.forEach(function(e,index){
 	        	let now_slide= index + 1;
-	        	console.log(e.ev_no + "s now lide" +now_slide);
 	        	let next_slide = index + 2;
-	        	console.log(e.ev_no + "s next lide" +next_slide);
 	        	
 	        	 let $event_car_btn = $("<button>").attr("type", "button")
                  .attr("data-bs-target", "#carouselExampleIndicators")
