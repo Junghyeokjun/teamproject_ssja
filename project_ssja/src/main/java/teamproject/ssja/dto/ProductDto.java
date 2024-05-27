@@ -1,7 +1,5 @@
 package teamproject.ssja.dto;
 
-import org.springframework.format.annotation.NumberFormat;
-
 //이름            널?       유형            
 //------------- -------- ------------- 
 //PRO_NO        NOT NULL NUMBER(20)    
@@ -39,5 +37,6 @@ public class ProductDto {
 	long PRO_HIT;
 	String PRO_BIZNAME;
 	String PRO_NAME; 
+	String PRO_DATE; 
 	
 }
