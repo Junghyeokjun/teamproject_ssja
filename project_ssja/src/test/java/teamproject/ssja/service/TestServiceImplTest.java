@@ -1,6 +1,6 @@
 package teamproject.ssja.service;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -57,6 +57,15 @@ class TestServiceImplTest {
 	void testSignUp() {
 		MembersDto member= new MembersDto(0,"testUser2","testUser2","testUser2","수원시","팔달구","21231","990408",null,"user@naver.com","01023451234",0,null,"pop");
 		log.info(signUpService.signUp(member)+"");
+	}
+
+	@Disabled
+	@Test
+	void testResetPw() {
+		
+		String id="test";
+		String pw="12345";
+		signUpService.resetPw(id, pw);
 	}
 
 }

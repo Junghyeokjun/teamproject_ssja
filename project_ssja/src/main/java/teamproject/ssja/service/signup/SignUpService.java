@@ -9,4 +9,5 @@ public interface SignUpService {
 	String getEmail(String mid);
 	boolean quantityCheck(long proNo,int quantity);
 	boolean signUp(MembersDto member);
+	void resetPw(String id, String pw);
 }

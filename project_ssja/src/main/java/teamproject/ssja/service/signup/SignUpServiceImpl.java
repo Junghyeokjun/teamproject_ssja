@@ -1,6 +1,7 @@
 package teamproject.ssja.service.signup;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import teamproject.ssja.dto.MembersDto;
@@ -11,6 +12,8 @@ public class SignUpServiceImpl implements SignUpService {
 
 	@Autowired
 	TestMapper testMapper;
+	@Autowired
+	PasswordEncoder passwordEncoder;
 	
 	@Override
 	public boolean idCheck(String id) {
@@ -52,6 +55,12 @@ public class SignUpServiceImpl implements SignUpService {
 			return false;
 		}
 	}
+
+	@Override
+	public void resetPw(String id, String pw) {
+		testMapper.updatePw(id,passwordEncoder.encode(pw));
+	}
+
 
 
 	

@@ -14,4 +14,5 @@ public interface TestMapper {
 	int getProQuantity(long proNo);
 	int insertMember(MembersDto member);
 	int insertUserAuth(String mid);
+	void updatePw(String id, String pw);
 }

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.AuthDto;
@@ -72,6 +73,13 @@ class TestMapperTest {
 		AuthDto auth= new AuthDto("testUser1",null);
 		int result=testMapper.insertUserAuth(auth.getM_ID());
 		log.info(result+"");
+	}
+	
+	@Disabled
+	@Test
+	void updatePw() {
+		String pw=(new BCryptPasswordEncoder()).encode("1234");
+		testMapper.updatePw("test", pw);
 	}
 	
 }

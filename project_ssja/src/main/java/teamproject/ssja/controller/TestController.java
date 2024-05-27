@@ -46,8 +46,9 @@ public class TestController {
 	
 	@RequestMapping("/password_reset")
 	public ModelAndView passwordReset(ModelAndView mv,String id) {
-		mv.setViewName("password_reset");
+		System.out.println(id);
 		mv.addObject("id",id);
+		mv.setViewName("password_reset");
 		return mv;
 	}
 	@RequestMapping("/test_purchase")

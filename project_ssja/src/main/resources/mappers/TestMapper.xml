@@ -28,6 +28,18 @@
 		]]>
 	</select>
 	
+	<select id="selectPW" resultType="String">
+		<![CDATA[
+			select M_PW from members where M_ID=#{mid}
+		]]>
+	</select>
+	
+	<update id="updatePw">
+		<![CDATA[
+			UPDATE members SET M_PW=#{pw} WHERE M_ID = #{id}
+		]]>
+	</update>
+	
 	<select id="getProQuantity" resultType="int">
 		<![CDATA[
 			select PRO_QUANTITY from product where PRO_NO=#{proNo}

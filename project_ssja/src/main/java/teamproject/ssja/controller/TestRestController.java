@@ -70,9 +70,10 @@ public class TestRestController {
 		 mailService.findIDMail(mail);
 		 
 	 }
-	 
+
 	 @PostMapping("/findPw")
 	 public String findPw(String id) {
+		 
 		 String email=signUpService.getEmail(id);
 		 if(email==null) {
 			 return null;
@@ -80,7 +81,15 @@ public class TestRestController {
 		 MailDTO mail=new MailDTO();
 		 mail.setReceiver(email);
 		 String randomNum=mailService.randomNumMail(mail);
+		 
 		 return randomNum;
+		 		 
+	 }
+	 
+	 @PostMapping("/resetPw")
+	 public void resetPw(String id,String pw) {
+		 signUpService.resetPw(id,pw);
+		 
 		 		 
 	 }
 	 
