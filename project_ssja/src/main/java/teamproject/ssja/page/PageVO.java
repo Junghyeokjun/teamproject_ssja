@@ -67,4 +67,16 @@ public class PageVO {
 
 		return uriComponentsBuilder.toUriString(); // ?pageNum=3&amount=10 리턴
 	}
+	
+	public String makeReviewQuery(int page) {
+		UriComponents uriComponentsBuilder = 
+				UriComponentsBuilder.newInstance()
+				.queryParam("PRO_NO", criteria.getPRO_NO())
+				.queryParam("pageNum", page) // pageNum=3
+				.queryParam("amount", criteria.getAmount()) // pageNum=3&amount=10
+				.build(); // ?pageNum=3&amount=10
+
+		return uriComponentsBuilder.toUriString(); // ?pageNum=3&amount=10 리턴
+	}
+	
 }

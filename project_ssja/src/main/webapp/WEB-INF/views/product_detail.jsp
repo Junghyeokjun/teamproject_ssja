@@ -29,13 +29,32 @@
 <meta name="_csrf" content="${_csrf.token}" />
 <meta name="_csrf_header" content="${_csrf.headerName}" />
 
-<script src="/js/barscript.js">
-	
+<script src="/js/barscript.js"></script>
+<script src="/js/footer.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 현재 페이지의 정보를 가져옵니다.
+    var currentPage = window.location.pathname; // 예: "/product_detail?page=2"
+
+    // 페이지가 변경될 때 활성화/비활성화를 결정하는 함수
+    function setActivePage() {
+        var pageLinks = document.querySelectorAll('.page-link');
+        pageLinks.forEach(function(link) {
+            var linkHref = link.getAttribute('href');
+            if (currentPage === linkHref) {
+                link.classList.add('active'); // 현재 페이지에 active 클래스 추가
+            } else {
+                link.classList.remove('active'); // 현재 페이지가 아니면 active 클래스 제거
+            }
+        });
+    }
+
+    // 페이지 로드 시 초기화
+    setActivePage();
+});
+
 </script>
 
-<script src="/js/footer.js">
-	
-</script>
 <link href="/css/footerstyle.css?after" rel="stylesheet">
 <link href="/css/barstyle.css?after" rel="stylesheet">
 
@@ -233,34 +252,34 @@ table {
 												<hr>
 											</c:forEach>
 										</div>
-<nav aria-label="Page navigation example ">
-		<ul class="pagination justify-content-center">
-			<c:if test="${pageMaker.prev}">
-				<li class="page-item"><a class="page-link"
-					href="list2${pageMaker.makeQuery(pageMaker.startPage - 1) }"
-					aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-				</a></li>
-			</c:if>
+										<nav aria-label="Page navigation example ">
+											<ul class="pagination justify-content-center">
+												<c:if test="${pageMaker.prev}">
+													<li class="page-item"><a class="page-link"
+														href="product_detail${pageMaker.makeReviewQuery(pageMaker.startPage - 1) }"
+														aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+													</a></li>
+												</c:if>
 
-			<c:forEach var="idx" begin="${pageMaker.startPage}"
-				end="${pageMaker.endPage}">
-				<li class="page-item"><a class="page-link"
-					href="list2${pageMaker.makeQuery(idx)}">${idx}</a></li>
-			</c:forEach>
+												<c:forEach var="idx" begin="${pageMaker.startPage}"
+													end="${pageMaker.endPage}">
+													<li class="page-item"><a class="page-link"
+														href="product_detail${pageMaker.makeReviewQuery(idx)}">${idx}</a></li>
+												</c:forEach>
 
-			<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-				<li class="page-item"><a class="page-link"
-					href="list2${pageMaker.makeQuery(pageMaker.endPage + 1) }"
-					aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-				</a></li>
-			</c:if>
-		</ul>
-	</nav>
-										
-										 
-										
+												<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+													<li class="page-item"><a class="page-link"
+														href="product_detail${pageMaker.makeReviewQuery(pageMaker.endPage + 1) }"
+														aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+													</a></li>
+												</c:if>
+											</ul>
+										</nav>
+
+
+
 									</div>
-									
+
 									<div class="tab-pane fade mb-2" id="ex1-pills-3"
 										role="tabpanel" aria-labelledby="ex1-tab-3">
 										<section class="production-selling-section">
@@ -351,34 +370,38 @@ table {
 			updateTotalPrice();
 		});
 	</script>
-		<script
+	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 		crossorigin="anonymous"></script>
 	<script src="https://kit.fontawesome.com/0fa31147fa.js"
 		crossorigin="anonymous"></script>
-	<script>
-    // 현재 페이지의 정보
-    var currentPage = ${pageMaker.criteria.getPageNum()}; 
+<!-- 	<script>
+		// 현재 페이지의 정보
+		var currentPage = $
+		{
+			pageMaker.criteria.getPageNum()
+		};
 
-    // 각 페이지 링크를 확인하고 활성화/비활성화를 결정하는 함수
-    function setActivePage() {
-        var pageLinks = document.querySelectorAll('.page-link');
-        pageLinks.forEach(function(link) {
-            var pageNumber = parseInt(link.innerHTML); // 페이지 번호를 가져옵니다.
-            if (pageNumber === currentPage) {
-                link.classList.add('active'); // 현재 페이지에 active 클래스 추가
-            } else {
-                link.classList.remove('active'); // 현재 페이지가 아니면 active 클래스 제거
-            }
-        });
-    }
+		// 각 페이지 링크를 확인하고 활성화/비활성화를 결정하는 함수
+		function setActivePage() {
+			var pageLinks = document.querySelectorAll('.page-link');
+			pageLinks.forEach(function(link) {
+				var pageNumber = parseInt(link.innerHTML); // 페이지 번호를 가져옵니다.
+				if (pageNumber === currentPage) {
+					link.classList.add('active'); // 현재 페이지에 active 클래스 추가
+				} else {
+					link.classList.remove('active'); // 현재 페이지가 아니면 active 클래스 제거
+				}
+			});
+		}
 
-    // 페이지 로드 시 초기화
-    window.onload = function() {
-        setActivePage();
-    };
-</script>
+		// 페이지 로드 시 초기화
+		window.onload = function() {
+			setActivePage();
+		};		
+	</script>   -->
 
+	
 </body>
 </html>
