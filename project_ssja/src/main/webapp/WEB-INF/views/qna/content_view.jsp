@@ -200,14 +200,31 @@ body {
 						</td>
 					</tr>
 					<tr>
+						<td colspan="2"></td>
+					</tr>
+					<tr>
 						<td colspan="2">
-							<div class="">
-							
-							</div>
-							<div>
+							<h2 class="h5 m-1 p-1">댓글</h2>		
+							<div class="input-group border">								
+	    						<input id="inputreplyCon" type="text" class="form-control" name="rcontent" data-rbno="${content_view.bno}" data-rmno="${}" placeholder="댓글을 입력하세요.">
+	    						<span class="input-group-text"><button class="btn btn-primary">입력</button></span>
+	    					</div>	   						    					
+						</td>					
+					</tr>
+					<tr>
+						<td colspan="2">							
+							<div id="replys" class="input-group border">
+								<c:forEach var="re" begin="1" end="${reply_view.rindent}">
+									<img src="">
+								</c:forEach>												
+								<span id="rwriter" class="input-group-text bg-replywriter">${reply_view.rwriter}</span>
+	    						<input id="rcontent" type="text" class="form-control" data-bno="${content_view.bno}" value="${reply_view.rcontent}" readonly="readonly">
+	    						<span class="input-group-text bg-replywriter"><button id="reply-likes" class="btn">좋아요</button></span>
+	    					</div>
+	    					<div>	    						
 								<nav aria-label="Page navigation example">
 									<ul class="pagination justify-content-center">
-										<c:if test="${pageMaker.prev}">
+										<%-- <c:if test="${pageMaker.prev}">
 											<li class="page-item">
 												<a class="page-link" href="${pageContext.request.contextPath}/api/page/${pageMaker.startPage-1}">&lt;<a>
 											</li>
@@ -232,10 +249,11 @@ body {
 											<li class="page-item">
 												<a class="page-link" href="${pageContext.request.contextPath}/api/page/${pageMaker.makeQuery(pageMaker.endPage+1)}">&gt;</a>
 											</li>
-										</c:if>
+										</c:if> --%>
 									</ul>
 								</nav>
 							</div>
+						
 						</td>
 					</tr>
 				</table>
@@ -248,6 +266,6 @@ body {
 		<div id="second_footer"></div>
 		<div id="third_footer"></div>
 	</footer>
-
+	
 </body>
 </html>

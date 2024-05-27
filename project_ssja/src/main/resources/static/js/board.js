@@ -10,11 +10,6 @@
 //  //csrf추가
   let token = $("meta[name='_csrf']").attr("content");
   let header = $("meta[name='_csrf_header']").attr("content");
-  console.log(token);
-  console.log(header);
-  $(document).ajaxSend(function(e, xhr, options) {
-      xhr.setRequestHeader(header, token);
-  });
 
 
 $(document).ready(function() {
@@ -79,6 +74,11 @@ $(document).ready(function() {
         $.ajax({
             url: '/api/likes/toggle/' + bno,
             type: 'POST',
+            beforeSend : function(xhr){
+                //ajax호출 중 처리
+                //글로벌 변수로 설정한 csrf token 셋팅
+                xhr.setRequestHeader(header,token);
+            },
             //contentType: 'application/json', // JSON 형식으로 요청을 보낼 것임을 명시
             //data: JSON.stringify({ no : bno, liked : liked }), // JSON 형식으로 데이터 전달
             data: {

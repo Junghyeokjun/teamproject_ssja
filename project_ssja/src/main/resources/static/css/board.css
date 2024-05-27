@@ -98,3 +98,7 @@ a{
 	border: 0px;
 	content: url("/images/board/hover_before_boardlike.png");
 }
+
+.bg-replywriter{
+	background-color: #d7d8da;
+}
