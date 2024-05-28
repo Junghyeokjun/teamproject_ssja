@@ -36,7 +36,9 @@
 <script src="/js/board.js">
 	
 </script>
-
+<script src="/js/boardLike.js">
+	
+</script>
 <link href="/css/footerstyle.css?after" rel="stylesheet">
 <link href="/css/barstyle.css?after" rel="stylesheet">
 <link href="/css/board.css?after" rel="stylesheet">
@@ -119,9 +121,10 @@ body {
 			<div class="main_whitespace">
 				
 			</div>
-			<form action="${pageContext.request.contextPath}/qna/modify_view" method="post">
+			<form action="${pageContext.request.contextPath}/board/modify_view" method="post">
 				<div class="input-group">
 					<input type="hidden" class="form-control" name="bno" value="${content_view.bno}">
+					<input type="hidden" class="form-control" name="bbcno" value="${content_view.bbcno}">
 					<sec:csrfInput />
 				</div>
 				<table class="table" >
@@ -159,7 +162,7 @@ body {
 					<tr>
 						<td colspan="2">
 							<div class="input-group">
-								<textarea id="qna_textarea" name="bcontent" class="form-control" rows="10" readonly="readonly">${content_view.bcontent}</textarea>	    				
+								<textarea id="board_textarea" name="bcontent" class="form-control" rows="10" readonly="readonly">${content_view.bcontent}</textarea>	    				
 	    					</div>
 						</td>		
 					</tr>
@@ -186,14 +189,14 @@ body {
 							<div class="d-flex justify-content-between">
 								<div>
 									<input type="submit" class="btn btn-danger customed-ssja" value="수정">
-									<a href="${pageContext.request.contextPath}/qna/delete?bno=${content_view.bno}" class="btn btn-danger">삭제</a>
+									<a id="deleteBoard" href="${pageContext.request.contextPath}/board/delete?bno=${content_view.bno}" class="btn btn-danger">삭제</a>
 								</div>
 								
-								<a class="btn btn-primary customed-ssja" href="${pageContext.request.contextPath}/qna/list">되돌아가기</a>								
-								<%-- &nbsp;&nbsp;<a href="${pageContext.request.contextPath}/qna/delete?bno=${content_view.bno}">삭제</a> --%>
+								<a class="btn btn-primary customed-ssja" href="${pageContext.request.contextPath}/board/list/${content_view.bbcno}">되돌아가기</a>								
+								<%-- &nbsp;&nbsp;<a href="${pageContext.request.contextPath}/board/delete?bno=${content_view.bno}">삭제</a> --%>
 							<%-- <sec:authorize access="hasRole('ROLE_ADMIN')">
 								&nbsp;&nbsp;<a
-									href="${pageContext.request.contextPath}/qna/${content_view.bno}">답변</a>
+									href="${pageContext.request.contextPath}/board/${content_view.bno}">답변</a>
 							</sec:authorize> <sec:authorize access="!hasRole('ROLE_ADMIN')">
 
 							</sec:authorize> --%>
@@ -201,11 +204,13 @@ body {
 						</td>
 					</tr>
 					<tr>
-						<td colspan="2"></td>
+						<td colspan="2">
+							
+						</td>
 					</tr>
 					<tr>
 						<td colspan="2">
-							<h2 class="h5 m-1 p-1">댓글</h2>		
+							<h5 class="h5 m-1 p-1">댓글</h5>		
 							<div class="input-group border">								
 	    						<input id="inputreplyCon" type="text" class="form-control" name="rcontent" data-rbno="${content_view.bno}" data-rmno="" placeholder="댓글을 입력하세요.">
 	    						<span class="input-group-text"><button class="btn btn-primary">입력</button></span>
@@ -219,7 +224,7 @@ body {
 									<img src="">
 								</c:forEach>												
 								<span id="rwriter" class="input-group-text bg-replywriter">${reply_view.rwriter}</span>
-	    						<input id="rcontent" type="text" class="form-control" data-bno="${content_view.bno}" value="${reply_view.rcontent}" readonly="readonly">
+	    						<input id="rcontent" type="text" class="form-control" data-rno="${reply_view.rno}" value="${reply_view.rcontent}" readonly="readonly">
 	    						<span class="input-group-text"><button id="reply-likes" class="btn">좋아요</button></span>
 	    					</div>
 	    					<div>	    						

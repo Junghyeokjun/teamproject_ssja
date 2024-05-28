@@ -24,6 +24,7 @@ public interface BoardMapper {
 	
 	List<BoardCategoryDto> selectBoardCategorys(); 
 	BoardCategoryDto selectBoardCategory(String category);
+	BoardCategoryDto selectBC(long bcno);
 	
 	long selectTotalCount(long bcno);
 	List<BoardDto> selectListWithPaging(Criteria criteria);

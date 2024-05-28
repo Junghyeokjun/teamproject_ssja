@@ -11,8 +11,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="_csrf" content="${_csrf.token}" />
-<meta name="_csrf_header" content="${_csrf.headerName}" />
 <title>SSJA</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -123,10 +121,9 @@ body {
 			<div class="main_whitespace p-5">
 				<h1 class="h3 text-center">새로 작성하기</h1>
 			</div>
-			<form action="${pageContext.request.contextPath}/qna/write" method="post">
+			<form action="${pageContext.request.contextPath}/board/write" method="post">
 				<div class="input-group">
-					<input type="hidden" class="form-control" name="bbcno" value="20">				
-					<sec:csrfInput />
+					<input type="hidden" class="form-control" name="bbcno" value="${bcno}">				
 				</div>
 				<table class="table" >
 					<tr>
@@ -139,7 +136,7 @@ body {
 					<tr>
 						<td colspan="2">
 							<div class="input-group">
-								<textarea id="qna_textarea" name="bcontent" class="form-control" rows="10" placeholder="내용을 입력하세요."></textarea>	    				
+								<textarea id="board_textarea" name="bcontent" class="form-control" rows="10" placeholder="내용을 입력하세요."></textarea>	    				
 	    					</div>
 						</td>		
 					</tr>
@@ -147,7 +144,7 @@ body {
 						<td  colspan="2">
 							<div class="d-flex justify-content-between">
 								<input type="submit" class="btn btn-danger customed-ssja" value="입력">
-								<a class="btn btn-primary customed-ssja" href="${pageContext.request.contextPath}/qna/list">취소</a>								
+								<a class="btn btn-primary customed-ssja" href="${pageContext.request.contextPath}/board/list/${bcno}">취소</a>								
 							</div>
 						</td>
 					</tr>

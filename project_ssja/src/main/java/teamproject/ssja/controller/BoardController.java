@@ -7,37 +7,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.page.Criteria;
 import teamproject.ssja.page.PageVO;
 import teamproject.ssja.service.Board.BoardService;
-import teamproject.ssja.service.Reply.ReplyService;
 
 @Slf4j
 @Controller
-@RequestMapping("/qna")
+@RequestMapping("/board")
 public class BoardController {
 
 	@Autowired
 	private BoardService boardService;
 	
-	@GetMapping("/list")
-	public String qnaList(Model model, Criteria criteria) {
-		log.info("qnaList()..");
-		criteria.setBoardCategory(20);
+	@GetMapping("/list/{category}")
+	public String boardList(Model model, Criteria criteria,@PathVariable("category") long bcno) {
+		log.info("boardList()..");
+		model.addAttribute("bc", boardService.showBoardCategory(bcno));
+		criteria.setBcno(bcno);
 		// 해당 함수도 임시로 숫자를 부여하여 처리한 상태.
 		// 수정 필요
-		model.addAttribute("qnas",  boardService.showListWithPaging(criteria));
+		model.addAttribute("boards",  boardService.showListWithPaging(criteria));
 		
 		// 임시로 카테고리 숫자 넣음
-		model.addAttribute("pageMaker", new PageVO(boardService.getTotal(criteria.getBoardCategory()), criteria));
+		model.addAttribute("pageMaker", new PageVO(boardService.getTotal(criteria.getBcno()), criteria));
 		return "/qna/qna_list";
 	}
-
+	
 //	@GetMapping("/content_view")
 //	public String showView(HttpServletRequest request, HttpServletResponse response, Model model) {
 //		log.info("showView()..");
@@ -52,9 +54,10 @@ public class BoardController {
 		return "/qna/content_view";
 	}
 
-	@GetMapping("/write_view")
-	public String writeView(Model model) {
+	@GetMapping("/write_view/{category}")
+	public String writeView(Model model, @PathVariable("category") long bcno) {
 		log.info("writeView()..");
+		model.addAttribute("bcno", bcno);
 		return "/qna/write_view";
 	}
 
@@ -62,7 +65,7 @@ public class BoardController {
 	public String addOne(BoardDto boardDto) {
 		log.info("addOne()..");
 		boardService.addBoard(boardDto);
-		return "redirect:/qna/list";
+		return "redirect:/board/list";
 	}
 
 	@PostMapping("/modify_view")
@@ -75,7 +78,7 @@ public class BoardController {
 	@PostMapping("/modify")
 	public String modify(BoardDto boardDto) {
 		boardService.modifyBoard(boardDto);
-		return "redirect:/qna/list";
+		return "redirect:/board/list";
 	}
 
 	@GetMapping("/delete")
@@ -83,7 +86,7 @@ public class BoardController {
 	public String removeOne(BoardDto boardDto) {
 		log.info("removeOne()..");
 		boardService.removeBoard(boardDto);
-		return "redirect:/qna/list";
+		return "redirect:/board/list";
 	}
 
 //	@GetMapping("/reply_view")

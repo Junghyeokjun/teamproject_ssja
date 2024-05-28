@@ -7,7 +7,7 @@ a{
 	border : 0;
 }
 
-#qna_textarea{
+#board_textarea{
 	width : 100%;
 	height: 30em;
     border: none;
@@ -45,7 +45,7 @@ a{
 }
 
 
-#qna_title:hover {
+#board_title:hover {
 	color : #d3bf0b;
 }
 
@@ -88,7 +88,6 @@ a{
 	
 	height: 55px;
 	border: 0px;
-	content: url("/images/board/before_boardlike.png");
 }
 
 .board-like:hover{
@@ -96,7 +95,6 @@ a{
 	
 	height: 55px;
 	border: 0px;
-	content: url("/images/board/hover_before_boardlike.png");
 }
 
 .bg-replywriter{

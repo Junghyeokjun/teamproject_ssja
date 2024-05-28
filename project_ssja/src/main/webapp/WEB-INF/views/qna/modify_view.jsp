@@ -113,10 +113,9 @@ body {
 			<div class="main_whitespace p-5">
 				<h1 class="h3 text-center">내용 수정하기</h1>
 			</div>
-			<form action="${pageContext.request.contextPath}/qna/modify" method="post">
+			<form action="${pageContext.request.contextPath}/board/modify" method="post">
 				<div class="input-group">
 					<input type="hidden" class="form-control" name="bbcno" value="${write_view.bcno}">				
-					<sec:csrfInput />
 				</div>
 				<table class="table" >
 					<tr>
@@ -129,7 +128,7 @@ body {
 					<tr>
 						<td colspan="2">
 							<div class="input-group">
-								<textarea id="qna_textarea" name="bcontent" class="form-control" rows="10" placeholder="내용을 입력하세요.">${modify_view.bcontent}</textarea>	    				
+								<textarea id="board_textarea" name="bcontent" class="form-control" rows="10" placeholder="내용을 입력하세요.">${modify_view.bcontent}</textarea>	    				
 	    					</div>
 						</td>		
 					</tr>
@@ -137,7 +136,7 @@ body {
 						<td colspan="2">
 							<div class="d-flex justify-content-between">
 								<input type="submit" class="btn btn-danger customed-ssja" value="수정">
-								<a class="btn btn-primary customed-ssja" href="${pageContext.request.contextPath}/qna/list">취소</a>								
+								<a class="btn btn-primary customed-ssja" href="${pageContext.request.contextPath}/board/list/${modify_view.bbcno}">취소</a>								
 							</div>
 						</td>
 					</tr>
