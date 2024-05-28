@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -54,27 +55,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	//http.csrf().disable();
 		/* 권한설정 */
 	    http.authorizeRequests()
-	    .antMatchers("/logout","/user","/myPage","/myPage/**","/userInfo","/user","/user/**").hasAnyRole("USER")
+	    .antMatchers("/logout","/user","/myPage","/myPage/**","/userInfo","/user","/user/**","/wishlist","/wishlist/**").hasAnyRole("USER")
 	    .anyRequest().permitAll();
 	    
-	    http.formLogin().loginPage("/login")
+	    http.formLogin()
+	    .loginPage("/login")
 	    .usernameParameter("username").passwordParameter("password")
 	    .loginProcessingUrl("/loginCheck")
-	    .defaultSuccessUrl("/").permitAll()
-	    .and()
-	    .logout()
-                .logoutUrl("/logout")//logout 요청 처리 uRL
-                .addLogoutHandler((request, response, authentication) -> {
-                    HttpSession session = request.getSession();
-                    if (session != null) {
-                        session.invalidate();
-                    }
-                }).logoutSuccessHandler(((request, response, authentication) -> {
-                    response.sendRedirect("/");// 로그아웃 성공 시 리다이렉트
-                }))//로그 아웃 성공 핸들러;
-                .deleteCookies("JSESSIONID")
-                
-                .and()//중복로그인 설정
+	    .defaultSuccessUrl("/").permitAll();
+	    
+	       http.oauth2Login()
+           .loginPage("/login")
+           .defaultSuccessUrl("/home", true)
+           .failureUrl("/login?error=true");
+	       
+	    http.logout()
+	    
+        .logoutUrl("/logout")
+        .logoutSuccessUrl("/home")
+        .invalidateHttpSession(true)
+        .deleteCookies("JSESSIONID");
+	    
+              http//중복로그인 설정
                 .sessionManagement()
                 .maximumSessions(1)
                 .expiredUrl("/home") 

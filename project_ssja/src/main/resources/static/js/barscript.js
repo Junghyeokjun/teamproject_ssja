@@ -84,11 +84,30 @@ $("#logo_toHome").attr("href", "/home");//로고 링크
     window.location.href = "https://www.google.com";
   });
 
-  
-  
+  //==============================
   
 
+	
+  $("#searchIn").on('click', function() {
+      $.ajax({
+          type: "POST",
+          url: "/logout",
+          beforeSend: function(xhr) {
+              xhr.setRequestHeader(header, token);
+          },
+          success: function(data) {
+        	// window.location.href="/";
+        	  console.log(data);
+        	  console.log('로그아웃 눌림');
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+          }
+      });
+  });
   
+
+  //======================
   
   //사이드 관련
   let $side_container1 = $("<button>").addClass("side_containers").text("BEST");
@@ -295,21 +314,17 @@ $("#logo_toHome").attr("href", "/home");//로고 링크
   });
 
 
-  $total_bar.on('mouseleave', function (e) {
+  function hideSubBar(e) {
 	    if (!$(e.relatedTarget).closest($total_bar).length && 
-	    		!$(e.relatedTarget).closest($sub_bar).length) {
-	    	
+	            !$(e.relatedTarget).closest($sub_bar).length) {
+	        e.stopPropagation();
 	        $sub_bar.css("display", "none");
 	    }
-	});
+	}
 
-	$sub_bar.on('mouseleave', function (e) {
-	    if (!$(e.relatedTarget).closest($total_bar).length && 
-	    		!$(e.relatedTarget).closest($sub_bar).length) {
-	    	
-	        $sub_bar.css("display", "none");
-	    }
-	});
+	$total_bar.on('mouseleave', hideSubBar);
+	$sub_bar.on('mouseleave', hideSubBar);
+	
   $(window).on('scroll', function () {
     let $side_bar = $('#side_bar');
     let scrollPosition = $(this).scrollTop();

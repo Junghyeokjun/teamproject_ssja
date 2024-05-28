@@ -1,5 +1,6 @@
 let token = $("meta[name='_csrf']").attr("content");
 	let header = $("meta[name='_csrf_header']").attr("content");
+	
 let $product_content = $("#product_content");
 let $paging_dv = $("#paging_dv")
 const url = new URL(window.location.href);
@@ -7,10 +8,10 @@ const params = new URLSearchParams(url.search);
 
 let category = params.get('category');
 
-
-
 class ProductCondition {
-	  constructor(startPage, endPage, total, prev, next, conditionSelect, conditionName, conditionStart, conditionEnd, category, pageNum, amount) {
+	  constructor(startPage, endPage, total, prev, next, conditionSelect, conditionName, 
+			  conditionStart, conditionEnd, category, pageNum, amount) {
+		  
 	    this.startPage = startPage;
 	    this.endPage = endPage;
 	    this.total = total;
@@ -24,26 +25,7 @@ class ProductCondition {
 	    this.pageNum = pageNum;
 	    this.amount = amount;
 	  }
-	  
-	  setStartPage(startPage) {
-	    this.startPage = startPage;
-	  }
-	  
-	  setEndPage(endPage) {
-	    this.endPage = endPage;
-	  }
-	  
-	  setTotal(total) {
-	    this.total = total;
-	  }
-	  
-	  setPrev(prev) {
-	    this.prev = prev;
-	  }
-	  
-	  setNext(next) {
-	    this.next = next;
-	  }
+
 	  
 	  setConditionSelect(conditionSelect) {
 	    this.conditionSelect = conditionSelect;
@@ -60,18 +42,10 @@ class ProductCondition {
 	  setConditionEnd(conditionEnd) {
 	    this.conditionEnd = conditionEnd;
 	  }
-	  
-	  setCategory(category) {
-	    this.category = category;
+	  setPageNum(pageNum){
+		  this.pageNum = pageNum
 	  }
 	  
-	  setPageNum(pageNum) {
-	    this.pageNum = pageNum;
-	  }
-	  
-	  setAmount(amount) {
-	    this.amount = amount;
-	  }
 	}
 let product_condition = new ProductCondition(
 		  null, // startPage
@@ -138,15 +112,19 @@ let getListProductToServer = function(condition){
 					
 					let $item_bizname_dv=$("<div>").attr("id",'$item_bizname_dv')
 					.text(e.pro_BIZNAME+ " " +" 확인용 상품번호: "+e.pro_NO).css("text-bold",'weight').css('font-size','1.5em');
-					//여기 확인 값 지워야함
-					let $item_price_dv = $("<div>").attr("id", "item_price_dv").text(formatNumber(e.pro_PRICE)).css('margin-left','auto').css('margin-right','1em');
+											//여기 확인 값 지워야함
+					let $item_price_dv = $("<div>").attr("id", "item_price_dv").text(formatNumber(e.pro_PRICE)+"원").css('margin-left','auto').css('margin-right','1em');
 					let $item_review_wish_dv = $("<div>").addClass("d-flex flex-row justify-content-between").attr("id", "item_review_wish_dv")
 				    .append(
 				        $("<div>").append(   $("<img>").attr('src', '/images/utilities/star_icon.jpg').css("width","1.5em"), 
 				        		 $("<span>").text(e.rating_avg)),
-				        $("<div>").append(
-				            $("<img>").attr('src', '/images/utilities/wish_icon.png').css("width","1.5em"), 
-				            $("<span>").text(e.pro_WISH).css('color',"#f06575"))
+				        $("<div>").append($("<span>").text(e.pro_WISH).css('color', "#f06575"),
+				            $("<img>").attr('src', '/images/utilities/wish_icon.png').css("width","1.5em").on('click',function(event){
+				            	event.preventDefault();
+				            	let countwish = wish_click(e.pro_NO);
+				            	$(this).prev("span").text(countwish);
+				            	
+				            })  )
 				    );
 
 					
@@ -205,12 +183,35 @@ let getListProductToServer = function(condition){
 				
 				$product_content.append($list_content_dv);
 			},error: function(xhr, status, error) {
-				//console.log("Error:", xhr.responseText);
+				console.log("Error:", xhr.responseText);
 			}
 		})
 		
 		
 }
+
+let wish_click = function(productnumber) {
+	let count = 0;
+    $.ajax({
+        type: "PUT",
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        data: JSON.stringify({"pro_no": productnumber}),
+        url: "/wishlist",
+        async:false,
+        contentType: "application/json",
+        success: function(data) {
+            count = data;
+        }, error : function() {
+        	window.location.href="/login";
+        }
+    });
+    return count;
+};
+		
+
+
 function fontBoldResetDiv1(){
     $("#select_name_asc, #select_name_desc, #select_name_long, #select_name_short")
         .css("font-weight", '').css('font-size', '1em');

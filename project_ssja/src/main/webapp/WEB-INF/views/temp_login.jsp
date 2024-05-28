@@ -62,7 +62,7 @@
       background-color: transparent; 
       border-color: transparent;
     }
-    #social_login button{
+    #social_login button, #social_login img{
       width: 50px;
       height: 50px;
       border: 0px;      
@@ -117,7 +117,7 @@
   </header>
 
   <div id="side_bar"></div>
-  <main style="background-color: #f7f0e8;">
+  <main style="background-color: #f7f0e8; margin-bottom:5em;margin-top:5em;">
     <!--로그인추가부 -->
     <div id="main_container" class="d-flex flex-column justify-content-center align-items-center " >
       <img class="mb-4" src="/images/utilities/big_logo.png" alt="">
@@ -155,7 +155,7 @@
         <div id="social_login" class="d-flex justify-content-between">
           <span></span>
           <!-- a태그추가 또는 클릭이벤트 추가 -->
-          <button type="button"></button>
+          <a href="/oauth2/authorization/naver"><img src ="/images/utilities/naver.png" id="social_naver_btn"></button></a>
           <button type="button"></button>
           <button type="button"></button>
          

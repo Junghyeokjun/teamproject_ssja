@@ -25,10 +25,13 @@ public class HomeController {
 		return "index";
 	}
 	
-	@RequestMapping("/logout")
-	public String logoutP() {
-		return "redirect:/";
-	}
+	
+	/*
+	 * @RequestMapping("/logout") public void logoutP() {
+	 * 
+	 * }
+	 */
+	 
 	
 	@GetMapping("/event/page")
 	public String eventP(@RequestParam("event") int eventNum,Model model) {

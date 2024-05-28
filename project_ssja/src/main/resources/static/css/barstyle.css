@@ -391,3 +391,11 @@ input:focus {
   flex-direction: column;
   margin-left: 1em;
 }
+#carouselExampleIndicators{
+	position: relative;
+}
+.carousel-control-prev, .carousel-control-next{
+	height:200px;
+	position: absolute;
+	top: 30%;
+}

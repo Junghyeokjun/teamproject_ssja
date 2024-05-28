@@ -26,6 +26,8 @@
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
+	
+
 <meta name="_csrf" content="${_csrf.token}" />
 <meta name="_csrf_header" content="${_csrf.headerName}" />
 
@@ -43,7 +45,8 @@
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
+<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
 <style>
 @font-face {
 	font-family: 'fonts';
@@ -162,7 +165,7 @@ table {
 							<fmt:formatNumber pattern="###,###,###"
 								value="${productdetail.PRO_PRICE}" /> 원
 						</span><br>
-						<button type="button">장바구니</button>
+						<button type="button" onclick="wish_click(${productdetail.PRO_NO})">${productdetail.PRO_NO}</button>
 						<button type="button">바로구매</button>
 					</p>
 				</div>
@@ -307,7 +310,7 @@ table {
 												pattern="###,###,###" value="${productdetail.PRO_PRICE}" />
 											원
 										</span><br>
-										<button type="button">장바구니</button>
+						<button type="button" onclick="wish_click(${productdetail.PRO_NO})">장바구니</button>
 										<button type="button">바로구매</button>
 									</p>
 								</div>
@@ -324,9 +327,14 @@ table {
 		<div id="third_footer"></div>
 	</footer>
 	<!-- MDBootstrap JS -->
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
+	
+
+
+</body>
 	<script>
+    let token = $("meta[name='_csrf']").attr("content");
+	let header = $("meta[name='_csrf_header']").attr("content");
+	
 		document.addEventListener("DOMContentLoaded", function() {
 			const priceElement = document.querySelector(".gdsPrice span");
 			const quantityInput = document.getElementById("quantity");
@@ -350,14 +358,7 @@ table {
 			// 페이지 로드 시 초기 총 금액 설정
 			updateTotalPrice();
 		});
-	</script>
-		<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-		crossorigin="anonymous"></script>
-	<script src="https://kit.fontawesome.com/0fa31147fa.js"
-		crossorigin="anonymous"></script>
-	<script>
+
     // 현재 페이지의 정보
     var currentPage = ${pageMaker.criteria.getPageNum()}; 
 
@@ -378,7 +379,29 @@ table {
     window.onload = function() {
         setActivePage();
     };
-</script>
+    
+    
 
-</body>
+    
+    let wish_click = function(productnumber) {
+    	let count = 0;
+        $.ajax({
+            type: "PUT",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            data: JSON.stringify({"pro_no": productnumber}),
+            url: "/wishlist",
+            async:false,
+            contentType: "application/json",
+            success: function(data) {
+     console.log(data);
+                count = data;
+            }, error : function() {
+            	window.location.href="/login";
+            }
+        });
+        return count;
+    };
+</script>
 </html>
