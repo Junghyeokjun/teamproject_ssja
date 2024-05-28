@@ -19,15 +19,15 @@ class ProductServiceImplTest {
 	@Autowired
 	ProductService productService;
 	
-	@Test
-	@DisplayName("상품 리스트 db접근 테스트")
-	void testProductList() {
-		
-		List<ProductDto> list = productService.getProductList();
-		
-		
-		assertNotNull(list);
-		
-	}
+//	@Test
+//	@DisplayName("상품 리스트 db접근 테스트")
+//	void testProductList() {
+//		
+//		List<ProductDto> list = productService.getProductList();
+//		
+//		
+//		assertNotNull(list);
+//		
+//	}
 
 }

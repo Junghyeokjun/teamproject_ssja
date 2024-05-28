@@ -28,7 +28,7 @@ import lombok.ToString;
 public class ProductDto {
 	long PRO_NO;
 	long V_NO;   
-	long P_C_NO;   
+	long P_C_NO;  
 	long PRO_PRICE;   
 	long PRO_QUANTITY;   
 	String PRO_BANNERIMG;
@@ -37,5 +37,6 @@ public class ProductDto {
 	long PRO_HIT;
 	String PRO_BIZNAME;
 	String PRO_NAME; 
+	String PRO_DATE; 
 	
 }

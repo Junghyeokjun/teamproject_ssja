@@ -64,7 +64,8 @@ public class PageVO {
 		UriComponents uriComponentsBuilder = 
 				UriComponentsBuilder.newInstance()
 				.queryParam("pageNum", page) // pageNum=3
-				.queryParam("amount", criteria.getAmount()) // pageNum=3&amount=10
+				.queryParam("amount", criteria.getAmount()) 
+				// pageNum=3&amount=10
 				.build(); // ?pageNum=3&amount=10
 
 		return uriComponentsBuilder.toUriString(); // ?pageNum=3&amount=10 리턴

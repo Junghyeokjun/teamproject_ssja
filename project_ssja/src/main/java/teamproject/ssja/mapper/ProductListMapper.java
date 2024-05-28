@@ -6,10 +6,13 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import teamproject.ssja.dto.ProductDto;
+import teamproject.ssja.dto.product.ProductCondition;
 
 @Mapper
 public interface ProductListMapper {
 
-	@Select("select * from (select * ,rownum as rnum from product) a  where a.rnum <=20")
-	List<ProductDto> getProductList();
+	List<ProductDto> getProductList(ProductCondition condition);
+	
+	@Select("select count(*) from product where p_c_no=#{category}")
+	int getTotalCountItems(int category);
 }

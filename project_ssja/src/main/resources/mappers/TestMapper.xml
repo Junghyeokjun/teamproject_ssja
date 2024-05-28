@@ -22,6 +22,24 @@
 		]]>
 	</select>
 	
+	<select id="selectEmail" resultType="String">
+		<![CDATA[
+			select M_EMAIL from members where M_ID=#{mid}
+		]]>
+	</select>
+	
+	<select id="selectPW" resultType="String">
+		<![CDATA[
+			select M_PW from members where M_ID=#{mid}
+		]]>
+	</select>
+	
+	<update id="updatePw">
+		<![CDATA[
+			UPDATE members SET M_PW=#{pw} WHERE M_ID = #{id}
+		]]>
+	</update>
+	
 	<select id="getProQuantity" resultType="int">
 		<![CDATA[
 			select PRO_QUANTITY from product where PRO_NO=#{proNo}
@@ -40,6 +58,21 @@
 		<![CDATA[
 			INSERT INTO authority(M_ID) VALUES(#{mid})
 		]]>
+	</insert>
+	
+	<insert id="insertPurchase">
+		INSERT INTO PURCHASE 
+		VALUES(PUR_SEQ.nextval,#{M_NO},#{PUR_TOT},#{PUR_DC},#{PUR_PAY},#{PUR_PAYMENT},SYSDATE,#{PUR_DVADDRESS},#{PUR_DV})
+			
+		<selectKey keyProperty="PUR_NO" resultType="int" order="AFTER">
+			select PUR_NO
+			from (SELECT PUR_NO ,rowNum
+			FROM PURCHASE
+			WHERE M_NO=#{M_NO}
+			order by PUR_NO desc)
+			where rownum=1
+		</selectKey>
+	
 	</insert>
 	
 </mapper>

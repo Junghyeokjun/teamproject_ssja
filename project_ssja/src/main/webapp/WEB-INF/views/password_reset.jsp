@@ -34,57 +34,50 @@
 
     var header = $("meta[name='_csrf_header']").attr('content');
     var token = $("meta[name='_csrf']").attr('content');
+    $(document).ready(function(){
 
-        $(document).ready(function(){
-            let title=$("#title")
-            let send=$("#send");
-            let find_pw=$("#find_pw");
-            let id=$("#id");
-            let auth_num=$("#auth_num");
-            let form=$("#form");
-            let random;
-            send.on("click",function(){
+        let id_val=$("#id").val();
+        let new_pw=$("#new_pw");
+        let new_pw_check=$("#new_pw_check");
+        let pw_update_btn=$("#pw_update_btn");
+
+        //url의 스테이터스를 숨기는 부분
+        history.replaceState({}, null, location.pathname);
+
+        pw_update_btn.on("click", function(){
+            if(new_pw.val()==""){
+                alert("새로 설정할 비밀번호를 입력해주세요")
+            }else if(new_pw_check.val()==""){
+                alert("비밀번호 확인을 입력해주세요")
+            }else if(new_pw.val()!=new_pw_check.val()){
+                console.log(new_pw.val());
+                console.log(new_pw_check.val());
+                console.log(id_val)
+                alert("비밀번호가 일치하지 않습니다")
+            }else{
                 $.ajax({
                     type : 'POST',      
                     beforeSend: function(xhr){
                         xhr.setRequestHeader(header, token);
                     },  
-                    url : '/testrest/findPw',
+                    url : '/testrest/resetPw',
                     async : false,
                     dataType : 'text',
                     data :{
-                        id : id.val()
+                        id : id_val,
+                        pw : new_pw.val()
                     },    
                     success : function(result) {
-                        console.log(result);
-                        if(result==""){
-                            alert("해당 아이디는 존재하지 않습니다.");
-                            window.close();
-                        }else{
-                            alert("해당 아이디를 가입할때 사용하신 이메일로 인증번호를 전송하였습니다.")
-                            title.text("인증번호를 입력해주세요");
-                            id.attr("hidden","hidden");
-                            auth_num.removeAttr("hidden");
-                            send.attr("hidden","hidden");
-                            find_pw.removeAttr("hidden");
-                        }
-                        random=result;
+                        alert("비밀번호가 성공적으로 변경되었습니다.");
+                        
                     },    
                     error : function(request, status, error) {
                         alert("에러가 발생하였습니다.")  
                     }
                 })
-            })
-            find_pw.on("click",function(){
-                if(random==auth_num.val()){
-                    location.replace("/test/password_reset?id="+id.val())
-
-                }else{
-                    alert("올바른 인증번호가 아닙니다.")
-                    window.close();
-                }
-            })
-        })    
+            }
+        })
+    })
     
    </script>
 </head>
@@ -94,13 +87,10 @@
         <a id="logo_toHome" href=""><img src="/images/utilities/big_logo.png" alt=""></a>
         <!-- 실제 적용시 method post로 변경  -->
         <br>
-        <h3 id="title">아이디를 입력해주세요</h3>
-        <br>
-        <input id="id"type="text" class="form-control" style="width: 300px;" placeholder="아이디">
-        <input id="auth_num" type="text" class="form-control" style="width: 300px;" placeholder="인증번호" hidden="hidden">
-        <br>
-        <button id="send" type="button" class="btn btn-dark">인증번호 전송</button>
-        <button id="find_pw" type="button" class="btn btn-dark" hidden="hidden">비밀번호 재설정</button>
+        <input id="id" type="hidden" value="${id}">
+        <input id="new_pw" type="password" class="form-control m-2" style="width: 300px;" placeholder="새로운 비밀번호">
+        <input id="new_pw_check" type="password" class="form-control mb-3" style="width: 300px;" placeholder="비밀번호 재확인" >
+        <button type="button" id="pw_update_btn" class="btn btn-dark">비밀번호 재설정</button>
     </div>
 </body>
 </html>

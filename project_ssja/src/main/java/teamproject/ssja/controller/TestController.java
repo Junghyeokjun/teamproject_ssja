@@ -43,12 +43,23 @@ public class TestController {
 	public String purchase() {
 		return "purchase";
 	}
+	
+	@RequestMapping("/password_reset")
+	public ModelAndView passwordReset(ModelAndView mv,String id) {
+		System.out.println(id);
+		mv.addObject("id",id);
+		mv.setViewName("password_reset");
+		return mv;
+	}
 	@RequestMapping("/test_purchase")
 	public ModelAndView testPurchase(ModelAndView mv) {
 		List<ProductDto> dtos=new ArrayList<>();
-		dtos.add(new ProductDto(1, 1, 11, 11000, 2, "222", 4, 2323, 222, "테스트", "침대"));
-		dtos.add(new ProductDto(2, 1, 12, 12000, 2, "222", 4, 2323, 222, "테스트", "수납"));
-		dtos.add(new ProductDto(3, 1, 21, 21000, 2, "222", 4, 2323, 222, "테스트", "침구"));
+		/*
+		 * dtos.add(new ProductDto(1, 1, 11, 11000, 2, "222", 4, 2323, 222, "테스트",
+		 * "침대")); dtos.add(new ProductDto(2, 1, 12, 12000, 2, "222", 4, 2323, 222,
+		 * "테스트", "수납")); dtos.add(new ProductDto(3, 1, 21, 21000, 2, "222", 4, 2323,
+		 * 222, "테스트", "침구"));
+		 */
 		mv.addObject("products", dtos);
 		mv.setViewName("purchase");
 		return mv;
