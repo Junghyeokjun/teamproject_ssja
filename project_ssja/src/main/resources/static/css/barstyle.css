@@ -84,7 +84,9 @@ main {
   z-index: 1;
   height: auto;
 }
-
+#sub_nav{
+	width:100%;
+}
 #sub_bar a {
   color: white;
 }

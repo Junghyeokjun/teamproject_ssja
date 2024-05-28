@@ -295,11 +295,21 @@ $("#logo_toHome").attr("href", "/home");//로고 링크
   });
 
 
-  $total_bar.mouseleave(function () {
-    $sub_bar.css("display", "none");
-  });
+  $total_bar.on('mouseleave', function (e) {
+	    if (!$(e.relatedTarget).closest($total_bar).length && 
+	    		!$(e.relatedTarget).closest($sub_bar).length) {
+	    	
+	        $sub_bar.css("display", "none");
+	    }
+	});
 
-
+	$sub_bar.on('mouseleave', function (e) {
+	    if (!$(e.relatedTarget).closest($total_bar).length && 
+	    		!$(e.relatedTarget).closest($sub_bar).length) {
+	    	
+	        $sub_bar.css("display", "none");
+	    }
+	});
   $(window).on('scroll', function () {
     let $side_bar = $('#side_bar');
     let scrollPosition = $(this).scrollTop();

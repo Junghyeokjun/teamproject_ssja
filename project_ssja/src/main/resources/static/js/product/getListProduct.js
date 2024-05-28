@@ -212,137 +212,88 @@ let getListProductToServer = function(condition){
 		
 }
 function fontBoldResetDiv1(){
-	$("#select_name_asc").css("font-weight",'').css('font-size','1em');
-	$("#select_name_desc").css("font-weight",'').css('font-size','1em');
-	$("#select_name_long").css("font-weight",'').css('font-size','1em');
-	$("#select_name_short").css("font-weight",'').css('font-size','1em');
+    $("#select_name_asc, #select_name_desc, #select_name_long, #select_name_short")
+        .css("font-weight", '').css('font-size', '1em');
 }
+
 function fontBoldResetDiv2(){
-	$("#select_price_0to3").css("font-weight",'').css('font-size','1em');
-	$("#select_price_3to5").css("font-weight",'').css('font-size','1em');
-	$("#select_price_5to10").css("font-weight",'').css('font-size','1em');
-	$("#select_price_10to20").css("font-weight",'').css('font-size','1em');
-	
+    $("#select_price_0to3, #select_price_3to5, #select_price_5to10, #select_price_10to20")
+        .css("font-weight", '').css('font-size', '1em');
 }
+
 function fontBoldResetDiv3(){
-	$("#select_hot").css("font-weight",'').css('font-size','1em');
-	$("#select_rowPrice").css("font-weight",'').css('font-size','1em');
-	$("#select_rating").css("font-weight",'').css('font-size','1em');
-	$("#select_review").css("font-weight",'').css('font-size','1em');
-	$("#select_wish").css("font-weight",'').css('font-size','1em');
-	$("#select_new").css("font-weight",'').css('font-size','1em');
+    $("#select_hot, #select_rowPrice, #select_rating, #select_review, #select_wish, #select_new")
+        .css("font-weight", '').css('font-size', '1em');
 }
 
-$("#select_price_3to5").on('click',function(){
-	//완
-	fontBoldResetDiv2();
-	product_condition.setConditionStart(30000);
-	product_condition.setConditionEnd(50000);
-	getListProductToServer(product_condition);
-	$(window).scrollTop(200);
-	$(this).css("font-weight",'bold').css('font-size','1.2em');
-})
-$("#select_name_asc").on('click',function(){
-	fontBoldResetDiv1();
-	product_condition.setConditionName('pro_name asc');
-	getListProductToServer(product_condition);
-	$(window).scrollTop(200);
-	$(this).css("font-weight",'bold').css('font-size','1.2em');
-	//완
-})
-$("#select_name_desc").on('click',function(){
-	//완
-	fontBoldResetDiv1();
+function handleClick(selector, resetFunc, conditionSetter) {
+    $(selector).on('click', function() {
+        resetFunc();
+        conditionSetter();
+        getListProductToServer(product_condition);
+        $(window).scrollTop(200);
+        $(this).css("font-weight", 'bold').css('font-size', '1.2em');
+    });
+}
+handleClick("#select_name_asc", fontBoldResetDiv1, function() {
+    product_condition.setConditionName('pro_name asc');
+});
 
-	product_condition.setConditionName('pro_name desc');
-	getListProductToServer(product_condition);
-	$(window).scrollTop(200);
-	$(this).css("font-weight",'bold').css('font-size','1.2em');
-})
-$("#select_name_long").on('click',function(){
-	//완
-	fontBoldResetDiv1();
-	product_condition.setConditionName('LENGTH(pro_name) desc');
-	getListProductToServer(product_condition);
-	$(window).scrollTop(200);
-	$(this).css("font-weight",'bold').css('font-size','1.2em');
-})
-$("#select_name_short").on('click',function(){
-	fontBoldResetDiv1();
-	//완
-	product_condition.setConditionName('LENGTH(pro_name) asc');
-	getListProductToServer(product_condition).css('font-size','1.2em');
-	$(window).scrollTop(200);
-	$(this).css("font-weight",'bold');
-})
-$("#select_price_0to3").on('click',function(){
-	fontBoldResetDiv2();
-	product_condition.setConditionStart(0);
-	product_condition.setConditionEnd(30000);
-	getListProductToServer(product_condition);
-	$(window).scrollTop(200);
-	$(this).css("font-weight",'bold').css('font-size','1.2em');
-})
-$("#select_price_5to10").on('click',function(){
-	fontBoldResetDiv2();
-	product_condition.setConditionStart(50000);
-	product_condition.setConditionEnd(100000);
-	getListProductToServer(product_condition);
-	$(window).scrollTop(200);
-	$(this).css("font-weight",'bold').css('font-size','1.2em');
-	//완
-})
-$("#select_price_10to20").on('click',function(){
-	//완
-	fontBoldResetDiv2();
-	product_condition.setConditionStart(100000);
-	product_condition.setConditionEnd(200000);
-	getListProductToServer(product_condition);
-	$(window).scrollTop(200);
-	$(this).css("font-weight",'bold').css('font-size','1.2em');
-})
-$("#select_hot").on('click',function(){
-	
-	product_condition.setConditionSelect('pro_sellcount desc');
-	getListProductToServer(product_condition);
-	$(window).scrollTop(200);
-	$(this).css("font-weight",'bold').css('font-size','1.2em');
-})
-$("#select_rowPrice").on('click',function(){
-	fontBoldResetDiv3();
-	product_condition.setConditionSelect('pro_price asc');
-	getListProductToServer(product_condition);
-	$(window).scrollTop(200);
-	$(this).css("font-weight",'bold').css('font-size','1.2em');
-})
-$("#select_rating").on('click',function(){
-	fontBoldResetDiv3();
-	product_condition.setConditionSelect('rating_avg desc');
-	getListProductToServer(product_condition);
-	$(window).scrollTop(200);
-	$(this).css("font-weight",'bold').css('font-size','1.2em');
-})
-$("#select_review").on('click',function(){
-	fontBoldResetDiv3();
-	product_condition.setConditionSelect('REVIEW_COUNT desc');
-	getListProductToServer(product_condition);
-	$(window).scrollTop(200);
-	$(this).css("font-weight",'bold').css('font-size','1.2em');
-})
-$("#select_wish").on('click',function(){
-	product_condition.setConditionSelect('RATING_AVG desc');
-	fontBoldResetDiv3();
-	getListProductToServer(product_condition);
-	$(window).scrollTop(200);
-	$(this).css("font-weight",'bold').css('font-size','1.2em');
-})
-$("#select_new").on('click',function(){
-	fontBoldResetDiv3();
-	product_condition.setConditionSelect('pro_date desc');
-	getListProductToServer(product_condition);
-	$(window).scrollTop(200);
-	$(this).css("font-weight",'bold').css('font-size','1.2em');
-})
+handleClick("#select_name_desc", fontBoldResetDiv1, function() {
+    product_condition.setConditionName('pro_name desc');
+});
+
+handleClick("#select_name_long", fontBoldResetDiv1, function() {
+    product_condition.setConditionName('LENGTH(pro_name) desc');
+});
+
+handleClick("#select_name_short", fontBoldResetDiv1, function() {
+    product_condition.setConditionName('LENGTH(pro_name) asc');
+});
+handleClick("#select_price_0to3", fontBoldResetDiv2, function() {
+    product_condition.setConditionStart(0);
+    product_condition.setConditionEnd(30000);
+});
+
+handleClick("#select_price_3to5", fontBoldResetDiv2, function() {
+    product_condition.setConditionStart(30000);
+    product_condition.setConditionEnd(50000);
+});
+
+handleClick("#select_price_5to10", fontBoldResetDiv2, function() {
+    product_condition.setConditionStart(50000);
+    product_condition.setConditionEnd(100000);
+});
+
+handleClick("#select_price_10to20", fontBoldResetDiv2, function() {
+    product_condition.setConditionStart(100000);
+    product_condition.setConditionEnd(200000);
+});
+
+handleClick("#select_hot", fontBoldResetDiv3, function() {
+    product_condition.setConditionSelect('pro_sellcount desc');
+});
+
+handleClick("#select_rowPrice", fontBoldResetDiv3, function() {
+    product_condition.setConditionSelect('pro_price asc');
+});
+
+handleClick("#select_rating", fontBoldResetDiv3, function() {
+    product_condition.setConditionSelect('rating_avg desc');
+});
+
+handleClick("#select_review", fontBoldResetDiv3, function() {
+    product_condition.setConditionSelect('REVIEW_COUNT desc');
+});
+
+handleClick("#select_wish", fontBoldResetDiv3, function() {
+    product_condition.setConditionSelect('RATING_AVG desc');
+});
+
+handleClick("#select_new", fontBoldResetDiv3, function() {
+    product_condition.setConditionSelect('pro_date desc');
+});
+
 $('#search_custom_money_btn').on('click',function(){
 	if($("#end_price").val() === '' || $("#end_price").val()===0){
 		alert('금액을 제대로 입력해주세요');
