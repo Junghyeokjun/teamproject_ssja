@@ -31,29 +31,7 @@
 
 <script src="/js/barscript.js"></script>
 <script src="/js/footer.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // 현재 페이지의 정보를 가져옵니다.
-    var currentPage = window.location.pathname; // 예: "/product_detail?page=2"
 
-    // 페이지가 변경될 때 활성화/비활성화를 결정하는 함수
-    function setActivePage() {
-        var pageLinks = document.querySelectorAll('.page-link');
-        pageLinks.forEach(function(link) {
-            var linkHref = link.getAttribute('href');
-            if (currentPage === linkHref) {
-                link.classList.add('active'); // 현재 페이지에 active 클래스 추가
-            } else {
-                link.classList.remove('active'); // 현재 페이지가 아니면 active 클래스 제거
-            }
-        });
-    }
-
-    // 페이지 로드 시 초기화
-    setActivePage();
-});
-
-</script>
 
 <link href="/css/footerstyle.css?after" rel="stylesheet">
 <link href="/css/barstyle.css?after" rel="stylesheet">
@@ -159,9 +137,6 @@ table {
 						</button>
 					</div>
 				</div>
-
-
-
 				<div class="goodsInfo col-12 col-md-6 col-lg-5">
 					<p class="cateName">
 						<span>상품이름 ${productdetail.PRO_NAME}</span>
@@ -186,13 +161,11 @@ table {
 					</p>
 				</div>
 			</div>
-
 			<section class="bg-light border-top py-4">
 				<div class="container">
 					<div class="row gx-4">
 						<div class="col-lg-8 mb-4">
 							<div class="border rounded-2 px-3 py-2 bg-white">
-
 								<ul class="nav nav-pills nav-justified mb-3" id="ex1"
 									role="tablist">
 									<li class="nav-item d-flex" role="presentation"><a
@@ -275,8 +248,6 @@ table {
 												</c:if>
 											</ul>
 										</nav>
-
-
 
 									</div>
 
@@ -376,32 +347,8 @@ table {
 		crossorigin="anonymous"></script>
 	<script src="https://kit.fontawesome.com/0fa31147fa.js"
 		crossorigin="anonymous"></script>
-<!-- 	<script>
-		// 현재 페이지의 정보
-		var currentPage = $
-		{
-			pageMaker.criteria.getPageNum()
-		};
+	 	
 
-		// 각 페이지 링크를 확인하고 활성화/비활성화를 결정하는 함수
-		function setActivePage() {
-			var pageLinks = document.querySelectorAll('.page-link');
-			pageLinks.forEach(function(link) {
-				var pageNumber = parseInt(link.innerHTML); // 페이지 번호를 가져옵니다.
-				if (pageNumber === currentPage) {
-					link.classList.add('active'); // 현재 페이지에 active 클래스 추가
-				} else {
-					link.classList.remove('active'); // 현재 페이지가 아니면 active 클래스 제거
-				}
-			});
-		}
 
-		// 페이지 로드 시 초기화
-		window.onload = function() {
-			setActivePage();
-		};		
-	</script>   -->
-
-	
 </body>
 </html>
