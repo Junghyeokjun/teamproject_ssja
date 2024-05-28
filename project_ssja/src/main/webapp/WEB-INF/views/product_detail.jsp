@@ -72,6 +72,8 @@ table {
 	border-color: gray;
 }
 </style>
+
+
 </head>
 <body>
 	<header>
@@ -156,7 +158,8 @@ table {
 							<fmt:formatNumber pattern="###,###,###"
 								value="${productdetail.PRO_PRICE}" /> 원
 						</span><br>
-						<button type="button">장바구니</button>
+						<button type="button"
+							onclick="wish_click(${productdetail.getPRO_NO()})">Wish List</button>
 						<button type="button">바로구매</button>
 					</p>
 				</div>
@@ -297,7 +300,9 @@ table {
 												pattern="###,###,###" value="${productdetail.PRO_PRICE}" />
 											원
 										</span><br>
-										<button type="button">장바구니</button>
+										<button type="button"
+											onclick="wish_click(${productdetail.getPRO_NO()})">Wish
+											List</button>
 										<button type="button">바로구매</button>
 									</p>
 								</div>
@@ -317,6 +322,10 @@ table {
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
 	<script>
+	
+	 let token = $("meta[name='_csrf']").attr("content");
+		let header = $("meta[name='_csrf_header']").attr("content");
+		
 		document.addEventListener("DOMContentLoaded", function() {
 			const priceElement = document.querySelector(".gdsPrice span");
 			const quantityInput = document.getElementById("quantity");
@@ -340,6 +349,47 @@ table {
 			// 페이지 로드 시 초기 총 금액 설정
 			updateTotalPrice();
 		});
+
+	    // 현재 페이지의 정보
+	    var currentPage = ${pageMaker.criteria.getPageNum()}; 
+
+	    // 각 페이지 링크를 확인하고 활성화/비활성화를 결정하는 함수
+	    function setActivePage() {
+	        var pageLinks = document.querySelectorAll('.page-link');
+	        pageLinks.forEach(function(link) {
+	            var pageNumber = parseInt(link.innerHTML); // 페이지 번호를 가져옵니다.
+	            if (pageNumber === currentPage) {
+	                link.classList.add('active'); // 현재 페이지에 active 클래스 추가
+	            } else {
+	                link.classList.remove('active'); // 현재 페이지가 아니면 active 클래스 제거
+	            }
+	        });
+	    }
+
+	    // 페이지 로드 시 초기화
+	    window.onload = function() {
+	        setActivePage();
+	    };	    
+	    let wish_click = function(productnumber) {
+	    	let count = 0;
+	        $.ajax({
+	            type: "PUT",
+	            beforeSend: function(xhr) {
+	                xhr.setRequestHeader(header, token);
+	            },
+	            data: JSON.stringify({"pro_no": productnumber}),
+	            url: "/wishlist",
+	            async:false,
+	            contentType: "application/json",
+	            success: function(data) {
+	     console.log(data);
+	                count = data;
+	            }, error : function() {
+	            	window.location.href="/login";
+	            }
+	        });
+	        return count;
+	    };
 	</script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -347,8 +397,5 @@ table {
 		crossorigin="anonymous"></script>
 	<script src="https://kit.fontawesome.com/0fa31147fa.js"
 		crossorigin="anonymous"></script>
-	 	
-
-
 </body>
 </html>
