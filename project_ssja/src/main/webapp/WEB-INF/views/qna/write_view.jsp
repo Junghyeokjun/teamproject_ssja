@@ -125,7 +125,7 @@ body {
 			</div>
 			<form action="${pageContext.request.contextPath}/qna/write" method="post">
 				<div class="input-group">
-					<input type="hidden" class="form-control" name="bbcno" value="${write_view.bcno}">				
+					<input type="hidden" class="form-control" name="bbcno" value="20">				
 					<sec:csrfInput />
 				</div>
 				<table class="table" >
