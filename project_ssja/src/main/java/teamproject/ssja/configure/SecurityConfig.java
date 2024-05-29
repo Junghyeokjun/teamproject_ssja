@@ -1,5 +1,10 @@
 package teamproject.ssja.configure;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +17,17 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import teamproject.ssja.service.user.CustomUserDetailsService;
+import teamproject.ssja.service.user.OAuth2UserService;
 
 
 
@@ -34,6 +42,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	   
 	   @Autowired
 	   private PasswordEncoder passwordEncoder;
+	   
+	   @Autowired
+	   private OAuth2UserService oAuth2UserService;
 
 
 	 @Override
@@ -54,27 +65,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	//http.csrf().disable();
 		/* 권한설정 */
 	    http.authorizeRequests()
-	    .antMatchers("/logout","/user","/myPage","/myPage/**","/userInfo","/user","/user/**").hasAnyRole("USER")
+	    .antMatchers("/logout","/user","/myPage","/myPage/**","/userInfo","/user","/user/**","/wishlist","/wishlist/**").hasAnyRole("USER")
 	    .anyRequest().permitAll();
 	    
-	    http.formLogin().loginPage("/login")
+	    http.formLogin()
+	    .loginPage("/login")
 	    .usernameParameter("username").passwordParameter("password")
 	    .loginProcessingUrl("/loginCheck")
-	    .defaultSuccessUrl("/").permitAll()
-	    .and()
-	    .logout()
-                .logoutUrl("/logout")//logout 요청 처리 uRL
-                .addLogoutHandler((request, response, authentication) -> {
-                    HttpSession session = request.getSession();
-                    if (session != null) {
-                        session.invalidate();
-                    }
-                }).logoutSuccessHandler(((request, response, authentication) -> {
-                    response.sendRedirect("/");// 로그아웃 성공 시 리다이렉트
-                }))//로그 아웃 성공 핸들러;
-                .deleteCookies("JSESSIONID")
-                
-                .and()//중복로그인 설정
+	    .defaultSuccessUrl("/").permitAll();
+	    
+	       http.oauth2Login()
+           .loginPage("/login")
+           .userInfoEndpoint()
+           .userService(oAuth2UserService)
+           .and()
+           .defaultSuccessUrl("/home",true)
+           .failureUrl("/login?error=true");
+	       
+	    http.
+	    logout()
+        .logoutUrl("/logout")
+        //.logoutSuccessHandler(new CustomLogoutSuccessHandler())
+        .logoutSuccessUrl("/login")
+        .invalidateHttpSession(true)
+        .deleteCookies("JSESSIONID");
+	    
+              http//중복로그인 설정
                 .sessionManagement()
                 .maximumSessions(1)
                 .expiredUrl("/home") 
@@ -107,8 +123,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	        return new SessionRegistryImpl();
 	    }
 	 
-	 @Bean // 세션 생성 및 소멸 이벤트를 처리하는 역할
+	 @Bean 
 	 protected HttpSessionEventPublisher httpSessionEventPublisher() {
 	        return new HttpSessionEventPublisher();
+	    }
+	 
+	 public class CustomLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
+	        @Override
+	        public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, 
+	        		Authentication authentication) throws IOException, ServletException {
+	        	
+	            HttpSession session = request.getSession();
+	            if (session != null) {
+	                session.invalidate();
+	            }
+	            String logoutUrl = "https://nid.naver.com/nidlogin.logout"; 
+	            response.sendRedirect(logoutUrl);
+	        }
 	    }
 }

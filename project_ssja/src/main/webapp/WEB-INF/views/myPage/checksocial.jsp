@@ -122,56 +122,12 @@ color:#aaa;
 </div>
 
   <main>
-    <div id="main_container" >
-    
-    <div id="product_search_select" class="" style=" width:100%;">
-		<div id="title_search_select"class="m-3"style="border-bottom:1px solid #ccc" ><h3>세부 조회</h3></div>
-		
-		<div class="w-100 mx-3">
-		<h5>이름 별</h5>
-		<span>|</span>
-		<button id="select_name_asc">가나다순</button>
-		<button id="select_name_desc">가나다역순</button>
-		<button id="select_name_long">이름  길이 순</button>
-		<button id="select_name_short">이름 길이 짧은 순</button>
-		</div>
-		
-		<div class="w-100 mx-3">
-		<h5>가격 별</h5>
-		<span>|</span>
-		<button id="select_price_0to3">0 ~ 3만원대</button>
-		<button id="select_price_3to5">3 ~ 5만원대</button>
-		<button id="select_price_5to10">5 ~ 10 만원대</button>
-		<button id="select_price_10to20">10 ~ 20만원대</button>
-		
-		<input id="start_price">
-		<span >원~</span>
-		<input id="end_price">
-		<span >원</span>
-		<div class="mb-1 my-auto"><button id="search_custom_money_btn" class="btn btn-dark" style="width:4em;height:2em;">검색</button></div>
-		
-		</div>
-		
-		
-		<div class="w-100 mx-3">
-		<h5>분류 별</h5>
-		<span>|</span>
-		<button id="select_hot">인기 순</button>
-		<button id="select_rowPrice">저렴 순</button>
-		<button id="select_rating">별점 순</button>
-		<button id="select_review">후기 순</button>
-		<button id="select_wish">위시 순</button>
-		<button id="select_new">신상품 순</button>
-		</div>
-    </div>
-    
-    <div id="product_content" class="my-5">
-    
-    </div>
-    
-    <div id="paging_dv" class="d-flex flex-row justify-content-center align-items-center"> </div>
- 	 
-</div>
+ 
+ 
+ 사용자 이름 : ${username}<br>
+ 로그인 여부 : ${isSocial}<br>
+ 번호 ㅣ ${snum }
+ 
   </main>
 
   <footer>
@@ -182,5 +138,5 @@ color:#aaa;
  
 
 </body>
-<script src="/js/product/getListProduct.js"></script>
+
 </html>

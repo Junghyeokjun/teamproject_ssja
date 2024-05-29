@@ -4,9 +4,10 @@ import java.util.List;
 
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.product.ProductCondition;
+import teamproject.ssja.dto.product.ProductItemDto;
 
 public interface ProductService {
 
-	List<ProductDto> getProductList(ProductCondition condition);
+	List<ProductItemDto> getProductList(ProductCondition condition);
 	ProductCondition getTotalItemsCount(ProductCondition condition);
 }

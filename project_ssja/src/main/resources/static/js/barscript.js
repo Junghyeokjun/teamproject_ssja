@@ -6,9 +6,9 @@ $(document).ready(function () {
 //  //csrf추가
   let token = $("meta[name='_csrf']").attr("content");
   let header = $("meta[name='_csrf_header']").attr("content");
-  $(document).ajaxSend(function(e, xhr, options) {
+  /*$(document).ajaxSend(function(e, xhr, options) {
       xhr.setRequestHeader(header, token);
-  });
+  });*/
 
 
   //상단 카테고리 바 분류
@@ -20,44 +20,46 @@ $(document).ready(function () {
   let $li5 = $("<li>").css("order", "5").text("생활용품").addClass("px-3 py-2").attr("id", "nav-links").appendTo($ul);
 
 //카테고리 별 링크 변수
-  const  link1_1 = "https://www.naver.com";
-  const  link1_2 = "https://www.naver.com";
-  const  link1_3 = "https://www.naver.com";
-  const  link2_1 = "https://www.google.com";
-  const  link2_2 = "https://www.google.com";
-  const  link2_3 = "https://www.google.com";
-  const  link3_1 = "https://www.daum.net";
-  const  link3_2 = "https://www.daum.net";
-  const  link3_3 = "https://www.daum.net";
-  const link4_1 = "https://store.ohou.se/exhibitions/12390";
-  const  link4_2 = "https://store.ohou.se/exhibitions/12390";
-  const link4_3 = "https://store.ohou.se/exhibitions/12390";
-  const link5_1 = "https://velog.io/";
-  const  link5_2 = "https://velog.io/";
-  const link5_3 = "https://velog.io/";
+  const  link1_1 = "/product/search?category=11";
+  const  link1_2 = "/product/search?category=12";
+  const  link1_3 = "/product/search?category=13";
+  const  link2_1 = "/product/search?category=21";
+  const  link2_2 = "/product/search?category=22";
+  const  link2_3 = "/product/search?category=23";
+  const  link3_1 = "/product/search?category=31";
+  const  link3_2 = "/product/search?category=32";
+  const  link3_3 = "/product/search?category=33";
+  const link4_1 = "/product/search?category=41";
+  const  link4_2 = "/product/search?category=42";
+  const link4_3 = "/product/search?category=43";
+  const link4_4 = "/product/search?category=44";
+  const link5_1 = "/product/search?category=51";
+  const  link5_2 = "/product/search?category=52";
+  const link5_3 = "/product/search?category=53";
+  const link5_4 = "/product/search?category=54";
 
   
-  let $link1_1 = $("<a>").attr("href", link1_1).addClass("btn").text("침대").css("text-decoration", "none");
-  let $link1_2 = $("<a>").attr("href", link1_2).addClass("btn").text("수납").css("text-decoration", "none");
-  let $link1_3 = $("<a>").attr("href", link1_3).addClass("btn").text("책상·의자").css("text-decoration", "none");
+  let $link1_1 = $("<a>").attr("href", link1_1).addClass("btn w-100").text("침대").css("text-decoration", "none");
+  let $link1_2 = $("<a>").attr("href", link1_2).addClass("btn w-100").text("수납").css("text-decoration", "none");
+  let $link1_3 = $("<a>").attr("href", link1_3).addClass("btn w-100").text("책상·의자").css("text-decoration", "none");
 
-  let $link2_1 = $("<a>").attr("href", link2_1).addClass("btn").text("침구").css("text-decoration", "none");
-  let $link2_2 = $("<a>").attr("href", link2_2).addClass("btn").text("커튼").css("text-decoration", "none");
-  let $link2_3 = $("<a>").attr("href", link2_3).addClass("btn").text("홈").css("text-decoration", "none");
+  let $link2_1 = $("<a>").attr("href", link2_1).addClass("btn w-100").text("침구").css("text-decoration", "none");
+  let $link2_2 = $("<a>").attr("href", link2_2).addClass("btn w-100").text("커튼").css("text-decoration", "none");
+  let $link2_3 = $("<a>").attr("href", link2_3).addClass("btn w-100").text("홈").css("text-decoration", "none");
 
-  let $link3_1 = $("<a>").attr("href", link3_1).addClass("btn").text("데코·식물").css("text-decoration", "none");
-  let $link3_2 = $("<a>").attr("href", link3_2).addClass("btn").text("장식품").css("text-decoration", "none");
-  let $link3_3 = $("<a>").attr("href", link3_3).addClass("btn").text("조명").css("text-decoration", "none");
+  let $link3_1 = $("<a>").attr("href", link3_1).addClass("btn w-100").text("데코·식물").css("text-decoration", "none");
+  let $link3_2 = $("<a>").attr("href", link3_2).addClass("btn w-100").text("장식품").css("text-decoration", "none");
+  let $link3_3 = $("<a>").attr("href", link3_3).addClass("btn w-100").text("조명").css("text-decoration", "none");
 
-  let $link4_1 = $("<a>").attr("href", link4_1).addClass("btn").text("식기류").css("text-decoration", "none");
-  let $link4_2 = $("<a>").attr("href", link4_2).addClass("btn").text("조리도구").css("text-decoration", "none");
-  let $link4_3 = $("<a>").attr("href", link4_3).addClass("btn").text("주방잡화").css("text-decoration", "none");
-  let $link4_4 = $("<a>").attr("href", link4_3).addClass("btn").text("냄비·팬·솥").css("text-decoration", "none");
+  let $link4_1 = $("<a>").attr("href", link4_1).addClass("btn w-100").text("식기류").css("text-decoration", "none");
+  let $link4_2 = $("<a>").attr("href", link4_2).addClass("btn w-100").text("조리도구").css("text-decoration", "none");
+  let $link4_3 = $("<a>").attr("href", link4_3).addClass("btn w-100").text("주방잡화").css("text-decoration", "none");
+  let $link4_4 = $("<a>").attr("href", link4_3).addClass("btn w-100").text("냄비·팬·솥").css("text-decoration", "none");
 
-  let $link5_1 = $("<a>").attr("href", link5_1).addClass("btn").text("욕실").css("text-decoration", "none");
-  let $link5_2 = $("<a>").attr("href", link5_2).addClass("btn").text("청소").css("text-decoration", "none");
-  let $link5_3 = $("<a>").attr("href", link5_3).addClass("btn").text("세탁").css("text-decoration", "none");
-  let $link5_4 = $("<a>").attr("href", link5_3).addClass("btn").text("생활잡화").css("text-decoration", "none");
+  let $link5_1 = $("<a>").attr("href", link5_1).addClass("btn w-100").text("욕실").css("text-decoration", "none");
+  let $link5_2 = $("<a>").attr("href", link5_2).addClass("btn w-100").text("청소").css("text-decoration", "none");
+  let $link5_3 = $("<a>").attr("href", link5_3).addClass("btn w-100").text("세탁").css("text-decoration", "none");
+  let $link5_4 = $("<a>").attr("href", link5_3).addClass("btn w-100").text("생활잡화").css("text-decoration", "none");
 
   let $searchForm = $("#searchForm");
   let $searchIn = $("<input>").attr("placeholder", "search").attr("id", "searchIn").appendTo($searchForm);
@@ -81,12 +83,41 @@ $("#logo_toHome").attr("href", "/home");//로고 링크
 
     window.location.href = "https://www.google.com";
   });
-
-  
-  
+  //==============================
   
 
+  if ($("#searchForm input[name='_csrf']").length === 0) {
+      $("#searchForm").attr('action','/logout').attr('method','post').append($("<input>")
+          .attr('type', 'hidden')
+          .attr('name', '_csrf')
+          .attr('value', token));
+  }
+
+  $(document).ajaxSend(function(e, xhr, options) {
+      xhr.setRequestHeader(header, token);
+  });
+	
+/*  $("#searchIn").on('click', function() {
+      $.ajax({
+          type: "POST",
+          url: "/logout",
+          beforeSend: function(xhr) {
+              xhr.setRequestHeader(header, token);
+          },
+          dataType:'text',
+          success: function(data) {
+        	// window.location.href="/";
+        	  console.log(data);
+        	  console.log('로그아웃 눌림');
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+          }
+      });
+  });*/
   
+
+  //======================
   
   //사이드 관련
   let $side_container1 = $("<button>").addClass("side_containers").text("BEST");
@@ -293,11 +324,17 @@ $("#logo_toHome").attr("href", "/home");//로고 링크
   });
 
 
-  $total_bar.mouseleave(function () {
-    $sub_bar.css("display", "none");
-  });
+  function hideSubBar(e) {
+	    if (!$(e.relatedTarget).closest($total_bar).length && 
+	            !$(e.relatedTarget).closest($sub_bar).length) {
+	        e.stopPropagation();
+	        $sub_bar.css("display", "none");
+	    }
+	}
 
-
+	$total_bar.on('mouseleave', hideSubBar);
+	$sub_bar.on('mouseleave', hideSubBar);
+	
   $(window).on('scroll', function () {
     let $side_bar = $('#side_bar');
     let scrollPosition = $(this).scrollTop();
