@@ -26,18 +26,13 @@
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
-	
-
 <meta name="_csrf" content="${_csrf.token}" />
 <meta name="_csrf_header" content="${_csrf.headerName}" />
 
-<script src="/js/barscript.js">
-	
-</script>
+<script src="/js/barscript.js"></script>
+<script src="/js/footer.js"></script>
 
-<script src="/js/footer.js">
-	
-</script>
+
 <link href="/css/footerstyle.css?after" rel="stylesheet">
 <link href="/css/barstyle.css?after" rel="stylesheet">
 
@@ -45,8 +40,7 @@
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
+
 <style>
 @font-face {
 	font-family: 'fonts';
@@ -78,6 +72,8 @@ table {
 	border-color: gray;
 }
 </style>
+
+
 </head>
 <body>
 	<header>
@@ -143,9 +139,6 @@ table {
 						</button>
 					</div>
 				</div>
-
-
-
 				<div class="goodsInfo col-12 col-md-6 col-lg-5">
 					<p class="cateName">
 						<span>상품이름 ${productdetail.PRO_NAME}</span>
@@ -165,18 +158,17 @@ table {
 							<fmt:formatNumber pattern="###,###,###"
 								value="${productdetail.PRO_PRICE}" /> 원
 						</span><br>
-						<button type="button" onclick="wish_click(${productdetail.PRO_NO})">${productdetail.PRO_NO}</button>
+						<button type="button"
+							onclick="wish_click(${productdetail.getPRO_NO()})">Wish List</button>
 						<button type="button">바로구매</button>
 					</p>
 				</div>
 			</div>
-
 			<section class="bg-light border-top py-4">
 				<div class="container">
 					<div class="row gx-4">
 						<div class="col-lg-8 mb-4">
 							<div class="border rounded-2 px-3 py-2 bg-white">
-
 								<ul class="nav nav-pills nav-justified mb-3" id="ex1"
 									role="tablist">
 									<li class="nav-item d-flex" role="presentation"><a
@@ -236,34 +228,32 @@ table {
 												<hr>
 											</c:forEach>
 										</div>
-<nav aria-label="Page navigation example ">
-		<ul class="pagination justify-content-center">
-			<c:if test="${pageMaker.prev}">
-				<li class="page-item"><a class="page-link"
-					href="list2${pageMaker.makeQuery(pageMaker.startPage - 1) }"
-					aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-				</a></li>
-			</c:if>
+										<nav aria-label="Page navigation example ">
+											<ul class="pagination justify-content-center">
+												<c:if test="${pageMaker.prev}">
+													<li class="page-item"><a class="page-link"
+														href="product_detail${pageMaker.makeReviewQuery(pageMaker.startPage - 1) }"
+														aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+													</a></li>
+												</c:if>
 
-			<c:forEach var="idx" begin="${pageMaker.startPage}"
-				end="${pageMaker.endPage}">
-				<li class="page-item"><a class="page-link"
-					href="list2${pageMaker.makeQuery(idx)}">${idx}</a></li>
-			</c:forEach>
+												<c:forEach var="idx" begin="${pageMaker.startPage}"
+													end="${pageMaker.endPage}">
+													<li class="page-item"><a class="page-link"
+														href="product_detail${pageMaker.makeReviewQuery(idx)}">${idx}</a></li>
+												</c:forEach>
 
-			<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-				<li class="page-item"><a class="page-link"
-					href="list2${pageMaker.makeQuery(pageMaker.endPage + 1) }"
-					aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-				</a></li>
-			</c:if>
-		</ul>
-	</nav>
-										
-										 
-										
+												<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+													<li class="page-item"><a class="page-link"
+														href="product_detail${pageMaker.makeReviewQuery(pageMaker.endPage + 1) }"
+														aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+													</a></li>
+												</c:if>
+											</ul>
+										</nav>
+
 									</div>
-									
+
 									<div class="tab-pane fade mb-2" id="ex1-pills-3"
 										role="tabpanel" aria-labelledby="ex1-tab-3">
 										<section class="production-selling-section">
@@ -310,7 +300,9 @@ table {
 												pattern="###,###,###" value="${productdetail.PRO_PRICE}" />
 											원
 										</span><br>
-						<button type="button" onclick="wish_click(${productdetail.PRO_NO})">장바구니</button>
+										<button type="button"
+											onclick="wish_click(${productdetail.getPRO_NO()})">Wish
+											List</button>
 										<button type="button">바로구매</button>
 									</p>
 								</div>
@@ -327,14 +319,13 @@ table {
 		<div id="third_footer"></div>
 	</footer>
 	<!-- MDBootstrap JS -->
-	
-
-
-</body>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
 	<script>
-    let token = $("meta[name='_csrf']").attr("content");
-	let header = $("meta[name='_csrf_header']").attr("content");
 	
+	 let token = $("meta[name='_csrf']").attr("content");
+		let header = $("meta[name='_csrf_header']").attr("content");
+		
 		document.addEventListener("DOMContentLoaded", function() {
 			const priceElement = document.querySelector(".gdsPrice span");
 			const quantityInput = document.getElementById("quantity");
@@ -359,49 +350,52 @@ table {
 			updateTotalPrice();
 		});
 
-    // 현재 페이지의 정보
-    var currentPage = ${pageMaker.criteria.getPageNum()}; 
+	    // 현재 페이지의 정보
+	    var currentPage = ${pageMaker.criteria.getPageNum()}; 
 
-    // 각 페이지 링크를 확인하고 활성화/비활성화를 결정하는 함수
-    function setActivePage() {
-        var pageLinks = document.querySelectorAll('.page-link');
-        pageLinks.forEach(function(link) {
-            var pageNumber = parseInt(link.innerHTML); // 페이지 번호를 가져옵니다.
-            if (pageNumber === currentPage) {
-                link.classList.add('active'); // 현재 페이지에 active 클래스 추가
-            } else {
-                link.classList.remove('active'); // 현재 페이지가 아니면 active 클래스 제거
-            }
-        });
-    }
+	    // 각 페이지 링크를 확인하고 활성화/비활성화를 결정하는 함수
+	    function setActivePage() {
+	        var pageLinks = document.querySelectorAll('.page-link');
+	        pageLinks.forEach(function(link) {
+	            var pageNumber = parseInt(link.innerHTML); // 페이지 번호를 가져옵니다.
+	            if (pageNumber === currentPage) {
+	                link.classList.add('active'); // 현재 페이지에 active 클래스 추가
+	            } else {
+	                link.classList.remove('active'); // 현재 페이지가 아니면 active 클래스 제거
+	            }
+	        });
+	    }
 
-    // 페이지 로드 시 초기화
-    window.onload = function() {
-        setActivePage();
-    };
-    
-    
-
-    
-    let wish_click = function(productnumber) {
-    	let count = 0;
-        $.ajax({
-            type: "PUT",
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader(header, token);
-            },
-            data: JSON.stringify({"pro_no": productnumber}),
-            url: "/wishlist",
-            async:false,
-            contentType: "application/json",
-            success: function(data) {
-     console.log(data);
-                count = data;
-            }, error : function() {
-            	window.location.href="/login";
-            }
-        });
-        return count;
-    };
-</script>
+	    // 페이지 로드 시 초기화
+	    window.onload = function() {
+	        setActivePage();
+	    };	    
+	    let wish_click = function(productnumber) {
+	    	let count = 0;
+	        $.ajax({
+	            type: "PUT",
+	            beforeSend: function(xhr) {
+	                xhr.setRequestHeader(header, token);
+	            },
+	            data: JSON.stringify({"pro_no": productnumber}),
+	            url: "/wishlist",
+	            async:false,
+	            contentType: "application/json",
+	            success: function(data) {
+	     console.log(data);
+	                count = data;
+	            }, error : function() {
+	            	window.location.href="/login";
+	            }
+	        });
+	        return count;
+	    };
+	</script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+		crossorigin="anonymous"></script>
+	<script src="https://kit.fontawesome.com/0fa31147fa.js"
+		crossorigin="anonymous"></script>
+</body>
 </html>
