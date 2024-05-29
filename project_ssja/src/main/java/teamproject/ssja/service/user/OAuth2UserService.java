@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import teamproject.ssja.dto.logindto.CustomPrincipal;
+import teamproject.ssja.dto.logindto.KakaoResponse;
 import teamproject.ssja.dto.logindto.NaverResponse;
 import teamproject.ssja.dto.logindto.OAuth2Response;
 import teamproject.ssja.dto.logindto.SocialUserInfoDTO;
@@ -35,12 +36,15 @@ public class OAuth2UserService extends DefaultOAuth2UserService{
 		String registraionId = userRequest.getClientRegistration().getRegistrationId();
 		
 		OAuth2Response oAuth2Response = null;
-		
+			
 		//네이버 소셜 로그인일 경우
 		if(registraionId.equals("naver")) {
 			oAuth2Response = new NaverResponse(oAuth2User.getAttributes());
 			
-			//구글 소셜 로그인일 경우
+			//카카오 소셜 로그인일 경우
+		}else if(registraionId.equals("kakao")) {
+			oAuth2Response = new KakaoResponse(oAuth2User.getAttributes());			
+			//구글 소셜 로그인일 경우	
 		}else if(registraionId.equals("google")) {
 			
 			

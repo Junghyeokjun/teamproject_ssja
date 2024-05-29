@@ -156,8 +156,12 @@
         <div id="social_login" class="d-flex justify-content-between">
           <span></span>
           <!-- a태그추가 또는 클릭이벤트 추가 -->
-          <a href="/oauth2/authorization/naver"><img src ="/images/utilities/naver.png" id="social_naver_btn"></img></a>
-          <button type="button"></button>
+          <a href="/oauth2/authorization/naver">
+          <img src ="/images/utilities/naver.png" id="social_naver_btn"></img>
+          </a>
+          <a href="/oauth2/authorization/kakao">
+          <img src ="/images/utilities/kakao.png" id="social_naver_btn"></img>
+          </a>
           <button type="button"></button>
          
           <span></span>
