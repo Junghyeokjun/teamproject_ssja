@@ -11,6 +11,6 @@ public class PassworEncoder {
     @Bean
     public PasswordEncoder passwordEncoder() {
         //return new CustomBcryptPasswordEncoder();
-    	return new CustomNoOpPasswordEncoder();
+    	return new BCryptPasswordEncoder();
     }
 }
