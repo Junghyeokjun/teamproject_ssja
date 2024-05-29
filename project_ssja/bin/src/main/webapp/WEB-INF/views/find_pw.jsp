@@ -46,7 +46,7 @@
                     beforeSend: function(xhr){
                         xhr.setRequestHeader(header, token);
                     },  
-                    url : '/testrest/findPw',
+                    url : '/sign/findPw',
                     async : false,
                     dataType : 'text',
                     data :{

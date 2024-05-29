@@ -6,12 +6,12 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import teamproject.ssja.dto.OrdersDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.PurchaseDto;
 import teamproject.ssja.service.Purchase.PurchaseService;
@@ -54,14 +54,15 @@ public class PurchaseController {
 ////		purchaseService.Purchase(purchase);
 //	}
 	@RequestMapping("/success" )
-	public String succese(@RequestParam Map<String, Object> data) {
-		System.out.println(data); 
+	public String succese(@RequestParam Map<String, Object> data){
+		
+		purchaseService.Purchase(data);
+		
 		return "true"; 
 //		purchaseService.Purchase(purchase);
 	}
 	@RequestMapping("/complete")
 	public ModelAndView complete(ModelAndView mv,long price) {
-		System.out.println(price);
 		mv.addObject("price", price+"원");
 		mv.setViewName("purchase_complete");
 		return mv;

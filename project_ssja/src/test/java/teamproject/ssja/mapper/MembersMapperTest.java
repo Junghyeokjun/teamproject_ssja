@@ -16,48 +16,48 @@ import teamproject.ssja.dto.PurchaseDto;
 
 @Slf4j
 @SpringBootTest
-class TestMapperTest {
+class MembersMapperTest {
 
 	@Autowired
-	TestMapper testMapper;
+	MembersMapper membersMapper;
 
 	@Disabled
 	@Test
 	void test() {
-		assertNotNull(testMapper);
+		assertNotNull(membersMapper);
 	}
 
 	@Disabled
 	@Test
 	void SelectMidTest() {
-		String mid=testMapper.getMid("testUser1");
+		String mid=membersMapper.getMid("testUser1");
 		log.info(mid);
 	}
 	
 	@Disabled
 	@Test
 	void SelectMnameTest() {
-		String mName=testMapper.getMNickName("tam");
+		String mName=membersMapper.getMNickName("tam");
 		log.info(mName);
 	}
 	
 	@Disabled
 	@Test
 	void SelectQuantityTest() {
-		long quantity=testMapper.getProQuantity(1);
+		long quantity=membersMapper.getProQuantity(1);
 		log.info(quantity+"");
 	}
 	
 	@Disabled
 	@Test
 	void SelectMEmailTest() {
-		String mEmail=testMapper.getMEmail("user@gmail.com");
+		String mEmail=membersMapper.getMEmail("user@gmail.com");
 		log.info(mEmail);
 	}
 	@Disabled
 	@Test
 	void SelectEmailTest() {
-		String mEmail=testMapper.selectEmail("test");
+		String mEmail=membersMapper.selectEmail("test");
 		log.info(mEmail);
 	}
 	
@@ -65,21 +65,27 @@ class TestMapperTest {
 	@Test
 	void insertMnameTest() {
 		MembersDto member= new MembersDto(0,"testUser1","testUser1","testUser1","수원시","팔달구","21231","990408",null,"user@gmail.com","01023451234",0,null,"tam");
-		int result=testMapper.insertMember(member);
+		int result=membersMapper.insertMember(member);
 		log.info(result+"");
 	}
 	@Disabled
 	@Test
 	void insertAuthTest() {
 		AuthDto auth= new AuthDto("testUser1",null);
-		int result=testMapper.insertUserAuth(auth.getM_ID());
+		int result=membersMapper.insertUserAuth(auth.getM_ID());
 		log.info(result+"");
 	}
 	@Disabled
 	@Test
-	void updatePw() {
+	void updatePwTest() {
 		String pw=(new BCryptPasswordEncoder()).encode("1234");
-		testMapper.updatePw("test", pw);
+		membersMapper.updatePw("test", pw);
+	}
+	
+	@Disabled
+	@Test
+	void subPointTest() {
+		System.out.println(membersMapper.subPoint(21,1000));
 	}
 	
 }

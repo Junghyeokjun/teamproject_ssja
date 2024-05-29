@@ -152,7 +152,7 @@
           beforeSend: function(xhr){
             xhr.setRequestHeader(header, token);
           },  
-          url : '/testrest/quantityCheck',
+          url : '/sign/quantityCheck',
           async : false,
           headers : { 
             "Content-Type" : "application/json; charset:UTF-8" },
@@ -182,7 +182,7 @@
           beforeSend: function(xhr){
             xhr.setRequestHeader(header, token);
           },  
-          url : '/testrest/purchase_complete',
+          url : '/sign/purchase_complete',
           async : false,
           headers : { 
             "Content-Type" : "application/json; charset:UTF-8" },

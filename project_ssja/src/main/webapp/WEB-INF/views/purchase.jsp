@@ -141,6 +141,7 @@
           }
       })
     }
+    
     //남은 수량 체크 함수
     function quantity_check(proNo,quantity,proName){
       //남은 수량의 여부를 저장할 변수
@@ -151,7 +152,7 @@
           beforeSend: function(xhr){
             xhr.setRequestHeader(header, token);
           },  
-          url : '/testrest/quantityCheck',
+          url : '/sign/quantityCheck',
           async : false,
           headers : { 
             "Content-Type" : "application/json; charset:UTF-8" },
@@ -190,13 +191,40 @@
       let result_price=$("#result_price");
       let result_price_val=full_amount_val-discount_val;
       let payment='discount';
-      let address_val=$("#address").val();
-      let detail_address_val=$("#detail_address").val();
+      let address=$("#address");
+      let detail_address=$("#detail_address");
       let buy_btn=$("#buy_btn");
-      let M_NO_val=$("#M_NO").val();
+      let address_val;
+      let detail_address_val;
+      let M_NO_val;
+      
+      //유저정보 로드 코드
+      myPageUserInfo = function() {
+      
+        $.ajax({
+          type : "post",
+          beforeSend : function(xhr) {
+            xhr.setRequestHeader(header, token);
+          },
+          url : "/user/info", // 정적인 URL 사용
+          dataType : "json", // 받을 데이터의 유형 지정
+          success : function(data) {
+            M_NO_val=data.m_No;
+            
+            address.val(data.m_Address1);
+            address_val=address.val();
 
+            detail_address.val(data.m_Address2);
+            detail_address_val=detail_address.val();
+
+            //포인트 입력제한을 소지 포인트로 거는 부분
+            point.attr("max", data.m_Point);
+          }
+        })
+      }
+      myPageUserInfo();
       //결제성공시 ajax요청을 보내는 함수
-    //제작예정
+    //필요할때마다 업데이트
     function pay_succese(){
         let product = [];
         $(".product").each(function(idx, item){
@@ -223,8 +251,9 @@
                 PUR_DC : discount_val,
                 PUR_PAY : result_price_val,
                 PUR_PAYMENT : payment,
-                PUR_DVADDRESS : address_val+detail_address_val,
+                PUR_DVADDRESS : address_val+' '+detail_address_val,
                 PUR_DV : '대한통운',
+                USE_POINT : use_point,
                 products: product  
             },    
             success : function(result) {
@@ -277,8 +306,12 @@
 
                   // 우편번호와 주소 정보를 해당 필드에 넣는다.
                   document.getElementById('post').value = data.zonecode;
-                  document.getElementById("address").value = addr;
+                  address.val(addr);
+                  address_val=address.val();
+
                   // 커서를 상세주소 필드로 이동한다.
+                  detail_address.val("");
+                  detail_address_val=detail_address.val();
                   document.getElementById("detail_address").focus();
               }
           }).open();
@@ -296,9 +329,15 @@
       })
       result_price_val=full_amount_val-discount_val;
       amountSet();
-      
-      //포인트 입력제한을 소지 포인트로 거는 부분
-      point.attr("max",88000);
+
+      //주소변경시 주소값을 변경하는 부분
+      address.on('change',function(){
+        address_val=address.val();
+      })
+
+      detail_address.on('change',function(){
+        detail_address_val=detail_address.val();
+      })
 
       //수량증가 부분
       $(document).on('click','.pcs_plus',function(){
@@ -333,6 +372,8 @@
         full_amount_val-=Number(amount.innerHTML)*Number(pcs.innerHTML);
         discount_val=full_amount_val/100*coupon_discount;
         result_price_val=full_amount_val-discount_val;
+        point.val(0);
+        use_point=0;
         amountSet();
         product.remove();
       })
@@ -397,6 +438,15 @@
         result_price.text(result_price_val);
       })
       buy_btn.on("click",function(){
+        //주소 입력을 확인하는 부분
+        if(address_val==""){
+          alert("주소를 입력해주세요")
+          return;
+        }else if(detail_address_val==""){
+          alert("상세주소를 입력해주세요")
+          return;
+        }
+
         //상품의 수량을 체크하는 부분
         let quantity_tf;
         $(".product").each(function(idx, item){
@@ -430,7 +480,7 @@
       <div class="py-2 px-1" id="top-bar">
 
         <button type="toggle-button" class="top_btn" id="top_btn"></button>
-        <a href="${pageContext.request.contextPath}/"><img id="logo_img" src="/images/utilities/logoSSJA.png"></a>
+        <a href="${pageContext.request.contextPath}/product/search?category=11"><img id="logo_img" src="/images/utilities/logoSSJA.png"></a>
         <form action="http://www.naver.com" id=searchForm method="get">
         
         </form>
@@ -445,10 +495,10 @@
       <div id="sub_bar"></div>
     </nav>
     <!-- 유저 정보를 사용하기 위한 코드 -->
+    <!-- 추후 서버측에서 받는경우에 문제가 생길경우 사용 -->
     <sec:authorize access="isAuthenticated()">
     	<sec:authentication property="principal" var="principal"/>
     </sec:authorize>
-    <input type="hidden" id="M_NO" value="${principal.userInfo.m_No}">
   </header>
 
   <div id="side_bar"></div>
@@ -466,7 +516,7 @@
               <span>주소</span>
             </td>
             <td>
-              <input type="text" size="35" class="mb-1 form-control" id="address" name="M_ADDRESS1" value="${principal.userInfo.m_Address1}">
+              <input type="text" size="35" class="mb-1 form-control" id="address" name="M_ADDRESS1">
             </td>
           </tr>
           
@@ -475,7 +525,7 @@
               <span>상세주소ㅤ</span>
             </td>
             <td>
-              <input type="text" size="23" class=" mb-1 form-control w-50 d-inline" id="detail_address" name="M_ADDRESS2" value="${principal.userInfo.m_Address2}" >
+              <input type="text" size="23" class=" mb-1 form-control w-50 d-inline" id="detail_address" name="M_ADDRESS2"  >
               <input type="text" size="6" class="mb-1 d-none" id="extra_address" name="extra_address" >
               <input type="text" size="10" class="mb-1 d-none" id="post" name="M_ZIPCODE">
               <input type="button" value="주소 찾기" class="mb-1 ms-3 btn btn-primary" id="post_search_btn">
@@ -486,6 +536,7 @@
       <div class="ms-3" style="margin-right: 30%;">
         <h3 class="my-3 border-bottom">주문상품</h3>
         <!-- 아래부터 c:foreach로 반복 -->
+        <!-- 해당 데이터는 서버에서 제공받음 -->
         <c:forEach var="product" items="${products}">
         	<div class="product" style="height:150px;">
             <input class="product_no" type="hidden" value="${product.PRO_NO}">
@@ -505,16 +556,17 @@
       <div class="ms-3" style="margin-right: 30%;">
         <h3 class="my-3 border-bottom">쿠폰</h3>
         <select class="ms-3 form-control w-50" name="coupon" id="coupon">
-          <option value="none" discount="0">선택안함</option>
-          <!-- c:foreach로 쿠폰추가 -->
-          <option value="coupon1" discount="10">쿠폰1</option>
-          <option value="coupon2" discount="20">쿠폰2</option>
-          <option value="coupon3" discount="30">쿠폰3</option>
+          <option value="0" discount="0">선택안함</option>
+          <!--데이터를 받아오는 곳에 따라 추후 서버측에서 직접적으로 받을경우 c:foreach-->
+          <!--현재 페이지에서 ajax를 통해 받을경우 javascrip append  -->
+          <option value="1" discount="10">쿠폰1</option>
+          <option value="2" discount="20">쿠폰2</option>
+          <option value="3" discount="30">쿠폰3</option>
         </select>
       </div>
       <div class="ms-3 mb-3" style="margin-right: 30%;">
         <h3 class="my-3 border-bottom">포인트</h3>
-        <input type="number" class="ms-3 me-0 form-control w-25 d-inline" id="point" value="0" min="0" max="${principal.userInfo.m_Point}">
+        <input type="number" class="ms-3 me-0 form-control w-25 d-inline" id="point" value="0" min="0" max="0">
         <button class="ms-0 btn btn-primary" id="full_use_btn">전액사용</button>
       </div>
       <div id="payment_bar">

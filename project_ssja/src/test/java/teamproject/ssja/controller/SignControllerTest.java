@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @SpringBootTest
 @AutoConfigureMockMvc
-class TestRestControllerTest {
+class SignControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -32,27 +32,27 @@ class TestRestControllerTest {
 	@Disabled
 	@Test
 	void testIdCheck() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get("/testrest/idCheck?id=testUser1"))
+		mockMvc.perform(MockMvcRequestBuilders.get("/sign/idCheck?id=testUser1"))
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andDo(print());	}
 	
 	@Disabled
 	@Test
 	void testNameCheck() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get("/testrest/nickNameCheck?nickName=testUser1"))
+		mockMvc.perform(MockMvcRequestBuilders.get("/sign/nickNameCheck?nickName=testUser1"))
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andDo(print());	}
 
 	@Disabled
 	@Test
 	void testEmailCheck() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get("/testrest/emailCheck?email=user@naver.com"))
+		mockMvc.perform(MockMvcRequestBuilders.get("/sign/emailCheck?email=user@naver.com"))
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andDo(print());	}
 	@Disabled
 	@Test
 	void testQuantityCheck() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get("/testrest/quantityCheck?proNo=1&quantity=3"))
+		mockMvc.perform(MockMvcRequestBuilders.get("/sign/quantityCheck?proNo=1&quantity=3"))
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andDo(print());	}
 
