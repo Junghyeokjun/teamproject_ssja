@@ -117,7 +117,7 @@
   </header>
 
   <div id="side_bar"></div>
-  <main style="background-color: #f7f0e8;">
+  <main style="background-color: #f7f0e8; height: 650px;" >
     <!--로그인추가부 -->
     <div id="main_container" class="d-flex flex-column justify-content-center align-items-center " >
       <img class="mb-4" src="/images/utilities/big_logo.png" alt="">
