@@ -3,6 +3,8 @@ package teamproject.ssja.dto.logindto;
 
 import java.util.Map;
 
+//네이버 로그인 성공 시 받은 데이터를 토대로 만든 OAuth2Response구현체입니다.
+//네이버 로그인 성공 해서 응답받은 데이터를 여기에 담습니다.
 public class NaverResponse implements OAuth2Response{
 
     private final Map<String, Object> attribute;

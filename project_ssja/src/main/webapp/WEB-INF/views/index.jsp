@@ -73,6 +73,24 @@
 width:100% auto;
 height:30em;
 }
+#title_best_conner  button{
+width:3em;
+background-color:white;
+border:none;
+font-size:2.5em;
+color:#aaa;
+}
+
+#title_best_conner  button:hover{
+color:#333;
+}
+#title_best_conner{
+display:flex;
+flex-direction:row;
+justify-content:space-between;
+align-items:center;
+
+}
 
   </style>
 </head>
@@ -112,11 +130,8 @@ height:30em;
 				</div>
 				<div class="carousel-inner" id="event_banner_content">
 					<div class="carousel-item active">
-					<a href="/event/page?event=0">
-						<img src="/images/event/banner/event_banner_img_default.jpg" id="event_banners" class="d-block w-100" alt="Event1...">
-					</a>
+					<a href="/event/page?event=0"><img src="/images/event/banner/event_banner_img_default.jpg" id="event_banners" class="d-block w-100" alt="Event1..."></a>
 					</div>
-					
 				</div>
 				<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -127,7 +142,18 @@ height:30em;
     <span class="visually-hidden">Next</span>
   </button>
 </div>
+
+
+
+    <div id="best_items_container">
+    <div id ="title_best_conner" class="my-3"><h2 class="mx-3">Best</h2><button >></button></div>
+    <div id="best_item_content">
     
+    </div>
+    
+    
+    
+    </div>
     
       <div id="icon_container" class="d-flex flex-row justify-content-evenly align-items-center">
           <div id="icon_div"><img id="icon_img"src="/images/utilities/icon_fur.png"><div id="icn_txt">가구</div></div>
@@ -147,6 +173,8 @@ height:30em;
 
 </body>
 <script src="/js/mainpage/mainpage.js" >
+</script>
+<script src="/js/mainpage/bestItemList.js" >
 </script>
 
 

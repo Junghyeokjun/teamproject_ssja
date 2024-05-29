@@ -15,7 +15,7 @@ import teamproject.ssja.dto.userinfo.UserInfoDTO;
 @Getter
 @Setter
 public class CustomPrincipal implements UserDetails, OAuth2User {
-
+//세션, 소셜 로그인 인터페이스 2개를 다 구현한 통합 스프링 시큐리티 Authentication에 담을 구현체입니다.
 
     
 	private static final long serialVersionUID = 1L;
@@ -35,7 +35,7 @@ public class CustomPrincipal implements UserDetails, OAuth2User {
         this.email = userInfo.getM_Email();
     }
     
-    //소셜 로그인의 경우
+    //OAuth2 소셜 로그인의 경우
     public CustomPrincipal(OAuth2Response oAuth2Response, String auth, long id) {
         this.oAuth2Response = oAuth2Response;
         this.isOAuth2User = true;
