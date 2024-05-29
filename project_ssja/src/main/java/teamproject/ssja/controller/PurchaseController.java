@@ -5,15 +5,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import teamproject.ssja.dto.OrdersDto;
 import teamproject.ssja.dto.ProductDto;
-import teamproject.ssja.dto.PurchaseDto;
+import teamproject.ssja.dto.logindto.CustomUserDetailsDTO;
 import teamproject.ssja.service.Purchase.PurchaseService;
 
 @Controller
@@ -23,7 +24,19 @@ public class PurchaseController {
 	
 	@Autowired
 	PurchaseService purchaseService;
+
 	
+//	principal편집용 코드
+//	@RequestMapping("aab")
+//	public ModelAndView aab(ModelAndView mv) {
+//	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//	    if (authentication != null) {
+//	    	((CustomUserDetailsDTO) authentication.getPrincipal()).getUserInfo().setM_No(1);
+//	    	mv.addObject("pri",authentication.getPrincipal());
+//	    }
+//		mv.setViewName("aaa");
+//		return mv;
+//	}
 	@RequestMapping("")
 	public ModelAndView purchase(ModelAndView mv) {
 		mv.setViewName("purchase");
