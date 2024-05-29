@@ -19,7 +19,7 @@
   <script>
  
 	  
-  let reject = confirm("소셜 로그인 유저는 마이페이즈를 이용하실 수 없습니다. \n 회원으로 가입하시겠습니까?");
+  let reject = confirm("소셜 로그인 유저는 마이페이지를 이용하실 수 없습니다. \n 회원으로 가입하시겠습니까?");
   
   if(reject){
 	  
