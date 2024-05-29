@@ -11,18 +11,18 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.UserRoleAndAuthDTO;
 import teamproject.ssja.dto.email.MailDTO;
-import teamproject.ssja.dto.logindto.CustomUserDetailsDTO;
+import teamproject.ssja.dto.logindto.CustomPrincipal;
 import teamproject.ssja.dto.userinfo.AddressForm;
 import teamproject.ssja.dto.userinfo.ChangePasswordForm;
 import teamproject.ssja.dto.userinfo.UserInfoDTO;
@@ -44,8 +44,16 @@ public class UserInfoAsyncController {
 	MailService mailService;
 	
 	@PostMapping("/info")
-	public ResponseEntity<UserInfoDTO> myPageUser(@AuthenticationPrincipal CustomUserDetailsDTO userDetails) {
-		long userId = userDetails.getUserInfo().getM_No();
+	public ResponseEntity<UserInfoDTO> myPageUser(@AuthenticationPrincipal CustomPrincipal userDetails) {
+		
+		long userId = 0L;
+		if (userDetails != null && userDetails instanceof UserDetails) {
+			
+			userId = userDetails.getUserInfo().getM_No();
+		}else if(userDetails != null && userDetails instanceof OAuth2User) {
+			
+			userId = userDetails.getUserInfo().getM_No();
+		}
 		
 			
 				UserInfoDTO userInfo = myPageService.getUserInfo(userId);
@@ -56,7 +64,7 @@ public class UserInfoAsyncController {
 	}
 
 	@PostMapping("/address")
-	public ResponseEntity<AddressForm> changAddress(@AuthenticationPrincipal CustomUserDetailsDTO userDetails,
+	public ResponseEntity<AddressForm> changAddress(@AuthenticationPrincipal CustomPrincipal userDetails,
 											@RequestBody AddressForm addressForm,HttpServletRequest request, HttpServletResponse response) {
 		
 		long userId = userDetails.getUserInfo().getM_No();
@@ -127,7 +135,7 @@ public class UserInfoAsyncController {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			if(authentication.getAuthorities().equals("ROLE_USER") && authentication.getAuthorities().equals("ROLE_ADMIN")) {
 				Object principal = authentication.getPrincipal();
-				CustomUserDetailsDTO userDetail = (CustomUserDetailsDTO)principal;
+				CustomPrincipal userDetail = (CustomPrincipal)principal;
 				return new UserRoleAndAuthDTO(userDetail.getUserInfo().getM_Name(),userDetail.getUserInfo().getAuth());
 			}else{
 				return new UserRoleAndAuthDTO("GUEST", "ROLE_ANONYMOUS");

@@ -6,9 +6,9 @@ $(document).ready(function () {
 //  //csrf추가
   let token = $("meta[name='_csrf']").attr("content");
   let header = $("meta[name='_csrf_header']").attr("content");
-  $(document).ajaxSend(function(e, xhr, options) {
+  /*$(document).ajaxSend(function(e, xhr, options) {
       xhr.setRequestHeader(header, token);
-  });
+  });*/
 
 
   //상단 카테고리 바 분류
@@ -83,18 +83,28 @@ $("#logo_toHome").attr("href", "/home");//로고 링크
 
     window.location.href = "https://www.google.com";
   });
-
   //==============================
   
 
+  if ($("#searchForm input[name='_csrf']").length === 0) {
+      $("#searchForm").attr('action','/logout').attr('method','post').append($("<input>")
+          .attr('type', 'hidden')
+          .attr('name', '_csrf')
+          .attr('value', token));
+  }
+
+  $(document).ajaxSend(function(e, xhr, options) {
+      xhr.setRequestHeader(header, token);
+  });
 	
-  $("#searchIn").on('click', function() {
+/*  $("#searchIn").on('click', function() {
       $.ajax({
           type: "POST",
           url: "/logout",
           beforeSend: function(xhr) {
               xhr.setRequestHeader(header, token);
           },
+          dataType:'text',
           success: function(data) {
         	// window.location.href="/";
         	  console.log(data);
@@ -104,7 +114,7 @@ $("#logo_toHome").attr("href", "/home");//로고 링크
               console.error(xhr.responseText);
           }
       });
-  });
+  });*/
   
 
   //======================

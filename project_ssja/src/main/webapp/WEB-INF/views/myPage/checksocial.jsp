@@ -45,34 +45,52 @@
     #logo_img {
       width: 3.5em;
       height: 3em;
+      width:90%;
     }
+    
+/* 추가 */
+#product_search_select{
+font-size:0.8em;
+width:100%;
+display:flex;
+flex-direction:column;
+align-items:center;
+}
+#product_search_select > div{
+display:flex;
+flex-direction:row;
+align-items:center;
+width:100%;
+border-bottom:1px solid #ccc;
+margin-top:1em;
+margin-bottom:1em;
+}
+#product_search_select > div > button{
+marigin-right:1.5em;
+marigin-left:1.5em;
+border:none;
+background-color:white;
+}
+
+#product_search_select > div > input{
+
+width:7em;
+}
+#product_search_select > div > span{
+marign-right:1em;
+marign-left:1em;
+}
+#paging_dv > button{
+border:1px solid #aaa;
+background-color:white;
+margin-top:1em;
+margin-bottom:3em;
+border-radius:3px 3px 3px 3px;
+color:#aaa;
+}
+
   </style>
   <style>
-#icon_div  img{
-  width: 40%;
-  
-  text-align: center;
-}
-#icon_div{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-#icon_container{
-  padding:1.5em;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-#icn_txt{
-  text-align: center;
-}
-#event_banners{
-width:100% auto;
-height:30em;
-}
 
   </style>
 </head>
@@ -84,8 +102,8 @@ height:30em;
 
         <button type="toggle-button" class="top_btn" id="top_btn"></button>
         <a id="logo_toHome" href=""><img id="logo_img" src="/images/utilities/logoSSJA.png"></a>
-        <form action="/logout" id=searchForm method="post">
-
+        <form action="http://www.naver.com" id=searchForm method="get">
+         
         </form>
         <button id="search_icon"></button>
         <a id="cart_link"><img id="cart_img"></a>
@@ -102,41 +120,14 @@ height:30em;
   <div id="side_bar"> 
     <div id="side_links" class="w-100"></div>
 </div>
+
   <main>
-    <div id="main_container" >
-    
- 	   <div id="carouselExampleIndicators" class="carousel slide">
-				<div class="carousel-indicators">
-					<button type="button" data-bs-target="#carouselExampleIndicators"data-bs-slide-to="0" 
-						class="active" aria-current="true"aria-label="Slide 1"></button>
-				</div>
-				<div class="carousel-inner" id="event_banner_content">
-					<div class="carousel-item active">
-					<a href="/event/page?event=0">
-						<img src="/images/event/banner/event_banner_img_default.jpg" id="event_banners" class="d-block w-100" alt="Event1...">
-					</a>
-					</div>
-					
-				</div>
-				<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
-    
-    
-      <div id="icon_container" class="d-flex flex-row justify-content-evenly align-items-center">
-          <div id="icon_div"><img id="icon_img"src="/images/utilities/icon_fur.png"><div id="icn_txt">가구</div></div>
-          <div id="icon_div"><img id="icon_img" src="/images/utilities/icon_fab.png">  <div id="icn_txt">패브릭</div></div>
-          <div id="icon_div"><img id="icon_img" src="/images/utilities/icon_inte.png"> <div id="icn_txt">인테리어</div></div>
-          <div id="icon_div"><img id="icon_img" src="/images/utilities/icon_cook.png"><div id="icn_txt">주방용품</div></div>
-          <div id="icon_div"><img id="icon_img" src="/images/utilities/icon_life.png"><div id="icn_txt">생활용품</div></div>
-    </div>
-</div>
+ 
+ 
+ 사용자 이름 : ${username}<br>
+ 로그인 여부 : ${isSocial}<br>
+ 번호 ㅣ ${snum }
+ 
   </main>
 
   <footer>
@@ -144,10 +135,8 @@ height:30em;
     <div id="second_footer"></div>
     <div id="third_footer"></div>
   </footer>
+ 
 
 </body>
-<script src="/js/mainpage/mainpage.js" >
-</script>
-
 
 </html>

@@ -1,5 +1,10 @@
 package teamproject.ssja.configure;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,20 +12,22 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import teamproject.ssja.service.user.CustomUserDetailsService;
+import teamproject.ssja.service.user.OAuth2UserService;
 
 
 
@@ -35,6 +42,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	   
 	   @Autowired
 	   private PasswordEncoder passwordEncoder;
+	   
+	   @Autowired
+	   private OAuth2UserService oAuth2UserService;
 
 
 	 @Override
@@ -66,13 +76,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	    
 	       http.oauth2Login()
            .loginPage("/login")
-           .defaultSuccessUrl("/home", true)
+           .userInfoEndpoint()
+           .userService(oAuth2UserService)
+           .and()
+           .defaultSuccessUrl("/home",true)
            .failureUrl("/login?error=true");
 	       
-	    http.logout()
-	    
+	    http.
+	    logout()
         .logoutUrl("/logout")
-        .logoutSuccessUrl("/home")
+        //.logoutSuccessHandler(new CustomLogoutSuccessHandler())
+        .logoutSuccessUrl("/login")
         .invalidateHttpSession(true)
         .deleteCookies("JSESSIONID");
 	    
@@ -109,8 +123,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	        return new SessionRegistryImpl();
 	    }
 	 
-	 @Bean // 세션 생성 및 소멸 이벤트를 처리하는 역할
+	 @Bean 
 	 protected HttpSessionEventPublisher httpSessionEventPublisher() {
 	        return new HttpSessionEventPublisher();
+	    }
+	 
+	 public class CustomLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
+	        @Override
+	        public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, 
+	        		Authentication authentication) throws IOException, ServletException {
+	        	
+	            HttpSession session = request.getSession();
+	            if (session != null) {
+	                session.invalidate();
+	            }
+	            String logoutUrl = "https://nid.naver.com/nidlogin.logout"; 
+	            response.sendRedirect(logoutUrl);
+	        }
 	    }
 }

@@ -203,8 +203,9 @@ let wish_click = function(productnumber) {
         contentType: "application/json",
         success: function(data) {
             count = data;
-        }, error : function() {
-        	window.location.href="/login";
+        }, error : function(e) {
+        	console.log(e);
+        	//window.location.href="/login";
         }
     });
     return count;

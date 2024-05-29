@@ -16,6 +16,7 @@
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js">/</script>
 <meta name="_csrf" content="${_csrf.token}"/>
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
 
@@ -155,7 +156,7 @@
         <div id="social_login" class="d-flex justify-content-between">
           <span></span>
           <!-- a태그추가 또는 클릭이벤트 추가 -->
-          <a href="/oauth2/authorization/naver"><img src ="/images/utilities/naver.png" id="social_naver_btn"></button></a>
+          <a href="/oauth2/authorization/naver"><img src ="/images/utilities/naver.png" id="social_naver_btn"></img></a>
           <button type="button"></button>
           <button type="button"></button>
          
