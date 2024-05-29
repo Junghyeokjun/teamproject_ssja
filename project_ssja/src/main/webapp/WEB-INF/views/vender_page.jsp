@@ -152,38 +152,72 @@
     
     .mx-2.m-auto.input-group-text, .form-control{
     	height: 3em;
-    }
-    
-    #file-container {
-        position: relative;
-        display: inline-block;
-    }
+    }  
+	
+ 
+	/* 기존 파일 형식 없애기 */
+	.file_container input[type="file"] {
+	  position: absolute;
+	  width: 1px;
+	  height: 1px;
+	  padding: 0;
+	  margin: -1px;
+	  overflow: hidden;
+	  clip:rect(0,0,0,0);
+	  border: 0;
+	}
+	
+	/* 커스텀 시작1 - label */
+	.file_container label {
+	  display: inline-block;
+	  padding: .5em .75em;
+	  color: #857474;
+	  font-size: inherit;
+	  line-height: normal;
+	  vertical-align: middle;
+	  background-color: #fdfdfd;
+	  cursor: pointer;
+	  border: 1px solid #ebebeb;
+	  border-bottom-color: #e2e2e2;
+	  border-radius: .25em;
+	}
+	
+	/* 파일 업로드명 */
+	.file_container .file-upload-name {
+	  display: inline-block;
+	  padding: .5em .75em; /* label의 패딩값과 일치 */
+	  font-size: inherit;
+	  font-family: inherit;
+	  line-height: normal;
+	  vertical-align: middle;
+	  background-color: #f5f5f5;
+	  border: 1px solid #ebebeb;
+	  border-bottom-color: #e2e2e2;
+	  border-radius: .25em;
+	  -webkit-appearance: none; /* 네이티브 외형 감추기 위한 설정 */
+	  -moz-appearance: none;
+	  appearance: none;
+	}
+	
+	.file_container.custom-primary label {
+	  color: #8a6262;
+	  background-color: #d3cf04;
+	  border-color: #d5e217;
+	}
 
-    #file-input {
-        position: absolute;
-        top: 0;
-        right: 0;
-        margin: 0;
-        opacity: 0;
-        font-size: 100px; /* 큰 값으로 설정하여 버튼이 넓은 영역을 차지하도록 함 */
-        cursor: pointer; /* 마우스 커서를 포인터로 변경하여 클릭 가능한 상태로 표시 */
-    }
-
-    #file-label {
-        display: inline-block;
-        padding: 6px 12px;
-        margin-bottom: 0;
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 1.42857143;
-        text-align: center;
-        white-space: nowrap;
-        vertical-align: middle;
-        cursor: pointer;
-        background-color: #e9ecef;
-        border: 1px solid #ced4da;
-        border-radius: 4px;
-    }
+	.file_container.custom-primary label:hover {
+	  color: #777272;
+	  font-weight:bold;
+	  background-color: #c4ce34;
+	  border-color: #b2bb32;
+	}
+	
+	
+@media screen and (max-width: 1120px){
+	#MyPage_content_container{
+		width: 100%;
+	}
+}	    
   </style>
 </head>
 
@@ -194,7 +228,7 @@
         	<h1 class="h1">&lt;때래땡땡&gt; 판매자</h1> 
         </div>        
         <div class="mx-5 my-2 d-flex align-items-end">
-        	<a>로그아웃</a>
+        	<a href="/">로그아웃</a>
         </div>
     </div>
   </header>
@@ -216,12 +250,9 @@
   	<div class="main_whitespace p-5 my-2">
 		<h1 class="h3 text-center">상품 등록</h1>
 	</div>
-    <div id="main_container" class="d-flex flex-row align-items-center justify-content-center" >
-    	
-      	
-      <div id="content_dv" >
+    <div id="main_container" class="d-flex flex-row align-items-center justify-content-center" >      	
         <div id="MyPage_content_container" class="border p-5">
-        	<form role="form" method="post" autocomplete="off">
+        	<form role="form" method="post" action="" autocomplete="off">
 				<div id="ProductCategory" class="p-2 input-group w-100">   
 				   <label class="mx-2 m-auto input-group-text" >1차 분류</label>
 				   <select id="category1" class="form-select w-25 mx-2" >
@@ -250,12 +281,13 @@
 				   <input type="text" id="proQuantity" name="PRO_QUANTITY" class="border form-control mx-2"/>
 				</div>
 				
-				<div class="p-2 w-100 border-secondary d-flex align-center-center">
+				<div class="input-group p-2 w-100 border-secondary d-flex align-center-center">
 				    <label class="mx-2 m-auto input-group-text">배너 이미지</label>
-				    <div id="file-container">
-				    	<label id="file-label" for="customFile">파일 선택하기</label>
-  						<input type="file" id="file-input" name="PRO_BANNERIMG">
-  					</div>
+ 					<div class="file_container custom-primary m-2 form-control">
+			            <input class="file-upload-name" value="파일을 선택하세요" disabled="disabled">			
+			            <label for="file_name">올리기</label> 
+			            <input type="file" id="file_name" class="upload-hidden  "> 
+			         </div>
 				</div>
 				
 				<div class="p-2 w-100 border-secondary d-flex">
@@ -265,17 +297,10 @@
 				
 				<div class="p-2 w-100 border-secondary border-top ">
 				   <button type="submit" id="register_Btn" class="btn btn-primary" class="border form-control mx-2">등록</button>
-				</div>
-				
+				</div>				
 			</form>
-        </div>    
-
-        </div>
+      	</div>    
       </div>
-
-
-    </div>
-
   </main>
 
   <footer>
@@ -285,6 +310,23 @@
   </footer>
 
 </body>
+<script type="text/javascript">
+$(document).ready(function(){
+	  let fileTarget = $('.file_container .upload-hidden');
+
+	    fileTarget.on('change', function(){
+	        if(window.FileReader){
+	            var filename = $(this)[0].files[0].name;
+	        } else {
+	            var filename = $(this).val().split('/').pop().split('\\').pop();
+	        }
+
+	        $(this).siblings('.file-upload-name').val(filename);
+	    });
+	}); 
+
+</script>
+
 <!-- 
 <script type="text/javascript">
 
