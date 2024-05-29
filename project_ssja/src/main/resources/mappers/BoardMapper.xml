@@ -19,6 +19,12 @@
         	select * from board_category where b_c_name=#{bcname}
         ]]>
 	</select>
+	
+	<select id="selectBC" resultMap="BoardCategoryDtoMap">
+    	<![CDATA[
+        	select * from board_category where b_c_no=#{bcno}
+        ]]>
+	</select>
 <!-- 게시글 -->
 	<select id="read" resultMap="BoardDtoMap">
     	<![CDATA[
@@ -94,7 +100,7 @@
 	</delete>
 	
 	<!-- 게시글 페이징 -->
-	<select id="selectListWithPaging" resultMap="BoardDtoMap">
+	<select id="selectListWithPaging" parameterType="teamproject.ssja.page.Criteria" resultMap="BoardDtoMap">
     	<![CDATA[
         	select * from 
         	(
@@ -103,7 +109,7 @@
 			    from 
 			    (select
 			     * 
-		    	 from board where b_c_no=#{boardCategory} order by b_no desc) A 
+		    	 from board where b_c_no=#{bcno} order by b_no desc) A 
 		    	where rownum <= #{pageNum} * #{amount} 
 		    )
 			where rnum > (#{pageNum}-1) * #{amount}

@@ -13,7 +13,7 @@ public class Criteria {
 	private int amount; // 한 페이지당 보여줄 데이터 개수
 	private long bno;
 	private long PRO_NO;
-	
+	private long bcno;
 	
 	public Criteria() {
 		this(1,10); // 기본값 1페이지 10개로 지정

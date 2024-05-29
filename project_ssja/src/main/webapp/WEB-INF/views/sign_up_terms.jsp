@@ -87,7 +87,7 @@
         <!-- 홈화면링크 -->
          <a id="logo_toHome" href="/"><img src="/images/utilities/big_logo.png" alt=""></a>
         <!-- 실제 적용시 method post로 변경, 링크 변경  -->
-        <form action="${pageContext.request.contextPath}/test/sign_up" method="post">
+        <form action="${pageContext.request.contextPath}/sign/sign_up" method="post">
             <table>
                 <tr>
                     <td colspan="2">

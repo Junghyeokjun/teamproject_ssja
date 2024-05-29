@@ -88,8 +88,8 @@
           <span>${price}</span>
         </h3>
         <div>
-          <button type="button" class="btn btn-primary me-3">계속 쇼핑하기</button>
-          <button type="button" class="btn btn-secondary">홈으로</button>
+          <a href="${pageContext.request.contextPath}/product/search?category=11"><button type="button" class="btn btn-primary me-3">계속 쇼핑하기</button></a>
+          <a href="${pageContext.request.contextPath}/"><button type="button" class="btn btn-secondary">홈으로</button></a>
         </div>
       
     </div>

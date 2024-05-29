@@ -1,10 +1,11 @@
 package teamproject.ssja.service.Purchase;
 
-import teamproject.ssja.dto.PurchaseDto;
+import java.util.Map;
 
 public interface PurchaseService {	
 
-	int Purchase(PurchaseDto purchase);
-	
+	int Purchase(Map<String, Object> purchaseData);
+
+
 }
 

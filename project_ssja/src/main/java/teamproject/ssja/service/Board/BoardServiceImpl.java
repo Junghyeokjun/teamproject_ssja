@@ -57,11 +57,11 @@ public class BoardServiceImpl implements BoardService {
 
 	public void upHit(HttpServletRequest request, HttpServletResponse response, Long bno) {
 		// 쿠키를 통해 조회수 제한 체크
-		String viewCookie = getCookieValue(request, VIEW_COOKIE_NAME);
+		String viewCookie = getCookieValue(request, VIEW_COOKIE_NAME + bno);
 		if (viewCookie == null) {
 			// 쿠키가 없으면 조회수 증가 및 쿠키 설정
 			boardMapper.updateHit(bno);
-			setCookie(response, VIEW_COOKIE_NAME, "visited", 300); // 5분(300초) 동안 유지
+			setCookie(response, VIEW_COOKIE_NAME + bno, "visited", 300); // 5분(300초) 동안 유지
 		}
 	}
 
@@ -99,6 +99,23 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.selectListWithPaging(criteria);
 	}
 
+	@Override
+	public LikesVO getBoardLikes(String bno, String mno) {
+		long bnoLong = Long.valueOf(bno);
+		long mnoLong = Long.valueOf(mno);
+		
+		long likes = boardMapper.selectBoardLikes(bnoLong);
+		// 좋아요 테이블에 데이터가 있는지 확인
+		BoardIsLikedDto isLiked = boardMapper.selectBIsLiked(new BoardIsLikedDto(bnoLong, mnoLong));
+		
+		// 데이터가 있으면 isLiked 값을 변화시킴
+		if (isLiked != null) {
+			return new LikesVO(likes-1, likes, 1L);
+		}else {
+			return new LikesVO(likes, likes, 0L);
+		}
+	}
+	
 	@Transactional
 	@Override
 	public LikesVO modifyGetBoardLikes(String bno, String mno) {
@@ -137,5 +154,15 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<BoardCategoryDto> showBoardCategorys() {
 		return boardMapper.selectBoardCategorys();
+	}
+
+	@Override
+	public BoardCategoryDto showBoardCategory(String categoryName) {
+		return boardMapper.selectBoardCategory(categoryName);
+	}
+
+	@Override
+	public BoardCategoryDto showBoardCategory(long categoryNo) {
+		return boardMapper.selectBC(categoryNo);
 	}
 }
