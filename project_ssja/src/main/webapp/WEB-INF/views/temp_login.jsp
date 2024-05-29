@@ -16,7 +16,7 @@
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js">/</script>
+  <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js"></script>
 <meta name="_csrf" content="${_csrf.token}"/>
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
 
@@ -87,10 +87,10 @@
       let find_pw_btn=$('#findPw');
     
       find_id_btn.on("click",function(){
-        var popup=window.open("/test/findId","_blank", "width=500, height=700");
+        var popup=window.open("/sign/findId","_blank", "width=500, height=700");
       })
       find_pw_btn.on("click",function(){
-        var popup=window.open("/test/findPw","_blank", "width=500, height=700");
+        var popup=window.open("/sign/findPw","_blank", "width=500, height=700");
       })
   })
   </script>
@@ -144,7 +144,7 @@
             <td id="recover">
               <button id="findId" type="button">아이디찾기</button>|
               <button id="findPw" type="button">비밀번호찾기</button>|
-              <a href="${pageContext.request.contextPath}/test/sign_up_before">회원가입</a>
+              <a href="${pageContext.request.contextPath}/sign/sign_up_before">회원가입</a>
             </td>
           </tr>
         </table>
