@@ -10,4 +10,5 @@ public interface ProductService {
 
 	List<ProductItemDto> getProductList(ProductCondition condition);
 	ProductCondition getTotalItemsCount(ProductCondition condition);
+	List<ProductItemDto> bestItemsList();
 }

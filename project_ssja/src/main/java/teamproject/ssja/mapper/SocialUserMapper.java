@@ -28,4 +28,9 @@ public interface SocialUserMapper {
     @Insert("insert into authority(M_ID) VALUES (#{email})")
     void enrollAuth(SocialUserInfoDTO socialUser);
 
+    @Select("select m_no from members where m_email = #{email}")
+    int checkDuplicateEmail(String email);
+    
+    @Insert("insert into socialuser values (#{id},#{username},#{email},#{auth},#{nickname},#{name})")
+    void addSocialExistingUser(SocialUserInfoDTO socialUser); 
 }

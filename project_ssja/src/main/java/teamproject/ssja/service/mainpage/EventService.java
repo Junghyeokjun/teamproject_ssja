@@ -1,4 +1,4 @@
-package teamproject.ssja.service.event;
+package teamproject.ssja.service.mainpage;
 
 import java.util.List;
 
@@ -14,12 +14,12 @@ public class EventService {
 	@Autowired
 	EventMapper eventMapper;
 	
-	List<EventInfoDTO> getEventList(){
+	public List<EventInfoDTO> getEventList(){
 		List<EventInfoDTO> eventList = eventMapper.getEventList();
 		return eventList;
 	}
 	
-	EventPageDTO getEventPageInfo(int num) {
+	public EventPageDTO getEventPageInfo(int num) {
 		return eventMapper.getEventInfoToPage(num);
 	}
 

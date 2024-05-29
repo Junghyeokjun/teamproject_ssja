@@ -10,6 +10,8 @@ public interface OAuth2Response {
 	void setId(long id);
 	
     String getProvider();
+    //Provider는 로그인 access토큰을 넘겨주는 주체로
+    //소셜 로그인에서 네이버, 구글, 카카오 등을 분류하기 위해 만든 변수
 
     String getProviderId();
 
