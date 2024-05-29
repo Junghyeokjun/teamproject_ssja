@@ -24,22 +24,32 @@ $(document).ready(function() {
 	let likeHoverImage = '/images/board/hover_before_boardlike.png';
 	let isLikedHoverImage = '/images/board/hover_after_boardlike.png';
 	
+	let bLikeText = '/api/likes/btoggle/';
+	let rLikeText = '/api/likes/rtoggle/';
+	
+	// 좋아요 이미지 바꾸기
 	function likeImages(response){
 	    let likeImg = $('.board-like');
 
 	    if (response.isLiked == 1) {
 	        likeImg.attr('src', isLikedImage);
-	        likeImg.attr('data-hover-src', isLikedHoverImage);
+	        likeImg.hover(function() {
+	            likeImg.attr('src', isLikedHoverImage); // 마우스 오버 시 hover 이미지 설정
+	        }, function() {
+	            likeImg.attr('src', isLikedImage); // 마우스 아웃 시 기본 이미지로 되돌리기
+	        });
 	    } else {
 	        likeImg.attr('src', likeImage);
-	        likeImg.attr('data-hover-src', likeImage);
+	        likeImg.hover(function() {
+	            likeImg.attr('src', likeHoverImage); // 마우스 오버 시 hover 이미지 설정
+	        }, function() {
+	            likeImg.attr('src', likeImage); // 마우스 아웃 시 기본 이미지로 되돌리기
+	        });
 	    }
-	};
-	
-	
+	};	
 	
 	$.ajax({
-        url: '/api/likes/btoggle/' + bno,
+        url: bLikeText + bno,
         type: 'GET',
         //contentType: 'application/json', // JSON 형식으로 요청을 보낼 것임을 명시
         //data: JSON.stringify({ no : bno, liked : liked }), // JSON 형식으로 데이터 전달
@@ -68,7 +78,7 @@ $(document).ready(function() {
 	        // console.log(JSON.stringify({ no : bno, liked : liked })); 
 	        // console.log(liked);
         $.ajax({
-            url: '/api/likes/btoggle/' + bno,
+            url: bLikeText + bno,
             type: 'POST',
 //            beforeSend : function(xhr){
 //                //ajax호출 중 처리
