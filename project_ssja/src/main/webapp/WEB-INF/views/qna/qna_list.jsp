@@ -108,8 +108,13 @@ body {
 		<div id="side_links" class="w-100"></div>
 	</div>
 	<main style="margin: 0 auto;">
-		<a href="${pageContext.request.contextPath}/qna/write_view">글작성</a>
+		<div class="main_whitespace p-5 my-2">
+			<h1 class="h3 text-center">${bc.bcname} 게시판</h1>
+		</div>
 		<div id="main_container" style="margin: 0 auto;">
+			<div class="d-flex justify-content-end p-1">
+				<a href="${pageContext.request.contextPath}/board/write_view/${bc.bcno}" class="btn btn-primary btn-tuning">글 작성</a>
+			</div>
 			<table class="table table-hover" style="text-align: center;">
 				<thead class="table-dark">
 					<tr>
@@ -120,14 +125,14 @@ body {
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="qna" items="${qnas}">
+					<c:forEach var="board" items="${boards}">
 						<tr>
-							<td>${qna.bno}</td>
-							<td><a id="qna_title" class=""
-								href="${pageContext.request.contextPath}/qna/content_view?bno=${qna.bno}">${qna.btitle}</a>
+							<td>${board.bno}</td>
+							<td><a id="board_title" class=""
+								href="${pageContext.request.contextPath}/board/content_view?bno=${board.bno}">${board.btitle}</a>
 							</td>
-							<td>${qna.bwriter}</td>
-							<td class="date_str">${qna.bdate}</td>
+							<td>${board.bwriter}</td>
+							<td class="date_str">${board.bdate}</td>
 							<%-- <td><button type="button" onclick="location.href='/dept/remove?deptno=${dept.deptno}';">삭제</button></td> --%>
 						</tr>
 					</c:forEach>
@@ -138,19 +143,19 @@ body {
 					<ul class="pagination ch-col justify-content-center">
 						<c:if test="${pageMaker.prev}">
 							<li class="page-item"><a class="page-link ch-col"
-								href="${pageContext.request.contextPath}/qna/list${pageMaker.makeQuery(pageMaker.startPage-1)}"><</a></li>
+								href="${pageContext.request.contextPath}/board/list/${category}/${pageMaker.makeQuery(pageMaker.startPage-1)}"><</a></li>
 						</c:if>
 						<c:forEach var="idx" begin="${pageMaker.startPage}"
 							end="${pageMaker.endPage}">
 							<c:choose>
 								<c:when test="${pageMaker.criteria.pageNum == idx}">
 									<li class="page-item active"><a class="page-link"
-										href="${pageContext.request.contextPath}/qna/list${pageMaker.makeQuery(idx)}">${idx}</a>
+										href="${pageContext.request.contextPath}/board/list/${category}/${pageMaker.makeQuery(idx)}">${idx}</a>
 									</li>
 								</c:when>
 								<c:when test="${pageMaker.criteria.pageNum != idx}">
 									<li class="page-item"><a class="page-link"
-										href="${pageContext.request.contextPath}/qna/list${pageMaker.makeQuery(idx)}">${idx}</a></li>
+										href="${pageContext.request.contextPath}/board/list/${category}/${pageMaker.makeQuery(idx)}">${idx}</a></li>
 								</c:when>
 								<c:otherwise>
 								</c:otherwise>
@@ -158,11 +163,14 @@ body {
 						</c:forEach>
 						<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
 							<li class="page-item"><a class="page-link ch-col"
-								href="${pageContext.request.contextPath}/qna/list${pageMaker.makeQuery(pageMaker.endPage+1)}">></a></li>
+								href="${pageContext.request.contextPath}/board/list/${category}/${pageMaker.makeQuery(pageMaker.endPage+1)}">></a></li>
 						</c:if>
 					</ul>
 				</nav>
-			</div>
+			</div>			
+		</div>
+		<div class="main_whitespace p-5 my-2">
+			
 		</div>
 	</main>
 	<script type="text/javascript">

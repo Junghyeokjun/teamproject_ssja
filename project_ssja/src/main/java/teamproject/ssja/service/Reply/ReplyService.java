@@ -23,5 +23,5 @@ public interface ReplyService {
 	long getTotal(long bno);
 	
 	// 해당 댓글 좋아요 처리 및 해당 댓글의 좋아요 수 리턴 
-	LikesVO modifyGetReplyLikes(String no, String liked);
+	LikesVO modifyGetReplyLikes(String rno, String mno);
 }

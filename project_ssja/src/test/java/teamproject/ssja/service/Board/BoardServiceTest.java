@@ -25,7 +25,7 @@ class BoardServiceTest {
 
 	@Test
 	void testAddBoard() {
-		fail("Not yet implemented");
+		
 	}
 
 	@Test

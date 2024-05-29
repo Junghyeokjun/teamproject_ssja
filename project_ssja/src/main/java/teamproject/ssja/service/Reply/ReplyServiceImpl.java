@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.BoardDto;
@@ -49,6 +50,7 @@ public class ReplyServiceImpl implements ReplyService {
 	}
 
 	@Override
+	@Transactional
 	public LikesVO modifyGetReplyLikes(String rno, String rmo) {
 		long noLong = Long.valueOf(rno);
 		long moLong = Long.valueOf(rmo);
