@@ -17,7 +17,7 @@ public interface SocialUserMapper {
     @Insert("insert into SOCIALUSER values (m_seq.currval,#{username},#{email},#{auth},#{nickname},#{name})")
     void save(SocialUserInfoDTO socialUser);
 
-    @Update("update SOCIALUSER set email = #{email}")
+    @Update("update SOCIALUSER set email = #{email} where username=#{username} ")
     void updateEmail(SocialUserInfoDTO socialUser);
     
     @Insert("insert into members (M_NO, M_ID, M_PW, M_NAME, M_ADDRESS1, M_ADDRESS2, M_ZIPCODE, M_BIRTH, M_EMAIL, M_PHONE, M_DATE, M_NICKNAME) "

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import teamproject.ssja.dto.logindto.CustomPrincipal;
+import teamproject.ssja.dto.logindto.GoogleResponse;
 import teamproject.ssja.dto.logindto.KakaoResponse;
 import teamproject.ssja.dto.logindto.NaverResponse;
 import teamproject.ssja.dto.logindto.OAuth2Response;
@@ -46,7 +47,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService{
 			oAuth2Response = new KakaoResponse(oAuth2User.getAttributes());			
 			//구글 소셜 로그인일 경우	
 		}else if(registraionId.equals("google")) {
-			
+			oAuth2Response = new GoogleResponse(oAuth2User.getAttributes());			
 			
 		}else {
 			return null;

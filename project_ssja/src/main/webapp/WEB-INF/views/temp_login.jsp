@@ -160,7 +160,10 @@
           <img src ="/images/utilities/naver.png" id="social_naver_btn"></img>
           </a>
           <a href="/oauth2/authorization/kakao">
-          <img src ="/images/utilities/kakao.png" id="social_naver_btn"></img>
+          <img src ="/images/utilities/kakao.png" id="social_kakao_btn"></img>
+          </a>
+          <a href="/oauth2/authorization/google">
+          <img src ="/images/utilities/google.png" id="social_google_btn"></img>
           </a>
           <button type="button"></button>
          
