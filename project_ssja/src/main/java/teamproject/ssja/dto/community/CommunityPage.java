@@ -19,7 +19,6 @@ public class CommunityPage {
 	private long total;
 	private boolean prev;
 	private boolean next;
-	
 	private int pageNum;
 	private int amount;
 

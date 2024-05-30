@@ -19,7 +19,8 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 	crossorigin="anonymous">
-    </script>
+	
+</script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script
@@ -28,19 +29,17 @@
 <meta name="_csrf" content="${_csrf.token}" />
 <meta name="_csrf_header" content="${_csrf.headerName}" />
 
-<script src="/js/barscript.js">
+<script src="/js/barscript.js"></script>
+<script src="/js/footer.js"></script>
 
-  </script>
 
-<script src="/js/footer.js">
-
-  </script>
 <link href="/css/footerstyle.css?after" rel="stylesheet">
 <link href="/css/barstyle.css?after" rel="stylesheet">
 
 <link rel="stylesheet"
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 <style>
 @font-face {
@@ -50,7 +49,7 @@
 }
 
 body {
-	font-family: 'fonts', NanumSquare;
+	font-family: 'fonts', NanumGothicLight;
 	background-color: #f7f0e8;
 }
 
@@ -64,16 +63,17 @@ body {
 }
 
 table {
-    display: table;
-    border-collapse: separate;
-    box-sizing: border-box;
-    text-indent: initial;
-    unicode-bidi: isolate;
-    border-spacing: 2px;
-    border-color: gray;
+	display: table;
+	border-collapse: separate;
+	box-sizing: border-box;
+	text-indent: initial;
+	unicode-bidi: isolate;
+	border-spacing: 2px;
+	border-color: gray;
 }
-
 </style>
+
+
 </head>
 <body>
 	<header>
@@ -98,7 +98,7 @@ table {
 		<div id="side_links" class="w-100"></div>
 	</div>
 	<main>
-		<div id="main_container">		
+		<div id="main_container">
 			<div class="row goods">
 				<!-- row 클래스를 추가 -->
 				<div class="goodsImg col-12 col-md-6 col-lg-7">
@@ -139,9 +139,6 @@ table {
 						</button>
 					</div>
 				</div>
-				
-				
-				
 				<div class="goodsInfo col-12 col-md-6 col-lg-5">
 					<p class="cateName">
 						<span>상품이름 ${productdetail.PRO_NAME}</span>
@@ -161,18 +158,17 @@ table {
 							<fmt:formatNumber pattern="###,###,###"
 								value="${productdetail.PRO_PRICE}" /> 원
 						</span><br>
-						<button type="button">장바구니</button>
+						<button type="button"
+							onclick="wish_click(${productdetail.getPRO_NO()})">Wish List</button>
 						<button type="button">바로구매</button>
 					</p>
 				</div>
 			</div>
-			
 			<section class="bg-light border-top py-4">
 				<div class="container">
 					<div class="row gx-4">
 						<div class="col-lg-8 mb-4">
 							<div class="border rounded-2 px-3 py-2 bg-white">
-
 								<ul class="nav nav-pills nav-justified mb-3" id="ex1"
 									role="tablist">
 									<li class="nav-item d-flex" role="presentation"><a
@@ -202,16 +198,18 @@ table {
 											src="/images/product_details/Design5.png"
 											class="d-block w-100" alt="...">
 									</div>
-									<!-- 리뷰 구현 -->									
-									<div class="tab-pane fade mb-2" id="ex1-pills-2"  role="tabpanel" aria-labelledby="ex1-tab-2">
+									<!-- 리뷰 구현 -->
+									<div class="tab-pane fade mb-2" id="ex1-pills-2"
+										role="tabpanel" aria-labelledby="ex1-tab-2">
 										<div class="comment-body">
-											<c:forEach var="productdetailreply" items="${productdetailreplys}">
+											<c:forEach var="productdetailreply"
+												items="${productdetailreplys}">
 												<div class="user-profile">
 													<div class="user-info">
 														<span class="user-name">${productdetailreply.getB_WRITER()}</span>
 														<!-- 별점 구현 -->
-													    <span class="user-stars">
-															<c:forEach var="i" begin="1" end="5">
+														<span class="user-stars"> <c:forEach var="i"
+																begin="1" end="5">
 																<c:choose>
 																	<c:when test="${productdetailreply.getB_EVAL() ge i}">
 																		<i class="fa fa-star yellowStar" aria-hidden="true"></i>
@@ -227,13 +225,39 @@ table {
 												</div>
 												<div class="user-comment">
 													${productdetailreply.getB_CONTENT()}</div>
-													<hr>
+												<hr>
 											</c:forEach>
 										</div>
-									</div>									
-									<div class="tab-pane fade mb-2" id="ex1-pills-3" role="tabpanel" aria-labelledby="ex1-tab-3">
+										<nav aria-label="Page navigation example ">
+											<ul class="pagination justify-content-center">
+												<c:if test="${pageMaker.prev}">
+													<li class="page-item"><a class="page-link"
+														href="product_detail${pageMaker.makeReviewQuery(pageMaker.startPage - 1) }"
+														aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+													</a></li>
+												</c:if>
+
+												<c:forEach var="idx" begin="${pageMaker.startPage}"
+													end="${pageMaker.endPage}">
+													<li class="page-item"><a class="page-link"
+														href="product_detail${pageMaker.makeReviewQuery(idx)}">${idx}</a></li>
+												</c:forEach>
+
+												<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+													<li class="page-item"><a class="page-link"
+														href="product_detail${pageMaker.makeReviewQuery(pageMaker.endPage + 1) }"
+														aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+													</a></li>
+												</c:if>
+											</ul>
+										</nav>
+
+									</div>
+
+									<div class="tab-pane fade mb-2" id="ex1-pills-3"
+										role="tabpanel" aria-labelledby="ex1-tab-3">
 										<section class="production-selling-section">
-											<table class="production-selling-table " >
+											<table class="production-selling-table ">
 												<tbody>
 													<tr>
 														<th>상호명</th>
@@ -266,20 +290,19 @@ table {
 								</div>
 							</div>
 						</div>
-						
+
 						<div class="col-lg-4">
 							<div class="px-0 border rounded-2 shadow-0">
 								<div class="card">
-									<label class="mb-2">옵션선택</label> <select
-										class="form-select border border-secondary"
-										style="height: 35px;">
-										<option>Small</option>
-										<option>Medium</option>
-										<option>Large</option>
-									</select>
 									<p class="addToCart">
-										<label class="mb-2">총 금액</label><br>
-										<button type="button">장바구니</button>
+										<label class="mb-2">총 금액</label><br> <span
+											id="totalPrice"> <fmt:formatNumber
+												pattern="###,###,###" value="${productdetail.PRO_PRICE}" />
+											원
+										</span><br>
+										<button type="button"
+											onclick="wish_click(${productdetail.getPRO_NO()})">Wish
+											List</button>
 										<button type="button">바로구매</button>
 									</p>
 								</div>
@@ -287,9 +310,7 @@ table {
 						</div>
 					</div>
 				</div>
-			</section>	
-			
-			
+			</section>
 		</div>
 	</main>
 	<footer>
@@ -301,28 +322,80 @@ table {
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
 	<script>
-	document.addEventListener("DOMContentLoaded", function() {
-		const priceElement = document.querySelector(".gdsPrice span");
-		const quantityInput = document.getElementById("quantity");
-		const totalPriceElement = document.getElementById("totalPrice");
+	
+	 let token = $("meta[name='_csrf']").attr("content");
+		let header = $("meta[name='_csrf_header']").attr("content");
+		
+		document.addEventListener("DOMContentLoaded", function() {
+			const priceElement = document.querySelector(".gdsPrice span");
+			const quantityInput = document.getElementById("quantity");
+			const totalPriceElement = document.getElementById("totalPrice");
 
-		// 상품 가격을 가져오기
-		const productPrice = parseFloat(priceElement.textContent.replace(
-				/[^\d]/g, ''));
+			// 상품 가격을 가져오기
+			const productPrice = parseFloat(priceElement.textContent.replace(
+					/[^\d]/g, ''));
 
-		// 수량이 변경될 때 총 금액을 계산하는 함수
-		function updateTotalPrice() {
-			const quantity = parseInt(quantityInput.value);
-			const totalPrice = productPrice * quantity;
-			totalPriceElement.textContent = totalPrice.toLocaleString() + " 원";
-		}
+			// 수량이 변경될 때 총 금액을 계산하는 함수
+			function updateTotalPrice() {
+				const quantity = parseInt(quantityInput.value);
+				const totalPrice = productPrice * quantity;
+				totalPriceElement.textContent = totalPrice.toLocaleString()
+						+ " 원";
+			}
 
-		// 수량 입력 값이 변경될 때마다 총 금액 업데이트
-		quantityInput.addEventListener("input", updateTotalPrice);
+			// 수량 입력 값이 변경될 때마다 총 금액 업데이트
+			quantityInput.addEventListener("input", updateTotalPrice);
 
-		// 페이지 로드 시 초기 총 금액 설정
-		updateTotalPrice();
-	});
-</script>
+			// 페이지 로드 시 초기 총 금액 설정
+			updateTotalPrice();
+		});
+
+	    // 현재 페이지의 정보
+	    var currentPage = ${pageMaker.criteria.getPageNum()}; 
+
+	    // 각 페이지 링크를 확인하고 활성화/비활성화를 결정하는 함수
+	    function setActivePage() {
+	        var pageLinks = document.querySelectorAll('.page-link');
+	        pageLinks.forEach(function(link) {
+	            var pageNumber = parseInt(link.innerHTML); // 페이지 번호를 가져옵니다.
+	            if (pageNumber === currentPage) {
+	                link.classList.add('active'); // 현재 페이지에 active 클래스 추가
+	            } else {
+	                link.classList.remove('active'); // 현재 페이지가 아니면 active 클래스 제거
+	            }
+	        });
+	    }
+
+	    // 페이지 로드 시 초기화
+	    window.onload = function() {
+	        setActivePage();
+	    };	    
+	    let wish_click = function(productnumber) {
+	    	let count = 0;
+	        $.ajax({
+	            type: "PUT",
+	            beforeSend: function(xhr) {
+	                xhr.setRequestHeader(header, token);
+	            },
+	            data: JSON.stringify({"pro_no": productnumber}),
+	            url: "/wishlist",
+	            async:false,
+	            contentType: "application/json",
+	            success: function(data) {
+	     console.log(data);
+	                count = data;
+	            }, error : function() {
+	            	window.location.href="/login";
+	            }
+	        });
+	        return count;
+	    };
+	</script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+		crossorigin="anonymous"></script>
+	<script src="https://kit.fontawesome.com/0fa31147fa.js"
+		crossorigin="anonymous"></script>
 </body>
 </html>

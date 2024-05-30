@@ -55,6 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		
+
 //		web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
 		web.ignoring().antMatchers("/css/**","/js/**","/imgx/**","/lib/**","/images/**");
 	}
@@ -62,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-	//http.csrf().disable();
+//	http.csrf().disable();
 		/* 권한설정 */
 	    http.authorizeRequests()
 	    .antMatchers("/logout","/user","/myPage","/myPage/**","/userInfo","/user","/user/**","/wishlist","/wishlist/**").hasAnyRole("USER")

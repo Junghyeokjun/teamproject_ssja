@@ -43,11 +43,13 @@ public class CommunityController {
 		}
 		
 		@PostMapping("/post")
-		public Map<String,Object> post(@RequestBody Integer pageNum,@RequestBody Integer amount){
+		public Map<String,Object> post(@RequestBody CommunityPage postPage){
 			Map<String, Object> data= new HashMap<String, Object>();
-			CommunityPage page= new CommunityPage(pageNum, communityService.getCommunityTotal());
+
+			CommunityPage page= new CommunityPage(postPage.getPageNum(), communityService.getCommunityTotal());
 			data.put("page", page);
-			data.put("postList", communityService.getPost(pageNum, amount));
+			data.put("postList", communityService.getPost(postPage.getPageNum(), postPage.getAmount()));
+
 			return data;
 		}
 }
