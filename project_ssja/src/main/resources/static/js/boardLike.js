@@ -70,9 +70,10 @@ $(document).ready(function() {
         }
     });
 	
-	$('#like-button').click(function(event) {
+	$('#like-button').click(function(e) {
+				
     	// 기본 제출 동작 방지
-    	event.preventDefault();
+    	e.preventDefault();
     	
 
 	        // console.log(JSON.stringify({ no : bno, liked : liked })); 
@@ -99,7 +100,7 @@ $(document).ready(function() {
             error: function(xhr, status, error) {
                 console.log("Error: " + error);
                 console.log("Response: " + xhr.responseText);
-                alert('좋아요를 할 수 없는 상태입니다. 로그인하십시오.');
+                alert('좋아요가 정상적으로 진행되지 않았습니다.');
                 $(location).attr('href','/login');
             }
         });
