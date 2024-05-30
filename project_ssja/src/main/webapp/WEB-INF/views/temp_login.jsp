@@ -165,7 +165,6 @@
           <a href="/oauth2/authorization/google">
           <img src ="/images/utilities/google.png" id="social_google_btn"></img>
           </a>
-          <button type="button"></button>
          
           <span></span>
         </div>
