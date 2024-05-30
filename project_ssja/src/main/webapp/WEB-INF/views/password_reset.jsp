@@ -60,7 +60,7 @@
                     beforeSend: function(xhr){
                         xhr.setRequestHeader(header, token);
                     },  
-                    url : '/testrest/resetPw',
+                    url : '/sign/resetPw',
                     async : false,
                     dataType : 'text',
                     data :{

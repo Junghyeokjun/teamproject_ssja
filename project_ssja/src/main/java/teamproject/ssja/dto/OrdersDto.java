@@ -30,8 +30,8 @@ public class OrdersDto {
 	private long PRO_NO;
 	private long O_QUANTITY;
 	private long O_DISCOUNT;
+	private long O_PRICE;
 	private long O_PAY;
-	private long PUR_PAY;
 	private long O_USECOUPON;
 	private String O_STATE;
 	

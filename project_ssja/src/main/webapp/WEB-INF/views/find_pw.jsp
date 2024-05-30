@@ -49,7 +49,7 @@
                     beforeSend: function(xhr){
                         xhr.setRequestHeader(header, token);
                     },  
-                    url : '/testrest/findPw',
+                    url : '/sign/findPw',
                     async : false,
                     dataType : 'text',
                     data :{
@@ -77,7 +77,7 @@
             })
             find_pw.on("click",function(){
                 if(random==auth_num.val()){
-                    location.replace("/test/password_reset?id="+id.val())
+                    location.replace("/sign/password_reset?id="+id.val())
 
                 }else{
                     alert("올바른 인증번호가 아닙니다.")

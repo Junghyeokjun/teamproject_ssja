@@ -70,7 +70,7 @@
                     beforeSend: function(xhr){
                         xhr.setRequestHeader(header, token);
                     },  
-                    url : '/testrest/emailAuth',
+                    url : '/sign/emailAuth',
                     async : false,
                     dataType : 'text',
                     data :{
@@ -101,7 +101,7 @@
                             beforeSend: function(xhr){
                               xhr.setRequestHeader(header, token);
                             },  
-   						    url : '/testrest/idCheck',
+   						    url : '/sign/idCheck',
    						    async : true,
    						    headers : { 
    						    	"Content-Type" : "application/json; charset:UTF-8" },
@@ -139,7 +139,7 @@
                             beforeSend: function(xhr){
                               xhr.setRequestHeader(header, token);
                             },  
-   						    url : '/testrest/nickNameCheck',
+   						    url : '/sign/nickNameCheck',
    						    async : true,
    						    headers : {
    						    	"Content-Type" : "application/json; charset:UTF-8" },
@@ -195,7 +195,7 @@
                     beforeSend: function(xhr){
                         xhr.setRequestHeader(header, token);
                     },  
-                    url : '/testrest/emailCheck',
+                    url : '/sign/emailCheck',
                     async : true,
                     headers : {
                         "Content-Type" : "application/json; charset:UTF-8" },
@@ -346,7 +346,7 @@
         <!-- 홈화면링크 -->
         <a id="logo_toHome" href=""><img src="/images/utilities/big_logo.png" alt=""></a>
         <!-- 실제 적용시 method post로 변경  -->
-        <form action="${pageContext.request.contextPath}/testrest/signUp" method="post" onsubmit="return false" id="sign_up_form">
+        <form action="${pageContext.request.contextPath}/sign/signUp" method="post" onsubmit="return false" id="sign_up_form">
             <table>
                 <tr>
                     <td><p>아이디</p></td>

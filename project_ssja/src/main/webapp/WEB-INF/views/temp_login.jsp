@@ -16,6 +16,7 @@
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js"></script>
 <meta name="_csrf" content="${_csrf.token}"/>
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
 
@@ -62,7 +63,7 @@
       background-color: transparent; 
       border-color: transparent;
     }
-    #social_login button{
+    #social_login button, #social_login img{
       width: 50px;
       height: 50px;
       border: 0px;      
@@ -86,10 +87,10 @@
       let find_pw_btn=$('#findPw');
     
       find_id_btn.on("click",function(){
-        var popup=window.open("/test/findId","_blank", "width=500, height=700");
+        var popup=window.open("/sign/findId","_blank", "width=500, height=700");
       })
       find_pw_btn.on("click",function(){
-        var popup=window.open("/test/findPw","_blank", "width=500, height=700");
+        var popup=window.open("/sign/findPw","_blank", "width=500, height=700");
       })
   })
   </script>
@@ -117,7 +118,7 @@
   </header>
 
   <div id="side_bar"></div>
-  <main style="background-color: #f7f0e8;">
+  <main style="background-color: #f7f0e8; margin-bottom:5em;margin-top:5em;">
     <!--로그인추가부 -->
     <div id="main_container" class="d-flex flex-column justify-content-center align-items-center " >
       <img class="mb-4" src="/images/utilities/big_logo.png" alt="">
@@ -143,7 +144,7 @@
             <td id="recover">
               <button id="findId" type="button">아이디찾기</button>|
               <button id="findPw" type="button">비밀번호찾기</button>|
-              <a href="${pageContext.request.contextPath}/test/sign_up_before">회원가입</a>
+              <a href="${pageContext.request.contextPath}/sign/sign_up_before">회원가입</a>
             </td>
           </tr>
         </table>
@@ -155,7 +156,7 @@
         <div id="social_login" class="d-flex justify-content-between">
           <span></span>
           <!-- a태그추가 또는 클릭이벤트 추가 -->
-          <button type="button"></button>
+          <a href="/oauth2/authorization/naver"><img src ="/images/utilities/naver.png" id="social_naver_btn"></img></a>
           <button type="button"></button>
           <button type="button"></button>
          

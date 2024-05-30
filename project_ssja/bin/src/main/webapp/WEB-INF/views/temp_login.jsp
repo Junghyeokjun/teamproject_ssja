@@ -86,10 +86,10 @@
       let find_pw_btn=$('#findPw');
     
       find_id_btn.on("click",function(){
-        var popup=window.open("/test/findId","_blank", "width=500, height=700");
+        var popup=window.open("/sign/findId","_blank", "width=500, height=700");
       })
       find_pw_btn.on("click",function(){
-        var popup=window.open("/test/findPw","_blank", "width=500, height=700");
+        var popup=window.open("/sign/findPw","_blank", "width=500, height=700");
       })
   })
   </script>
@@ -143,7 +143,7 @@
             <td id="recover">
               <button id="findId" type="button">아이디찾기</button>|
               <button id="findPw" type="button">비밀번호찾기</button>|
-              <a href="${pageContext.request.contextPath}/test/sign_up_before">회원가입</a>
+              <a href="${pageContext.request.contextPath}/sign/sign_up_before">회원가입</a>
             </td>
           </tr>
         </table>

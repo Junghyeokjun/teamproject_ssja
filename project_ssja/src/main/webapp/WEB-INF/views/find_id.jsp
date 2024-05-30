@@ -45,7 +45,7 @@
                     beforeSend: function(xhr){
                         xhr.setRequestHeader(header, token);
                     },  
-                    url : '/testrest/findId',
+                    url : '/sign/findId',
                     async : false,
                     dataType : 'text',
                     data :{

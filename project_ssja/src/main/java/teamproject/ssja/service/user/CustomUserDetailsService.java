@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
-import teamproject.ssja.dto.logindto.CustomUserDetailsDTO;
+import teamproject.ssja.dto.logindto.CustomPrincipal;
 import teamproject.ssja.dto.userinfo.ChangePasswordForm;
 import teamproject.ssja.dto.userinfo.UserInfoDTO;
 import teamproject.ssja.mapper.LoginMapper;
@@ -34,13 +34,14 @@ public class CustomUserDetailsService implements UserDetailsService{
 			
 		
 			
-		CustomUserDetailsDTO userDetailsDTO = new CustomUserDetailsDTO(userData);
+		CustomPrincipal userDetailsDTO = new CustomPrincipal(userData);
 	
 		return userDetailsDTO;
 		}
 	
-		return null;
+		throw new UsernameNotFoundException("User's username User not found : " + username);
 	}
+	
 	
 	public Boolean changePasswordProcess(String username, ChangePasswordForm passwordForm) {
 		

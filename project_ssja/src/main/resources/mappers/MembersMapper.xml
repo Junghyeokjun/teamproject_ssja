@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
         
-<mapper namespace="teamproject.ssja.mapper.TestMapper">
+<mapper namespace="teamproject.ssja.mapper.MembersMapper">
 	
 	<select id="getMid" resultType="String">
 		<![CDATA[
@@ -34,12 +34,6 @@
 		]]>
 	</select>
 	
-	<update id="updatePw">
-		<![CDATA[
-			UPDATE members SET M_PW=#{pw} WHERE M_ID = #{id}
-		]]>
-	</update>
-	
 	<select id="getProQuantity" resultType="int">
 		<![CDATA[
 			select PRO_QUANTITY from product where PRO_NO=#{proNo}
@@ -60,19 +54,17 @@
 		]]>
 	</insert>
 	
-	<insert id="insertPurchase">
-		INSERT INTO PURCHASE 
-		VALUES(PUR_SEQ.nextval,#{M_NO},#{PUR_TOT},#{PUR_DC},#{PUR_PAY},#{PUR_PAYMENT},SYSDATE,#{PUR_DVADDRESS},#{PUR_DV})
-			
-		<selectKey keyProperty="PUR_NO" resultType="int" order="AFTER">
-			select PUR_NO
-			from (SELECT PUR_NO ,rowNum
-			FROM PURCHASE
-			WHERE M_NO=#{M_NO}
-			order by PUR_NO desc)
-			where rownum=1
-		</selectKey>
+	<update id="updatePw">
+		<![CDATA[
+			UPDATE members SET M_PW=#{pw} WHERE M_ID = #{id}
+		]]>
+	</update>
 	
-	</insert>
+	<update id="subPoint">
+		<![CDATA[
+			UPDATE members SET M_POINT=M_POINT-#{point} WHERE M_NO = #{mNo}
+		]]>
+	</update>
+	
 	
 </mapper>

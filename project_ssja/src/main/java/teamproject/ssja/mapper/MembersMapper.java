@@ -6,7 +6,7 @@ import teamproject.ssja.dto.MembersDto;
 import teamproject.ssja.dto.PurchaseDto;
 
 @Mapper
-public interface TestMapper {
+public interface MembersMapper {
 	
 	String getMid(String mid);
 	String getMNickName(String mNickName);
@@ -15,5 +15,6 @@ public interface TestMapper {
 	int getProQuantity(long proNo);
 	int insertMember(MembersDto member);
 	int insertUserAuth(String mid);
+	int subPoint(long mNo,long point);
 	void updatePw(String id, String pw);
 }

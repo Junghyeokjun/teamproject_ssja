@@ -27,7 +27,7 @@ public class ProductWithConditionDTO {
 	private int pageNum;
 	private int amount;
 	 
-	private List<ProductDto> itemList;
+	private List<ProductItemDto> itemList;
 	
 
 	public ProductWithConditionDTO(ProductCondition condition) {
@@ -50,7 +50,7 @@ public class ProductWithConditionDTO {
 	}
 
 	
-	public void setItemList(List<ProductDto> itemList) {
+	public void setItemList(List<ProductItemDto> itemList) {
 		
 	this.itemList = itemList;
 	}
