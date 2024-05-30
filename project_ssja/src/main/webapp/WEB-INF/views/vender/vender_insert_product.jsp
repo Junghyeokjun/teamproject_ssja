@@ -142,6 +142,7 @@
     border:none;
     }
     
+	/* venderpage */
     .mx-2.m-auto.input-group-text{
     	width : 8em;
         line-height: 3em; /* 높이와 동일하게 설정하여 수직 중앙 정렬 */
@@ -152,38 +153,89 @@
     
     .mx-2.m-auto.input-group-text, .form-control{
     	height: 3em;
-    }
-    
-    #file-container {
-        position: relative;
-        display: inline-block;
-    }
+    }  
+	
+ 
+ 
+ 	.file-container_ {
+ 		padding : 0;
+ 	}
+	/* 기존 파일 형식 없애기 */
+	.file-container_ input[type="file"] {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip:rect(0,0,0,0);
+		border: 0;
+	}
+	
+	/* 커스텀 시작1 - label */
+	.file-container_ label {
+	  display: inline-block;
+	  padding: .5em .75em;
+	  color: #857474;
+	  font-size: inherit;
+	  line-height: normal;
+	  vertical-align: middle;
+	  background-color: #fdfdfd;
+	  cursor: pointer;
+	  border: 1px solid #ebebeb;
+	  border-bottom-color: #e2e2e2;
+	  border-radius: .25em;
+	  
+	  /* 줄바꿈되지 않게 하기. 한 줄로 표시 */
+	  white-space: nowrap;
+	}
+	
+	/* 파일 업로드명 */
+	.file-container_ .file-upload-name_ {
+		/* 가능한 공간을 모두 차지하게 설정 */
+		flex-grow : 1;		
+		display: inline-block;
+		padding: .5em .75em; /* label의 패딩값과 일치 */
+		font-size: inherit;
+		font-family: inherit;
+		line-height: normal;
+		vertical-align: middle;
+		background-color: #f5f5f5;
+		border: 1px solid #ebebeb;
+		border-bottom-color: #e2e2e2;
+		border-radius: .25em;
+	  
+		/* 브라우저의 기본 스타일 제거 -> 커스텀 스타일이 적용되도록 하기 */
+		-webkit-appearance: none; 
+		-moz-appearance: none;
+		appearance: none;
+	}
+	
+	.file-container_.custom-primary label {
+		color: #ffffff;
+		background-color: #8c20ca;
+		border-color: #7d22b3;
+	}
+	
+	.file-container_.custom-primary label:hover {
+		color: #ffffff;
+		font-weight:bold;
+		background-color: #aa6bce;
+		border-color: #a85cd4;
+	}
+	
+	.upload-image_{
+		display: none;
+	}
+	
+	.btn-danger.btn-tuning{
+		background-color: #962626;	
+	}
 
-    #file-input {
-        position: absolute;
-        top: 0;
-        right: 0;
-        margin: 0;
-        opacity: 0;
-        font-size: 100px; /* 큰 값으로 설정하여 버튼이 넓은 영역을 차지하도록 함 */
-        cursor: pointer; /* 마우스 커서를 포인터로 변경하여 클릭 가능한 상태로 표시 */
-    }
+	.btn-danger.btn-tuning:hover{
+		background-color: #c43c3c;	
+	}
 
-    #file-label {
-        display: inline-block;
-        padding: 6px 12px;
-        margin-bottom: 0;
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 1.42857143;
-        text-align: center;
-        white-space: nowrap;
-        vertical-align: middle;
-        cursor: pointer;
-        background-color: #e9ecef;
-        border: 1px solid #ced4da;
-        border-radius: 4px;
-    }
   </style>
 </head>
 
@@ -194,7 +246,7 @@
         	<h1 class="h1">&lt;때래땡땡&gt; 판매자</h1> 
         </div>        
         <div class="mx-5 my-2 d-flex align-items-end">
-        	<a>로그아웃</a>
+        	<a href="/">로그아웃</a>
         </div>
     </div>
   </header>
@@ -203,7 +255,7 @@
     <div id="side_links" class="w-100"></div>
   </div>
 	   <div id="select_MyPage" class="d-flex flex-column">
-		    <div id="select_mp_top" class="text-center">마이 페이지</div>
+		    <div id="select_mp_top" class="text-center">판매자 페이지</div>
 		    <div id="select_content">
 		        <button class="MyPage_btn w-100" id="myPage_userInfo_Select" style="border:1px solid #cccccc">회원 정보</button>
 		        <button class="MyPage_btn w-100" id="myPage_orderInfo_Select" style="border:1px solid #cccccc">상품 등록</button>
@@ -214,24 +266,26 @@
 
   <main>
   	<div class="main_whitespace p-5 my-2">
-		<h1 class="h3 text-center">상품 등록</h1>
+		<h1 class="h3 text-center ">상품 등록</h1>
 	</div>
-    <div id="main_container" class="d-flex flex-row align-items-center justify-content-center" >
-    	
-      	
-      <div id="content_dv" >
+    <div id="main_container" class="d-flex flex-row align-items-center justify-content-center" >      	
         <div id="MyPage_content_container" class="border p-5">
-        	<form role="form" method="post" autocomplete="off">
+        	<form role="form" method="post" action="" autocomplete="off">
 				<div id="ProductCategory" class="p-2 input-group w-100">   
 				   <label class="mx-2 m-auto input-group-text" >1차 분류</label>
-				   <select id="category1" class="form-select w-25 mx-2" >
-				   	<option value="">전체</option>
+				   <!-- 상품 카테고리를 해당 페이지에 뿌려줘야 함 : 한 자리 수 -->
+				   <select id="mainCategory" class="form-select w-25 mx-2" >
+				   	<option value="1">가구</option>
+				   	<option value="2">패브릭</option>
+				   	<option value="3">인테리어</option>
+				   	<option value="4">주방용품</option>
+				   	<option value="5">생활용품</option>
 				   </select>
 				</div>
 				<div id="ProductCategory2" class="p-2 input-group w-100">
 				   <label class="mx-2 m-auto input-group-text" >2차 분류</label>
-				   <select id="category2" class="form-select w-25 mx-2" >
-				    <option value="">전체</option>
+				   <!-- 상품 카테고리를 해당 페이지에 뿌려줘야 함 : 10으로 나눈 값이 한 자리 수인 경우 -->
+				   <select id="subCategory" class="form-select w-25 mx-2" >
 				   </select>
 				</div>
 				
@@ -250,34 +304,41 @@
 				   <input type="text" id="proQuantity" name="PRO_QUANTITY" class="border form-control mx-2"/>
 				</div>
 				
-				<div class="p-2 w-100 border-secondary d-flex align-center-center">
+				<div class="input-group mt-2 p-2 w-100 border-secondary d-flex align-items-center border-top">
 				    <label class="mx-2 m-auto input-group-text">배너 이미지</label>
-				    <div id="file-container">
-				    	<label id="file-label" for="customFile">파일 선택하기</label>
-  						<input type="file" id="file-input" name="PRO_BANNERIMG">
-  					</div>
+ 					<div class="file-container_ form-control custom-primary m-2 d-flex align-items-center">
+			            <input id="bannerFileText" class="file-upload-name_" placeholder="파일을 선택하세요" disabled="disabled">			
+			            <label for="bannerFile" >올리기</label> 
+			            <input type="file" id="bannerFile" class="upload-image_" name=""> 
+			         </div>
 				</div>
-				
-				<div class="p-2 w-100 border-secondary d-flex">
+						
+				<div class="input-group mt-2 p-2 w-100 border-secondary d-flex align-items-center border-top">					
 				    <label class="mx-2 m-auto input-group-text">설명 이미지</label>
-  					<input type="file" multiple="multiple" class="form-control mx-2" id="explainImgs">
+ 					<div class="file-container_ form-control custom-primary m-2 d-flex align-items-center">
+			            <input id="explainFileText" class="file-upload-name_" placeholder="파일을 선택하세요" disabled="disabled">			
+			            <label for="explainFile" >올리기</label> 
+			            <input type="file" id="explainFile" class="upload-images_" name="" >			        
+			        </div>			        
 				</div>
-				
-				<div class="p-2 w-100 border-secondary border-top ">
-				   <button type="submit" id="register_Btn" class="btn btn-primary" class="border form-control mx-2">등록</button>
-				</div>
-				
+				<div class="input-group w-100 p-2">	
+					<label class="mx-2 m-auto input-group-text"></label>
+					<div class="form-control m-2 p-0 " style="height: auto">								
+		        		<ul id="uploadedExplainFiles" class=" w-100 list-group">			        		
+			        	</ul>
+		        	</div>
+		        </div> 
+				<div class="p-2 w-100 border-secondary border-top d-flex justify-content-end">
+				   <button type="submit" id="register_Btn" class="btn btn-primary btn-tuning border mx-2">등록</button>
+				   <button id="cancel_Btn" class="btn btn-danger btn-tuning border mx-2">취소</button>
+				</div>				
 			</form>
-        </div>    
-
-        </div>
+      	</div>    
       </div>
-
-
-    </div>
-
-  </main>
-
+    <div class="main_whitespace p-5 my-2">
+		
+	</div>
+  </main>	
   <footer>
     <div id="first_footer" class="p-3"></div>
     <div id="second_footer"></div>
@@ -285,6 +346,129 @@
   </footer>
 
 </body>
+<script type="text/javascript">
+	$(document).ready(function(){
+		/* 메인 카테고리 작업 중
+		
+		let mainCategoryValue = $('#mainCategory').val(); 
+		$('#mainCategory').on('change',function(){								
+			$.ajax({
+				type: "GET",
+				url: "/api/vender/category",          
+				data: {'categoryNo' : mainCategoryValue},
+				success: function(response) {
+				// window.location.href="/";
+					console.log(response);
+					$('#subCategory').append($('<option>', {
+				        value: response[i].categoryId,
+				        text: response[i].categoryName
+				    }));
+				},
+				error: function(xhr, status, error) {
+					console.log("가져오기 실패");
+					console.error(xhr.responseText);
+				}
+			});
+		}); 
+		
+		*/
+		
+		
+		let bannerFile = $('#bannerFile');
+		let explainFile = $('#explainFile');
+		let uploadedExplainFiles = $('#uploadedExplainFiles');
+		
+		
+		
+		
+		// 배너 이미지 경로 가져오기
+		bannerFile.change(function(e){
+		    let filename = "";
+		    let files = e.target.files;
+		    let bannerDeleteButton = $('<button></button>').addClass('btn font-weight-bold').text('X').attr('id','BnDelBtn');
+		    
+		    if (files.length > 0) {
+		        filename = files[0].name;
+		        $(this).siblings('#bannerFileText').val(filename);
+		        $('#bannerFileText').after(bannerDeleteButton);
+		    } else {
+		    	// 이외의 경우에는 취소로 받아들이고 경고창을 띄우겠음.
+		    	alert("배너 이미지 업로드가 취소되었습니다. 다시 올려주세요.");
+		    	$(this).siblings('#bannerFileText').val('파일을 선택하세요');
+		    }		    
+		    
+		    bannerDeleteButton.on('click',function(){
+		    	if($(this).parents().children('#bannerFileText').length != 0){
+		       		$(this).parents().children('#bannerFileText').each(function(){
+		       			// #bannerFileText의 텍스트 초기화
+		       			// this가 가리키는 요소가 다름.
+		       			$(this).val('');
+		       		});
+		       		$(this).remove();
+		       	}
+		    });
+		});
+		
+		// 설명 이미지 경로 가져오기
+		explainFile.change(function(e){
+		    let filename;
+		    let files = e.target.files;
+		   
+		    // 파일을 선택한 경우
+		    if (files.length > 0) {
+		        filename = files[0].name;
+		     // siblings() 메서드는 선택한 요소의 형제 요소들을 선택하여 반환
+			    // -> explainFile의 형제인 #explainFileText(파일명 출력 공간)의 텍스트 값 입력
+			    $(this).siblings('#explainFileText').val(filename);		        
+		    } else {    			    	
+		    	// 파일 전체 경로 -> /로 분할 -> 마지막 요소 추출 -> 다시 \\로 분할  -> 마지막 요소 추출	
+		    	// -> 파일 이름 추출
+		    	// filename = $(this).val().split('/').pop().split('\\').pop();
+		        
+		    	// 이외의 경우에는 취소로 받아들이고 경고창을 띄우겠음.
+		    	alert("설명 이미지 업로드가 취소되었습니다. 다시 올려주세요.");
+		    }  
+			
+			/*  파일 리스트를 보여주는 <ul> 태그 내 <li> 태그 만들기 작업 	*/		
+			
+		    // 파일 리스트로 보여주기 위한 <li> 
+		    let newItem = $('<li></li>').addClass('list-group-item');
+		    
+			// 삭제 버튼
+		    let explainDeleteButton = $('<button></button>').addClass('btn font-weight-bold').text('X').attr('id','exDelBtn');
+		    
+			// files 배열의 각 요소에 대해 반복
+		    $.each(files, function(index, file){
+		    	// 현재 파일명
+                let fileName = file.name;  			    
+		    	
+    		 	// <li> 에 삭제 버튼 및 파일이름 추가 
+    		    newItem.text(fileName).append(explainDeleteButton);    		 	
+    		 	
+                // 새로운 li 요소 생성 및  ul에 추가
+                $('#uploadedExplainFiles').append(newItem);
+            });    	 	
+			
+		 	// 삭제 버튼을 클릭할 때 파일을 삭제하는 이벤트를 추가
+		    explainDeleteButton.on('click', function() {
+		    	// 삭제 버튼을 포함한 파일 아이템을 삭제
+		    	// closest() 메서드는 선택한 요소를 기준으로 가장 근접한 상위 요소를 찾아 반환
+		    	
+		    	// parents() : 현재 요소의 모든 부모 요소
+		    	// parent() : 현재 요소의 직계 부모 요소
+		    	
+		    	// 버튼 직계 부모가 newItem이면
+		    	if($(this).parent().is(newItem)){
+		    		// 직계 부모 삭제
+		       		$(this).parent().remove();
+		    		$('#explainFileText').val('');
+		       	}
+		    });
+		});
+	}); 
+
+</script>
+
 <!-- 
 <script type="text/javascript">
 
