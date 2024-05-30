@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.MembersDto;
 import teamproject.ssja.mapper.MembersMapper;
-
+import teamproject.ssja.mapper.SocialUserMapper;
+@Slf4j
 @Service
 public class SignUpServiceImpl implements SignUpService {
 
@@ -14,6 +16,8 @@ public class SignUpServiceImpl implements SignUpService {
 	MembersMapper membersMapper;
 	@Autowired
 	PasswordEncoder passwordEncoder;
+	@Autowired
+	SocialUserMapper socialMapper;
 	
 	@Override
 	public boolean idCheck(String id) {
@@ -59,6 +63,24 @@ public class SignUpServiceImpl implements SignUpService {
 	@Override
 	public void resetPw(String id, String pw) {
 		membersMapper.updatePw(id,passwordEncoder.encode(pw));
+	}
+
+	@Override
+	public MembersDto getRelatedMember(long memberNum) {
+	
+		return socialMapper.getRelatedMember(memberNum);
+	}
+
+	@Override
+	public void registSocialToUser(MembersDto member) {
+		
+		log.info("비밀번호 : {}",member.getM_PW() );
+		
+		member.setM_PW(passwordEncoder.encode(member.getM_PW()));
+		log.info("암호화된 비밀번호 : {}",member.getM_PW() );
+		socialMapper.renewUser(member);
+		socialMapper.renewAuthSocial(member.getM_NO());
+		
 	}
 
 

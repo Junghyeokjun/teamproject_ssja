@@ -31,9 +31,28 @@ public class VenderController {
 	@Autowired
 	
 	
-	@GetMapping("/page")
-	public String venderPage() {
-		log.info("venderPage()..");
-		return "/vender_page";
+	@GetMapping("/product/write/")
+	public String writeProduct() {
+		log.info("writeProduct()..");
+		// 
+		
+		return "/vender/vender_write_product";
+	}
+	
+	@PostMapping("/product/add/")
+	public String addOne() {
+		log.info("addOne()..");
+		// 
+		
+		// 초기화면으로 돌아가기(해당 페이지는 초기 화면 역할을 하며, 이후 변경할 예정)
+		return "/vender/vender_insert_product";
+	}
+	
+	@GetMapping("/question/list/")
+	public String showProductList() {
+		log.info("showProductList()..");
+		
+		//		
+		return "/vender/vender_qna_list";
 	}
 }

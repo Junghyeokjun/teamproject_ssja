@@ -15,4 +15,9 @@ public interface ProductListMapper {
 	List<ProductItemDto> getProductList(ProductCondition condition);
 	
 	int getTotalCountItems(ProductCondition condition);
+	
+	List<ProductItemDto> bestItemsList(int page);
+	
+	
+	
 }

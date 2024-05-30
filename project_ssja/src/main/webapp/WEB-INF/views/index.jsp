@@ -146,7 +146,10 @@ align-items:center;
 
 
     <div id="best_items_container">
-    <div id ="title_best_conner" class="my-3"><h2 class="mx-3">Best</h2><button >></button></div>
+    <div id ="title_best_conner" class="my-3"><h2 class="mx-3">Best</h2><button id="more_best_item_btn">></button></div>
+    
+    
+    
     <div id="best_item_content">
     
     </div>

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import teamproject.ssja.LoginChecker;
 import teamproject.ssja.dto.MembersDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.email.MailDTO;
@@ -58,7 +59,6 @@ public class SignController {
 	public ModelAndView signUp(MembersDto member,String email, String domain ,ModelAndView mv) {
 //		패스워드 엔코더 추가후
 //		member.setM_PW(passwordEncoder.encode(member.getM_PW()));
-		System.out.println(member);
 		member.setM_EMAIL(email+"@"+domain);
 		signUpService.signUp(member);
 		mv.setViewName("temp_login");
@@ -139,7 +139,6 @@ public class SignController {
 	}
 	@RequestMapping("/password_reset")
 	public ModelAndView passwordReset(ModelAndView mv,String id) {
-		System.out.println(id);
 		mv.addObject("id",id);
 		mv.setViewName("password_reset");
 		return mv;
@@ -157,4 +156,8 @@ public class SignController {
 		mv.setViewName("purchase");
 		return mv;
 	}
+	
+	
+	
+	
 }

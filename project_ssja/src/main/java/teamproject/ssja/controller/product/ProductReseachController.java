@@ -20,5 +20,9 @@ public class ProductReseachController {
 		
 		return "/product/search_products";
 	}
+	@GetMapping("/best-list")
+	public String showBestListProduct() {
+		return "/product/best-items-page";
+	}
 	
 }
