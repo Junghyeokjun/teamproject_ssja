@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="teamproject.ssja.mapper.ProductDetailMapper">
+
+	<resultMap id="ProductDetailMap" type="ProductDetailDto">
+		<id property="PRO_NO" column="PRO_NO" />
+		<result property="V_NO" column="V_NO" />
+		<result property="PRO_NAME" column="PRO_NAME" />
+		<result property="PRO_PRICE" column="PRO_PRICE" />
+		<result property="PRO_QUANTITY" column="PRO_QUANTITY" />
+		<result property="PRO_BANNERIMG" column="PRO_BANNERIMG" />
+		<result property="PRO_WISH" column="PRO_WISH" />
+		<result property="PRO_SELLCOUNT" column="PRO_SELLCOUNT" />
+		<result property="PRO_HIT" column="PRO_HIT" />
+		<result property="PRO_BIZNAME" column="PRO_BIZNAME" />
+		<result property="M_NO" column="M_NO" />
+		<result property="V_BIZNAME" column="V_BIZNAME" />
+		<result property="V_LICENSE" column="V_LICENSE" />
+		<result property="M_NAME" column="M_NAME" />
+		<result property="M_ADDRESS1" column="M_ADDRESS1" />
+		<result property="M_ADDRESS2" column="M_ADDRESS2" />
+		<result property="M_ZIPCODE" column="M_ZIPCODE" />
+		<result property="M_EMAIL" column="M_EMAIL" />
+		<result property="M_PHONE" column="M_PHONE" />
+
+	</resultMap>
+
+	<select id="read" resultMap="ProductDetailMap">
+	    <![CDATA[		
+	   SELECT  P.PRO_NO, V.V_NO, P.PRO_NAME, P.PRO_PRICE, P.PRO_QUANTITY, P.PRO_BANNERIMG, 
+        P.PRO_WISH, P.PRO_SELLCOUNT, P.PRO_HIT, P.PRO_BIZNAME, M.M_EMAIL, M.M_NO, 
+        V.V_BIZNAME, V.V_LICENSE, M.M_NAME, M.M_ADDRESS1, M.M_ADDRESS2, 
+        M.M_ZIPCODE, M.M_EMAIL, M.M_PHONE
+		FROM PRODUCT P
+		INNER JOIN VENDOR V ON P.V_NO = V.V_NO
+		INNER JOIN MEMBERS M ON V.M_NO = M.M_NO
+		WHERE P.PRO_NO = #{PRO_NO}
+	     ]]>
+	</select>
+
+	 <resultMap id="ProductDetailReplyMap"  type="ProductDetailReplyDto">
+		<id property="PRO_NO" column="PRO_NO" />
+		<result property="B_WRITER" column="B_WRITER" />
+		<result property="B_DATE" column="B_DATE" />
+		<result property="B_CONTENT" column="B_CONTENT" />
+		<result property="B_EVAL" column="B_EVAL" />
+	</resultMap>
+
+	<select id="getTotalCount" resultType="long">    
+    <![CDATA[
+      select count(*) from ( SELECT  P.PRO_NO, B.B_WRITER, B_DATE, B_CONTENT, B_EVAL
+	    FROM PRODUCT P
+	    INNER JOIN BOARD B ON P.PRO_NO = B.PRO_NO
+	    WHERE P.PRO_NO = #{PRO_NO})
+        ]]>
+	</select>
+	
+	<select id="getListWithPaging" resultMap="ProductDetailReplyMap">    
+    <![CDATA[
+	SELECT * FROM (
+    	SELECT ROWNUM AS RNUM, A.* FROM (
+        	select * from ( SELECT  P.PRO_NO, B.B_WRITER, B_DATE, B_CONTENT, B_EVAL
+	    FROM PRODUCT P
+	    INNER JOIN BOARD B ON P.PRO_NO = B.PRO_NO
+	    WHERE P.PRO_NO = #{PRO_NO})
+   		) A WHERE ROWNUM <= #{pageNum}*#{amount}
+	)WHERE RNUM > (#{pageNum}-1)*#{amount}
+    ]]>
+	</select>
+
+</mapper>
