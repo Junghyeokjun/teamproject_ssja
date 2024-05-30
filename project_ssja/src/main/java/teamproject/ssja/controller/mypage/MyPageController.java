@@ -17,20 +17,16 @@ public class MyPageController {
 	public String myPageP(Model model ) {
 		int loginMethod = LoginChecker.check();
 		
-		//로그인 O, 소셜 로그인일 경우 if
-		 if (loginMethod == 2) {
-			 
-			
+		//로그인 O, 소셜 로그인만 하는 회원
+		 if (loginMethod == 2) {//2반환
 	            return "/myPage/rejectMyPage";
 	            
-	         //로그인 O, 세션로그인일 겨우 -> 소셜로그인아 아닌 if  
-		 }else if(loginMethod == 1){
-			 
+	         //로그인 O, 회원 등록된 일반회원 및 소셜로그인 후 회원으로 등록한 회원
+		 }else if(loginMethod == 1){//1반환
 			 return "/myPage/MyPage";
 		 }
 		 
 		 //둘 다 아닌 -> 로그인 X, 인증하지 않음
-
 		 return "redirect:/login";
 	}
 	

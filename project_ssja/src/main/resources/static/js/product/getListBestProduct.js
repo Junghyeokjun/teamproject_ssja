@@ -1,12 +1,8 @@
-let token = $("meta[name='_csrf']").attr("content");
-	let header = $("meta[name='_csrf_header']").attr("content");
-	
 let $product_content = $("#product_content");
-let $paging_dv = $("#paging_dv")
-const url = new URL(window.location.href);
-const params = new URLSearchParams(url.search);
+let $paging_dv = $("#paging_dv");
+let token = $("meta[name='_csrf']").attr("content");
+let header = $("meta[name='_csrf_header']").attr("content");
 
-let category = params.get('category');
 
 class ProductCondition {
 	  constructor(startPage, endPage, total, prev, next, conditionSelect, conditionName, 
@@ -57,7 +53,7 @@ let product_condition = new ProductCondition(
 		  null, // conditionName
 		  null, // conditionStart
 		  null, // conditionEnd
-		  category,    // category
+		  null,    // category
 		  1,    // pageNum
 		  40    // amount
 		);
@@ -66,19 +62,17 @@ function formatNumber(num) {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-let getListProductToServer = function(condition){
-	
-	
-	 $.ajax({
-			type : "post",
-			beforeSend : function(xhr) {
-				xhr.setRequestHeader(header, token);
-			},
-			data: JSON.stringify(condition),
-			contentType:"application/json",
-			dataType:"json",
-			url : "/product/lists",
-			success : function(data){  
+let getListProductToServer = function (condition) {
+    $.ajax({
+    	type : "post",
+		beforeSend : function(xhr) {
+			xhr.setRequestHeader(header, token);
+		},
+		data: JSON.stringify(condition),
+		contentType:"application/json",
+		dataType:"json",
+		url : "/product/lists",
+        	success : function(data){  
 				console.log(data);
 				$product_content.empty();
 				$paging_dv.empty();
@@ -95,19 +89,17 @@ let getListProductToServer = function(condition){
 					let $notice_none = $("<h2>").css({'text-align':'center','font-weight':'bold'}).text('상품이 존재하지 않습니다.');
 					
 					let $goBack_btn = $("<button>").addClass('btn btn-dark my-3').css({'border':'none','width':'14em','height':'5em'})
-					.text('홈으로 돌아가기').on('click',function(){window.location.href="/home";});
-					
+					.text('홈으로 돌아가기').on('click',function(){window.location.href="/home";});					
 					$("#product_content").css({'display':'flex','flex-direction':'column','align-items':'center','justify-content':'between'})
 					.append($logo_img, $noneProductImg, $notice_none, $goBack_btn);
 					return;
 					};
-					
-					let $list_content_dv = $("<div>").attr("id","list_content_dv").addClass("d-flex flex-column");
-					let $row;
-					
+				
+				let $list_content_dv = $("<div>").attr("id","list_content_dv").addClass("d-flex flex-column");
+				let $row;
 				data.itemList.forEach(function(e, index){
 					
-					  if (index % 4 === 0) {
+					 if (index % 4 === 0) {
 		                    $row = $("<div>").addClass("d-flex flex-row w-100 mb-5"); 
 		                    $list_content_dv.append($row); 
 		                }
@@ -165,8 +157,8 @@ let getListProductToServer = function(condition){
 	                                event.preventDefault();
 	                                let countwish = wish_click(e.pro_NO);
 	                                $(this).prev("span").text(countwish);
-	                                return false;//상품상세 링크 이동 방지	                       
-	                                })
+	                                return false;//상품상세 링크 이동 방지
+	                            })
 	                        )
 	                    );
 	                $item_info_dv.append($item_title_dv, $item_bizname_dv, $item_price_dv, $item_review_wish_dv);
@@ -346,5 +338,4 @@ $('#search_custom_money_btn').on('click',function(){
 
 
 getListProductToServer(product_condition);
-
 

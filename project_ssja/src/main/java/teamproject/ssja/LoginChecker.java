@@ -20,7 +20,7 @@ public class LoginChecker {
 			
 			if(user == null) return 0;//로그인 X로 null일 경우 0 반환
 			
-		Function<CustomPrincipal, Integer> func = (u) -> u.isOAuth2User()?2:1;  
+		Function<CustomPrincipal, Integer> func = (u) -> u.isOAuth2User()&&u.getAuth().equals("ROLE_SOCIAL")?2:1;  
 		
 		return func.apply(user);
 		//if(LoginChecker.check==1) -> true 세션 로그인

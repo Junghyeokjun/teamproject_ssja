@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.event.EventInfoDTO;
 import teamproject.ssja.dto.event.EventPageDTO;
 import teamproject.ssja.mapper.EventMapper;
+import teamproject.ssja.service.mainpage.EventService;
 @Slf4j
 @Transactional
 @SpringBootTest

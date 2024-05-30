@@ -17,7 +17,7 @@ public class NaverResponse implements OAuth2Response{
 
     @Override
     public String getProvider() {
-
+    		//네이버 소셜 로그인 구현체 이기에 네이버로 Set
         return "naver";
     }
     @Override

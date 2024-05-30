@@ -34,13 +34,24 @@
 	<select id="getTotalCountItems" parameterType="teamproject.ssja.dto.product.ProductCondition" resultType="int">
 	select count(*) from product 
 	<where>
-	<if test="category != null and category != ''">
-				AND p_c_no = #{category}
-			</if>
-			<if
-				test="conditionEnd != null and conditionEnd != '' and conditionEnd > 0 and conditionStart >= 0">
-				AND pro_price BETWEEN #{conditionStart} AND #{conditionEnd}
-			</if>
+		<if test="category != null and category != ''">
+			AND p_c_no = #{category}
+		</if>
+		<if test="conditionEnd != null and conditionEnd != '' and conditionEnd > 0 and conditionStart >= 0">
+			AND pro_price BETWEEN #{conditionStart} AND #{conditionEnd}
+		</if>
 	</where>
 	</select>
+	
+	<select id="bestItemsList" parameterType="int" resultType="teamproject.ssja.dto.product.ProductItemDto">
+ 		SELECT a.*,(select count (b.pro_no) from board b where a.pro_no=b.pro_no) as review_count,
+ 		(SELECT AVG(b.b_eval)   FROM board b  WHERE b.pro_no = a.pro_no) AS RATING_AVG
+		FROM ( SELECT pro_no,  pro_price,  pro_bannerimg,  pro_wish,  pro_name, pro_sellcount, pro_bizname,
+        ROW_NUMBER() OVER ( ORDER BY pro_sellcount DESC, pro_wish DESC ) AS rnum FROM product) a WHERE rnum between #{page}*8+1 and #{page}*8+8
+	</select>
+	
+
+	
+
+	
 </mapper>
