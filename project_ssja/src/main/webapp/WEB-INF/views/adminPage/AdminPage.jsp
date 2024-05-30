@@ -183,6 +183,7 @@
         <div id="MyPage_content_name" > </div>
         <div id=main_div>
         <div id="MyPage_content_container" class="border">
+        
         </div>
        
 
