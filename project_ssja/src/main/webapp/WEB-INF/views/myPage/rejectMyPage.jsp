@@ -23,7 +23,7 @@
   
   if(reject){
 	  
-	  window.location.href="/test/sign_up_before";
+	  window.location.href="/sign-up/from-social/before-agreement";
  	 }else{
  		 
 	  window.location.href="/home";

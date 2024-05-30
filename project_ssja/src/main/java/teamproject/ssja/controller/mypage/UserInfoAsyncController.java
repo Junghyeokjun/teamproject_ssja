@@ -47,14 +47,8 @@ public class UserInfoAsyncController {
 	public ResponseEntity<UserInfoDTO> myPageUser(@AuthenticationPrincipal CustomPrincipal userDetails) {
 		
 		long userId = 0L;
-		if (userDetails != null && userDetails instanceof UserDetails) {
 			
-			userId = userDetails.getUserInfo().getM_No();
-		}else if(userDetails != null && userDetails instanceof OAuth2User) {
-			
-			userId = userDetails.getUserInfo().getM_No();
-		}
-		
+			userId = userDetails.getMemberNum();
 			
 				UserInfoDTO userInfo = myPageService.getUserInfo(userId);
 				
@@ -67,7 +61,7 @@ public class UserInfoAsyncController {
 	public ResponseEntity<AddressForm> changAddress(@AuthenticationPrincipal CustomPrincipal userDetails,
 											@RequestBody AddressForm addressForm,HttpServletRequest request, HttpServletResponse response) {
 		
-		long userId = userDetails.getUserInfo().getM_No();
+		long userId = userDetails.getMemberNum();
 		
 		
 		addressForm.setUserId(userId);
@@ -129,18 +123,18 @@ public class UserInfoAsyncController {
 	 }
 	 
 	 
-	 //jwt토큰 때문에 일단 뒤로
-	 @RequestMapping("/userInfo")
-		public UserRoleAndAuthDTO throwUserInfo() {
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			if(authentication.getAuthorities().equals("ROLE_USER") && authentication.getAuthorities().equals("ROLE_ADMIN")) {
-				Object principal = authentication.getPrincipal();
-				CustomPrincipal userDetail = (CustomPrincipal)principal;
-				return new UserRoleAndAuthDTO(userDetail.getUserInfo().getM_Name(),userDetail.getUserInfo().getAuth());
-			}else{
-				return new UserRoleAndAuthDTO("GUEST", "ROLE_ANONYMOUS");
-			}
-		}
+//	 //jwt토큰 때문에 일단 뒤로
+//	 @RequestMapping("/userInfo")
+//		public UserRoleAndAuthDTO throwUserInfo() {
+//			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//			if(authentication.getAuthorities().equals("ROLE_USER") && authentication.getAuthorities().equals("ROLE_ADMIN")) {
+//				Object principal = authentication.getPrincipal();
+//				CustomPrincipal userDetail = (CustomPrincipal)principal;
+//				return new UserRoleAndAuthDTO(userDetail.getUserInfo().getM_Name(),userDetail.getUserInfo().getAuth());
+//			}else{
+//				return new UserRoleAndAuthDTO("GUEST", "ROLE_ANONYMOUS");
+//			}
+//		}
 	 
 
 	 

@@ -24,6 +24,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import teamproject.ssja.service.user.CustomUserDetailsService;
@@ -57,6 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		
 //		web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
 		web.ignoring().antMatchers("/css/**","/js/**","/imgx/**","/lib/**","/images/**");
+		  web.httpFirewall(allowUrlEncodeFirewall());
 	}
 	
 	
@@ -65,7 +68,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	//http.csrf().disable();
 		/* 권한설정 */
 	    http.authorizeRequests()
-	    .antMatchers("/logout","/user","/myPage","/myPage/**","/userInfo","/user","/user/**","/wishlist","/wishlist/**").hasAnyRole("USER")
+	    .antMatchers("/logout","/user","/myPage","/myPage/**","/userInfo","/user",
+	    		"/user/**","/wishlist","/wishlist/**","/sign-up","/sign-up/**").hasAnyRole("USER","SOCIAL")
 	    .anyRequest().permitAll();
 	    
 	    http.formLogin()
@@ -141,4 +145,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	            response.sendRedirect(logoutUrl);
 	        }
 	    }
+	 
+	 @Bean
+	 public HttpFirewall allowUrlEncodeFirewall() {
+		 StrictHttpFirewall firewall = new StrictHttpFirewall();
+		 firewall.setAllowUrlEncodedSlash(true);
+		 firewall.setAllowUrlEncodedDoubleSlash(true);
+		 return firewall;
+	 }
 }

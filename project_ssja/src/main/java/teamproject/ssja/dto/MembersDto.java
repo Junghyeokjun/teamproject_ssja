@@ -22,7 +22,6 @@ import lombok.ToString;
 //M_POINT    NOT NULL NUMBER(10)    
 //M_DATE     NOT NULL TIMESTAMP(6)  
 //M_NICKNAME NOT NULL VARCHAR2(40) 
-
 @Getter
 @Setter
 @NoArgsConstructor
