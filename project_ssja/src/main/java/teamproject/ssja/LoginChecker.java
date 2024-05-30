@@ -14,7 +14,7 @@ public class LoginChecker {
 	public static  int check() {
 		CustomPrincipal user = (CustomPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		//그냥 오늘 배운거 써봤습니다. 로그인 했을 경우에만 양수를 반환하며 
-		//2의 경우 소셜이고 1을 반환할 경우 세션 로그인 입니다.
+		//2의 경우 소셜이고 1을 반환할 경우 세션 로그인 입니다. ls
 		
 		try {
 			
