@@ -7,8 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import teamproject.ssja.dto.BoardCategoryDto;
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.BoardIsLikedDto;
-import teamproject.ssja.dto.ReplyIsLikedDto;
-import teamproject.ssja.dto.ReplysDto;
+import teamproject.ssja.dto.community.CommunityBoardDto;
 import teamproject.ssja.page.Criteria;
 
 @Mapper
@@ -28,6 +27,9 @@ public interface BoardMapper {
 	
 	long selectTotalCount(long bcno);
 	List<BoardDto> selectListWithPaging(Criteria criteria);
+	
+	//커뮤니티용 게시글 읽는 db
+	List<CommunityBoardDto> selectCommunityDto(int pageNum,int amount);
 	
 	// 해당 게시글의 총 좋아요 수 가져오기
 	long selectBoardLikes(long bno);

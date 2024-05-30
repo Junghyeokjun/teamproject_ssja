@@ -1,6 +1,5 @@
-package teamproject.ssja.dto;
+package teamproject.ssja.dto.community;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -10,26 +9,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-//이름        널?       유형             
-//--------- -------- -------------- 
-//B_NO      NOT NULL NUMBER(20)     
-//M_NO      NOT NULL NUMBER(20)     
-//B_C_NO    NOT NULL NUMBER(20)     
-//B_WRITER  NOT NULL VARCHAR2(30)   
-//B_TITLE   NOT NULL VARCHAR2(250)  
-//B_CONTENT NOT NULL VARCHAR2(4000) 
-//B_DATE    NOT NULL TIMESTAMP(6)   
-//B_LIKE    NOT NULL NUMBER(10)     
-//B_HIT     NOT NULL NUMBER(10)     
-//B_EVAL             NUMBER(3)      
-//PRO_NO             NUMBER(20)
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class BoardDto {
+public class CommunityBoardDto {
 	private long bno;
 	private long bmno;
 	private long bbcno;
@@ -41,6 +27,9 @@ public class BoardDto {
 	private long bhit;
 	private long beval;
 	private long prono;
+	private long img_no;
+	private String img_path;
+
 	
 	// 자바 스크립트 버전으로 할지, 자바로 할지 선택하는 '날짜 형태 변환'
 	// 자바 스크립트로 하기 싫다면 아래 메서드를 활용해서 날짜를 가져오기
