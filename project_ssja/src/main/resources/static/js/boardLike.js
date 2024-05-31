@@ -65,7 +65,7 @@ $(document).ready(function() {
         error: function(xhr, status, error) {
             console.log("Error: " + error);
             console.log("Response: " + xhr.responseText);
-            alert('좋아요를 할 수 없는 상태입니다. 로그인하십시오.');
+            alert('좋아요를 확인하실 수 없는 상태입니다.');
             $(location).attr('href','/login');
         }
     });
@@ -81,13 +81,13 @@ $(document).ready(function() {
         $.ajax({
             url: bLikeText + bno,
             type: 'POST',
-//            beforeSend : function(xhr){
-//                //ajax호출 중 처리
-//                //글로벌 변수로 설정한 csrf token 셋팅
-//                xhr.setRequestHeader(header,token);
-//            },
-            //contentType: 'application/json', // JSON 형식으로 요청을 보낼 것임을 명시
-            //data: JSON.stringify({ no : bno, liked : liked }), // JSON 형식으로 데이터 전달
+            beforeSend : function(xhr){
+                //ajax호출 중 처리
+                //글로벌 변수로 설정한 csrf token 셋팅
+                xhr.setRequestHeader(header,token);
+            },
+//            contentType: 'application/json', // JSON 형식으로 요청을 보낼 것임을 명시
+//            data: JSON.stringify({ no : bno, liked : liked }), // JSON 형식으로 데이터 전달
             data: {
             	'bno' : bno, 'mno' : likebmno	            	
             },

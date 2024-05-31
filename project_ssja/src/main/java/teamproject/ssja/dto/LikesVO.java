@@ -12,8 +12,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class LikesVO {
-	private Long beforeLikes;
-	private Long afterLikes;
+	private long beforeLikes;
+	private long afterLikes;
 	// 총 좋아요 수가 늘었는가? 변화가 없는가? 
 	// 즉, 0 or 1 or -1로 구분하는 것
 	// 좋아요를 계속 변화시키는 경우에는 isLiked 값이 -1, 1 두 가지가 나온다.

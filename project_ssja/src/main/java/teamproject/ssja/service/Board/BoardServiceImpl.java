@@ -103,10 +103,13 @@ public class BoardServiceImpl implements BoardService {
 	public LikesVO getBoardLikes(String bno, String mno) {
 		long bnoLong = Long.valueOf(bno);
 		long mnoLong = Long.valueOf(mno);
+		log.info("bno : " + bno + ", mno : " + mno);
 		
 		long likes = boardMapper.selectBoardLikes(bnoLong);
 		// 좋아요 테이블에 데이터가 있는지 확인
 		BoardIsLikedDto isLiked = boardMapper.selectBIsLiked(new BoardIsLikedDto(bnoLong, mnoLong));
+
+		log.info("likes : " + likes + ", isLiked : " + isLiked);
 		
 		// 데이터가 있으면 isLiked 값을 변화시킴
 		if (isLiked != null) {
