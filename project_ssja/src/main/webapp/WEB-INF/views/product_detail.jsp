@@ -78,7 +78,7 @@ table {
 	color : white;
 }
 
-.nav-link-custom:hover{
+.nav-link-custom:hover, .nav-link-custom:focus{
 	color : yellow;
 }
 
@@ -86,7 +86,6 @@ table {
 	background-color: black;
 	border-color: black;
 }
-
 
 .page-link.active{
 	background-color: #000000;
@@ -108,6 +107,8 @@ table {
     display: flex;
 }
 
+
+
 .form-control{
 	align-items: center;
 }
@@ -117,7 +118,7 @@ table {
 	border-color:  #ca5a0a;
 }
 
-.btn-primary.custom-btn:hover{
+.btn-primary.custom-btn:hover, .btn-primary.custom-btn:focus{
 	background-color:  chocolate;
 	border-color : chocolate;
 }
@@ -127,7 +128,7 @@ table {
 	border-color:  #c7a820;
 }
 
-.btn-danger.custom-btn:hover{
+.btn-danger.custom-btn:hover, .btn-danger.custom-btn:focus{
 	background-color:  #cfb439;
 	border-color:  #cfb439;
 }
@@ -135,6 +136,7 @@ table {
 
 
 </head>
+
 <body>
 	<header>
 		<div id="title_bar" class=" fixed-top">
@@ -228,9 +230,9 @@ table {
 							</span>
 						</div>
 						<div class="d-flex justify-content-between">
-							<button type="button" class="btn btn-primary custom-btn"
-								onclick="wish_click(${productdetail.getPRO_NO()})">Wish List</button>
-							<button type="button" class="btn btn-danger custom-btn">바로구매</button>
+							<input type="button" class="btn btn-primary custom-btn"
+								onclick="wish_click(${productdetail.getPRO_NO()})" value="Wish List">
+							<input type="button" class="btn btn-danger custom-btn" value="바로구매">
 						</div>
 					</p>
 				</div>
@@ -373,9 +375,10 @@ table {
 											</span>
 										</div>
 										<div class="d-flex justify-content-between">
-											<button type="button" class="btn btn-primary custom-btn"
-												onclick="wish_click(${productdetail.getPRO_NO()})">Wish List</button>
-											<button type="button" class="btn btn-danger custom-btn">바로구매</button>
+											<input type="button" class="btn btn-primary custom-btn"
+												onclick="wish_click(${productdetail.getPRO_NO()})" value="Wish List">
+											<input type="button" class="btn btn-danger custom-btn" value="바로구매">
+											<!-- <button type="button" class="btn btn-danger custom-btn">바로구매</button> -->
 										</div>
 									</p>
 								</div>
@@ -395,11 +398,12 @@ table {
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
 	<script>
-	
 	 let token = $("meta[name='_csrf']").attr("content");
 		let header = $("meta[name='_csrf_header']").attr("content");
 		
 		document.addEventListener("DOMContentLoaded", function() {
+			
+			
 			const priceElement = document.querySelector(".gdsPrice span");
 			const quantityInput = document.getElementById("quantity");
 			const totalPriceElement = document.getElementById("totalPrice");
