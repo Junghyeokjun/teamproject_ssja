@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.page.Criteria;
-import teamproject.ssja.page.PageVO;
+import teamproject.ssja.page.Page10VO;
 import teamproject.ssja.service.Admin.MemberListService;
 import teamproject.ssja.service.Admin.ProductListService;
 
@@ -26,11 +26,11 @@ public class AdminPageController {
 		log.info("adminPage()..");
 
 		long Memberstotal = memberListService.getMemberListTotalCount();
-		model.addAttribute("pageMaker", new PageVO(Memberstotal, criteria));
+		model.addAttribute("memberpageMaker", new Page10VO(Memberstotal, criteria));
 		model.addAttribute("members",  memberListService.getMemberListWithPaging(criteria));
 		
 		long Productstotal = productListService.getProductListTotalCount();
-		model.addAttribute("pageMaker", new PageVO(Productstotal, criteria));
+		model.addAttribute("productpageMaker", new Page10VO(Productstotal, criteria));
 		model.addAttribute("products",  productListService.getProductListWithPaging(criteria));
 
 		

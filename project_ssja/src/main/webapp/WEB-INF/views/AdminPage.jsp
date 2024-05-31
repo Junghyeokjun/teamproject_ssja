@@ -31,6 +31,8 @@
 <script src="/js/footer.js"></script>
 <link href="/css/footerstyle.css?after" rel="stylesheet">
 <link href="/css/barstyle.css?after" rel="stylesheet">
+<link href="/css/board.css?after" rel="stylesheet">
+
 <link rel="stylesheet"
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
 <style>
@@ -145,26 +147,26 @@ body {
 				<div>
 					<nav aria-label="Page navigation example">
 						<ul class="pagination ch-col justify-content-center">
-							<c:if test="${pageMaker.prev}">
+							<c:if test="${memberpageMaker.prev}">
 								<li class="page-item"><a class="page-link ch-col"
-									href="${pageContext.request.contextPath}/AdminPage${pageMaker.makeQuery(pageMaker.startPage-1)}"><</a></li>
+									href="${pageContext.request.contextPath}/AdminPage${memberpageMaker.makeQuery(memberpageMaker.startPage-1)}"><</a></li>
 							</c:if>
-							<c:forEach var="idx" begin="${pageMaker.startPage}"
-								end="${pageMaker.endPage}">
+							<c:forEach var="idx" begin="${memberpageMaker.startPage}"
+								end="${memberpageMaker.endPage}">
 								<c:choose>
-									<c:when test="${pageMaker.criteria.pageNum == idx}">
+									<c:when test="${memberpageMaker.criteria.pageNum == idx}">
 										<li class="page-item active"><a class="page-link"
-											href="${pageContext.request.contextPath}/AdminPage${pageMaker.makeQuery(idx)}">${idx}</a></li>
+											href="${pageContext.request.contextPath}/AdminPage${memberpageMaker.makeQuery(idx)}">${idx}</a></li>
 									</c:when>
 									<c:otherwise>
 										<li class="page-item"><a class="page-link"
-											href="${pageContext.request.contextPath}/AdminPage${pageMaker.makeQuery(idx)}">${idx}</a></li>
+											href="${pageContext.request.contextPath}/AdminPage${memberpageMaker.makeQuery(idx)}">${idx}</a></li>
 									</c:otherwise>
 								</c:choose>
 							</c:forEach>
-							<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+							<c:if test="${memberpageMaker.next && memberpageMaker.endPage > 0}">
 								<li class="page-item"><a class="page-link ch-col"
-									href="${pageContext.request.contextPath}/AdminPage${pageMaker.makeQuery(pageMaker.endPage+1)}">></a></li>
+									href="${pageContext.request.contextPath}/AdminPage${memberpageMaker.makeQuery(pageMaker.endPage+1)}">></a></li>
 							</c:if>
 						</ul>
 					</nav>
@@ -201,26 +203,26 @@ body {
 				<div>
 					<nav aria-label="Page navigation example">
 						<ul class="pagination ch-col justify-content-center">
-							<c:if test="${pageMaker.prev}">
+							<c:if test="${productpageMaker.prev}">
 								<li class="page-item"><a class="page-link ch-col"
-									href="${pageContext.request.contextPath}/AdminPage${pageMaker.makeQuery(pageMaker.startPage-1)}"><</a></li>
+									href="${pageContext.request.contextPath}/AdminPage${productpageMaker.makeQuery(productpageMaker.startPage-1)}"><</a></li>
 							</c:if>
-							<c:forEach var="idx" begin="${pageMaker.startPage}"
-								end="${pageMaker.endPage}">
+							<c:forEach var="idx" begin="${productpageMaker.startPage}"
+								end="${productpageMaker.endPage}">
 								<c:choose>
-									<c:when test="${pageMaker.criteria.pageNum == idx}">
+									<c:when test="${productpageMaker.criteria.pageNum == idx}">
 										<li class="page-item active"><a class="page-link"
-											href="${pageContext.request.contextPath}/AdminPage${pageMaker.makeQuery(idx)}">${idx}</a></li>
+											href="${pageContext.request.contextPath}/AdminPage${productpageMaker.makeQuery(idx)}">${idx}</a></li>
 									</c:when>
 									<c:otherwise>
 										<li class="page-item"><a class="page-link"
-											href="${pageContext.request.contextPath}/AdminPage${pageMaker.makeQuery(idx)}">${idx}</a></li>
+											href="${pageContext.request.contextPath}/AdminPage${productpageMaker.makeQuery(idx)}">${idx}</a></li>
 									</c:otherwise>
 								</c:choose>
 							</c:forEach>
-							<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+							<c:if test="${productpageMaker.next && productpageMaker.endPage > 0}">
 								<li class="page-item"><a class="page-link ch-col"
-									href="${pageContext.request.contextPath}/AdminPage${pageMaker.makeQuery(pageMaker.endPage+1)}">></a></li>
+									href="${pageContext.request.contextPath}/AdminPage${productpageMaker.makeQuery(productpageMaker.endPage+1)}">></a></li>
 							</c:if>
 						</ul>
 					</nav>
@@ -243,7 +245,9 @@ body {
     document.addEventListener("DOMContentLoaded", function() {
         // select_content div 내의 모든 버튼을 가져옵니다.
         var buttons = document.querySelectorAll('#select_content button');
-
+        
+        document.getElementById('content_dv_membersInfo').style.display = 'block';
+        
         // 각 버튼에 클릭 이벤트를 추가합니다.
         buttons.forEach(function(button) {
             button.addEventListener('click', function() {
