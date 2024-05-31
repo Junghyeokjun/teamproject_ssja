@@ -71,19 +71,19 @@ table {
 	border-spacing: 2px;
 	border-color: gray;
 }
+
 .nav-link-custom{
-   color : black;
+	color : black;
 }
 
 .nav-link.nav-link-custom.active{
-   background-color: black;
+	background-color: black;
 }
 
 
 .page-link.active{
-   background-color: #000000;
+	background-color: #000000;
 }
-
 </style>
 
 

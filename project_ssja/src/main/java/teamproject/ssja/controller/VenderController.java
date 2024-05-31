@@ -31,7 +31,7 @@ public class VenderController {
 	@Autowired
 	
 	
-	@GetMapping("/product/write/")
+	@GetMapping("/product/write")
 	public String writeProduct() {
 		log.info("writeProduct()..");
 		// 
@@ -39,7 +39,7 @@ public class VenderController {
 		return "/vender/vender_write_product";
 	}
 	
-	@PostMapping("/product/add/")
+	@PostMapping("/product/add")
 	public String addOne() {
 		log.info("addOne()..");
 		// 
@@ -48,7 +48,15 @@ public class VenderController {
 		return "/vender/vender_insert_product";
 	}
 	
-	@GetMapping("/question/list/")
+	@GetMapping("/product/list")
+	public String ProductList() {
+		log.info("ProductList()..");
+		// 
+		
+		return "/vender/vender_product_list";
+	}
+	
+	@GetMapping("/question/list")
 	public String showProductList() {
 		log.info("showProductList()..");
 		

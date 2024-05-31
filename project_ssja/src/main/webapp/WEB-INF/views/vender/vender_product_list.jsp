@@ -378,8 +378,7 @@
 </body>
 <script type="text/javascript">
 	$(document).ready(function(){
-		/* 
-			메인 카테고리 작업 중
+		/* 메인 카테고리 작업 중
 		
 		let mainCategoryValue = $('#mainCategory').val(); 
 		$('#mainCategory').on('change',function(){								
@@ -403,8 +402,6 @@
 		}); 
 		
 		*/
-		
-		if($('subCategory').val() )
 		
 		
 		let bannerFile = $('#bannerFile');
@@ -498,9 +495,8 @@
 		       	}
 		    });
 		});
-		
-	
 	}); 
+
 </script>
 
 <!-- 
@@ -861,7 +857,7 @@
         select_dv.toggle();
     });
 
-	
+
 
 </script>
 
