@@ -44,7 +44,6 @@ public class SignUpFromSocialController {
 		signUpService.registSocialToUser(member);
 	
 		return "redirect:/login";
-	} 
-	
+	} 	
 	
 }

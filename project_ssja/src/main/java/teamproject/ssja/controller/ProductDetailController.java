@@ -26,7 +26,6 @@ public class ProductDetailController {
 		model.addAttribute("productdetail", productDetailService.get(PRO_NO));
 		
 		long total = productDetailService.getTotal(PRO_NO);
-		// 페이지 만들기 위한 정보를 가져오는데 PageVO변수를 통해 view로 전달?
 		model.addAttribute("pageMaker", new PageVO(total, criteria));		
 		model.addAttribute("productdetailreplys", productDetailService.getListWithPaging(criteria));
 
