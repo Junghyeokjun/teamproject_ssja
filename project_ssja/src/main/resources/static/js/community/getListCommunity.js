@@ -152,9 +152,14 @@ let getListProductToServer = function(condition){
 				});
 				
 				community_content.append($list_content_dv);
-
+				
+				//게시글이 존재하지 않을시 
+				//추후에 회의후 이미지 추가 예정
 				if(data.page.total==0){
+					
 					$paging_dv.empty();
+					community_content.css('height','500px');
+					community_content.append('<h1 class="text-center mt-4"> 게시글이 존재하지 않습니다</h1>');
 				}
 			},error: function(xhr, status, error) {
 				console.log("Error:", xhr.responseText);

@@ -52,7 +52,21 @@
         	SELECT * FROM replys where b_no = #{bno} ORDER BY r_group desc, r_step desc
         ]]>
 	</select>
-
+	<!-- 해당 게시글의 댓글들을 일부만 조회하기 -->
+		<select id="selectPartReplys" resultMap="ReplysDtoMap">
+			<![CDATA[
+	        	select * from 
+        		(select
+			        rownum rnum , A.*
+			    from 
+			    (SELECT * 
+			     FROM replys 
+			     WHERE b_no = #{bno}  
+			     ORDER by r_group desc, r_step asc) A 
+		    	where rownum <= #{replyNum} * #{amount})
+				where rnum > (#{replyNum}-1) * #{amount}
+	        ]]>
+		</select>
 	<!-- 해당 댓글의 총 좋아요 수 가져오기 -->	
 	<select id="selectReplyLikes" parameterType="long" resultType="long">
     	<![CDATA[

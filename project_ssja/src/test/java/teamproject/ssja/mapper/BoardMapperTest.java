@@ -147,9 +147,15 @@ class BoardMapperTest {
 	@Test
 	void TestSelectCommunity() {
 		
-		Criteria criteria = new Criteria(1, 10);
 		for(CommunityBoardDto dto : boardMapper.selectCommunityDto(1,10)){
 			log.info("communitydto : " + dto);
 		}
+	}
+	
+	@Disabled
+	@Test
+	void TestSelectCommunityContent() {
+			log.info("communitydto : " + boardMapper.selectCommunityContent(600));
+	
 	}
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import lombok.extern.slf4j.Slf4j;
+import teamproject.ssja.dto.ReplysDto;
 import teamproject.ssja.dto.community.CommunityBoardDto;
 import teamproject.ssja.mapper.BoardMapper;
 
@@ -17,21 +18,44 @@ import teamproject.ssja.mapper.BoardMapper;
 class CommunityServiceImplTest {
 
 	@Autowired
-	BoardMapper boardMapper;
+	CommunityService communityService;
 	
 	@Disabled
 	@Test
 	void notNullTest() {
-		assertNotNull(boardMapper);
+		assertNotNull(communityService);
 	}
 	
-//	@Disabled
+	@Disabled
 	@Test
 	void selectCommunityTest() {
 		
-		for (CommunityBoardDto dto : boardMapper.selectCommunityDto(1,10)) {
+		for (CommunityBoardDto dto : communityService.getPost(1,10)) {
 			log.info(dto.toString());
 		}
 	}
 
+	@Disabled
+	@Test
+	void selectCommunityContentTest() {
+		
+		log.info( communityService.getContent(600).toString());
+		
+	}
+	
+	@Disabled
+	@Test
+	void selectCommunityPartReplyTest() {
+		
+		for (ReplysDto dto : communityService.getReply(1,20,11620)) {
+			log.info(dto.toString());
+		}
+		
+	}
+	
+
+	@Test
+	void selectCommunityReplyTotalTest() {
+		log.info(communityService.getReplyTotal(11620)+"");
+	}
 }
