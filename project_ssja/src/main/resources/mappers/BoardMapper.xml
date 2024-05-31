@@ -118,6 +118,7 @@
 
 
 	<!-- 커뮤니티 페이징 -->
+	<!-- 40으로 수정  -->
 	<select id="selectCommunityDto" resultMap="CommunityDtoMap">
     	<![CDATA[
         	select * from 
@@ -127,7 +128,7 @@
 			    from 
 			    (SELECT b.*, bi.b_img_no,bi.b_img_path 
 			     FROM board b, board_imgs bi 
-			     WHERE b.B_C_NO=40 and b.b_no=bi.b_no 
+			     WHERE b.B_C_NO=50 and b.b_no=bi.b_no  
 			     ORDER BY b.b_no desc) A 
 		    	where rownum <= #{pageNum} * #{amount} 
 		    )

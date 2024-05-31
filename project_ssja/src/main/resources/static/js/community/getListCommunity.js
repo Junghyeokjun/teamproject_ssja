@@ -152,6 +152,10 @@ let getListProductToServer = function(condition){
 				});
 				
 				community_content.append($list_content_dv);
+
+				if(data.page.total==0){
+					$paging_dv.empty();
+				}
 			},error: function(xhr, status, error) {
 				console.log("Error:", xhr.responseText);
 			}

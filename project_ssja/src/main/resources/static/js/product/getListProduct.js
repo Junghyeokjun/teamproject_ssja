@@ -74,7 +74,7 @@ let getListProductToServer = function(condition){
 			beforeSend : function(xhr) {
 				xhr.setRequestHeader(header, token);
 			},
-			data: condition,
+			data: JSON.stringify(condition),
 			contentType:"application/json",
 			dataType:"json",
 			url : "/product/lists",

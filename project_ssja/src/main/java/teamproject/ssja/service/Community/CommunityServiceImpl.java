@@ -23,7 +23,8 @@ public class CommunityServiceImpl implements CommunityService {
 
 	@Override
 	public long getCommunityTotal() {
-		return boardMapper.selectTotalCount(40);
+		//40으로 수정
+		return boardMapper.selectTotalCount(50);
 	}
 
 }
