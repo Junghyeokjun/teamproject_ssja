@@ -1,4 +1,4 @@
-package teamproject.ssja.dto.logindto;
+package teamproject.ssja.dto.login;
 
 //OAuth2 소셜로그인 전용 인터페이스입닏.
 //카카오는 자세히 모르지만 구글에 경우 해당 인터페이스로 GoogleResponse를 구현하시고

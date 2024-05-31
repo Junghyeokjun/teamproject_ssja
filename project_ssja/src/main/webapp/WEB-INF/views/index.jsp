@@ -91,6 +91,12 @@ justify-content:space-between;
 align-items:center;
 
 }
+#show_more_bestItem{
+background-color:white;
+with:100%;
+border:1px solid #ddd;
+height:5em;
+}
 
   </style>
 </head>
@@ -152,6 +158,9 @@ align-items:center;
     
     <div id="best_item_content">
     
+    </div>
+    <div>
+    <button id="show_more_bestItem" class="w-100">더보기</button>
     </div>
     
     

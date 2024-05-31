@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import teamproject.ssja.dto.logindto.CustomPrincipal;
+import teamproject.ssja.dto.login.CustomPrincipal;
 import teamproject.ssja.service.wishlist.WishListService;
 
 @Slf4j

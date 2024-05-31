@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.MembersDto;
-import teamproject.ssja.dto.logindto.CustomPrincipal;
+import teamproject.ssja.dto.login.CustomPrincipal;
 import teamproject.ssja.service.signup.SignUpService;
 
 @Controller

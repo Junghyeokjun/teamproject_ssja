@@ -15,7 +15,7 @@ let getListBestToServer = function (pageNum) {
         data: { 'page': pageNum },
         success: function (data) {
             console.log(data);
-            $best_item_content.empty();
+            //$best_item_content.empty();
 
             let $list_content_dv = $("<div>").addClass("d-flex flex-column");
             let $row;
@@ -127,6 +127,13 @@ let MovePageBest = function () {
     changePageNum();
     getListBestToServer(bestItemPageNum);
 }
-setInterval(MovePageBest, 5000);
-
+$("#show_more_bestItem").on('click', function(){
+	 if (bestItemPageNum < 2) {
+	        bestItemPageNum++;
+	        getListBestToServer(bestItemPageNum);
+	        if (bestItemPageNum ===2){
+	        	$(this).css('display','none');
+	        }
+	    }
+})
 getListBestToServer(bestItemPageNum);

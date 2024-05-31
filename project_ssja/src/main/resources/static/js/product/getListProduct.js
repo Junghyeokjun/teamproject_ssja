@@ -89,7 +89,7 @@ let getListProductToServer = function(condition){
 					$("#product_search_select").empty();
 					let $logo_img = $("<img>").css({'width':'10em','height': '7em','margin-left':'4em','margin-right':'auto'}).attr('src','/images/utilities/logoSSJA.png');
 					
-					let $noneProductImg = $("<img>").css({'width':'13em','height': '13em','margin-bottom':'2em'})
+					let $noneProductImg = $("<img>").css({'width':'13em','height': '10em','margin-bottom':'2em'})
 					.attr('src','/images/utilities/warn_icon.png');
 					
 					let $notice_none = $("<h2>").css({'text-align':'center','font-weight':'bold'}).text('상품이 존재하지 않습니다.');

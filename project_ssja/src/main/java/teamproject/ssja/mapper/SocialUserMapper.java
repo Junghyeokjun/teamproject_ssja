@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import teamproject.ssja.dto.MembersDto;
-import teamproject.ssja.dto.logindto.SocialUserInfoDTO;
+import teamproject.ssja.dto.login.SocialUserInfoDTO;
 
 @Mapper
 public interface SocialUserMapper {

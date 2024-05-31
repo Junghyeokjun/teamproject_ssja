@@ -1,5 +1,5 @@
 
-package teamproject.ssja.dto.logindto;
+package teamproject.ssja.dto.login;
 
 import java.util.Map;
 

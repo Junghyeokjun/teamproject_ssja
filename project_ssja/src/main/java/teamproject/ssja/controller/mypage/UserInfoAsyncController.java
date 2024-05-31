@@ -20,9 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
+import teamproject.ssja.LoginChecker;
 import teamproject.ssja.dto.UserRoleAndAuthDTO;
 import teamproject.ssja.dto.email.MailDTO;
-import teamproject.ssja.dto.logindto.CustomPrincipal;
+import teamproject.ssja.dto.login.CustomPrincipal;
 import teamproject.ssja.dto.userinfo.AddressForm;
 import teamproject.ssja.dto.userinfo.ChangePasswordForm;
 import teamproject.ssja.dto.userinfo.UserInfoDTO;
@@ -51,6 +52,12 @@ public class UserInfoAsyncController {
 			userId = userDetails.getMemberNum();
 			
 				UserInfoDTO userInfo = myPageService.getUserInfo(userId);
+				if(userDetails.isOAuth2User()) {
+					userInfo.setAuth("social");
+				}else {
+					userInfo.setAuth("member");
+					
+				}
 				
 				return ResponseEntity.ok().body(userInfo);
 		
@@ -72,7 +79,7 @@ public class UserInfoAsyncController {
 	}
 	
 	 @PostMapping("/password-change")
-	    public ResponseEntity<String> changePassword(@AuthenticationPrincipal UserDetails userDetails, 
+	    public ResponseEntity<String> changePassword(@AuthenticationPrincipal CustomPrincipal userDetails, 
 	    											@RequestBody ChangePasswordForm changePasswordForm) {
 	    	
 	        String username = userDetails.getUsername();
@@ -87,11 +94,11 @@ public class UserInfoAsyncController {
 	    }
 	 
 	 @DeleteMapping("")
-	 public ResponseEntity<String> deleteUserEnroll(@AuthenticationPrincipal UserDetails userDetails){
-		 String username = userDetails.getUsername();
+	 public ResponseEntity<String> deleteUserEnroll(@AuthenticationPrincipal CustomPrincipal userDetails){
+		 long userId= userDetails.getMemberNum();
 		 
-		 log.info("{} 유저 삭제 요청",username);
-		String EnrollDeleteDate= myPageService.deleteUserEnroll(username);
+		 log.info("{} 유저 삭제 요청",userId);
+		String EnrollDeleteDate= myPageService.deleteUserEnroll(userId);
 	
 		 log.info("삭제 등록 날짜 {}",EnrollDeleteDate);
 	            return ResponseEntity.ok(EnrollDeleteDate);
@@ -111,8 +118,18 @@ public class UserInfoAsyncController {
 
 	 
 	 @PatchMapping("/email")
-	 public ResponseEntity<String> chagneEmail(@RequestBody String email,@AuthenticationPrincipal UserDetails userDetails){
-		 String userId = userDetails.getUsername();
+	 public ResponseEntity<String> chagneEmail(@RequestBody String email,@AuthenticationPrincipal CustomPrincipal userDetails){
+		 int check =LoginChecker.check();
+		 String userId = "";
+		if(userDetails != null && !userDetails.isOAuth2User()) {
+			
+			 userId = userDetails.getUsername();
+			 
+		}else if(userDetails != null && userDetails.isOAuth2User()) {
+			
+			 userId = userDetails.getEmail();
+			 
+		}
 		 
 		 
 		 myPageService.modifyUserEmail(email, userId);

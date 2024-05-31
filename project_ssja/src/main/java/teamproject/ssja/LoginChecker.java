@@ -5,7 +5,7 @@ import java.util.function.Function;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import teamproject.ssja.dto.logindto.CustomPrincipal;
+import teamproject.ssja.dto.login.CustomPrincipal;
 
 public class LoginChecker {
 

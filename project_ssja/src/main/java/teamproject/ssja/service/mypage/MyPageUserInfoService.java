@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.userinfo.AddressForm;
 import teamproject.ssja.dto.userinfo.UserInfoDTO;
@@ -15,12 +16,11 @@ import teamproject.ssja.mapper.MyPageMapper;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class MyPageUserInfoService implements MyPageService{
 
-	@Autowired
-	MyPageMapper myPageMapper;
-	@Autowired
-	PasswordEncoder passwordEncoder;
+	private final MyPageMapper myPageMapper;
+	private final PasswordEncoder passwordEncoder;
 	
 
 @Override
@@ -37,7 +37,7 @@ public class MyPageUserInfoService implements MyPageService{
 	}
 
 	@Override
-	public String deleteUserEnroll(String userId) {
+	public String deleteUserEnroll(long userId) {
 		
 		myPageMapper.deleteUserEnroll(userId);
 			 

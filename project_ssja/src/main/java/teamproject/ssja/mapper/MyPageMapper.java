@@ -14,7 +14,7 @@ public interface MyPageMapper {
 	UserInfoDTO getUserInfoInMyPage(long username);
 	void changeAddress(AddressForm addressForm);
 	void changePasswordProcess(Map<String,String> params);
-	void deleteUserEnroll(String userId);
+	void deleteUserEnroll(long userId);
 	
 	@Delete("delete from members where m_deletedate < sysdate and not m_deletedate is null")
 	void deleteEnrolled();
@@ -23,5 +23,6 @@ public interface MyPageMapper {
 	List<String> findDeleteEnrolledUsers();
 	
 	void deleteEnrolledUsersAuth(List<String> enrolledDeleteUsers);
+	
 	void modifyUserEmail(Map<String,String> params);
 }

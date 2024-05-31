@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.event.EventPageDTO;
-import teamproject.ssja.dto.logindto.CustomPrincipal;
+import teamproject.ssja.dto.login.CustomPrincipal;
 import teamproject.ssja.mapper.EventMapper;
 
 @Slf4j

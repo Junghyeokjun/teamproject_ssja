@@ -45,6 +45,7 @@
 <body>
     <div class="d-flex align-items-center justify-content-center flex-column" style="margin-top:10%;">
         <a href="${pageContext.request.contextPath}/"><img src="/images/utilities/big_logo.png" alt=""></a>
+        <h3>비밀 번호 변경</h3>
         <form id="change_password_form"action="" method="get">
         <div class="d-flex felx-row justify-content-center align-items-center">
         <div>

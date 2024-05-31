@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import teamproject.ssja.dto.logindto.CustomPrincipal;
-import teamproject.ssja.dto.logindto.GoogleResponse;
-import teamproject.ssja.dto.logindto.KakaoResponse;
-import teamproject.ssja.dto.logindto.NaverResponse;
-import teamproject.ssja.dto.logindto.OAuth2Response;
-import teamproject.ssja.dto.logindto.SocialUserInfoDTO;
+import teamproject.ssja.dto.login.CustomPrincipal;
+import teamproject.ssja.dto.login.GoogleResponse;
+import teamproject.ssja.dto.login.KakaoResponse;
+import teamproject.ssja.dto.login.NaverResponse;
+import teamproject.ssja.dto.login.OAuth2Response;
+import teamproject.ssja.dto.login.SocialUserInfoDTO;
 import teamproject.ssja.exception.DuplicateEmailException;
 import teamproject.ssja.mapper.SocialUserMapper;
 
@@ -116,7 +116,6 @@ public class OAuth2UserService extends DefaultOAuth2UserService{
 
 		
 		 SocialUserInfoDTO user = socialUserMapper.findByUserName(username);
-		 System.out.println("socia login user  "+ user);
 		 
 	        return new CustomPrincipal(oAuth2Response, auth,user.getId());
 		}catch(Exception e) {
