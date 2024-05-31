@@ -116,6 +116,34 @@
         ]]>
 	</select>
 
+
+	<!-- 커뮤니티 페이징 -->
+	<select id="selectCommunityDto" resultMap="CommunityDtoMap">
+    	<![CDATA[
+        	select * from 
+        	(
+			    select
+			        rownum rnum , A.*
+			    from 
+			    (SELECT b.*, bi.b_img_no,bi.b_img_path 
+			     FROM board b, board_imgs bi 
+			     WHERE b.B_C_NO=40 and b.b_no=bi.b_no  
+			     ORDER BY b.b_no desc) A 
+		    	where rownum <= #{pageNum} * #{amount} 
+		    )
+			where rnum > (#{pageNum}-1) * #{amount}
+        ]]>
+	</select>
+
+	<!-- 커뮤니티 게시글을 가져온다.  -->
+	<select id="selectCommunityContent" resultMap="CommunityDtoMap">
+		<![CDATA[
+			    SELECT b.*, bi.b_img_no,bi.b_img_path 
+			    FROM board b, board_imgs bi
+			    WHERE b.B_C_NO=40 and b.b_no=bi.b_no and b.b_no = #{bno} 
+        ]]>
+	</select>
+
 	<!-- 게시글 총 개수  -->
 	<select id="selectTotalCount" parameterType="long" resultType="long">
     	<![CDATA[
@@ -148,5 +176,22 @@
 		<result property="likebno" column="b_no"/>
 		<result property="likebmno" column="m_no"/>
 		<result property="bldate" column="b_l_date"/>
+	</resultMap>
+
+	<!-- 커뮤니티 맵 -->
+	<resultMap type="teamproject.ssja.dto.community.CommunityBoardDto" id="CommunityDtoMap">
+		<id property="bno" column="b_no"/>
+		<result property="bmno" column="m_no"/>
+		<result property="bbcno" column="b_c_no"/>
+		<result property="bwriter" column="b_writer"/>
+		<result property="btitle" column="b_title"/>
+		<result property="bcontent" column="b_content"/>
+		<result property="bdate" column="b_date"/>
+		<result property="blike" column="b_like"/>
+		<result property="bhit" column="b_hit"/>
+		<result property="beval" column="b_eval"/>
+		<result property="prono" column="pro_no"/>
+		<result property="img_no" column="B_IMG_NO"/>
+		<result property="img_path" column="B_IMG_PATH"/>
 	</resultMap>
 </mapper>

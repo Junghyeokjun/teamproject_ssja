@@ -51,6 +51,8 @@ public class SignUpServiceImpl implements SignUpService {
 	@Override
 	public boolean signUp(MembersDto member) {
 		//가입에 성공했을시 권한테이블에 추가후 true반환
+		System.out.println(member.getM_PW()); //나중에 처리
+		member.setM_PW(passwordEncoder.encode(member.getM_PW()));
 		int result=membersMapper.insertMember(member);
 		if(result==1) {
 			membersMapper.insertUserAuth(member.getM_ID());

@@ -84,7 +84,9 @@ main {
   z-index: 1;
   height: auto;
 }
-
+#sub_nav{
+	width:100%;
+}
 #sub_bar a {
   color: white;
 }
@@ -388,4 +390,12 @@ input:focus {
   display:flex;
   flex-direction: column;
   margin-left: 1em;
+}
+#carouselExampleIndicators{
+	position: relative;
+}
+.carousel-control-prev, .carousel-control-next{
+	height:200px;
+	position: absolute;
+	top: 30%;
 }

@@ -25,6 +25,7 @@ public interface ReplyMapper {
 	
 	List<ReplysDto> selectReplys(long bno);
 
+	List<ReplysDto> selectPartReplys(int replyNum, int amount, long bno);
 
 	// 해당 게시글의 총 댓글 개수 가져오기
 	long selectReplyCount(long bno);

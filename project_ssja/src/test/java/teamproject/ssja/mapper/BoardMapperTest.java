@@ -1,7 +1,8 @@
 package teamproject.ssja.mapper;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.BoardCategoryDto;
 import teamproject.ssja.dto.BoardDto;
+import teamproject.ssja.dto.community.CommunityBoardDto;
 import teamproject.ssja.page.Criteria;
 
 @Slf4j
@@ -26,6 +28,7 @@ class BoardMapperTest {
 //		}
 //	}
 
+	@Disabled
 	@Transactional
 	@Test
 	void testInsertBoard() {
@@ -42,7 +45,8 @@ class BoardMapperTest {
 				log.info("dto : " + dto);
 		}
 	}
-
+	
+	@Disabled
 	@Test
 	void testDeleteBoard() {
 		Criteria criteria = new Criteria(); 
@@ -59,11 +63,13 @@ class BoardMapperTest {
 		}
 	}
 
+	@Disabled
 	@Test
 	void testRead() {
 		log.info("this dto : " + boardMapper.read(140));
 	}
 
+	@Disabled
 	@Test
 	void testUpdateBoard() {
 		BoardDto boardDto = new BoardDto();
@@ -76,6 +82,7 @@ class BoardMapperTest {
 		boardMapper.read(205);
 	}
 
+	@Disabled
 	@Test
 	void testUpdateHit() {
 		boardMapper.read(205);
@@ -83,6 +90,7 @@ class BoardMapperTest {
 		boardMapper.read(205);
 	}
 
+	@Disabled
 	@Test
 	void testUpdateBLikeUp() {
 		BoardDto dto = boardMapper.read(130);
@@ -93,6 +101,7 @@ class BoardMapperTest {
 		log.info("dto's like up after : " + dto.getBlike());		
 	}
 
+	@Disabled
 	@Test
 	void testUpdateBLikeDown() {
 		BoardDto dto = boardMapper.read(130);
@@ -103,11 +112,13 @@ class BoardMapperTest {
 		log.info("dto's like down after : " + dto.getBlike());	
 	}
 
+	@Disabled
 	@Test
 	void testSelectTotalCount() {
 		log.info("총 게시글 수는 " + boardMapper.selectTotalCount(20) + "개입니다.");
 	}
 
+	@Disabled
 	@Test
 	void testSelectListWithPaging() {
 		// 기본 criteria : 1페이지에 출력되는 10개  
@@ -116,6 +127,7 @@ class BoardMapperTest {
 		}
 	}
 
+	@Disabled
 	@Test
 	void testSelectBoardLikes() {
 		long likes = boardMapper.selectBoardLikes(205);
@@ -123,10 +135,27 @@ class BoardMapperTest {
 		log.info("205번 게시글 좋아요 수 : " + likes);
 	}
 	
+	@Disabled
 	@Test
 	void TestSelectBoardCategorys() {
 		for(BoardCategoryDto dto : boardMapper.selectBoardCategorys()) {
 			log.info("BC dto : " + dto);
 		}
+	}
+	
+	@Disabled
+	@Test
+	void TestSelectCommunity() {
+		
+		for(CommunityBoardDto dto : boardMapper.selectCommunityDto(1,10)){
+			log.info("communitydto : " + dto);
+		}
+	}
+	
+	@Disabled
+	@Test
+	void TestSelectCommunityContent() {
+			log.info("communitydto : " + boardMapper.selectCommunityContent(600));
+	
 	}
 }

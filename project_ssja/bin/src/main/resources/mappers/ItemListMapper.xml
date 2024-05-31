@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="teamproject.ssja.mapper.ProductListMapper">
+
+	<select id="getProductList" parameterType="teamproject.ssja.dto.product.ProductCondition" resultType="teamproject.ssja.dto.product.ProductItemDto">
+    SELECT * FROM (
+        SELECT sub.*, ROW_NUMBER() OVER (ORDER BY 
+            <choose>
+                <when test="conditionSelect != null and conditionSelect != ''">
+                    ${conditionSelect}
+                </when>
+                <otherwise>pro_sellcount DESC</otherwise>
+            </choose>
+            <if test='conditionName != null and conditionName != ""'>, #{conditionName}</if>
+        ) AS rnum FROM (  SELECT p.*,
+            (SELECT COUNT(b.pro_no) FROM board b WHERE b.pro_no = p.pro_no) AS REVIEW_COUNT,
+            (SELECT avg(b.b_eval) FROM board b WHERE b.pro_no = p.pro_no) AS RATING_AVG
+            FROM product p
+            <where>
+                <if test="category != null and category != ''">
+                    AND p.p_c_no = #{category}
+                </if>
+                <if test="conditionEnd != null and conditionEnd != '' and conditionEnd > 0 and conditionStart >= 0">
+                    AND p.pro_price BETWEEN #{conditionStart} AND #{conditionEnd}
+                </if>
+            </where>
+        ) sub ) WHERE rnum BETWEEN (#{pageNum} * #{amount} - 39) AND (#{pageNum} * #{amount})
+</select>
+	
+	
+	
+	
+	<select id="getTotalCountItems" parameterType="teamproject.ssja.dto.product.ProductCondition" resultType="int">
+	select count(*) from product 
+	<where>
+	<if test="category != null and category != ''">
+				AND p_c_no = #{category}
+			</if>
+			<if
+				test="conditionEnd != null and conditionEnd != '' and conditionEnd > 0 and conditionStart >= 0">
+				AND pro_price BETWEEN #{conditionStart} AND #{conditionEnd}
+			</if>
+	</where>
+	</select>
+</mapper>
