@@ -403,8 +403,7 @@
 		}); 
 		
 		*/
-		
-		if($('subCategory').val() )
+
 		
 		
 		let bannerFile = $('#bannerFile');
