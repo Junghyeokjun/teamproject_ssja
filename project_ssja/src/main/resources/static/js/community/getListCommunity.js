@@ -68,7 +68,9 @@ let getListProductToServer = function(condition){
 				        function() {
 				            $(this).css('background-color', 'white').css('cursor', 'auto');
 				        }
-				    );
+				    ).on("click",function(){
+                        window.location="/community/content/"+e.bno;
+					});
 					
 					let $item_img_dv = $("<div>").attr("id", "item_img_dv").css("width","100%").append($("<img>").attr("src", e.img_path)
 						    .css('width', '100%') .css('height', '10em').css('overflow', 'hidden'));

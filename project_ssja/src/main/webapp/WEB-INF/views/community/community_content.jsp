@@ -379,7 +379,15 @@
           <img src="/images/utilities/like.png" alt="" style="width: 60px;height: 60px;">
           <span class="like">${content.blike}</span>
         </span>
-        <h5 class="ps-3 py-2 w-100 border-top border-bottom">댓글:[<span class="reply_total">${reply_total}</span>]</h5>
+        <div class="ps-3 py-2 w-100 border-top border-bottom d-flex flex-row justify-content-between">
+          <span class="fs-5" style="line-height: 38px;">댓글:[<span class="reply_total">${reply_total}</span>]</span>
+          <c:if test="${principal.userInfo.m_No == content.bmno}">
+          	<span>
+              <button class="btn btn-outline-primary">수정하기</button>
+              <button class="btn btn-outline-danger">삭제하기</button>
+            </span>
+          </c:if>
+        </div>
         
         <div class="w-100 px-3" style="position: relative;">
           <textarea name="reply" id="insert_reply_content" class="w-100 mt-2" style="resize :none ; box-sizing: border-box; padding-right: 50px; overflow:hidden"></textarea>
