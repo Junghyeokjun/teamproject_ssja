@@ -461,6 +461,7 @@ let vendor_info_form = function(){
 		
 		alert('등록완료');
 		apply_vendor_auth($("#input_biznum").val(),$("#input_hidden_bizname").val(),$("#input_account").val(),$("#input_FAXnum").val());
+		noticeCompleteApply();
 	}).appendTo($MyPage_content_container);
 	
 };
