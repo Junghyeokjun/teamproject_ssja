@@ -52,8 +52,18 @@ body {
 	font-family: 'fonts', NanumGothicLight;
 	background-color: #f7f0e8;
 }
+.no-ripple {
+    pointer-events: none; /* 클릭 이벤트를 무시합니다. */
+    user-select: none; /* 사용자 선택을 막습니다. */
+    cursor: default; /* 기본 커서를 사용합니다. */
+    transition: none; /* 전환 효과를 없앱니다. */
+}
+
+
+
 
 #logo_img {
+
 	width: 3.5em;
 	height: 3em;
 }
@@ -78,7 +88,7 @@ table {
 	color : white;
 }
 
-.nav-link-custom:hover, .nav-link-custom:focus{
+.nav-link-custom:hover{
 	color : yellow;
 }
 
@@ -107,8 +117,6 @@ table {
     display: flex;
 }
 
-
-
 .form-control{
 	align-items: center;
 }
@@ -118,7 +126,7 @@ table {
 	border-color:  #ca5a0a;
 }
 
-.btn-primary.custom-btn:hover, .btn-primary.custom-btn:focus{
+.btn-primary.custom-btn:hover{
 	background-color:  chocolate;
 	border-color : chocolate;
 }
@@ -128,7 +136,7 @@ table {
 	border-color:  #c7a820;
 }
 
-.btn-danger.custom-btn:hover, .btn-danger.custom-btn:focus{
+.btn-danger.custom-btn:hover{
 	background-color:  #cfb439;
 	border-color:  #cfb439;
 }
@@ -375,10 +383,9 @@ table {
 											</span>
 										</div>
 										<div class="d-flex justify-content-between">
-											<input type="button" class="btn btn-primary custom-btn"
+										<input type="button" class="btn btn-primary custom-btn"
 												onclick="wish_click(${productdetail.getPRO_NO()})" value="Wish List">
 											<input type="button" class="btn btn-danger custom-btn" value="바로구매">
-											<!-- <button type="button" class="btn btn-danger custom-btn">바로구매</button> -->
 										</div>
 									</p>
 								</div>
@@ -398,34 +405,30 @@ table {
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
 	<script>
-	 let token = $("meta[name='_csrf']").attr("content");
-		let header = $("meta[name='_csrf_header']").attr("content");
-		
-		document.addEventListener("DOMContentLoaded", function() {
-			
-			
-			const priceElement = document.querySelector(".gdsPrice span");
-			const quantityInput = document.getElementById("quantity");
-			const totalPriceElement = document.getElementById("totalPrice");
+	document.addEventListener("DOMContentLoaded", function() {
+	    // 기존 코드 부분
+	    const priceElement = document.querySelector(".gdsPrice .form-control");
+	    const quantityInput = document.getElementById("quantity");
+	    const totalPriceElements = document.querySelectorAll("#totalPrice");
 
-			// 상품 가격을 가져오기
-			const productPrice = parseFloat(priceElement.textContent.replace(
-					/[^\d]/g, ''));
+	    // 상품 가격을 가져오기
+	    const productPrice = parseFloat(priceElement.textContent.replace(/[^\d]/g, ''));
 
-			// 수량이 변경될 때 총 금액을 계산하는 함수
-			function updateTotalPrice() {
-				const quantity = parseInt(quantityInput.value);
-				const totalPrice = productPrice * quantity;
-				totalPriceElement.textContent = totalPrice.toLocaleString()
-						+ " 원";
-			}
+	    // 수량이 변경될 때 총 금액을 계산하는 함수
+	    function updateTotalPrice() {
+	        const quantity = parseInt(quantityInput.value);
+	        const totalPrice = productPrice * quantity;
+	        totalPriceElements.forEach(element => {
+	            element.textContent = totalPrice.toLocaleString() + " 원";
+	        });
+	    }
 
-			// 수량 입력 값이 변경될 때마다 총 금액 업데이트
-			quantityInput.addEventListener("input", updateTotalPrice);
+	    // 수량 입력 값이 변경될 때마다 총 금액 업데이트
+	    quantityInput.addEventListener("input", updateTotalPrice);
 
-			// 페이지 로드 시 초기 총 금액 설정
-			updateTotalPrice();
-		});
+	    // 페이지 로드 시 초기 총 금액 설정
+	    updateTotalPrice();
+	});
 
 	    // 현재 페이지의 정보
 	    var currentPage = ${pageMaker.criteria.getPageNum()}; 
@@ -467,6 +470,20 @@ table {
 	        });
 	        return count;
 	    };
+	    document.addEventListener('DOMContentLoaded', function() {
+	        const btnButtons = document.querySelectorAll('.btn');
+
+	        btnButtons.forEach(function(button) {
+	            button.addEventListener('click', function(event) {
+	                event.preventDefault(); // 기본 동작 방지
+	                event.stopPropagation(); // 이벤트 전파 중지
+	                setTimeout(function() {
+	                    button.classList.remove('style'); // 일정 시간 후에 클래스 제거
+	                }, 0); // 0 밀리초 뒤에 실행하여 최소한의 딜레이로 동작하도록 설정
+	            });
+	        });
+	    });
+
 	</script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
