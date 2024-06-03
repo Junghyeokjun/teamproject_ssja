@@ -59,12 +59,10 @@ class ReplyMapperTest {
 	}
 	
 	@Transactional
-	// 대댓글만 한정하여 반영하는 shape : 그룹 내 순번 정하는 것.
-<<<<<<< HEAD
 	@Disabled
-=======
+	// 대댓글만 한정하여 반영하는 shape : 그룹 내 순번 정하는 것.
+
 	// 대댓글 입력도 포함된 상태
->>>>>>> origin/dev_ss
 	@Test
 	void testUpdateShape() {
 		// ReplysDto replysDto = new ReplysDto(1,209,1,"하나마트","대충 할래...","2024-05-12",0,1,0,0);
@@ -80,13 +78,9 @@ class ReplyMapperTest {
 			log.info("dto : " + dto);
 		};
 	}
-<<<<<<< HEAD
 	
 	@Disabled
-=======
-
 	
->>>>>>> origin/dev_ss
 	@Test
 	void testUpdateReply() {
 		// 해당 부분에서는 기존 데이터를 가져왔다고 가정함. 
