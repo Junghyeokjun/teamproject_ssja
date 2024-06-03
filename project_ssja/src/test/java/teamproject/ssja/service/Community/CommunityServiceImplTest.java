@@ -53,9 +53,15 @@ class CommunityServiceImplTest {
 		
 	}
 	
-
+	@Disabled
 	@Test
 	void selectCommunityReplyTotalTest() {
 		log.info(communityService.getReplyTotal(11620)+"");
+	}
+	
+	@Disabled
+	@Test
+	void insertCommunityReplyTest() {
+		log.info(communityService.insertReply(new ReplysDto(0, 11620, 21, "test", "test", null, 0, 0, 0, 0))+"");
 	}
 }

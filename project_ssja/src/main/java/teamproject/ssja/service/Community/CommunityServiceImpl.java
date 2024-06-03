@@ -47,4 +47,17 @@ public class CommunityServiceImpl implements CommunityService {
 		return replyMapper.selectReplyCount(bno);
 	}
 
+	@Override
+	public int insertReply(ReplysDto reply) {
+		int replyResult=0;
+		if(reply.getRgroup()==0) {
+			replyResult= replyMapper.insertReply(reply);
+		}else {
+			replyMapper.updateShape(reply);
+			replyResult=replyMapper.insertReReply(reply);
+		}
+		
+		return replyResult;
+	}
+
 }

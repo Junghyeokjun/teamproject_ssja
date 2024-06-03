@@ -60,11 +60,26 @@ public class CommunityController {
 	}
 	
 	@PostMapping("/reply")
-	public String insertReply(@RequestBody Map<String, Object> data){
+	public int insertReply(@RequestBody Map<String, Object> data){
 		System.out.println(data);
-		return "aa";
+		
+		//{rno=0, rbno=11620, rmno=21, rwriter=test, rcontent=sss, rdate=sysdate, rlike=0, rgroup=0, rstep=0, rindent=0}
+		
+		
+		return communityService.insertReply(new ReplysDto(0, Long.valueOf((String) data.get("rbno")).longValue(), 
+															 Long.valueOf((String) data.get("rmno")).longValue(), 
+															 data.get("rwriter").toString(), 
+															 data.get("rcontent").toString(), null, 0,  
+															 Long.valueOf((String) data.get("rgroup")).longValue(),  
+															 Long.valueOf((String) data.get("rstep")).longValue(),  
+															 Long.valueOf((String) data.get("rindent")).longValue()));
 	}
-	
+
+	@GetMapping("/replyTotal")
+	public long replyTotal(long bno){
+		
+		return communityService.getReplyTotal(bno);
+	}
 	
 	//커뮤니티 게시글들을 페이징해서 얻어오는 부분
 	@PostMapping("/post")

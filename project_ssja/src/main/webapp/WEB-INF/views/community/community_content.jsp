@@ -88,21 +88,22 @@
               result.forEach(function(e, idx){
                 var reply_wrap1;
                 if(e.rindent<3){
-                  reply_wrap1=$('<div class="my-2" style="margin-left:'+(16+e.rindent*30)+'px; margin-right: 16px; box-sizing: content-box; border: 1px solid #BBB;"></div>')
+                  reply_wrap1=$('<div class="my-2" style="margin-left:'+(16+e.rindent*30)+'px; margin-right: 16px; box-sizing: content-box; border: 1px solid #BBB;" group="'+e.rgroup+'" indent="'+e.rindent+'" step="'+e.rstep+'"></div>')
                 }else{
-                  reply_wrap1=$('<div class="my-2" style="margin-left: 106px; margin-right: 16px; box-sizing: content-box; border: 1px solid #BBB;"></div>')
+                  reply_wrap1=$('<div class="my-2" style="margin-left: 106px; margin-right: 16px; box-sizing: content-box; border: 1px solid #BBB;" group="'+e.rgroup+'" indent="'+e.rindent+'" step="'+e.rstep+'"></div>')
                 }
                 var reply_wrap2=$('<div class="px-2 d-flex justify-content-between" style="background-color: #EEE;">');
                 $('<span>'+e.rwriter+'</span>').appendTo(reply_wrap2);
                 $('<span>'+e.rdate+'</span>').appendTo(reply_wrap2);
                 reply_wrap2.appendTo(reply_wrap1);
-                $('<div class="p-2">'+e.rcontent+'</div>').appendTo(reply_wrap1);
+                $('<div class="p-2 reply">'+e.rcontent+'</div>').appendTo(reply_wrap1);
                 reply.append(reply_wrap1);
               });
-              reply_count.count++;
+              
               if(reply_count.total<=reply_count.amount*reply_count.count){
                 more_btn.attr("hidden","hidden");
               }
+              reply_count.count++;
             },    
             error : function(request, status, error) {
               alert(error);
@@ -111,7 +112,30 @@
         
         }
       }
-      //댓글 입력 함수(구현중)
+      // 댓글 갯수 획득 ajax 함수;
+      let reply_total= function(){
+          $.ajax({
+            type : 'GET',
+            url : '/community/replyTotal',
+            async : false,
+            dataType : 'text',
+            data :{
+              bno : bno_val
+            },    
+            success : function(result) {
+              $(".reply_total").each(function(idx,item){
+                item.innerHTML=result;
+              })
+              reply_count.total=result;
+            },    
+            error : function(request, status, error) {
+              alert(error);
+            }
+          })
+        
+        }
+      
+      //댓글 입력 함수
       let insert_reply= function(step,indent,cotent,group){
           if(group==undefined){
             group=0;
@@ -140,13 +164,16 @@
               rindent : indent
             }),    
             success : function(result) {
-              // reply.empty();
-              // var temp=reply_count.count;
-              // reply_count.count=1;
-              // more_btn.removeAttr("hidden");
-              // for(var i=0;i<temp;i++){
-              //   more_reply();
-              // }
+              reply_total();
+              var temp_scroll = document.documentElement.scrollTop
+              reply.empty();
+              var temp=reply_count.count-1;
+              reply_count.count=1;
+              more_btn.removeAttr("hidden");
+              for(var i=0;i<temp;i++){
+                more_reply();
+              }
+              window.scrollTo({top : temp_scroll , left : 0 , behavior : 'instant',});
             },    
             error : function(request, status, error) {
               alert(error);
@@ -158,10 +185,12 @@
       }
       more_reply();
 
+      //댓글 더보기
       more_btn.on("click",function(){
         more_reply();
       })
 
+      //댓글 입력
       insert_btn.on("click",function(){
         if(insert_reply_content.val()==""){
           alert("댓글내용을 입력해주세요.")
@@ -173,6 +202,28 @@
           insert_reply_content.val("");
         }
       })
+
+      //대댓글 입력창 노출
+      $(document).on("click",".reply",function(){
+        $(".re_reply").remove();
+        var reply_wrap1= $('<div class="w-100 px-3 re_reply" id="insert_re_reply" style="position: relative;" group="'+$(this.parentNode).attr("group")+'" indent="'+$(this.parentNode).attr("indent") +'" step="'+$(this.parentNode).attr("step") +'"></div>');
+        $('<textarea name="reply" id="insert_re_reply_content" class="w-100 mt-2" style="resize :none ; box-sizing: border-box; padding-right: 50px; overflow:hidden"></textarea>').appendTo(reply_wrap1);
+        $('<div id="insert_re_btn" class="text-center" style="color: #BBB; position: absolute; top: 10% ; right: 2%; width: 50px; height: 54px; line-height: 54px;">입력</div>').appendTo(reply_wrap1);
+        $(this.parentNode).after(reply_wrap1);
+      })
+      //대댓글 입력
+      $(document).on("click","#insert_re_btn",function(){
+        var insert_re_reply= $("#insert_re_reply");
+        if($("#insert_re_reply_content").val()==""){
+          alert("댓글내용을 입력해주세요.")
+        }else if(m_no_val==""){
+          alert("댓글은 로그인후에 입력할수 있습니다.")
+          //필요에 따라 로그인으로 리다이렉트
+        }else{
+          insert_reply(insert_re_reply.attr("step"),insert_re_reply.attr("indent"),$("#insert_re_reply_content").val(),insert_re_reply.attr("group"));
+        }
+      })
+
     })
 
     // <div id="none_reply" class="my-2" style="margin-left: 46px; margin-right: 16px; box-sizing: content-box; border: 1px solid #BBB;" >

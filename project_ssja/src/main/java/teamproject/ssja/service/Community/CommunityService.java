@@ -13,4 +13,5 @@ public interface CommunityService {
 	CommunityBoardDto getContent(long bno);
 	List<ReplysDto> getReply(int replyNum,int amount, long bno);
 	long getReplyTotal(long bno);
+	int insertReply(ReplysDto reply);
 }
