@@ -13,28 +13,35 @@ import teamproject.ssja.service.Admin.ProductListService;
 
 @Slf4j
 @Controller
+@RequestMapping("/adminPage")
 public class AdminPageController {
-	
+
 	@Autowired
 	private MemberListService memberListService;
-	
+
 	@Autowired
 	private ProductListService productListService;
-		
-	@RequestMapping("/AdminPage")
-	public String adminPage(Model model, Criteria criteria) {
-		log.info("adminPage()..");
+	
+	@RequestMapping("/membersList")
+	public String membersList(Model model, Criteria criteria) {
+		log.info("membersList()..");
 
 		long Memberstotal = memberListService.getMemberListTotalCount();
 		model.addAttribute("memberpageMaker", new Page10VO(Memberstotal, criteria));
-		model.addAttribute("members",  memberListService.getMemberListWithPaging(criteria));
-		
+		model.addAttribute("members", memberListService.getMemberListWithPaging(criteria));
+
+		return "/adminPage/membersList";
+	}
+
+	@RequestMapping("/productsList")
+	public String productsList(Model model, Criteria criteria) {
+		log.info("productsList()..");
+
 		long Productstotal = productListService.getProductListTotalCount();
 		model.addAttribute("productpageMaker", new Page10VO(Productstotal, criteria));
-		model.addAttribute("products",  productListService.getProductListWithPaging(criteria));
+		model.addAttribute("products", productListService.getProductListWithPaging(criteria));
 
-		
-		return "/AdminPage";	
+		return "/adminPage/productsList";
 	}
-	
+
 }
