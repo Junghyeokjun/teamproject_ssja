@@ -44,11 +44,9 @@ public class ReplyController {
 	}
 	
 	@GetMapping("/list/{pageNum}/{amount}")
-	public ResponseEntity<Map<String, Object>> getReplyList(@ModelAttribute Criteria criteria, @PathVariable("pageNum") int pageNum, @PathVariable("amount") int amount){
+	public ResponseEntity<Map<String, Object>> getReplyList(@ModelAttribute Criteria criteria){
 		Map<String, Object> responseData = new HashMap<>();
 		try {			
-			criteria.setPageNum(pageNum);
-			criteria.setAmount(amount);
 			responseData.put("replys", replyService.showReplys(criteria.getBno()));
 			log.info("replys : " + responseData.get("reply_view"));
 			responseData.put("pageMaker", new PageVO(replyService.getTotal(criteria.getBno()), criteria));
