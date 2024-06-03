@@ -67,6 +67,10 @@
       let insert_btn=$("#insert_btn");
       let more_btn=$("#more_btn");
       let like_btn=$("#like_btn");
+      let delete_btn=$("#delete_btn");
+      let update_btn=$("#update_btn");
+
+
       let m_no_val=$("#m_no").val();
       let m_NickName_val=$("#m_NickName").val();
 
@@ -138,6 +142,30 @@
           }),    
           success : function(result) {
             liked_total();
+          },    
+          error : function(request, status, error) {
+            alert(error);
+          }
+        })
+      }
+
+      //게시글 삭제 메서드
+      let deletePost=function(){
+        $.ajax({
+          type : 'DELETE',
+          url : '/community/post',
+          async : false,
+          beforeSend: function(xhr) {
+              xhr.setRequestHeader(header, token);
+          },
+          contentType:"application/json",
+          dataType : 'text',
+          data :JSON.stringify({
+            bno : bno_val
+          }),    
+          success : function(result) {
+            alert("해당 게시글이 성공적으로 삭제되었습니다.");
+            window.location="/community/main"
           },    
           error : function(request, status, error) {
             alert(error);
@@ -279,6 +307,10 @@
         }
       })
 
+      delete_btn.on("click",function(){
+        deletePost();
+      });
+
       //댓글 더보기
       more_btn.on("click",function(){
         more_reply();
@@ -317,6 +349,7 @@
           insert_reply(insert_re_reply.attr("step"),insert_re_reply.attr("indent"),$("#insert_re_reply_content").val(),insert_re_reply.attr("group"));
         }
       })
+
 
     })
 
@@ -383,8 +416,8 @@
           <span class="fs-5" style="line-height: 38px;">댓글:[<span class="reply_total">${reply_total}</span>]</span>
           <c:if test="${principal.userInfo.m_No == content.bmno}">
           	<span>
-              <button class="btn btn-outline-primary">수정하기</button>
-              <button class="btn btn-outline-danger">삭제하기</button>
+              <button class="btn btn-outline-primary" id="update_btn" >수정하기</button>
+              <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">삭제하기</button>
             </span>
           </c:if>
         </div>
@@ -424,7 +457,24 @@
     <div id="second_footer"></div>
     <div id="third_footer"></div>
   </footer>
- 
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          정말 삭제하시겠습니까?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니요.</button>
+          <button type="button" class="btn btn-primary" id="delete_btn">삭제하겠습니다.</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>

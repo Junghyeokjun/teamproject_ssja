@@ -98,6 +98,12 @@
         	delete from BOARDLIKED where b_no = #{likebno} and m_no = #{likebmno}
         ]]>
 	</delete>
+	<!--게시글의 모든 좋아요 삭제  -->
+	<delete id="deleteAllBLiked" parameterType="BoardIsLikedDto">
+		<![CDATA[
+        	delete from BOARDLIKED where b_no = #{bno}
+        ]]>
+	</delete>
 	
 	<!-- 게시글 페이징 -->
 	<select id="selectListWithPaging" parameterType="teamproject.ssja.page.Criteria" resultMap="BoardDtoMap">

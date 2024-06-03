@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -104,7 +105,7 @@ public class CommunityController {
 		return communityService.getBoardLiked(new BoardIsLikedDto(bno, mno))!=null;
 	}
 
-	
+
 	//커뮤니티 게시글들을 페이징해서 얻어오는 부분
 	@GetMapping("/post")
 	public Map<String,Object> post(int pageNum, int amount){
@@ -115,6 +116,13 @@ public class CommunityController {
 		data.put("postList", communityService.getPost(pageNum, amount));
 
 		return data;
+	}
+	
+	//커뮤니티 게시글을 삭제하는 부분
+	@DeleteMapping("/post")
+	public int deletePost(@RequestBody Map<String, Object> data){
+
+		return communityService.deletePost(Long.valueOf(data.get("bno").toString()).longValue());
 	}
 	//커뮤니티 베스트 게시글들을 얻어오는 부분
 	@GetMapping("/bestPost")

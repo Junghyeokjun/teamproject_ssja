@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
+import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.BoardIsLikedDto;
 import teamproject.ssja.dto.ReplysDto;
 import teamproject.ssja.dto.community.CommunityBoardDto;
@@ -44,6 +46,16 @@ public class CommunityServiceImpl implements CommunityService {
 		return boardMapper.selectCommunityContent(bno);
 	}
 
+	@Transactional
+	@Override
+	public int deletePost(long bno) {
+		BoardDto board= new BoardDto();
+		board.setBno(bno);
+		replyMapper.deleteAllReply(bno);
+		boardMapper.deleteAllBLiked(bno);
+		return boardMapper.deleteBoard(board);
+	}
+	
 	@Override
 	public List<ReplysDto> getReply(int replyNum, int amount, long bno) {
 		return replyMapper.selectPartReplys(replyNum, amount, bno);
@@ -83,5 +95,7 @@ public class CommunityServiceImpl implements CommunityService {
 	public BoardIsLikedDto getBoardLiked(BoardIsLikedDto liked) {
 		return boardMapper.selectBIsLiked(liked);
 	}
+
+
 
 }

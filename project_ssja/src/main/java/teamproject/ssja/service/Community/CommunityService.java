@@ -18,6 +18,8 @@ public interface CommunityService {
 	List<CommunityBoardDto> getBestPost();
 	//게시물 내용 얻어오는 메서드
 	CommunityBoardDto getContent(long bno);
+	//게시물을 삭제하는 메서드
+	int deletePost (long bno);
 	//게시물 좋아요 개수 얻어오는 메서드
 	long getBoardLikedTotal(long bno);
 	//게시물 좋아요를 추가하는 메서드
