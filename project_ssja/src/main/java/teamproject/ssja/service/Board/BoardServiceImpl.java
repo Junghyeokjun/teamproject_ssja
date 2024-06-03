@@ -106,16 +106,23 @@ public class BoardServiceImpl implements BoardService {
 		log.info("bno : " + bno + ", mno : " + mno);
 		
 		long likes = boardMapper.selectBoardLikes(bnoLong);
-		// 좋아요 테이블에 데이터가 있는지 확인
-		BoardIsLikedDto isLiked = boardMapper.selectBIsLiked(new BoardIsLikedDto(bnoLong, mnoLong));
-
-		log.info("likes : " + likes + ", isLiked : " + isLiked);
 		
-		// 데이터가 있으면 isLiked 값을 변화시킴
-		if (isLiked != null) {
-			return new LikesVO(likes-1, likes, 1L);
+		// mno = 0 (즉, 로그인하지 않은 상태에서 좋아요 개수를 보여줘야 하는 경우)
+		if(mnoLong == 0) {
+			// -99L 부분을 통해 해당 데이터는 로그인하지 않은 유저에게 전달된 데이터임을 표시
+			return new LikesVO(likes, likes, -99L);
 		}else {
-			return new LikesVO(likes, likes, 0L);
+			// 좋아요 테이블에 데이터가 있는지 확인
+			BoardIsLikedDto isLiked = boardMapper.selectBIsLiked(new BoardIsLikedDto(bnoLong, mnoLong));
+
+			log.info("likes : " + likes + ", isLiked : " + isLiked);
+			
+			// 데이터가 있으면 isLiked 값을 변화시킴
+			if (isLiked != null) {
+				return new LikesVO(likes-1, likes, 1L);
+			}else {
+				return new LikesVO(likes, likes, 0L);
+			}
 		}
 	}
 	

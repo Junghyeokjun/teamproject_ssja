@@ -56,10 +56,7 @@ body {
 	background-color: white;
 	padding: 20px;
 }
-/* #content_dv {
-    width: 500px;
-    margin: 2em;
-} */
+
 #select_MyPage {
 	z-index: 900;
 	position: fixed;
@@ -76,7 +73,7 @@ body {
 </style>
 </head>
 <body>
-	<header>
+<header>
 		<div id="title_bar" class=" fixed-top">
 			<div class="py-2 px-1" id="top-bar">
 				<a id="logo_toHome" href=""><img id="logo_img"
@@ -110,69 +107,7 @@ body {
 	<main>
 		<div id="main_container"
 			class="d-flex flex-row align-items-center justify-content-center">
-			<div id="content_dv_membersInfo" style="display: none;">
-				<h2>회원목록</h2>
-				<table class="table" style="text-align: center;">
-					<thead class="table-dark">
-						<tr>
-							<td>회원번호</td>
-							<td>아이디</td>
-							<td>이름</td>
-							<td>주소</td>
-							<td>생일</td>
-							<td>등급</td>
-							<td>이메일</td>
-							<td>휴대폰번호</td>
-							<td>포인트</td>
-							<td>닉네임</td>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach var="member" items="${members}">
-							<tr>
-								<td>${member.getM_NO()}</td>
-								<td>${member.getM_ID()}</td>
-								<td>${member.getM_NAME()}</td>
-								<td>${member.getM_ADDRESS1()}&nbsp;${member.getM_ADDRESS2()}&nbsp;${member.getM_ZIPCODE()}</td>
-								<td>${member.getM_BIRTH()}</td>
-								<td>${member.getM_GRADE()}</td>
-								<td>${member.getM_EMAIL()}</td>
-								<td>${member.getM_PHONE()}</td>
-								<td>${member.getM_POINT()}</td>
-								<td>${member.getM_NICKNAME()}</td>
-							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
-				<div>
-					<nav aria-label="Page navigation example">
-						<ul class="pagination ch-col justify-content-center">
-							<c:if test="${memberpageMaker.prev}">
-								<li class="page-item"><a class="page-link ch-col"
-									href="${pageContext.request.contextPath}/AdminPage${memberpageMaker.makeQuery(memberpageMaker.startPage-1)}"><</a></li>
-							</c:if>
-							<c:forEach var="idx" begin="${memberpageMaker.startPage}"
-								end="${memberpageMaker.endPage}">
-								<c:choose>
-									<c:when test="${memberpageMaker.criteria.pageNum == idx}">
-										<li class="page-item active"><a class="page-link"
-											href="${pageContext.request.contextPath}/AdminPage${memberpageMaker.makeQuery(idx)}">${idx}</a></li>
-									</c:when>
-									<c:otherwise>
-										<li class="page-item"><a class="page-link"
-											href="${pageContext.request.contextPath}/AdminPage${memberpageMaker.makeQuery(idx)}">${idx}</a></li>
-									</c:otherwise>
-								</c:choose>
-							</c:forEach>
-							<c:if test="${memberpageMaker.next && memberpageMaker.endPage > 0}">
-								<li class="page-item"><a class="page-link ch-col"
-									href="${pageContext.request.contextPath}/AdminPage${memberpageMaker.makeQuery(pageMaker.endPage+1)}">></a></li>
-							</c:if>
-						</ul>
-					</nav>
-				</div>
-			</div>
-			<div id="content_dv_productsInfo" style="display: none;">
+			 <div id="content_dv_productsInfo" >
 				<h2>상품목록</h2>
 				<table class="table" style="text-align: center;">
 					<thead class="table-dark">
@@ -205,29 +140,29 @@ body {
 						<ul class="pagination ch-col justify-content-center">
 							<c:if test="${productpageMaker.prev}">
 								<li class="page-item"><a class="page-link ch-col"
-									href="${pageContext.request.contextPath}/AdminPage${productpageMaker.makeQuery(productpageMaker.startPage-1)}"><</a></li>
+									href="${pageContext.request.contextPath}/adminPage/productsList${productpageMaker.makeQuery(productpageMaker.startPage-1)}"><</a></li>
 							</c:if>
 							<c:forEach var="idx" begin="${productpageMaker.startPage}"
 								end="${productpageMaker.endPage}">
 								<c:choose>
 									<c:when test="${productpageMaker.criteria.pageNum == idx}">
 										<li class="page-item active"><a class="page-link"
-											href="${pageContext.request.contextPath}/AdminPage${productpageMaker.makeQuery(idx)}">${idx}</a></li>
+											href="${pageContext.request.contextPath}/adminPage/productsList${productpageMaker.makeQuery(idx)}">${idx}</a></li>
 									</c:when>
 									<c:otherwise>
 										<li class="page-item"><a class="page-link"
-											href="${pageContext.request.contextPath}/AdminPage${productpageMaker.makeQuery(idx)}">${idx}</a></li>
+											href="${pageContext.request.contextPath}/adminPage/productsList${productpageMaker.makeQuery(idx)}">${idx}</a></li>
 									</c:otherwise>
 								</c:choose>
 							</c:forEach>
 							<c:if test="${productpageMaker.next && productpageMaker.endPage > 0}">
 								<li class="page-item"><a class="page-link ch-col"
-									href="${pageContext.request.contextPath}/AdminPage${productpageMaker.makeQuery(productpageMaker.endPage+1)}">></a></li>
+									href="${pageContext.request.contextPath}/adminPage/productsList${productpageMaker.makeQuery(productpageMaker.endPage+1)}">></a></li>
 							</c:if>
 						</ul>
 					</nav>
 				</div>
-			</div>
+			</div> 
 		</div>
 
 
@@ -242,35 +177,47 @@ body {
 
 </body>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // select_content div 내의 모든 버튼을 가져옵니다.
-        var buttons = document.querySelectorAll('#select_content button');
-        
-        document.getElementById('content_dv_membersInfo').style.display = 'block';
-        
-        // 각 버튼에 클릭 이벤트를 추가합니다.
-        buttons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                // 클릭한 버튼의 ID를 가져옵니다.
-                var buttonId = button.getAttribute('id');
+document.addEventListener("DOMContentLoaded", function() {
+    // select_content div 내의 모든 버튼을 가져옵니다.
+    var buttons = document.querySelectorAll('#select_content button');
+    
+    // 각 버튼에 클릭 이벤트를 추가합니다.
+    buttons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            // 클릭한 버튼의 ID를 가져옵니다.
+            var buttonId = button.getAttribute('id');
 
-                // 모든 콘텐츠 div를 숨깁니다.
-                var contentDivs = document.querySelectorAll('#main_container > div');
-                contentDivs.forEach(function(div) {
-                    div.style.display = 'none';
-                });
-
-                // 클릭한 버튼에 대응하는 콘텐츠 div를 표시합니다.
-                if (buttonId === 'adminPage_membersInfo_Select') {
-                    document.getElementById('content_dv_membersInfo').style.display = 'block';
-                } else if (buttonId === 'adminPage_productsInfo_Select') {
-                    document.getElementById('content_dv_productsInfo').style.display = 'block';
-                }
-                // 필요한 경우 다른 버튼에 대한 조건을 추가합니다.
+            // 모든 콘텐츠 div를 숨깁니다.
+            var contentDivs = document.querySelectorAll('#main_container > div');
+            contentDivs.forEach(function(div) {
+                div.style.display = 'none';
             });
+
+            // 클릭한 버튼에 대응하는 콘텐츠 div를 표시합니다.
+            if (buttonId === 'adminPage_membersInfo_Select') {
+                // 회원목록 버튼이 클릭되면 membersList() 메서드를 호출합니다.
+                membersList();
+            } else if (buttonId === 'adminPage_productsInfo_Select') {
+                // 상품목록 버튼이 클릭되면 productsList() 메서드를 호출합니다.
+                productsList();
+            }
+            // 필요한 경우 다른 버튼에 대한 조건을 추가합니다.
         });
     });
-</script>
 
+    // membersList() 메서드
+    function membersList() {
+        // membersList 페이지로 이동합니다.
+        window.location.href = '${pageContext.request.contextPath}/adminPage/membersList';
+    }
+
+    // productsList() 메서드
+    function productsList() {
+        // productsList 페이지로 이동합니다.
+        window.location.href = '${pageContext.request.contextPath}/adminPage/productsList';
+    }
+});
+
+</script>
 
 </html>
