@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import lombok.extern.slf4j.Slf4j;
+import teamproject.ssja.dto.BoardIsLikedDto;
 import teamproject.ssja.dto.ReplysDto;
 import teamproject.ssja.dto.community.CommunityBoardDto;
 import teamproject.ssja.mapper.BoardMapper;
@@ -31,6 +32,14 @@ class CommunityServiceImplTest {
 	void selectCommunityTest() {
 		
 		for (CommunityBoardDto dto : communityService.getPost(1,10)) {
+			log.info(dto.toString());
+		}
+	}
+	@Disabled
+	@Test
+	void selectBestCommunityTest() {
+		
+		for (CommunityBoardDto dto : communityService.getBestPost()) {
 			log.info(dto.toString());
 		}
 	}
@@ -63,5 +72,22 @@ class CommunityServiceImplTest {
 	@Test
 	void insertCommunityReplyTest() {
 		log.info(communityService.insertReply(new ReplysDto(0, 11620, 21, "test", "test", null, 0, 0, 0, 0))+"");
+	}
+	
+	@Disabled
+	@Test
+	void selcetCommunityBoardLikedTotalTest() {
+		log.info(communityService.getBoardLikedTotal(11620)+"");
+	}
+	
+	@Disabled
+	@Test
+	void insertCommunityBoardLikedTest() {
+		log.info(communityService.insertBoardLiked(new BoardIsLikedDto(11620, 26))+"");
+	}
+	@Disabled
+	@Test
+	void selcetCommunityBoardLikedTest() {
+		log.info(communityService.getBoardLiked(new BoardIsLikedDto(11620, 21))+"");
 	}
 }

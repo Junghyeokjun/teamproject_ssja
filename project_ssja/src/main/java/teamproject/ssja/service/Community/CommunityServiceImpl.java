@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
+import teamproject.ssja.dto.BoardIsLikedDto;
 import teamproject.ssja.dto.ReplysDto;
 import teamproject.ssja.dto.community.CommunityBoardDto;
 import teamproject.ssja.mapper.BoardMapper;
@@ -24,6 +25,12 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public List<CommunityBoardDto> getPost(int pageNum, int amount) {
 		return boardMapper.selectCommunityDto(pageNum, amount);
+	}
+
+	
+	@Override
+	public List<CommunityBoardDto> getBestPost() {
+		return boardMapper.selectBestCommunityDto();
 	}
 
 	@Override
@@ -58,6 +65,23 @@ public class CommunityServiceImpl implements CommunityService {
 		}
 		
 		return replyResult;
+	}
+
+	@Override
+	public long getBoardLikedTotal(long bno) {
+		return boardMapper.selectBoardLikes(bno);
+	}
+
+	@Override
+	public int insertBoardLiked(BoardIsLikedDto liked) {
+		int result = boardMapper.insertBLiked(liked);
+		boardMapper.updateBLikeUp(liked.getLikebno());
+		return result;
+	}
+
+	@Override
+	public BoardIsLikedDto getBoardLiked(BoardIsLikedDto liked) {
+		return boardMapper.selectBIsLiked(liked);
 	}
 
 }

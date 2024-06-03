@@ -66,13 +66,91 @@
       let none_reply=$("#none_reply");
       let insert_btn=$("#insert_btn");
       let more_btn=$("#more_btn");
+      let like_btn=$("#like_btn");
       let m_no_val=$("#m_no").val();
       let m_NickName_val=$("#m_NickName").val();
+
+      //게시물 추천 개수 얻어오는 함수
+
+      let liked_total= function(){
+        $.ajax({
+          type : 'GET',
+          url : '/community/boradLiked',
+          async : false,
+          dataType : 'text',
+          data :{
+            bno : bno_val
+          },    
+          success : function(result) {
+            $(".like").each(function(idx,item){
+              item.innerHTML=result;
+            })
+            reply_count.total=result;
+          },    
+          error : function(request, status, error) {
+            alert(error);
+          }
+        })
+      
+      }
+
+      //회원이 게시글을 추천한적이 있는지를 체크하는 함수
+      let liked_check= function(){
+        //false일경우 추천을 한적이 없음
+        
+        var check="true";
+        
+        $.ajax({
+          type : 'GET',
+          url : '/community/boradIsLiked',
+          async : false,
+          dataType : 'text',
+          data :{
+            bno : bno_val,
+            mno : m_no_val
+          },    
+          success : function(result) {
+            check=result;
+          },    
+          error : function(request, status, error) {
+            alert(error);
+          }
+        })
+        return check;
+      
+      }
+
+      //게시물의 추천을 추가하는 함수
+
+      let isLiked=function(){
+        $.ajax({
+          type : 'POST',
+          url : '/community/boradLiked',
+          async : false,
+          beforeSend: function(xhr) {
+              xhr.setRequestHeader(header, token);
+          },
+          contentType:"application/json",
+          dataType : 'text',
+          data :JSON.stringify({
+            bno : bno_val,
+            mno : m_no_val
+          }),    
+          success : function(result) {
+            liked_total();
+          },    
+          error : function(request, status, error) {
+            alert(error);
+          }
+        })
+      }
 
       // 댓글 ajax 함수(더보기,페이징);
       let more_reply= function(){
         if(reply_count.total==0){
           none_reply.removeAttr("hidden");
+          more_btn.attr("hidden","hidden");
+          reply_count.count++
         }else{
           $.ajax({
             type : 'GET',
@@ -148,7 +226,6 @@
             beforeSend: function(xhr) {
                 xhr.setRequestHeader(header, token);
             },
-
             contentType:"application/json",
             dataType : 'text',
             data :JSON.stringify({
@@ -168,6 +245,7 @@
               var temp_scroll = document.documentElement.scrollTop
               reply.empty();
               var temp=reply_count.count-1;
+
               reply_count.count=1;
               more_btn.removeAttr("hidden");
               for(var i=0;i<temp;i++){
@@ -184,6 +262,22 @@
 
       }
       more_reply();
+
+      //게시글 추천 버튼 클릭 이벤트
+      like_btn.on("click",function(){
+        if(m_no_val==""){
+          alert("추천은 로그인후에 가능합니다.")
+          return
+        }
+
+        var check=liked_check();
+
+        if(check=="true"){
+          alert("해당 게시글에 이미 추천을 한 이력이 있습니다.")
+        }else{
+          isLiked();
+        }
+      })
 
       //댓글 더보기
       more_btn.on("click",function(){
@@ -226,15 +320,6 @@
 
     })
 
-    // <div id="none_reply" class="my-2" style="margin-left: 46px; margin-right: 16px; box-sizing: content-box; border: 1px solid #BBB;" >
-    //         <div class="px-2 d-flex justify-content-between" style="background-color: #EEE;">
-    //           <span>admin</span>
-    //           <span>작성일</span>
-    //         </div>
-    //         <div class="p-2">
-    //           댓글이 존재하지 않습니다.
-    //         </div>
-    //       </div>
   </script>
 </head>
 
@@ -290,7 +375,7 @@
         <div class="w-75 mb-3">
           ${content.bcontent}
         </div>
-        <span class="border d-flex flex-column align-items-center mb-3" style="border-radius: 10px ;">
+        <span class="border d-flex flex-column align-items-center mb-3" id="like_btn" style="border-radius: 10px ;">
           <img src="/images/utilities/like.png" alt="" style="width: 60px;height: 60px;">
           <span class="like">${content.blike}</span>
         </span>

@@ -39,12 +39,8 @@ let getListProductToServer = function(condition){
 	
 	
 	 $.ajax({
-			type : "POST",
-			beforeSend: function(xhr) {
-		    	xhr.setRequestHeader(header, token);
-			},
-			data:JSON.stringify(post_condition),
-			contentType:"application/json",
+			type : "GET",
+			data: post_condition,
 			dataType:"json",
 			url : "/community/post",
 			success : function(data){  
@@ -162,7 +158,7 @@ let getListProductToServer = function(condition){
 					community_content.append('<h1 class="text-center mt-4"> 게시글이 존재하지 않습니다</h1>');
 				}
 			},error: function(xhr, status, error) {
-				console.log("Error:", xhr.responseText);
+				console.log("Error:", error);
 			}
 		})
 		

@@ -2,16 +2,35 @@ package teamproject.ssja.service.Community;
 
 import java.util.List;
 
+import teamproject.ssja.dto.BoardIsLikedDto;
 import teamproject.ssja.dto.ReplysDto;
 import teamproject.ssja.dto.community.CommunityBoardDto;
 
 
 
 public interface CommunityService {
+	
+	//게시물 총개수 얻어오는 메서드
 	long getCommunityTotal();
+	//게시물 리스트 얻어오는 메서드
 	List<CommunityBoardDto> getPost(int pageNum,int amount);
+	//베스트 게시물 리스트 얻어오는 메서드
+	List<CommunityBoardDto> getBestPost();
+	//게시물 내용 얻어오는 메서드
 	CommunityBoardDto getContent(long bno);
+	//게시물 좋아요 개수 얻어오는 메서드
+	long getBoardLikedTotal(long bno);
+	//게시물 좋아요를 추가하는 메서드
+	int insertBoardLiked(BoardIsLikedDto liked);
+	//게시물에 해당 회원이 좋아요를 추가한 이력이 있는지 확인하는 메서드
+	BoardIsLikedDto getBoardLiked(BoardIsLikedDto liked);
+	
+	//댓글 리스트 얻어오는 메서드
 	List<ReplysDto> getReply(int replyNum,int amount, long bno);
+	//댓글 총개수 얻어오는 메서드
 	long getReplyTotal(long bno);
+	//댓글 입력 메서드
 	int insertReply(ReplysDto reply);
+	
+	
 }

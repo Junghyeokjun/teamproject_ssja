@@ -27,9 +27,13 @@ public interface BoardMapper {
 	
 	long selectTotalCount(long bcno);
 	List<BoardDto> selectListWithPaging(Criteria criteria);
-	
+
 	//커뮤니티용 게시글들을 가져오는 메서드
 	List<CommunityBoardDto> selectCommunityDto(int pageNum,int amount);
+
+	//커뮤니티용 게시글들을 가져오는 메서드
+	List<CommunityBoardDto> selectBestCommunityDto();
+	
 	//커뮤니티 게시글을 가져오는 메서드
 	CommunityBoardDto selectCommunityContent(long bno);
 	
