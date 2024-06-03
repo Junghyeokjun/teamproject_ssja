@@ -14,11 +14,12 @@ import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.login.CustomPrincipal;
 import teamproject.ssja.dto.userinfo.ChangePasswordForm;
 import teamproject.ssja.dto.userinfo.UserInfoDTO;
+import teamproject.ssja.exception.UnMatchedPasswordException;
 import teamproject.ssja.mapper.LoginMapper;
 import teamproject.ssja.mapper.MyPageMapper;
 @Slf4j
 @Service
-public class CustomUserDetailsService implements UserDetailsService{
+public class CustomUserDetailsService implements UserDetailsService  {
 
 	@Autowired
 	LoginMapper loginMapper;
@@ -28,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService{
 	PasswordEncoder passwordEncoder;
 	
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, UnMatchedPasswordException {
 		UserInfoDTO userData = loginMapper.findByUsername(username);
 		if(userData != null) {
 			
@@ -39,8 +40,9 @@ public class CustomUserDetailsService implements UserDetailsService{
 		return userDetailsDTO;
 		}
 	
-		throw new UsernameNotFoundException("User's username User not found : " + username);
+		throw new UsernameNotFoundException("User's username not found : " + username);
 	}
+	
 	
 	
 	public Boolean changePasswordProcess(String username, ChangePasswordForm passwordForm) {

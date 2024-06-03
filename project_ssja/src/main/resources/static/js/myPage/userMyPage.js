@@ -11,6 +11,7 @@
 	 success : `성공시 수행할 함수`
 	}); 
 	 */
+	
 	let token = $("meta[name='_csrf']").attr("content");
 	let header = $("meta[name='_csrf_header']").attr("content");
 	
@@ -33,9 +34,8 @@
 					success : function(data) {
 						const userInfo = data;
 						console.log(userInfo);
-						let $h2title = $("<h2>").text("회원 정보");
-						let $myPageContent = $("#MyPage_content_container")
-								.empty();
+						let $h2title = $("<h2>").attr('id','myPageTitle').text("회원 정보");
+						let $myPageContent = $("#MyPage_content_container").removeClass().empty();
 						let $myPageTitle = $("#MyPage_content_name");
 						$myPageTitle.empty().append($h2title);
 						//탈퇴 유보 기간에 속할 경우 보여질 부분
@@ -85,9 +85,7 @@
 								"/myPage/password/change")
 								.addClass("btn btn-dark").text("변경하기").on('click',function(){
 									if(userInfo.auth === 'social'){
-										  
 										  let reject = confirm("소셜 로그인 유저는 비밀번호를 변경하실 수 없습니다. \n 회원으로 로그인하시겠습니까?");
-										  
 										  if(reject){
 											 
 											$(this).attr('href','/login');
@@ -96,7 +94,6 @@
 										 	 }
 							    	}
 								});
-						
 						
 						let $userInfo_dv3 = $("<div>")
 								.attr("id", "userInfo_dv3")
@@ -107,8 +104,6 @@
 
 						let $email_title = $("<h4>").addClass("mx-5 my-3")
 								.text("이메일");
-						
-						
 						
 						let $userInfo_email = $("<input>").attr("type","email").addClass("mx-1").attr("id","modi_email_input")
 						.val(userInfo.m_Email).prop("disabled",true);
@@ -362,18 +357,16 @@
 	}
 
 	$("#myPage_userInfo_Select").on('click', function() {
+		if($("#myPageTitle").text() === '회원 정보')return false;
 		myPageUserInfo();
 	});
 
-	
-	
 					 
   let select_dv = $("#select_content");
     
     $("#select_mp_top").on('click', function() {
         select_dv.toggle();
     });
-    
     
     let formatterphone = function(phoneNum){
     	if(phoneNum.length === 11){

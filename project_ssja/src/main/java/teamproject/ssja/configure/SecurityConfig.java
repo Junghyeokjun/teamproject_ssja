@@ -27,7 +27,10 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.security.web.session.SessionManagementFilter;
 
+import teamproject.ssja.configure.security.CustomAuthenticationFailurHandler;
+import teamproject.ssja.configure.security.SessionRenewFilter;
 import teamproject.ssja.service.user.CustomUserDetailsService;
 import teamproject.ssja.service.user.OAuth2UserService;
 
@@ -47,12 +50,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	   
 	   @Autowired
 	   private OAuth2UserService oAuth2UserService;
+	   @Autowired
+	   private CustomAuthenticationFailurHandler AuthenticationFailureHandler;
+	   @Autowired
+	   SessionRenewFilter sessionRenewFilter;
+	 
 
 
 	 @Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		    auth.userDetailsService(customUserDetailsService)
-	        .passwordEncoder(passwordEncoder);
+		     auth.userDetailsService(customUserDetailsService)
+		     .passwordEncoder(passwordEncoder);
+		    
 	}
 	@Override
 	public void configure(WebSecurity web) throws Exception {
@@ -68,7 +77,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 //	http.csrf().disable();
 		/* 권한설정 */
-	    http.authorizeRequests()
+	    http
+	    .addFilterBefore(sessionRenewFilter, SessionManagementFilter.class)
+	    .authorizeRequests()
 	    .antMatchers("/logout","/user","/myPage","/myPage/**","/userInfo","/user",
 	    		"/user/**","/wishlist","/wishlist/**","/sign-up","/sign-up/**").hasAnyRole("USER","SOCIAL")
 	    .anyRequest().permitAll();
@@ -77,6 +88,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	    .loginPage("/login")
 	    .usernameParameter("username").passwordParameter("password")
 	    .loginProcessingUrl("/loginCheck")
+	    .failureHandler(AuthenticationFailureHandler)
 	    .defaultSuccessUrl("/").permitAll();
 	    
 	       http.oauth2Login()

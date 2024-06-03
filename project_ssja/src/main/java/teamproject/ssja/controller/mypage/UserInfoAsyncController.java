@@ -1,32 +1,36 @@
 package teamproject.ssja.controller.mypage;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
+import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import teamproject.ssja.InfoProvider;
 import teamproject.ssja.LoginChecker;
-import teamproject.ssja.dto.UserRoleAndAuthDTO;
 import teamproject.ssja.dto.email.MailDTO;
 import teamproject.ssja.dto.login.CustomPrincipal;
 import teamproject.ssja.dto.userinfo.AddressForm;
 import teamproject.ssja.dto.userinfo.ChangePasswordForm;
+import teamproject.ssja.dto.userinfo.MyPageOrdersDTO;
 import teamproject.ssja.dto.userinfo.UserInfoDTO;
+import teamproject.ssja.dto.vendor.VendorInfoDTO;
 import teamproject.ssja.service.mypage.MailService;
 import teamproject.ssja.service.mypage.MyPageService;
 import teamproject.ssja.service.user.CustomUserDetailsService;
@@ -108,7 +112,7 @@ public class UserInfoAsyncController {
 	 @PostMapping("/email/auth")
 	 public ResponseEntity<MailDTO> requestEmailAuth(@RequestBody MailDTO email) {
 		 
-		 log.info("email {}", email.getReceiver());
+		 log.info("email {}", email);
 		 
 		 MailDTO autheticatedMail = mailService.CreateMailRequestAuth(email);
 		 log.info("autheticatedMail{}",autheticatedMail);
@@ -122,48 +126,64 @@ public class UserInfoAsyncController {
 		 int check =LoginChecker.check();
 		 String userId = "";
 		if(userDetails != null && !userDetails.isOAuth2User()) {
-			
 			 userId = userDetails.getUsername();
-			 
 		}else if(userDetails != null && userDetails.isOAuth2User()) {
-			
 			 userId = userDetails.getEmail();
-			 
 		}
-		 
-		 
 		 myPageService.modifyUserEmail(email, userId);
-		 
 		 return ResponseEntity.ok("seccess chang email!!");
+	 }
+	 
+	 @PostMapping("/info/orders")
+	 public ResponseEntity<MyPageOrdersDTO> getOrderInfo(@AuthenticationPrincipal CustomPrincipal user, int pageNum){
+		 MyPageOrdersDTO ordersInfo = myPageService.getPurchaseData(user.getMemberNum(),pageNum);
 		 
+		 
+		 return ResponseEntity.ok(ordersInfo);
 		 
 	 }
 	 
+	 @PostMapping("/email/check")
+	 public ResponseEntity<String> checkAndAuthorizeEmail(@RequestBody MailDTO email){
+		 boolean resultCheck = myPageService.checkEMail(email.getReceiver());
+		 
+		 if(resultCheck) {
+			 MailDTO autheticatedMail = mailService.CreateMailRequestAuth(email);
+			 return ResponseEntity.ok(autheticatedMail.getAuthNum());
+			 
+		 }else {
+	         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");
+		 }
+	 }
+	 @GetMapping("/bizname/check-duplicate")
+	 public ResponseEntity checkDuplicateBizname(@RequestParam String bizName) {
+		 
+		if( myPageService.checkDuplicatedBizname(bizName)) {
+			return ResponseEntity.ok(bizName);
+			
+		}else {
+			return ResponseEntity.badRequest().body(bizName);
+				
+		}
+	 }
 	 
-//	 //jwt토큰 때문에 일단 뒤로
-//	 @RequestMapping("/userInfo")
-//		public UserRoleAndAuthDTO throwUserInfo() {
-//			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//			if(authentication.getAuthorities().equals("ROLE_USER") && authentication.getAuthorities().equals("ROLE_ADMIN")) {
-//				Object principal = authentication.getPrincipal();
-//				CustomPrincipal userDetail = (CustomPrincipal)principal;
-//				return new UserRoleAndAuthDTO(userDetail.getUserInfo().getM_Name(),userDetail.getUserInfo().getAuth());
-//			}else{
-//				return new UserRoleAndAuthDTO("GUEST", "ROLE_ANONYMOUS");
-//			}
-//		}
+	 @PostMapping("/info/apply-vendor")
+	 public ResponseEntity enrollVendor(@RequestBody VendorInfoDTO venderInfo) {
+		 log.info("vendor INfo{}", venderInfo);
+		 try {
+			
+			 myPageService.enrollVendor(venderInfo);
+			 return ResponseEntity.ok("success");
+		} catch (Exception e) {
+		      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");
+		}
+		 
+	 }
 	 
-
-	 
-	/*
-	 * //@PostMapping("/password-change") public ResponseEntity<String>
-	 * changePasswordTest(@AuthenticationPrincipal UserDetails userDetails,
-	 * 
-	 * @RequestBody ChangePasswordForm form) { String username =
-	 * userDetails.getUsername();
-	 * log.info("username {}, currentPW{}, new PW {}",username,form.
-	 * getCurrentPassword(),form.getNewPassword()); return
-	 * ResponseEntity.ok("success"); }
-	 */
-
+	 @PostMapping("/info/vendor")
+	 public ResponseEntity<VendorInfoDTO> getVendorInfo() {
+		VendorInfoDTO vendorInfo =  myPageService.getVendorInfo();
+		 return ResponseEntity.ok(vendorInfo);
+	 }
+ 
 }

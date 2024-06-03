@@ -12,7 +12,7 @@
                 </when>
                 <otherwise>pro_sellcount DESC</otherwise>
             </choose>
-            <if test='conditionName != null and conditionName != ""'>, #{conditionName}</if>
+            <if test='conditionName != null and conditionName != ""'>, ${conditionName}</if>
         ) AS rnum FROM (  SELECT p.*,
             (SELECT COUNT(b.pro_no) FROM board b WHERE b.pro_no = p.pro_no) AS REVIEW_COUNT,
             (SELECT avg(b.b_eval) FROM board b WHERE b.pro_no = p.pro_no) AS RATING_AVG

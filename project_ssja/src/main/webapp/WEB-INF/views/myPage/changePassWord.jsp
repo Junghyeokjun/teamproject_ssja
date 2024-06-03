@@ -37,6 +37,9 @@
     textarea{
         resize: none;
     }
+     input[type=password]{
+      font-family: sans-serif;
+    }
     
    </style>
    
@@ -71,6 +74,8 @@
     </div>
 </body>
 <script>
+
+
 
 
 let checkValue = function(){

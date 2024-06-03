@@ -2,15 +2,14 @@ package teamproject.ssja.service.mypage;
 
 
 
-import org.springframework.stereotype.Service;
 
-import lombok.RequiredArgsConstructor;
 
 import java.util.*;
 
 import teamproject.ssja.dto.userinfo.AddressForm;
 import teamproject.ssja.dto.userinfo.UserInfoDTO;
-@Service
+import teamproject.ssja.dto.vendor.VendorInfoDTO;
+import teamproject.ssja.dto.userinfo.MyPageOrdersDTO;
 public interface MyPageService {
 
 	
@@ -22,4 +21,11 @@ public interface MyPageService {
 	
 	void deleteEnrolledUsersAuth(List<String> enrolledDeleteUsers);
 	void modifyUserEmail(String email, String username);
+	
+	MyPageOrdersDTO getPurchaseData(long id, int PageNum);
+	
+	boolean checkEMail(String address);
+	boolean checkDuplicatedBizname(String bizName);
+	void enrollVendor(VendorInfoDTO vendorInfo);
+	VendorInfoDTO getVendorInfo();
 }

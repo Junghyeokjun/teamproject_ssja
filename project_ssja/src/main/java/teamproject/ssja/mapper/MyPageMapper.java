@@ -7,7 +7,9 @@ import org.apache.ibatis.annotations.Select;
 import java.util.*;
 
 import teamproject.ssja.dto.userinfo.AddressForm;
+import teamproject.ssja.dto.userinfo.OrderInfoDTO;
 import teamproject.ssja.dto.userinfo.UserInfoDTO;
+import teamproject.ssja.dto.vendor.VendorInfoDTO;
 @Mapper
 public interface MyPageMapper {
 	
@@ -25,4 +27,19 @@ public interface MyPageMapper {
 	void deleteEnrolledUsersAuth(List<String> enrolledDeleteUsers);
 	
 	void modifyUserEmail(Map<String,String> params);
+	
+	List<OrderInfoDTO> getPurchaseData(Map<String,Long> params);
+	
+	long getProductCount(long id);
+	
+	@Select("SELECT m_email FROM members WHERE m_no = #{id} ")
+	String checkEmail( long id);
+	
+	@Select("SELECT count(V_BIZNAME) FROM vendor WHERE v_BIZNAME=#{bizName}")
+	int checkDuplicatedBizname(String bizName);
+	
+	void enrollVendor(VendorInfoDTO vendorInfo);
+	
+	@Select("select v_no, v_bizname, v_account, v_license, v_fax from vendor where m_no = #{id}")
+	VendorInfoDTO getVendoInfo(long id);
 }

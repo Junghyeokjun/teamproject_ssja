@@ -101,4 +101,7 @@ public class CustomPrincipal implements UserDetails, OAuth2User {
     public boolean isEnabled() {
         return true;
     }
+    public boolean isOAuth2User() {
+        return isOAuth2User;
+    }
 }

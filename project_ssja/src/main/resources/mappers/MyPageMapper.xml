@@ -23,18 +23,16 @@
 	
 </resultMap>
 <select id="getUserInfoInMyPage" parameterType="long" resultMap="userResultMap">
-    select m.m_no , m.m_id , m.m_name , m.m_nickname , m.m_address1 , m.m_address2 ,
-     m.m_zipcode , m.m_grade , m.m_email , 
-      m.m_phone , 
-     m.m_point ,m.m_deletedate, nvl(c.countcoupon, 0) as couponNum, nvl(w.countwish, 0) as widhNum, 
-     nvl(p.countpurchase, 0) as purNum  from members m
-    left join (select m_no, count(*) as countcoupon from ownedcoupon group by m_no) c 
-    on m.m_no = c.m_no
-    left join (select m_no, count(*) as countwish from wishlist group by m_no) w 
-    on m.m_no = w.m_no
-    left join (select m_no, count(*) as countpurchase from purchase group by m_no) p 
-    on m.m_no = p.m_no
-    where m.m_no = #{username}
+    select 
+   		 m.m_no , m.m_id , m.m_name , m.m_nickname , m.m_address1 , m.m_address2 , m.m_zipcode , m.m_grade , m.m_email , m.m_phone , 
+    	 m.m_point ,m.m_deletedate, nvl(c.countcoupon, 0) as couponNum, nvl(w.countwish, 0) as widhNum,  nvl(p.countpurchase, 0) as purNum  
+     from members m
+   	 left join (select m_no, count(*) as countcoupon from ownedcoupon group by m_no) c 
+   		 on m.m_no = c.m_no
+   	 left join (select m_no, count(*) as countwish from wishlist group by m_no) w 
+   		 on m.m_no = w.m_no
+   	 left join (select m_no, count(*) as countpurchase from purchase group by m_no) p 
+    	 on m.m_no = p.m_no  where m.m_no = #{username}
 </select>
 
 <update id="changeAddress" parameterType="teamproject.ssja.dto.userinfo.AddressForm">
@@ -61,4 +59,56 @@ update members set m_email = #{email} where m_id = #{userId}
     </foreach>
 </delete>
 
+   
+<resultMap id="orderResultMap" type="teamproject.ssja.dto.userinfo.OrderInfoDTO">
+    <id property="PUR_NO" column="PUR_NO"/>
+    <result property="PUR_PAY" column="PUR_PAY"/>
+    <result property="PUR_TOT" column="PUR_TOT"/>
+    <result property="PUR_PAYMENT" column="PUR_PAYMENT"/>
+    <result property="PUR_DATE" column="PUR_DATE"/>
+    <result property="PUR_DVADDRESS" column="PUR_DVADDRESS"/>
+    <result property="PUR_DV" column="PUR_DV"/>
+     <collection property="list" ofType="teamproject.ssja.dto.userinfo.OrderItemInfoDTO" resultMap="orderItemsMap"/>
+    </resultMap>
+   
+<resultMap id="orderItemsMap" type="teamproject.ssja.dto.userinfo.OrderItemInfoDTO">
+    <id property="O_NO" column="O_NO"/>
+    <result property="PRO_NO" column="PRO_NO"/>
+    <result property="O_QUANTITY" column="O_QUANTITY"/>
+    <result property="O_DISCOUNT" column="O_DISCOUNT"/>
+    <result property="O_PRICE" column="O_PRICE"/>
+    <result property="O_PAY" column="O_PAY"/>
+    <result property="O_USECOUPON" column="O_USECOUPON"/>
+    <result property="O_STATE" column="O_STATE"/>
+    <result property="isWiriteReview" column="rv"/>
+    <result property="PRO_NAME" column="PRO_NAME"/>
+    <result property="PRO_BIZNAME" column="PRO_BIZNAME"/>
+    <result property="PRO_BANNERIMG" column="PRO_BANNERIMG"/>
+    </resultMap>
+
+
+<select id="getPurchaseData" parameterType="Map" resultMap="orderResultMap">
+	SELECT 
+    s.pur_no, s.pur_tot, s.pur_pay, s.pur_date, s.pur_dv , a.* ,s.rnum
+FROM 
+    (SELECT   p.pro_name, p.pro_bannerimg, p.pro_bizname, o.o_no, o.pro_no,o.o_quantity, o.pur_no,
+    o.o_discount, o.o_price, o.o_pay, o.o_usecoupon,o.o_state,
+         (SELECT COUNT(*) FROM board b WHERE b.pro_no = p.pro_no and b.m_no = #{id} and b_c_no =30) AS rv
+    FROM product p 
+    INNER JOIN orders o 
+    ON o.pro_no = p.pro_no) a
+INNER JOIN
+    (SELECT pur_no, pur_tot, pur_pay, pur_date, pur_dv, rnum
+    FROM ( SELECT pur_no, pur_tot, pur_pay, pur_date, pur_dv, 
+    ROW_NUMBER() OVER (ORDER BY pur_date DESC) AS rnum 
+        FROM purchase   WHERE m_no = #{id}  )
+    WHERE rnum BETWEEN ${pageNum} * 10 -9 AND ${pageNum} * 10) s ON a.pur_no = s.pur_no order by s.pur_date desc
+</select>
+<select id="getProductCount" resultType="long">
+select count(*) from purchase where m_no =#{id}
+</select>
+
+<insert id="enrollVendor" >
+insert into vendor values (v_seq.nextval, #{id},#{v_bizName},#{v_account},#{v_license},#{v_FAX})
+</insert>
 </mapper>

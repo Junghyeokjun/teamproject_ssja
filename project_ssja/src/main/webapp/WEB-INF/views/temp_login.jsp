@@ -80,8 +80,15 @@
       background: no-repeat url('/images/utilities/google.png');
       background-size: cover;
     }
+    #id, #pw{
+    background-color: #ffffff;
+    border: 1px solid #cccccc; 
+    border-radius: 5px; 
+    padding: 5px; 
+    width:15em;
+    }
   </style>
-  <script>
+ <script>
     $(document).ready(function(){
       let find_id_btn=$('#findId');
       let find_pw_btn=$('#findPw');
@@ -92,8 +99,26 @@
       find_pw_btn.on("click",function(){
         var popup=window.open("/sign/findPw","_blank", "width=500, height=700");
       })
-  })
+      
+      // 로그인 정보가 회원 정보와 틀려 로그인 실패할 경우 추가
+      const urlParams = new URLSearchParams(window.location.search);
+let error = urlParams.get('error');
+	if (error === 'true') {
+		  $('#id').focus();
+		//빨간 테두리 빨간 안내글
+		 $('#id, #pw').css('border-color','red');
+		 $("#invalid_login_dv").text("입력 정보와 회원정보가 다릅니다.").css('color','red');
+		 //2초 뒤 되돌리기
+		 setTimeout(function() {
+		     $('#id, #pw').css('border-color', '').text(''); 
+		     $("#invalid_login_dv").text("").css('color', ''); 
+		 }, 1500);
+		 
+	}
+      
+    })
   </script>
+  
 </head>
 
 <body>
@@ -128,12 +153,17 @@
       <!-- 실제 사용시 post로 변경 링크추가 -->
       <form action="${pageContext.request.contextPath}/loginCheck" method="post">
         <table class="text-center">
+        <tr>
+        <td>
+        <div id="invalid_login_dv" style="min-height:2em;max-height:2em;"></div>
+        </td>
+        </tr>
           <tr>
             <!-- 시큐리티 설정에 따라 name 변경 -->
-            <td><input type="text" name="username" class="mb-3 form-control" id="id" size="26" placeholder="아이디"></td>
+            <td><input type="text" name="username" class="mb-3 " id="id" size="26" placeholder="아이디"></td>
           </tr>
           <tr>
-            <td><input type="password" name="password" class="mb-3 form-control" id="pw" size="26" placeholder="비밀번호" aria-describedby="passwordHelpBlock"></td>
+            <td><input type="password" name="password" class="mb-3 " id="pw" size="26" placeholder="비밀번호" aria-describedby="passwordHelpBlock"></td>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
             </td>
           </tr>
@@ -179,6 +209,7 @@
     <div id="third_footer"></div>
   </footer>
 
+ 
 </body>
 
 </html>

@@ -33,5 +33,4 @@ public class PurchaseDto {
 	private String PUR_DATE;
 	private String PUR_DVADDRESS;
 	private String PUR_DV;
-
 }
