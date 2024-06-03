@@ -107,6 +107,12 @@ class ReplyMapperTest {
 
 	@Disabled
 	@Test
+	void testDeleteAllReply() {
+		log.info(replyMapper.deleteAllReply(11619)+"");
+	}
+
+	@Disabled
+	@Test
 	void testSelectReplys() {
 		fail("Not yet implemented");
 	}

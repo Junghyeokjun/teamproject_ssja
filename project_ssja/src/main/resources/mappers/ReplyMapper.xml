@@ -37,6 +37,12 @@
         	delete from replys where r_no = #{rno}
         ]]>
 	</delete>
+	
+	<delete id="deleteAllReply">
+		 <![CDATA[
+        	delete from replys where b_no = #{bno}
+        ]]>
+	</delete>
 
 	<!-- 해당 게시글의 모든 댓글 수 가져오기 -->
 	<select id="selectReplyCount" parameterType="long" resultType="long">

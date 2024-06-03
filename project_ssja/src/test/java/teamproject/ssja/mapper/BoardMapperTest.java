@@ -151,7 +151,15 @@ class BoardMapperTest {
 			log.info("communitydto : " + dto);
 		}
 	}
-	
+
+	@Disabled
+	@Test
+	void TestSelectBestCommunity() {
+		
+		for(CommunityBoardDto dto : boardMapper.selectBestCommunityDto()){
+			log.info("communitydto : " + dto);
+		}
+	}
 	@Disabled
 	@Test
 	void TestSelectCommunityContent() {

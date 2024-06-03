@@ -39,12 +39,8 @@ let getListProductToServer = function(condition){
 	
 	
 	 $.ajax({
-			type : "POST",
-			beforeSend: function(xhr) {
-		    	xhr.setRequestHeader(header, token);
-			},
-			data:JSON.stringify(post_condition),
-			contentType:"application/json",
+			type : "GET",
+			data: post_condition,
 			dataType:"json",
 			url : "/community/post",
 			success : function(data){  
@@ -72,7 +68,9 @@ let getListProductToServer = function(condition){
 				        function() {
 				            $(this).css('background-color', 'white').css('cursor', 'auto');
 				        }
-				    );
+				    ).on("click",function(){
+                        window.location="/community/content/"+e.bno;
+					});
 					
 					let $item_img_dv = $("<div>").attr("id", "item_img_dv").css("width","100%").append($("<img>").attr("src", e.img_path)
 						    .css('width', '100%') .css('height', '10em').css('overflow', 'hidden'));
@@ -162,7 +160,7 @@ let getListProductToServer = function(condition){
 					community_content.append('<h1 class="text-center mt-4"> 게시글이 존재하지 않습니다</h1>');
 				}
 			},error: function(xhr, status, error) {
-				console.log("Error:", xhr.responseText);
+				console.log("Error:", error);
 			}
 		})
 		

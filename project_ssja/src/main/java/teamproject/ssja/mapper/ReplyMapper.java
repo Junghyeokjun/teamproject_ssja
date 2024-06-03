@@ -22,7 +22,10 @@ public interface ReplyMapper {
 	int updateReply(ReplysDto replysDto);
 	
 	int deleteReply(ReplysDto replysDto);
-	
+
+	//한 게시물의 모든 댓글을 삭제하는 메서드
+	int deleteAllReply(long bno);
+
 	List<ReplysDto> selectReplys(long bno);
 
 	List<ReplysDto> selectPartReplys(int replyNum, int amount, long bno);

@@ -1,12 +1,12 @@
 package teamproject.ssja.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import teamproject.ssja.dto.BoardIsLikedDto;
 import teamproject.ssja.dto.ReplysDto;
+import teamproject.ssja.dto.community.CommunityBoardDto;
 import teamproject.ssja.dto.community.CommunityPage;
 import teamproject.ssja.service.Community.CommunityService;
 
@@ -53,28 +55,79 @@ public class CommunityController {
 		return mv;
 	}
 
+	//댓글 페이징해서 얻어오는 부분
 	@GetMapping("/reply")
 	public List<ReplysDto> reply(int replyNum,int amount, long bno){
 		
 		return communityService.getReply(replyNum, amount, bno);
 	}
 	
+	//댓글 삽입하는 부분
 	@PostMapping("/reply")
-	public String insertReply(@RequestBody Map<String, Object> data){
-		System.out.println(data);
-		return "aa";
+	public int insertReply(@RequestBody Map<String, Object> data){		
+		
+		System.out.println(data.get("rgroup").toString());
+		
+		return communityService.insertReply(new ReplysDto(0, Long.valueOf(data.get("rbno").toString()).longValue(), 
+															 Long.valueOf(data.get("rmno").toString()).longValue(), 
+															 data.get("rwriter").toString(), 
+															 data.get("rcontent").toString(), null, 0,  
+															 Long.valueOf(data.get("rgroup").toString()).longValue(),  
+															 Long.valueOf(data.get("rstep").toString()).longValue(),  
+															 Long.valueOf(data.get("rindent").toString()).longValue()));
+	}
+
+	//댓글 총개수 얻어오는 부분
+	@GetMapping("/replyTotal")
+	public long replyTotal(long bno){
+		
+		return communityService.getReplyTotal(bno);
 	}
 	
+	//게시물의 좋아요 총갯수를를 얻어오는 부분
+	@GetMapping("/boradLiked")
+	public long boradLiked(long bno) {
+		
+		return communityService.getBoardLikedTotal(bno);
+	}
+	//게시물의 좋아요를 추가하는 부분
+	@PostMapping("/boradLiked")
+	public int insertboradLiked(@RequestBody Map<String, Object> data) {
+		
+		return communityService.insertBoardLiked(new BoardIsLikedDto(Long.valueOf(data.get("bno").toString()).longValue(),
+																	 Long.valueOf(data.get("mno").toString()).longValue()));
+	}
 	
-	//커뮤니티 게시글들을 페이징해서 얻어오는 부분
-	@PostMapping("/post")
-	public Map<String,Object> post(@RequestBody CommunityPage postPage){
-		Map<String, Object> data= new HashMap<String, Object>();
+	//회원이 게시물의 좋아요를 추가한 이력이 있는지 체크하는 부분
+	@GetMapping("/boradIsLiked")
+	public boolean boradIsLiked(long bno, long mno) {
+		
+		return communityService.getBoardLiked(new BoardIsLikedDto(bno, mno))!=null;
+	}
 
-		CommunityPage page= new CommunityPage(postPage.getPageNum(), communityService.getCommunityTotal());
+
+	//커뮤니티 게시글들을 페이징해서 얻어오는 부분
+	@GetMapping("/post")
+	public Map<String,Object> post(int pageNum, int amount){
+		Map<String, Object> data= new HashMap<String, Object>();
+		System.out.println(pageNum);
+		CommunityPage page= new CommunityPage(pageNum , communityService.getCommunityTotal());
 		data.put("page", page);
-		data.put("postList", communityService.getPost(postPage.getPageNum(), postPage.getAmount()));
+		data.put("postList", communityService.getPost(pageNum, amount));
 
 		return data;
+	}
+	
+	//커뮤니티 게시글을 삭제하는 부분
+	@DeleteMapping("/post")
+	public int deletePost(@RequestBody Map<String, Object> data){
+
+		return communityService.deletePost(Long.valueOf(data.get("bno").toString()).longValue());
+	}
+	//커뮤니티 베스트 게시글들을 얻어오는 부분
+	@GetMapping("/bestPost")
+	public List<CommunityBoardDto> bestPost(){
+		return communityService.getBestPost();
+
 	}
 }

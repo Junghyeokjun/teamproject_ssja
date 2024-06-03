@@ -98,6 +98,12 @@
         	delete from BOARDLIKED where b_no = #{likebno} and m_no = #{likebmno}
         ]]>
 	</delete>
+	<!--게시글의 모든 좋아요 삭제  -->
+	<delete id="deleteAllBLiked" parameterType="BoardIsLikedDto">
+		<![CDATA[
+        	delete from BOARDLIKED where b_no = #{bno}
+        ]]>
+	</delete>
 	
 	<!-- 게시글 페이징 -->
 	<select id="selectListWithPaging" parameterType="teamproject.ssja.page.Criteria" resultMap="BoardDtoMap">
@@ -135,6 +141,21 @@
         ]]>
 	</select>
 
+	<!-- 커뮤니티 베스트글 -->
+	<select id="selectBestCommunityDto" resultMap="CommunityDtoMap">
+    	<![CDATA[
+
+		    select
+		        A.*
+		    from 
+		    (SELECT b.*, bi.b_img_no,bi.b_img_path 
+		     FROM board b, board_imgs bi 
+		     WHERE b.B_C_NO=40 and b.b_no=bi.b_no  
+		     ORDER BY b.b_like desc) A 
+	    	where rownum <= 4 
+	    
+        ]]>
+	</select>
 	<!-- 커뮤니티 게시글을 가져온다.  -->
 	<select id="selectCommunityContent" resultMap="CommunityDtoMap">
 		<![CDATA[

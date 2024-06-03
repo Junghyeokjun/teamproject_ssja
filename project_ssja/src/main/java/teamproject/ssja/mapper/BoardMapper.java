@@ -27,9 +27,13 @@ public interface BoardMapper {
 	
 	long selectTotalCount(long bcno);
 	List<BoardDto> selectListWithPaging(Criteria criteria);
-	
+
 	//커뮤니티용 게시글들을 가져오는 메서드
 	List<CommunityBoardDto> selectCommunityDto(int pageNum,int amount);
+
+	//커뮤니티용 베스트 게시글들을 가져오는 메서드
+	List<CommunityBoardDto> selectBestCommunityDto();
+	
 	//커뮤니티 게시글을 가져오는 메서드
 	CommunityBoardDto selectCommunityContent(long bno);
 	
@@ -46,6 +50,9 @@ public interface BoardMapper {
 	
 	// 좋아요가 된 상태에서, 해당 게시글 좋아요를 다시 누르면 해당 게시글의 해당 멤버 좋아요 상태 제거
 	int deleteBLiked(BoardIsLikedDto boardIsLiked);
+	
+	// 게시글을 삭제할때 forignkey를 없애기 위해 모든 좋아요를 삭제하는 메서드
+	int deleteAllBLiked(long bno);
 	
 	int updateBLikeDown(long bno);
 } 
