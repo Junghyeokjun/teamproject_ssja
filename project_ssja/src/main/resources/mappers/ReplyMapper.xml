@@ -46,10 +46,21 @@
 	</select>
 	
 
-	<!-- 해당 게시글의 댓글들을 조회하기 -->
+	
+<!-- 이전 데이터 	
 	<select id="selectReplys" parameterType="long" resultMap="ReplysDtoMap">
 		<![CDATA[
         	SELECT * FROM replys where b_no = #{bno} ORDER BY r_group desc, r_step desc
+        ]]>
+	</select> 
+-->
+	<!-- 해당 게시글의 댓글들을 조회하기(멤버 정보도 가져와야 하므로 멤버 테이블도 조인) -->
+	<select id="selectReplys" parameterType="long" resultMap="ReplysDtoMap">
+		<![CDATA[
+			SELECT r.*, m.m_id, m.m_nickname
+			FROM replys r, members m 
+			WHERE r.m_no = m.m_no AND r.b_no = #{bno}
+			ORDER BY r.r_group DESC, r.r_step DESC
         ]]>
 	</select>
 
@@ -96,7 +107,7 @@
         ]]>
 	</update>
 	
-	<!-- 댓글 맵 -->
+	<!-- 댓글 맵(member join도 포함) -->
 	<resultMap type="teamproject.ssja.dto.ReplysDto" id="ReplysDtoMap">
 		<id property="rno" column="R_NO"/>
 		<result property="rbno" column="B_NO"/>
@@ -108,7 +119,9 @@
 		<result property="rgroup" column="R_GROUP"/>
 		<result property="rstep" column="R_STEP"/>
 		<result property="rindent" column="R_INDENT"/>
-	</resultMap>
+		<result property="rmid" column="M_ID"/>
+		<result property="rmnickname" column="M_NICKNAME"/>		
+	</resultMap>	
 		
 	<!-- 해당 댓글 좋아요 여부 맵 -->	
 	<resultMap type="teamproject.ssja.dto.ReplyIsLikedDto" id="ReplyIsLikedMap">
