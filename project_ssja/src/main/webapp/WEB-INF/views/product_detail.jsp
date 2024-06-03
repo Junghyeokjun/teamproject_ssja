@@ -73,21 +73,70 @@ table {
 }
 
 .nav-link-custom{
-	color : black;
+	background-color : #8b789c;
+	border-color : #8b789c;
+	color : white;
+}
+
+.nav-link-custom:hover, .nav-link-custom:focus{
+	color : yellow;
 }
 
 .nav-link.nav-link-custom.active{
 	background-color: black;
+	border-color: black;
 }
-
 
 .page-link.active{
 	background-color: #000000;
+	border-coler : #000000;
+}
+
+.input-group-text{
+	background-color : #8b789c;
+	color : #fff;
+   	width : 7em;
+	text-align: center;
+	justify-content: center;
+}
+  
+.input-group-text, .form-control{
+	border-color: #8b789c;
+	height: 3em;
+    line-height: 3em; /* 높이와 동일하게 설정하여 수직 중앙 정렬 */
+    display: flex;
+}
+
+
+
+.form-control{
+	align-items: center;
+}
+
+.btn-primary.custom-btn{
+	background-color:  #ca5a0a;
+	border-color:  #ca5a0a;
+}
+
+.btn-primary.custom-btn:hover, .btn-primary.custom-btn:focus{
+	background-color:  chocolate;
+	border-color : chocolate;
+}
+
+.btn-danger.custom-btn{
+	background-color:  #c7a820;
+	border-color:  #c7a820;
+}
+
+.btn-danger.custom-btn:hover, .btn-danger.custom-btn:focus{
+	background-color:  #cfb439;
+	border-color:  #cfb439;
 }
 </style>
 
 
 </head>
+
 <body>
 	<header>
 		<div id="title_bar" class=" fixed-top">
@@ -109,8 +158,11 @@ table {
 	</header>
 	<div id="side_bar">
 		<div id="side_links" class="w-100"></div>
-	</div>
+	</div>	
 	<main>
+		<div class="main_whitespace p-4 my-2">
+			<h1 class="h3 text-center ">${productdetail.PRO_NAME}</h1>
+		</div>
 		<div id="main_container">
 			<div class="row goods">
 				<!-- row 클래스를 추가 -->
@@ -153,27 +205,35 @@ table {
 					</div>
 				</div>
 				<div class="goodsInfo col-12 col-md-6 col-lg-5">
-					<p class="cateName">
-						<span>상품이름 ${productdetail.PRO_NAME}</span>
+					<p class="cateName input-group">
+						<span class="input-group-text">상품 이름 </span>
+						<span class="form-control">${productdetail.PRO_NAME}</span>
 					</p>
-					<p class="gdsPrice">
-						<span>가격 <fmt:formatNumber pattern="###,###,###"
-								value="${productdetail.PRO_PRICE}" /> 원
+					<p class="gdsPrice input-group">
+						<span class="input-group-text">가격							
+						</span>
+						<span class="form-control "> 
+							<fmt:formatNumber pattern="###,###,###"
+							value="${productdetail.PRO_PRICE}"  /> 원
 						</span>
 					</p>
-					<p class="cartStock">
-						<span>수량</span> <input type="number" id="quantity" min="1"
+					<p class="cartStock input-group">
+						<span class="input-group-text">수량</span> <input class="form-control" type="number" id="quantity" min="1"
 							max="${productdetail.PRO_QUANTITY}" value="1" />
 					</p>
 					<hr>
 					<p class="addToCart">
-						<label class="mb-2">총 금액</label><br> <span id="totalPrice">
-							<fmt:formatNumber pattern="###,###,###"
-								value="${productdetail.PRO_PRICE}" /> 원
-						</span><br>
-						<button type="button"
-							onclick="wish_click(${productdetail.getPRO_NO()})">Wish List</button>
-						<button type="button">바로구매</button>
+						<div class="input-group">
+							<label class="mb-2 input-group-text">총 금액</label><span id="totalPrice" class="form-control mb-2" >								
+								<fmt:formatNumber pattern="###,###,###"
+									value="${productdetail.PRO_PRICE}" /> 원
+							</span>
+						</div>
+						<div class="d-flex justify-content-between">
+							<input type="button" class="btn btn-primary custom-btn"
+								onclick="wish_click(${productdetail.getPRO_NO()})" value="Wish List">
+							<input type="button" class="btn btn-danger custom-btn" value="바로구매">
+						</div>
 					</p>
 				</div>
 			</div>
@@ -306,17 +366,20 @@ table {
 
 						<div class="col-lg-4">
 							<div class="px-0 border rounded-2 shadow-0">
-								<div class="card">
-									<p class="addToCart">
-										<label class="mb-2">총 금액</label><br> <span
-											id="totalPrice"> <fmt:formatNumber
-												pattern="###,###,###" value="${productdetail.PRO_PRICE}" />
-											원
-										</span><br>
-										<button type="button"
-											onclick="wish_click(${productdetail.getPRO_NO()})">Wish
-											List</button>
-										<button type="button">바로구매</button>
+								<div class="card px-3">
+									<p class="addToCart mx-2">
+										<div class="input-group">
+											<label class="mb-2 input-group-text">총 금액</label><span id="totalPrice" class="form-control mb-2" >
+												<fmt:formatNumber pattern="###,###,###"
+													value="${productdetail.PRO_PRICE}" /> 원
+											</span>
+										</div>
+										<div class="d-flex justify-content-between">
+											<input type="button" class="btn btn-primary custom-btn"
+												onclick="wish_click(${productdetail.getPRO_NO()})" value="Wish List">
+											<input type="button" class="btn btn-danger custom-btn" value="바로구매">
+											<!-- <button type="button" class="btn btn-danger custom-btn">바로구매</button> -->
+										</div>
 									</p>
 								</div>
 							</div>
@@ -335,11 +398,12 @@ table {
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
 	<script>
-	
 	 let token = $("meta[name='_csrf']").attr("content");
 		let header = $("meta[name='_csrf_header']").attr("content");
 		
 		document.addEventListener("DOMContentLoaded", function() {
+			
+			
 			const priceElement = document.querySelector(".gdsPrice span");
 			const quantityInput = document.getElementById("quantity");
 			const totalPriceElement = document.getElementById("totalPrice");

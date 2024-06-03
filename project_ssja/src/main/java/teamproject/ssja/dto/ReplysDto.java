@@ -35,4 +35,23 @@ public class ReplysDto {
 	private long rgroup;
 	private long rstep;
 	private long rindent;
+	
+	// 조인을 위한 데이터 (member 테이블)
+	private String rmid; // id 
+	private String rmnickname; // 닉네임
+	
+	// 댓글 데이터 조작 시 사용(insert, update, delete)
+	public ReplysDto(long rno, long rbno, long rmno, String rwriter, String rcontent, String rdate, long rlike,
+			long rgroup, long rstep, long rindent) {
+		this.rno = rno;
+		this.rbno = rbno;
+		this.rmno = rmno;
+		this.rwriter = rwriter;
+		this.rcontent = rcontent;
+		this.rdate = rdate;
+		this.rlike = rlike;
+		this.rgroup = rgroup;
+		this.rstep = rstep;
+		this.rindent = rindent;
+	}	
 }

@@ -99,7 +99,9 @@ a{
 
 .bg-replywriter{
 	background-color: #d7d8da;
-	width: 15%
+	width: 15%;
+	display: flex;
+	justify-content: center;
 }
 
 .main_whitespace{

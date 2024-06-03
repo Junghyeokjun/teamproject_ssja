@@ -26,7 +26,7 @@
    <meta name="_csrf" content="${_csrf.token}"/>
 	<meta name="_csrf_header" content="${_csrf.headerName}"/>
 
-  <script src="/js/venderbarscript.js">
+  <script src="/js/barscript.js">
 
   </script>
 
@@ -34,7 +34,7 @@
 
   </script>
   <link href="/css/footerstyle.css?after" rel="stylesheet">
-  <link href="/css/venderbarstyle.css?after" rel="stylesheet">
+  <link href="/css/barstyle.css?after" rel="stylesheet">
   <link href="/css/board.css?after" rel="stylesheet">
   <link rel="stylesheet" href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
 
@@ -47,6 +47,7 @@
     body {
       font-family: 'fonts', NanumSquare;
       background-color: #f7f0e8;
+      padding-top: 72px;
     }
 
 	header, main, footer{
@@ -235,56 +236,25 @@
 		background-color: #c43c3c;	
 	}
 
-	.venderName {
-		border-bottom: 5PX SOLID #222222;
-		background-color: white;
-		padding: 3px;
-		border-radius: 15 15 15 15;
-		margin: auto;	
-	}
-	
-	.venderTitle{
-		padding-top: 3px; 
-	}
-	
-	.top_btn{
-		font-size : 2em;
-
-	}
-@media screen and (max-width: 860px){	
-	.venderTitle {
-		display: none;
-	}
-	
-}	
   </style>
 </head>
 
 <body>
-	<header>
-		<div id="title_bar" class="fixed-top">
-			<div class="py-2 px-1 d-flex justify-content-between" id="top-bar">
-				<button type="toggle-button" class="top_btn"></button>
-				<div class="mx-5 my-2 d-flex ">
-					<h1 class="h1 venderTitle" >판매자 :&nbsp;</h1>
-					<!-- 
-						땡땡땡땡 : 상호명
-						로그인 시 venderDto에 담기는 vender.vbizname 또한 가져오기						
-						그냥 조인을 쓴다면 venderDto가 아니라 조인한 결과를 담는 다른 Dto가 필요할 것이다.
-					 -->
-        			<h1 class="h1 venderName"> &lt;땡땡땡땡&gt;</h1>        			
-        		</div>
-				<a id="user_link"><img id="login_img"></a>
-			</div>
+  <header class="fixed-top">
+    <div class="d-flex justify-content-between">   
+        <div class="mx-5 my-2">
+        	<h1 class="h1">&lt;때래땡땡&gt; 판매자</h1> 
+        </div>        
+        <div class="mx-5 my-2 d-flex align-items-end">
+        	<a href="/">로그아웃</a>
+        </div>
+    </div>
+  </header>
 
-		</div>
-		<nav id="total_bar">
-		</nav>
-	</header>
-		<div id="side_bar">
-		<div id="side_links" class="w-100"></div>
-	</div>
-<!-- 	   <div id="select_MyPage" class="d-flex flex-column">
+  <div id="side_bar">
+    <div id="side_links" class="w-100"></div>
+  </div>
+	   <div id="select_MyPage" class="d-flex flex-column">
 		    <div id="select_mp_top" class="text-center">판매자 페이지</div>
 		    <div id="select_content">
 		        <button class="MyPage_btn w-100" id="myPage_userInfo_Select" style="border:1px solid #cccccc">회원 정보</button>
@@ -293,7 +263,7 @@
 		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc">문의 및 요청</button>
 		    </div>
 		</div>
- -->
+
   <main>
   	<div class="main_whitespace p-5 my-2">
 		<h1 class="h3 text-center ">상품 등록</h1>
@@ -337,7 +307,7 @@
 				<div class="input-group mt-2 p-2 w-100 border-secondary d-flex align-items-center border-top">
 				    <label class="mx-2 m-auto input-group-text">배너 이미지</label>
  					<div class="file-container_ form-control custom-primary m-2 d-flex align-items-center">
-			            <input id="bannerFileText" class="file-upload-name_" placeholder="파일을 선택하세요" disabled="disabled">			
+			            <input id="bannerFileText" class="file-upload-name_" value="파일을 선택하세요" disabled="disabled">			
 			            <label for="bannerFile" >올리기</label> 
 			            <input type="file" id="bannerFile" class="upload-image_" name=""> 
 			         </div>
@@ -346,7 +316,7 @@
 				<div class="input-group mt-2 p-2 w-100 border-secondary d-flex align-items-center border-top">					
 				    <label class="mx-2 m-auto input-group-text">설명 이미지</label>
  					<div class="file-container_ form-control custom-primary m-2 d-flex align-items-center">
-			            <input id="explainFileText" class="file-upload-name_" placeholder="파일을 선택하세요" disabled="disabled">			
+			            <input id="explainFileText" class="file-upload-name_" value="파일을 선택하세요" disabled="disabled">			
 			            <label for="explainFile" >올리기</label> 
 			            <input type="file" id="explainFile" class="upload-images_" name="" >			        
 			        </div>			        
@@ -378,9 +348,6 @@
 </body>
 <script type="text/javascript">
 	$(document).ready(function(){
-		/* 
-			메인 카테고리 작업 중
-		
 		let mainCategoryValue = $('#mainCategory').val(); 
 		$('#mainCategory').on('change',function(){								
 			$.ajax({
@@ -390,69 +357,48 @@
 				success: function(response) {
 				// window.location.href="/";
 					console.log(response);
-					$('#subCategory').append($('<option>', {
-				        value: response[i].categoryId,
-				        text: response[i].categoryName
-				    }));
+					for(let i = 0; i < response.length ; i++){
+						$('#subCategory').append($('option'),{
+
+						});
+					}					
 				},
 				error: function(xhr, status, error) {
-					console.log("가져오기 실패");
-					console.error(xhr.responseText);
+					
 				}
 			});
-		}); 
-		
-		*/
-		
-		
+		});
 		
 		
 		let bannerFile = $('#bannerFile');
 		let explainFile = $('#explainFile');
 		let uploadedExplainFiles = $('#uploadedExplainFiles');
 		
-		
-		
-		
 		// 배너 이미지 경로 가져오기
 		bannerFile.change(function(e){
 		    let filename = "";
 		    let files = e.target.files;
-		    let bannerDeleteButton = $('<button></button>').addClass('btn font-weight-bold').text('X').attr('id','BnDelBtn');
-		    
+
 		    if (files.length > 0) {
 		        filename = files[0].name;
 		        $(this).siblings('#bannerFileText').val(filename);
-		        $('#bannerFileText').after(bannerDeleteButton);
 		    } else {
 		    	// 이외의 경우에는 취소로 받아들이고 경고창을 띄우겠음.
 		    	alert("배너 이미지 업로드가 취소되었습니다. 다시 올려주세요.");
-		    	$(this).siblings('#bannerFileText').val('파일을 선택하세요');
-		    }		    
+		    }
 		    
-		    bannerDeleteButton.on('click',function(){
-		    	if($(this).parents().children('#bannerFileText').length != 0){
-		       		$(this).parents().children('#bannerFileText').each(function(){
-		       			// #bannerFileText의 텍스트 초기화
-		       			// this가 가리키는 요소가 다름.
-		       			$(this).val('');
-		       		});
-		       		$(this).remove();
-		       	}
-		    });
 		});
 		
 		// 설명 이미지 경로 가져오기
 		explainFile.change(function(e){
 		    let filename;
 		    let files = e.target.files;
-		   
+
 		    // 파일을 선택한 경우
-		    if (files.length > 0) {
+		    if (files != null && files.length > 0) {
 		        filename = files[0].name;
 		     // siblings() 메서드는 선택한 요소의 형제 요소들을 선택하여 반환
-			    // -> explainFile의 형제인 #explainFileText(파일명 출력 공간)의 텍스트 값 입력
-			    $(this).siblings('#explainFileText').val(filename);		        
+			    // -> explainFile의 형제인 #explainFileText(파일명 출력 공간)의 텍스트 값 입력	        
 		    } else {    			    	
 		    	// 파일 전체 경로 -> /로 분할 -> 마지막 요소 추출 -> 다시 \\로 분할  -> 마지막 요소 추출	
 		    	// -> 파일 이름 추출
@@ -460,47 +406,37 @@
 		        
 		    	// 이외의 경우에는 취소로 받아들이고 경고창을 띄우겠음.
 		    	alert("설명 이미지 업로드가 취소되었습니다. 다시 올려주세요.");
-		    }  
-			
-			/*  파일 리스트를 보여주는 <ul> 태그 내 <li> 태그 만들기 작업 	*/		
-			
+		    }
+		    
+			$(this).siblings('#explainFileText').val(filename);	
+			/*  파일 리스트를 보여주는 <ul> 태그 내 <li> 태그 만들기 작업 	*/		    
 		    // 파일 리스트로 보여주기 위한 <li> 
 		    let newItem = $('<li></li>').addClass('list-group-item');
 		    
-			// 삭제 버튼
-		    let explainDeleteButton = $('<button></button>').addClass('btn font-weight-bold').text('X').attr('id','exDelBtn');
+		    // 삭제 버튼
+		    let deleteButton = $('<button></button>').addClass('btn font-weight-bold').text('X');		        	    
 		    
-			// files 배열의 각 요소에 대해 반복
+		    // files 배열의 각 요소에 대해 반복
 		    $.each(files, function(index, file){
 		    	// 현재 파일명
                 let fileName = file.name;  			    
 		    	
     		 	// <li> 에 삭제 버튼 및 파일이름 추가 
-    		    newItem.text(fileName).append(explainDeleteButton);    		 	
+    		    newItem.text(fileName).append(deleteButton);    		 	
     		 	
                 // 새로운 li 요소 생성 및  ul에 추가
                 $('#uploadedExplainFiles').append(newItem);
-            });    	 	
-			
+            });
+		    
 		 	// 삭제 버튼을 클릭할 때 파일을 삭제하는 이벤트를 추가
-		    explainDeleteButton.on('click', function() {
+		    deleteButton.on('click', function() {
 		    	// 삭제 버튼을 포함한 파일 아이템을 삭제
 		    	// closest() 메서드는 선택한 요소를 기준으로 가장 근접한 상위 요소를 찾아 반환
-		    	
-		    	// parents() : 현재 요소의 모든 부모 요소
-		    	// parent() : 현재 요소의 직계 부모 요소
-		    	
-		    	// 버튼 직계 부모가 newItem이면
-		    	if($(this).parent().is(newItem)){
-		    		// 직계 부모 삭제
-		       		$(this).parent().remove();
-		    		$('#explainFileText').val('');
-		       	}
+		        $(this).closest('li').remove();
 		    });
 		});
-		
-	
 	}); 
+
 </script>
 
 <!-- 
@@ -861,7 +797,7 @@
         select_dv.toggle();
     });
 
-	
+
 
 </script>
 

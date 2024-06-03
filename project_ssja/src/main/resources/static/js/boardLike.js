@@ -16,8 +16,14 @@ $(document).ready(function() {
 	// 글 좋아요 처리
     let bno = $('#like-button').data('likebno');
     console.log(bno);
-    let likebmno = $('#like-button').data('likebmno'); // 현재 상태 확인
+    
+    // data-likebmno 속성이 정의되지 않았거나 값이 없다면 0으로 설정
+    let likebmno = $('#like-button').data('likebmno') || 0; // 현재 상태 확인
 	console.log(likebmno);
+	
+	if(likebmno == null){
+		likebmno == 0;
+	}
 	
 	let likeImage = '/images/board/before_boardlike.png';
 	let isLikedImage = '/images/board/after_boardlike.png';
@@ -59,19 +65,21 @@ $(document).ready(function() {
         success: function(response) {
         	console.log("successed");
         	console.log(response);
+        	if(response.isLiked == -99){
+        		console.log("비회원 조회 상태");
+        	}
             $('#like-count').text(response.afterLikes);
             likeImages(response);
         },
         error: function(xhr, status, error) {
             console.log("Error: " + error);
             console.log("Response: " + xhr.responseText);
-            alert('좋아요를 확인하실 수 없는 상태입니다.');
-            $(location).attr('href','/login');
+            alert('좋아요를 확인하실 수 없는 상태입니다. 목록으로 되돌아갑니다.');
+            $(location).attr('href','/board/list/20');
         }
     });
 	
-	$('#like-button').click(function(e) {
-				
+	$('#like-button').click(function(e) {				
     	// 기본 제출 동작 방지
     	e.preventDefault();
     	
@@ -100,7 +108,7 @@ $(document).ready(function() {
             error: function(xhr, status, error) {
                 console.log("Error: " + error);
                 console.log("Response: " + xhr.responseText);
-                alert('좋아요가 정상적으로 진행되지 않았습니다.');
+                alert('좋아요를 하시려면 로그인하셔야 합니다.');
                 $(location).attr('href','/login');
             }
         });
