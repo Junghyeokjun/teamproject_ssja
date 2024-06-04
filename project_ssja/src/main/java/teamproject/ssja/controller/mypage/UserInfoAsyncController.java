@@ -31,6 +31,7 @@ import teamproject.ssja.dto.userinfo.ChangePasswordForm;
 import teamproject.ssja.dto.userinfo.MyPageOrdersDTO;
 import teamproject.ssja.dto.userinfo.UserInfoDTO;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
+import teamproject.ssja.page.ListObjectPagingDTO;
 import teamproject.ssja.service.mypage.MailService;
 import teamproject.ssja.service.mypage.MyPageService;
 import teamproject.ssja.service.user.CustomUserDetailsService;
@@ -175,6 +176,7 @@ public class UserInfoAsyncController {
 			 myPageService.enrollVendor(venderInfo);
 			 return ResponseEntity.ok("success");
 		} catch (Exception e) {
+			e.printStackTrace();
 		      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");
 		}
 		 
@@ -184,6 +186,29 @@ public class UserInfoAsyncController {
 	 public ResponseEntity<VendorInfoDTO> getVendorInfo() {
 		VendorInfoDTO vendorInfo =  myPageService.getVendorInfo();
 		 return ResponseEntity.ok(vendorInfo);
+	 }
+	 
+	 @GetMapping("/check/apply-vendor")
+	 public ResponseEntity<String> enrollVendor() {
+		 int whetherApply =  myPageService.isAppliedVendor();
+		 if(whetherApply >= 1) {
+			 return ResponseEntity.ok("Y");
+		 }else {
+			 return ResponseEntity.ok("N");
+		 }
+	 }
+	 
+	 @GetMapping("/cart/items")
+	 public ResponseEntity<ListObjectPagingDTO> itemCartPage(int pageNum){
+		 
+		 ListObjectPagingDTO data = myPageService.getcartItems(pageNum);
+		 if(data == null) {
+			 
+			 return ResponseEntity.ok(null);
+		 }else {
+			 
+			 return ResponseEntity.ok(data);
+		 }
 	 }
  
 }

@@ -1,6 +1,5 @@
 let $best_item_content = $("#best_item_content");
-let token = $("meta[name='_csrf']").attr("content");
-let header = $("meta[name='_csrf_header']").attr("content");
+
 
 function formatNumber(num) {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -26,7 +25,7 @@ let getListBestToServer = function (pageNum) {
                 }
 
                 let $item_content_dv = $("<div>").addClass("item-content-div")
-                    .css({ "max-width": "25%", 'height': '20em' })
+                    .css({ "max-width": "25%","min-width": "25%", 'height': '20em' })
                     .hover(
                         function () {
                             $item_img_dv.css('background-size', '115%');

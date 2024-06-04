@@ -111,4 +111,20 @@ select count(*) from purchase where m_no =#{id}
 <insert id="enrollVendor" >
 insert into vendor values (v_seq.nextval, #{id},#{v_bizName},#{v_account},#{v_license},#{v_FAX})
 </insert>
+
+
+
+	<select id="getMyCartItems" parameterType="Map" resultType="teamproject.ssja.dto.userinfo.CartItemsDTO">
+
+        SELECT i.pro_no, i.i_quantity,i.i_date, p.pro_name, p.pro_price, p.pro_bannerIMG 
+        FROM ( SELECT *  FROM 
+        (SELECT t.*, ROW_NUMBER() OVER (ORDER BY i_date DESC) AS rnum  
+        FROM item_cart t)  WHERE rnum between #{pageNum} * 10 - 9 AND #{pageNum} * 10) i 
+        INNER JOIN product p 
+        ON i.pro_no = p.pro_no 
+        WHERE i.m_no = #{m_no}
+
+	</select>
+
+
 </mapper>

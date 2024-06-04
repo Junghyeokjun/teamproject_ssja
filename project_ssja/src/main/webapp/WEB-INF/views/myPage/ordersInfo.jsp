@@ -247,35 +247,8 @@ border:none;
     </nav>
   </header>
 
-  <div id="side_bar">
-    <div id="side_links" class="w-100"></div>
-  </div>
-		   <div id="select_MyPage" class="d-flex flex-column">
-		    <div id="select_mp_top" class="text-center">마이 페이지</div>
-		    <div id="select_content">
-		        <button class="MyPage_btn w-100" id="myPage_userInfo_Select" style="border:1px solid #cccccc">회원 정보</button>
-		        <button class="MyPage_btn w-100" id="myPage_orderInfo_Select" style="border:1px solid #cccccc">주문 내역</button>
-		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc">내가 쓴 글</button>
-		        
-		        <!--  principal객체를 꺼내서 해당 객체의 auth값을 yourAuth변수로 지정 -->
-		     <sec:authentication property="principal.auth" var="yourAuth"/> 
-		     
-		       <c:if test="${principal.isOAuth2User() == true }">
-		       <button class="MyPage_btn w-100" style="border:1px solid #cccccc" id="not_authorized_vendor_apply">판매자 신청</button>
-		       </c:if> 
-		 <c:if test="${yourAuth == 'ROLE_USER'}"><!-- 유저 권한 -->
-		    <c:if test="${principal.isOAuth2User() == false }">
-		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc" id="vendor_apply">판매자 신청</button>
-		        </c:if>
-			</c:if>
-			
-			 <c:if test="${yourAuth == 'ROLE_VENDOR'}"><!--  판매자 권한일 경우 대체 되는 버튼 -->
-		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc" id="mange_yoursell">판매 관리</button>
-		        </c:if>
-		        
-		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc" id="go_qna">문의 및 요청</button>
-		    </div>
-		</div>
+ 
+		
   <main>
     <div id="main_container" class="d-flex flex-row align-items-center justify-content-center" >
       <div id="content_dv" >
@@ -303,11 +276,11 @@ border:none;
 
 </body>
 
-<script src="/js/myPage/userMyPage.js"></script>
 <script src="/js/myPage/userOrders.js"></script>
-<script src="/js/myPage/applyVendor.js"></script>
 <script>
-        myPageUserInfo();
+let token = $("meta[name='_csrf']").attr("content");
+let header = $("meta[name='_csrf_header']").attr("content");
+myPageOrderInfo(1);
 
 </script>
 

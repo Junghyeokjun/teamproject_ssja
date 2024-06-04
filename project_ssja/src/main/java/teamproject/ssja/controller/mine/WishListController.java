@@ -1,4 +1,4 @@
-package teamproject.ssja.controller.wishlist;
+package teamproject.ssja.controller.mine;
 
 import java.util.Map;
 
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.login.CustomPrincipal;
+import teamproject.ssja.service.Product.ProductService;
 import teamproject.ssja.service.wishlist.WishListService;
 
 @Slf4j
@@ -21,6 +22,7 @@ import teamproject.ssja.service.wishlist.WishListService;
 public class WishListController {
 
 	private final WishListService wishListService;
+	
 	
 	@PutMapping("")
 	public ResponseEntity<Integer> changWishOfItem(@RequestBody Map<String, Object> data, @AuthenticationPrincipal CustomPrincipal user){

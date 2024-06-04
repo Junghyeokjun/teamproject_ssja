@@ -51,6 +51,17 @@
 	</select>
 	
 
+	<select id="getYourItemCrat" resultType="teamproject.ssja.dto.userinfo.CartItemsDTO">
+    <![CDATA[
+        SELECT i.pro_no, i.i_quantity, p.pro_name, p.pro_price, p.pro_bannerIMG 
+        FROM ( SELECT *  FROM 
+        (SELECT t.*, ROW_NUMBER() OVER (ORDER BY i_date DESC) AS rnum  
+        FROM item_cart t)  WHERE rnum <= 5) i 
+        INNER JOIN product p 
+        ON i.pro_no = p.pro_no 
+        WHERE i.m_no = #{m_no}
+        ]]>
+	</select>
 	
 
 	

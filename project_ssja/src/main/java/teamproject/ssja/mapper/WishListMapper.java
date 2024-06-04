@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import teamproject.ssja.dto.WishListDTO;
+import teamproject.ssja.dto.userinfo.CartItemsDTO;
 
 @Mapper
 public interface WishListMapper {
@@ -34,5 +35,6 @@ public interface WishListMapper {
 	@Update("update product set pro_wish = pro_wish + 1 where pro_no = #{productNum}")
 	void plusWishProduct(Integer productNum);
 	
+
 	
 }

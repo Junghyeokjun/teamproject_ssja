@@ -30,6 +30,12 @@ public class MyPageController {
 		 return "redirect:/login";
 	}
 	
+	@GetMapping("/orderInfo")
+	public String myOrderP() {
+		
+	return "/myPage/ordersInfo";
+	}
+	
 	@GetMapping("/password/check")
 	public String pwCheckP() {
 		return "";
@@ -38,6 +44,11 @@ public class MyPageController {
 	@RequestMapping("/password/change")
 	public String pwChangeP() {
 		return "/myPage/changePassWord";
+	}
+	
+	@GetMapping("/cart")
+	public String myCartP() {
+		return "/product/myCart";
 	}
 
 }

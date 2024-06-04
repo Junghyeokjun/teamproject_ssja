@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.product.ProductCondition;
 import teamproject.ssja.dto.product.ProductItemDto;
+import teamproject.ssja.dto.userinfo.CartItemsDTO;
 
 @Mapper
 public interface ProductListMapper {
@@ -19,5 +20,5 @@ public interface ProductListMapper {
 	List<ProductItemDto> bestItemsList(int page);
 	
 	
-	
+	List<CartItemsDTO> getYourItemCrat(long id);
 }

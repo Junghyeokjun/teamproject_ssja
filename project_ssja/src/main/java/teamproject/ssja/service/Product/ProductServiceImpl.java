@@ -6,8 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import teamproject.ssja.InfoProvider;
 import teamproject.ssja.dto.product.ProductCondition;
 import teamproject.ssja.dto.product.ProductItemDto;
+import teamproject.ssja.dto.userinfo.CartItemsDTO;
 import teamproject.ssja.mapper.ProductListMapper;
 
 @Service
@@ -35,5 +37,9 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 
-	
+	public List<CartItemsDTO >getYourItemCrat(){
+		long id = InfoProvider.getM_NO();
+		return productMapper.getYourItemCrat(id);
+		
+	}
 }

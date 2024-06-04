@@ -400,3 +400,59 @@ input:focus {
 	position: absolute;
 	top: 30%;
 }
+
+
+#login_user_div {
+    display: none;
+    position: absolute;
+    top: 75%;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 1000;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+#login_user_div button{
+background:white;
+padding:15px;
+text-align:center;
+border:none;
+width:100%;
+}
+.product-name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#user_itemcart_div {
+    display: none;
+    position: absolute;
+    top: 75%;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 1000;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    width:350px;
+    height:auto;
+    color:black;
+}
+#user_itemcart_div button{
+width:100%;
+border:none;
+background:white;
+padding:5px;
+
+
+}
+#login_user_div button{
+background-color: white;
+}
+#login_user_div button:hover{
+background-color: #eee;
+}

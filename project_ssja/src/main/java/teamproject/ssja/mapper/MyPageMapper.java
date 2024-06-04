@@ -3,10 +3,12 @@ package teamproject.ssja.mapper;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.*;
 
 import teamproject.ssja.dto.userinfo.AddressForm;
+import teamproject.ssja.dto.userinfo.CartItemsDTO;
 import teamproject.ssja.dto.userinfo.OrderInfoDTO;
 import teamproject.ssja.dto.userinfo.UserInfoDTO;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
@@ -42,4 +44,17 @@ public interface MyPageMapper {
 	
 	@Select("select v_no, v_bizname, v_account, v_license, v_fax from vendor where m_no = #{id}")
 	VendorInfoDTO getVendoInfo(long id);
+	
+	@Update("update authority set auth='ROLE_VENDOR where M_ID = #{username}")
+	void renewRoleToVnedor(String username);
+	
+	@Select("SELECT count(v_no) from VENDOR where M_NO = #{id}")
+	int isAppliedVendor(long id);
+	
+	
+	@Select("SELECT count(m_no) from item_cart where m_no = #{id}")
+	int getTotalCartItems(long id);
+	
+	
+	List<CartItemsDTO> getMyCartItems(Map<String, Long> params);
 }

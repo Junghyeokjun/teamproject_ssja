@@ -4,18 +4,24 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import javax.management.RuntimeErrorException;
+import javax.print.attribute.HashAttributeSet;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.InfoProvider;
 import teamproject.ssja.dto.email.MailDTO;
 import teamproject.ssja.dto.userinfo.AddressForm;
+import teamproject.ssja.dto.userinfo.CartItemsDTO;
 import teamproject.ssja.dto.userinfo.MyPageOrdersDTO;
 import teamproject.ssja.dto.userinfo.UserInfoDTO;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
 import teamproject.ssja.mapper.MyPageMapper;
+import teamproject.ssja.page.ListObjectPagingDTO;
 
 @Slf4j
 @Service
@@ -124,10 +130,41 @@ public class MyPageUserInfoService implements MyPageService{
 		myPageMapper.enrollVendor(vendorInfo);
 	}
 
+	@Transactional
 	@Override
 	public VendorInfoDTO getVendorInfo() {
+		try {
+			
+			long id = InfoProvider.getM_NO();
+			String username = InfoProvider.userId();
+			//myPageMapper.renewRoleToVnedor(username);
+			return myPageMapper.getVendoInfo(id);
+			
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		
+	}
+
+	@Override
+	public int isAppliedVendor() {
 		long id = InfoProvider.getM_NO();
-		return myPageMapper.getVendoInfo(id);
+		return myPageMapper.isAppliedVendor(id);
+	}
+
+	@Override
+	public ListObjectPagingDTO getcartItems(int pageNum) {
+		
+		long id = InfoProvider.getM_NO();
+		int total = myPageMapper.getTotalCartItems(id);
+		
+		Map<String , Long> params = new HashMap<>();
+		params.put("pageNum",(long)pageNum);
+		params.put("m_no",id);
+		List<CartItemsDTO> list = myPageMapper.getMyCartItems(params);
+		ListObjectPagingDTO data = new ListObjectPagingDTO(total,pageNum);
+		data.setObjectList(list);
+		return data;
 	}
 
 	

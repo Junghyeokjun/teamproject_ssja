@@ -98,6 +98,9 @@ border:1px solid #ddd;
 height:5em;
 }
 
+
+
+
   </style>
 </head>
 
@@ -182,6 +185,11 @@ height:5em;
     <div id="second_footer"></div>
     <div id="third_footer"></div>
   </footer>
+  
+   <sec:authorize access="isAuthenticated()">
+  <script src="/js/login_user_tab.js"> </script>
+  <script src="/js/user_cart_tab.js"> </script>
+</sec:authorize>
 
 </body>
 <script src="/js/mainpage/mainpage.js" >

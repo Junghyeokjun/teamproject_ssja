@@ -220,6 +220,11 @@ padding:15px;
 text-align:center;
 border:none;
 }
+#cart_title_type_dv > span{
+font-size:1.2rem;
+color:#aaa;
+
+}
 
 </style>
 </head>
@@ -247,41 +252,15 @@ border:none;
     </nav>
   </header>
 
-  <div id="side_bar">
-    <div id="side_links" class="w-100"></div>
-  </div>
-		   <div id="select_MyPage" class="d-flex flex-column">
-		    <div id="select_mp_top" class="text-center">마이 페이지</div>
-		    <div id="select_content">
-		        <button class="MyPage_btn w-100" id="myPage_userInfo_Select" style="border:1px solid #cccccc">회원 정보</button>
-		        <button class="MyPage_btn w-100" id="myPage_orderInfo_Select" style="border:1px solid #cccccc">주문 내역</button>
-		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc">내가 쓴 글</button>
-		        
-		        <!--  principal객체를 꺼내서 해당 객체의 auth값을 yourAuth변수로 지정 -->
-		     <sec:authentication property="principal.auth" var="yourAuth"/> 
-		     
-		       <c:if test="${principal.isOAuth2User() == true }">
-		       <button class="MyPage_btn w-100" style="border:1px solid #cccccc" id="not_authorized_vendor_apply">판매자 신청</button>
-		       </c:if> 
-		 <c:if test="${yourAuth == 'ROLE_USER'}"><!-- 유저 권한 -->
-		    <c:if test="${principal.isOAuth2User() == false }">
-		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc" id="vendor_apply">판매자 신청</button>
-		        </c:if>
-			</c:if>
-			
-			 <c:if test="${yourAuth == 'ROLE_VENDOR'}"><!--  판매자 권한일 경우 대체 되는 버튼 -->
-		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc" id="mange_yoursell">판매 관리</button>
-		        </c:if>
-		        
-		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc" id="go_qna">문의 및 요청</button>
-		    </div>
-		</div>
+ 
+		
   <main>
     <div id="main_container" class="d-flex flex-row align-items-center justify-content-center" >
       <div id="content_dv" >
-        <div id="MyPage_content_name" > </div>
+        <div id="MyPage_content_name" > <h2 class="fw-bold ml-3">장바구니</h2></div>
         <div id=main_div>
-        <div id="MyPage_content_container" class="border">
+        <div id="MyPage_content_container" class="border p-3 d-flex flex-column">
+        
         </div>
         </div>
       </div>
@@ -295,20 +274,85 @@ border:none;
     <div id="third_footer"></div>
   </footer>
   
-   <sec:authorize access="isAuthenticated()">
+    <sec:authorize access="isAuthenticated()">
   <script src="/js/login_user_tab.js"> </script>
     <script src="/js/user_cart_tab.js"> </script>
-  
 </sec:authorize>
-
 </body>
 
-<script src="/js/myPage/userMyPage.js"></script>
-<script src="/js/myPage/userOrders.js"></script>
-<script src="/js/myPage/applyVendor.js"></script>
 <script>
-        myPageUserInfo();
+let token = $("meta[name='_csrf']").attr("content");
+let header = $("meta[name='_csrf_header']").attr("content");
+function formatNumber(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+let deleteList = [];
 
+let deleteListInsert = function(num){
+	
+	let ind = deleteList.indexOf(num);
+	
+	if(ind === -1){
+		deleteList.splice(ind,1);
+	}else{
+	deleteList.push(num);
+		
+	}
+	console.log(deleteList);
+}
+
+let pageNum = 1;
+
+let itemCartPageRender = function(pageNum){
+	$.ajax({
+		  type: "get",
+	        contentType: "application/json",
+	        url: "/user/cart/items",
+	        data: { 'pageNum': pageNum },
+	        success:function(data){
+	        console.log(data);
+	        let $main_container = $("#MyPage_content_container").empty();
+	        let $cart_content_top = $("<div>").appendTo($main_container);
+	        let $cart_title_type_dv = $("<div>").attr('id',"cart_title_type_dv")
+	        .css({'border-top':'3px solid black',
+	        	'border-bottom':'3px solid black',
+	        	'padding':'1em'})
+	        .addClass("d-flex flex-row justify-content-evenly").appendTo($cart_content_top);
+	        $("<span>").addClass("mx-5").text('상품').appendTo($cart_title_type_dv);
+			$("<span>").text('일자').appendTo($cart_title_type_dv);
+			$("<span>").text('개수').appendTo($cart_title_type_dv);
+			$("<span>").text('금액').appendTo($cart_title_type_dv);
+			
+				let $cart_content_main = $("<div>").appendTo($main_container);
+			data.objectList.forEach(function(item,index){
+ 				let $cart_item_content_dv = $("<div>").on('click', function(){
+					window.location.href='/product_detail?PRO_NO='  + item.pro_no;
+				}).hover(
+					    function(){
+					    	$(this).css('background-color','#eee');
+					    },
+					    function(){
+					    	
+					    	$(this).css('background-color','white');
+					    }).addClass("p-2 m-1 mx-3")
+					    .appendTo($cart_content_main);
+				
+			$("<input>").attr({'type':'checkbox',"id":item.pro_no}).on('change',function(e){
+				
+				e.preventDefault();
+				deleteListInsert(item.pro_no);
+				
+			}).appendTo($cart_item_content_dv);
+			
+			$("<img>").css({'width':'15%','max-height':'15%','margin-left':'1.5rem'}).attr('src',item.pro_bannerimg).appendTo($cart_item_content_dv);
+				
+			});
+	        },error:function(){
+	        	console.log('실패');
+	        }
+	})
+}
+itemCartPageRender(1);
 </script>
 
 </html>

@@ -1,17 +1,21 @@
 package teamproject.ssja.service.wishlist;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import teamproject.ssja.InfoProvider;
 import teamproject.ssja.dto.WishListDTO;
+import teamproject.ssja.dto.userinfo.CartItemsDTO;
 import teamproject.ssja.mapper.WishListMapper;
 
 @Service
-@RequiredArgsConstructor
 public class WishListService {
 
-	
-	private final WishListMapper wishListMapper;
+	@Autowired
+	private  WishListMapper wishListMapper;
 	
 	public int changeWish(long memberNum, Integer productNum) {
 		
@@ -29,5 +33,7 @@ public class WishListService {
 			return count_wish + 1;
 		}
 	}
+	
+	
 	
 }
