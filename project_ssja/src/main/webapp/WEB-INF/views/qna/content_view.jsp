@@ -210,10 +210,10 @@ body {
 					</tr>
 					<tr>
 						<td colspan="2">
-							<h5 class="h5 m-1 p-1">댓글</h5>		
+							<h5 class="h5 m-1 p-1">댓글 </h5>		
 							<div class="input-group border">								
 	    						<input id="inputReplyCon" type="text" class="form-control" name="rcontent" data-rbno="${content_view.bno}" data-rmno="" placeholder="댓글을 입력하세요.">
-	    						<span class="input-group-text"><button id="inputReply" class="btn btn-primary">입력</button></span>
+	    						<span class="input-group-text"><button id="inputReply" class="btn btn-primary btn-format">입력</button></span>
 	    					</div>	   						    					
 						</td>					
 					</tr>
@@ -280,6 +280,13 @@ body {
 	</footer>
 <script>
 	$(document).ready(function(){
+		// 해당 jsp 파일에서만 텍스트 영역의 스크롤바를 없애고 내용에 따라 높이를 조정해 줄 예정
+		// srollHeight : 컨텐츠가 차지하는 공간 높이. 제이쿼리로는 접근을 못해서, DOM 객체로 변환 후 접근해야 함.
+		// $('#board_textarea')[0] : 해당 제이쿼리 객체에서 첫 번째 DOM 요소로 접근한다는 것을 의미.
+		if($('#board_textarea')[0].scrollHeight > $('#board_textarea').height()){
+			$('#board_textarea').css('height', 'auto');
+		}
+			
 		// 댓글 url
 		let replysUrl = '/api/replys';
 
@@ -301,6 +308,13 @@ body {
 
 		};
 
+		// 댓글 텍스트 상자 높이 조절 함수
+		let replyTextareaHeight = function(){ 
+			$('.rcontent.form-control').each(function() {
+	            $(this).css('height', 'auto').css('height', this.scrollHeight + 'px');
+        	})
+        };
+		
 		/* let html1 = ''; 
 		html1+= '<c:forEach var="reply_view" items="${replys}">';
 		html1+=	'<c:forEach var="re" begin="1" end="${reply_view.rindent}">';
@@ -315,16 +329,20 @@ body {
 			$('#replys').empty(); // 기존 내용 비우기
 			let html1 = '';
 			$.each(response.replys, function(index, reply_view) {
-				html1 += '<div class=" rounded border"><div class="input-group">'; 
+				html1 += '<div class="rounded border m-1">';
+				html1 += '<div class="input-group">'; 
 				// 댓글 만들기
 				for (let i = 1; i <= reply_view.rindent; i++) {
 					html1 += '<img src="">';
 				}
-				html1 += '<span class="input-group-text bg-replywriter">' + reply_view.rwriter + '</span>';
-				html1 += '<input id="rcontent" type="text" class="form-control" data-rno="' + reply_view.rno + '" value="' + reply_view.rcontent + '" readonly="readonly">';				
+				html1 += '<span class="input-group-text bg-replywriter border">' + reply_view.rwriter + '</span>';
+				//html1 += '<input type="text" class="rcontent form-control" data-rno="' + reply_view.rno + '" value="' + reply_view.rcontent + '" readonly="readonly">';				
+				html1 += '<textarea class="rcontent form-control" data-rno="' + reply_view.rno + '" rows="1" readonly="readonly">' + reply_view.rcontent + '</textarea>';				
 				html1 += '</div>';
-				html1 += '<div class="d-flex justify-content-between"><div><button id="reply-likes" class="btn mx-1">좋아요 '+ 1 +'</button><button id="reply-modify" class="btn">수정</button><button id="reply-delete" class="btn">X</button></div><div class="btn disabled border-0">' + reply_view.rdate + '</div>';
-				html1 += '</div>'
+				
+				// 좋아요 부분의 숫자는 추후 없애고 따로 처리해야 한다.
+				html1 += '<div class="d-flex justify-content-between"><div><button class="reply-likes btn mx-1">좋아요 '+ 1 +'</button><button class="reply-modify btn">수정</button><button id="reply-delete" class="btn">X</button><button class="reply-report btn">신고</button></div><div class="btn disabled border-0">' + reply_view.rdate + '</div>';
+				html1 += '</div></div>'
 			});
 
 			$('#replys').html(html1);
@@ -338,7 +356,7 @@ body {
 			// 이전 페이지 링크 추가
 			if (response.pageMaker.prev) {
 				html2 += '<li class="page-item">';
-				html2 += '<a class="page-link" href="${pageContext.request.contextPath}/api/replys/list' + (response.pageMaker.startPage - 1) + '">&lt;</a>';
+				html2 += '<a class="page-link" href="${pageContext.request.contextPath}/api/replys/list/' + (response.pageMaker.startPage - 1) + '">&lt;</a>';
 				html2 += '</li>';
 			}
 			
@@ -347,11 +365,11 @@ body {
 				if (response.pageMaker.criteria.pageNum == idx) {
 					html2 += '<li class="page-item active">';
 					// 문자로 전달된 데이터이므로, 매개변수가 숫자라면 숫자형으로 바꾸기
-					html2 += '<a class="page-link" href="${pageContext.request.contextPath}/api/replys/list/' + idx +  '/' + response.pageMaker.criteria.amount +'}">' + idx + '</a>'
+					html2 += '<a class="page-link" href="${pageContext.request.contextPath}/api/replys/list/' + idx +  '/' + response.pageMaker.criteria.amount +'">' + idx + '</a>'					
 				} else {
 					html2 += '<li class="page-item">';
 					// 문자로 전달된 데이터이므로, 매개변수가 숫자라면 숫자형으로 바꾸기
-					html2 += '<a class="page-link" href="${pageContext.request.contextPath}/api/replys/list/' + idx +  '/' + response.pageMaker.criteria.amount +'}">' + idx + '</a>';							
+					html2 += '<a class="page-link" href="${pageContext.request.contextPath}/api/replys/list/' + idx +  '/' + response.pageMaker.criteria.amount +'">' + idx + '</a>';							
 				}					
 				html2 += '</li>';
 			}
@@ -365,8 +383,12 @@ body {
 
 			// 요소에 HTML 추가
 			$('#pagination').html(html2);
+
+			$('.h5.m-1.p-1').text('댓글 ' + response.pageMaker.total);
 		};
 		
+
+		console.log(replysUrl);
 		// 기본적인 댓글 리스트 가져오기
 		$.ajax({
 			url: replysUrl + '/list',
@@ -377,31 +399,37 @@ body {
 			success :  function(response){
 				console.log("replys : " + response.replys);
 				console.log("pageMaker : " + response.pageMaker);
-				getReplyLists(response);
+				console.log("replyTotal : " + response.pageMaker.total);
+				console.log("===============================");
+				getReplyLists(response);	
+				replyTextareaHeight();
 			},
 			error : function(xhr, status, error){
 				console.log("error : " + error);
 				console.log("response : " + xhr.responseText);
 			}
 		});
-
+		
 		// 페이지네이션 처리된 부분 클릭 시 
-		$('.page-link').click(function(e){
+		// 동적으로 생성된 요소에 대해서도 이벤트를 처리할 수 있음
+		$(document).on('click', '.page-link', function(e){
 			// 이벤트 비활성화(기본 동작 방지하기)
 			e.preventDefault();
 
 			let url = $('.page-link').attr('href');
-			let parts = url.split('/');
-			let pageNum = parts[parts.length - 2]; // 마지막에서 두 번째 요소가 페이지 번호
-			let amount = parts[parts.length - 1]; // 마지막 요소가 개수
-
+			
 			$.ajax({
 				url: url,
 				type : 'GET',
+				data : {
+					'bno' : rbno
+				},
 				success :  function(response){
 					console.log("replys : " + response.replys);
 					console.log("pageMaker : " + response.pageMaker);
+					console.log("replyTotal : " + response.pageMaker.total);
 					getReplyLists(response);
+					replyTextareaHeight();
 				},
 				error : function(xhr, status, error){
 					console.log("error : " + error);
@@ -409,7 +437,6 @@ body {
 				}
 			});
 		});
-
 
 		// memberNum 변수 값 유무에 따라 로그인 여부를 체크하는 함수(소셜 로그인도 해당 변수에 값이 들어간 상태라고 함)
 		function isLoggedIn(){
@@ -419,8 +446,8 @@ body {
 		// 댓글 입력 관련
 
 
-		// 제약 1 : 댓글 내용 칸 클릭 시, 로그인이 되어 있지 않다면 로그인 상태를 
-		$('#inputReplyCon').click(function(){
+		// 제약 1 : 댓글 내용 칸 클릭 시, 로그인이 되어 있지 않다면 로그인 상태를 방지
+		$(document).on('click', '#inputReplyCon', function(){
 			if(!isLoggedIn()){
 				alert('댓글을 달 수 없습니다. 로그인 페이지로 이동합니다.');
 				$(location).attr('href', '/login');
@@ -428,10 +455,14 @@ body {
 			}
 		});
 
-		
+	 	$('.rcontent.form-control').each(function() {
+	        // 현재 textarea 요소의 높이를 자동으로 조절
+	        $(this).css('height', 'auto').css('height', this.scrollHeight + 'px');
+	    });
 
 		//  댓글 제한
-		$('#inputReply').click(function(e){
+		//$('#inputReply').click(function(e){
+		$(document).on('click', '#inputReply', function(){
 			// 기본 동작을 막음.
 			// 이후 폼 제출이나 링크 이동은 따로 선언해서 이벤트를 진행
 			e.preventDefault();
@@ -455,9 +486,9 @@ body {
 		});
 
 		// 댓글 좋아요 버튼 클릭 시 관련 처리
-		$('#reply-likes').click(function(e){
+		//$('.reply-likes').click(function(e){
+		$(document).on('click', '.reply-likes', function(){	
 			e.preventDefault();
-
 
 			if(!isLoggedIn()){
 				alert('좋아요를 할 수 없습니다.');

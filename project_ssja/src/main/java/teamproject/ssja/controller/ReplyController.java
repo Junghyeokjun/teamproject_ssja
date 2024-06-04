@@ -27,14 +27,14 @@ public class ReplyController {
 	private ReplyService replyService;
 
 	@GetMapping("/list")
-	public ResponseEntity<Map<String, Object>> getReplyList(@ModelAttribute Criteria criteria, @RequestParam("bno") long bno){
+	public ResponseEntity<Map<String, Object>> getReplyList(Criteria criteria, @RequestParam("bno") long bno){
 		Map<String, Object> responseData = new HashMap<>();
 		try {
 			criteria.setBno(bno);
 			responseData.put("replys", replyService.showReplys(criteria.getBno()));
-			log.info("replys : " + responseData.get("reply_view"));
+			log.info("replys : " + responseData.get("replys"));
 			responseData.put("pageMaker", new PageVO(replyService.getTotal(criteria.getBno()), criteria));
-			log.info("pageMaker : " + responseData.get("pageMaker"));
+			log.info("pageMaker : " + responseData.get("pageMaker"));			
 			return ResponseEntity.ok().body(responseData);			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -43,12 +43,17 @@ public class ReplyController {
 		} 		
 	}
 	
-	@GetMapping("/list/{pageNum}/{amount}")
-	public ResponseEntity<Map<String, Object>> getReplyList(@ModelAttribute Criteria criteria){
+	@GetMapping("/list/{pageNum}/{amount}") 
+	public ResponseEntity<Map<String, Object>> getReplyPageList(Criteria criteria,
+			@PathVariable("pageNum") int pageNum, @PathVariable("amount") int amount, @RequestParam("bno") long bno){
+		
 		Map<String, Object> responseData = new HashMap<>();
 		try {			
+			criteria.setBno(bno);
+			criteria.setPageNum(pageNum);
+			criteria.setAmount(amount);
 			responseData.put("replys", replyService.showReplys(criteria.getBno()));
-			log.info("replys : " + responseData.get("reply_view"));
+			log.info("replys : " + responseData.get("replys"));
 			responseData.put("pageMaker", new PageVO(replyService.getTotal(criteria.getBno()), criteria));
 			log.info("pageMaker : " + responseData.get("pageMaker"));
 			return ResponseEntity.ok().body(responseData);			

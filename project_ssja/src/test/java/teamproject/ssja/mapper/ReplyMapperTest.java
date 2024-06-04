@@ -26,8 +26,8 @@ class ReplyMapperTest {
 		// ReplysDto replysDto = new ReplysDto(1,209,1,"하나마트","대충 할래...","2024-05-12",0,2,0,0);
 		// ReplysDto replysDto = new ReplysDto(1,209,1,"하나마트","테스트3","2024-05-12",0,0,0,0);
 		
-		ReplysDto replysDto = new ReplysDto(1,100,1,"하나마트","테스트3","",0,0,0,0);
-		
+		//ReplysDto replysDto = new ReplysDto(1,100,1,"하나마트","테스트3","",0,0,0,0);
+		ReplysDto replysDto = new ReplysDto(1,100,1,"하나마트","댓글을 상당히 길게 적었을 때 모양이 어떻게 되는지 확인은 해야 하기 때문에, 댓글 내용을 길게 적고 나는 그 부분을 체크하여 모양을 다듬는 작업을 할 것이다. 과연 이 텍스트가 아예 의미가 없는지, 아닌지는 두고봐야 할 것이다. 그러나 이 정도의 댓글도 너무 양이 적지 않을까? 그것도 궁금해진다.","",0,0,0,0);
 //		log.info("testDto : " + replysDto);
 //		log.info("rbno 값 : " + replysDto.getRbno());
 //		assertEquals(209L, replysDto.getRbno());
