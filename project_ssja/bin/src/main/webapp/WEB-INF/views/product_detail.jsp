@@ -52,8 +52,18 @@ body {
 	font-family: 'fonts', NanumGothicLight;
 	background-color: #f7f0e8;
 }
+.no-ripple {
+    pointer-events: none; /* 클릭 이벤트를 무시합니다. */
+    user-select: none; /* 사용자 선택을 막습니다. */
+    cursor: default; /* 기본 커서를 사용합니다. */
+    transition: none; /* 전환 효과를 없앱니다. */
+}
+
+
+
 
 #logo_img {
+
 	width: 3.5em;
 	height: 3em;
 }
@@ -71,10 +81,70 @@ table {
 	border-spacing: 2px;
 	border-color: gray;
 }
+
+.nav-link-custom{
+	background-color : #8b789c;
+	border-color : #8b789c;
+	color : white;
+}
+
+.nav-link-custom:hover{
+	color : yellow;
+}
+
+.nav-link.nav-link-custom.active{
+	background-color: black;
+	border-color: black;
+}
+
+.page-link.active{
+	background-color: #000000;
+	border-coler : #000000;
+}
+
+.input-group-text{
+	background-color : #8b789c;
+	color : #fff;
+   	width : 7em;
+	text-align: center;
+	justify-content: center;
+}
+  
+.input-group-text, .form-control{
+	border-color: #8b789c;
+	height: 3em;
+    line-height: 3em; /* 높이와 동일하게 설정하여 수직 중앙 정렬 */
+    display: flex;
+}
+
+.form-control{
+	align-items: center;
+}
+
+.btn-primary.custom-btn{
+	background-color:  #ca5a0a;
+	border-color:  #ca5a0a;
+}
+
+.btn-primary.custom-btn:hover{
+	background-color:  chocolate;
+	border-color : chocolate;
+}
+
+.btn-danger.custom-btn{
+	background-color:  #c7a820;
+	border-color:  #c7a820;
+}
+
+.btn-danger.custom-btn:hover{
+	background-color:  #cfb439;
+	border-color:  #cfb439;
+}
 </style>
 
 
 </head>
+
 <body>
 	<header>
 		<div id="title_bar" class=" fixed-top">
@@ -96,8 +166,11 @@ table {
 	</header>
 	<div id="side_bar">
 		<div id="side_links" class="w-100"></div>
-	</div>
+	</div>	
 	<main>
+		<div class="main_whitespace p-4 my-2">
+			<h1 class="h3 text-center ">${productdetail.PRO_NAME}</h1>
+		</div>
 		<div id="main_container">
 			<div class="row goods">
 				<!-- row 클래스를 추가 -->
@@ -140,27 +213,35 @@ table {
 					</div>
 				</div>
 				<div class="goodsInfo col-12 col-md-6 col-lg-5">
-					<p class="cateName">
-						<span>상품이름 ${productdetail.PRO_NAME}</span>
+					<p class="cateName input-group">
+						<span class="input-group-text">상품 이름 </span>
+						<span class="form-control">${productdetail.PRO_NAME}</span>
 					</p>
-					<p class="gdsPrice">
-						<span>가격 <fmt:formatNumber pattern="###,###,###"
-								value="${productdetail.PRO_PRICE}" /> 원
+					<p class="gdsPrice input-group">
+						<span class="input-group-text">가격							
+						</span>
+						<span class="form-control "> 
+							<fmt:formatNumber pattern="###,###,###"
+							value="${productdetail.PRO_PRICE}"  /> 원
 						</span>
 					</p>
-					<p class="cartStock">
-						<span>수량</span> <input type="number" id="quantity" min="1"
+					<p class="cartStock input-group">
+						<span class="input-group-text">수량</span> <input class="form-control" type="number" id="quantity" min="1"
 							max="${productdetail.PRO_QUANTITY}" value="1" />
 					</p>
 					<hr>
 					<p class="addToCart">
-						<label class="mb-2">총 금액</label><br> <span id="totalPrice">
-							<fmt:formatNumber pattern="###,###,###"
-								value="${productdetail.PRO_PRICE}" /> 원
-						</span><br>
-						<button type="button"
-							onclick="wish_click(${productdetail.getPRO_NO()})">Wish List</button>
-						<button type="button">바로구매</button>
+						<div class="input-group">
+							<label class="mb-2 input-group-text">총 금액</label><span id="totalPrice" class="form-control mb-2" >								
+								<fmt:formatNumber pattern="###,###,###"
+									value="${productdetail.PRO_PRICE}" /> 원
+							</span>
+						</div>
+						<div class="d-flex justify-content-between">
+							<input type="button" class="btn btn-primary custom-btn"
+								onclick="wish_click(${productdetail.getPRO_NO()})" value="Wish List">
+							<input type="button" class="btn btn-danger custom-btn" id="purchaseBtn"  value="바로구매" >
+						</div>
 					</p>
 				</div>
 			</div>
@@ -293,17 +374,19 @@ table {
 
 						<div class="col-lg-4">
 							<div class="px-0 border rounded-2 shadow-0">
-								<div class="card">
-									<p class="addToCart">
-										<label class="mb-2">총 금액</label><br> <span
-											id="totalPrice"> <fmt:formatNumber
-												pattern="###,###,###" value="${productdetail.PRO_PRICE}" />
-											원
-										</span><br>
-										<button type="button"
-											onclick="wish_click(${productdetail.getPRO_NO()})">Wish
-											List</button>
-										<button type="button">바로구매</button>
+								<div class="card px-3">
+									<p class="addToCart mx-2">
+										<div class="input-group">
+											<label class="mb-2 input-group-text">총 금액</label><span id="totalPrice" class="form-control mb-2" >
+												<fmt:formatNumber pattern="###,###,###"
+													value="${productdetail.PRO_PRICE}" /> 원
+											</span>
+										</div>
+										<div class="d-flex justify-content-between">
+										<input type="button" class="btn btn-primary custom-btn"
+												onclick="wish_click(${productdetail.getPRO_NO()})" value="Wish List">
+											<input type="button" class="btn btn-danger custom-btn" id="purchaseBtn" value="바로구매" >
+										</div>
 									</p>
 								</div>
 							</div>
@@ -318,37 +401,39 @@ table {
 		<div id="second_footer"></div>
 		<div id="third_footer"></div>
 	</footer>
-	<!-- MDBootstrap JS -->
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
+<script>
+    document.getElementById('purchaseBtn').addEventListener('click', function() {
+        // 페이지 이동
+        window.location.href = '/purchase';
+    });
+</script>
 	<script>
-	
-	 let token = $("meta[name='_csrf']").attr("content");
-		let header = $("meta[name='_csrf_header']").attr("content");
-		
-		document.addEventListener("DOMContentLoaded", function() {
-			const priceElement = document.querySelector(".gdsPrice span");
-			const quantityInput = document.getElementById("quantity");
-			const totalPriceElement = document.getElementById("totalPrice");
+	document.addEventListener("DOMContentLoaded", function() {
+	    // 기존 코드 부분
+	    const priceElement = document.querySelector(".gdsPrice .form-control");
+	    const quantityInput = document.getElementById("quantity");
+	    const totalPriceElements = document.querySelectorAll("#totalPrice");
 
-			// 상품 가격을 가져오기
-			const productPrice = parseFloat(priceElement.textContent.replace(
-					/[^\d]/g, ''));
+	    // 상품 가격을 가져오기
+	    const productPrice = parseFloat(priceElement.textContent.replace(/[^\d]/g, ''));
 
-			// 수량이 변경될 때 총 금액을 계산하는 함수
-			function updateTotalPrice() {
-				const quantity = parseInt(quantityInput.value);
-				const totalPrice = productPrice * quantity;
-				totalPriceElement.textContent = totalPrice.toLocaleString()
-						+ " 원";
-			}
+	    // 수량이 변경될 때 총 금액을 계산하는 함수
+	    function updateTotalPrice() {
+	        const quantity = parseInt(quantityInput.value);
+	        const totalPrice = productPrice * quantity;
+	        totalPriceElements.forEach(element => {
+	            element.textContent = totalPrice.toLocaleString() + " 원";
+	        });
+	    }
 
-			// 수량 입력 값이 변경될 때마다 총 금액 업데이트
-			quantityInput.addEventListener("input", updateTotalPrice);
+	    // 수량 입력 값이 변경될 때마다 총 금액 업데이트
+	    quantityInput.addEventListener("input", updateTotalPrice);
 
-			// 페이지 로드 시 초기 총 금액 설정
-			updateTotalPrice();
-		});
+	    // 페이지 로드 시 초기 총 금액 설정
+	    updateTotalPrice();
+	});
 
 	    // 현재 페이지의 정보
 	    var currentPage = ${pageMaker.criteria.getPageNum()}; 
@@ -390,6 +475,20 @@ table {
 	        });
 	        return count;
 	    };
+	    document.addEventListener('DOMContentLoaded', function() {
+	        const btnButtons = document.querySelectorAll('.btn');
+
+	        btnButtons.forEach(function(button) {
+	            button.addEventListener('click', function(event) {
+	                event.preventDefault(); // 기본 동작 방지
+	                event.stopPropagation(); // 이벤트 전파 중지
+	                setTimeout(function() {
+	                    button.classList.remove('style'); // 일정 시간 후에 클래스 제거
+	                }, 0); // 0 밀리초 뒤에 실행하여 최소한의 딜레이로 동작하도록 설정
+	            });
+	        });
+	    });
+
 	</script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

@@ -240,7 +240,7 @@ table {
 						<div class="d-flex justify-content-between">
 							<input type="button" class="btn btn-primary custom-btn"
 								onclick="wish_click(${productdetail.getPRO_NO()})" value="Wish List">
-							<input type="button" class="btn btn-danger custom-btn" value="바로구매">
+							<input type="button" class="btn btn-danger custom-btn" id="purchaseBtn"  value="바로구매" >
 						</div>
 					</p>
 				</div>
@@ -385,7 +385,7 @@ table {
 										<div class="d-flex justify-content-between">
 										<input type="button" class="btn btn-primary custom-btn"
 												onclick="wish_click(${productdetail.getPRO_NO()})" value="Wish List">
-											<input type="button" class="btn btn-danger custom-btn" value="바로구매">
+											<input type="button" class="btn btn-danger custom-btn" id="purchaseBtn" value="바로구매" >
 										</div>
 									</p>
 								</div>
@@ -401,9 +401,14 @@ table {
 		<div id="second_footer"></div>
 		<div id="third_footer"></div>
 	</footer>
-	<!-- MDBootstrap JS -->
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
+<script>
+    document.getElementById('purchaseBtn').addEventListener('click', function() {
+        // 페이지 이동
+        window.location.href = '/purchase';
+    });
+</script>
 	<script>
 	document.addEventListener("DOMContentLoaded", function() {
 	    // 기존 코드 부분

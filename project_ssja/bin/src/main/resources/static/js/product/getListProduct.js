@@ -82,8 +82,29 @@ let getListProductToServer = function(condition){
 				console.log(data);
 				$product_content.empty();
 				$paging_dv.empty();
-				let $list_content_dv = $("<div>").attr("id","list_content_dv").addClass("d-flex flex-column");
-				let $row;
+				
+				//상품이 존재하지 않을 경우
+				if(data.itemList.length == 0){
+					console.log('없음');
+					$("#product_search_select").empty();
+					let $logo_img = $("<img>").css({'width':'10em','height': '7em','margin-left':'4em','margin-right':'auto'}).attr('src','/images/utilities/logoSSJA.png');
+					
+					let $noneProductImg = $("<img>").css({'width':'13em','height': '10em','margin-bottom':'2em'})
+					.attr('src','/images/utilities/warn_icon.png');
+					
+					let $notice_none = $("<h2>").css({'text-align':'center','font-weight':'bold'}).text('상품이 존재하지 않습니다.');
+					
+					let $goBack_btn = $("<button>").addClass('btn btn-dark my-3').css({'border':'none','width':'14em','height':'5em'})
+					.text('홈으로 돌아가기').on('click',function(){window.location.href="/home";});
+					
+					$("#product_content").css({'display':'flex','flex-direction':'column','align-items':'center','justify-content':'between'})
+					.append($logo_img, $noneProductImg, $notice_none, $goBack_btn);
+					return;
+					};
+					
+					let $list_content_dv = $("<div>").attr("id","list_content_dv").addClass("d-flex flex-column");
+					let $row;
+					
 				data.itemList.forEach(function(e, index){
 					
 					  if (index % 4 === 0) {
@@ -91,51 +112,66 @@ let getListProductToServer = function(condition){
 		                    $list_content_dv.append($row); 
 		                }
 					
-					let $item_content_dv = $("<div>").attr("id","item_content_dv").css("max-width",'25%').css("min-width",'25%').css('height','20em').addClass(" d-flex flex-column ")
-					.attr("id","item_content_dv");
-					
-					let $items_container_dv = $("<div>").css("margin", "1em").css("width", "100%").attr("id","items_container_dv").addClass("p-2  d-flex flex-column justify-content-center align-items-center")
-				    .css('background-color', 'white')
-				    .hover(
-				        function() {
-				            $(this).css('background-color', '#eee').css('cursor', 'pointer');
-				        },
-				        function() {
-				            $(this).css('background-color', 'white').css('cursor', 'auto');
-				        }
-				    );
-					
-					let $item_img_dv = $("<div>").attr("id", "item_img_dv").css("width","100%").append($("<img>").attr("src", e.pro_BANNERIMG)
-						    .css('width', '100%') .css('height', '10em').css('overflow', 'hidden'));
-					
-					let $item_title_dv=$("<div>").attr("id",'$item_title_dv').text(e.pro_NAME ).css('font-size','1em');
-					
-					let $item_bizname_dv=$("<div>").attr("id",'$item_bizname_dv')
-					.text(e.pro_BIZNAME+ " " +" 확인용 상품번호: "+e.pro_NO).css("text-bold",'weight').css('font-size','1.5em');
-											//여기 확인 값 지워야함
-					let $item_price_dv = $("<div>").attr("id", "item_price_dv").text(formatNumber(e.pro_PRICE)+"원").css('margin-left','auto').css('margin-right','1em');
-					let $item_review_wish_dv = $("<div>").addClass("d-flex flex-row justify-content-between").attr("id", "item_review_wish_dv")
-				    .append(
-				        $("<div>").append(   $("<img>").attr('src', '/images/utilities/star_icon.jpg').css("width","1.5em"), 
-				        		 $("<span>").text(e.rating_avg)),
-				        $("<div>").append($("<span>").text(e.pro_WISH).css('color', "#f06575"),
-				            $("<img>").attr('src', '/images/utilities/wish_icon.png').css("width","1.5em").on('click',function(event){
-				            	event.preventDefault();
-				            	let countwish = wish_click(e.pro_NO);
-				            	$(this).prev("span").text(countwish);
-				            	
-				            })  )
-				    );
+					  let $item_content_dv = $("<div>").addClass("item-content-div")
+	                    .css({ "max-width": "25%", 'height': '20em','margin-bottom':'1em' })
+	                    .hover(
+	                        function () {
+	                            $item_img_dv.css('background-size', '115%');
+	                            $(this).css('background-color', 'white').css('cursor', 'pointer');
+	                            $item_title_dv.css({ "text-overflow": "clip", "white-space": "normal" });
+	                        },
+	                        function () {
+	                            $item_img_dv.css('background-size', 'cover');
+	                            $(this).css('background-color', 'white').css('cursor', 'auto');
+	                            
+	                            $item_title_dv.css({"text-overflow": "ellipsis",  "white-space": "nowrap"  });
+	                        }
+	                    ).on('click', function () {
+	                        window.location.href = '/product_detail?PRO_NO=' + e.pro_NO;
+	                    });
 
-					
-					let $item_info_dv = $("<div>").attr("id","item_info_dv").addClass("d-flex flex-column")
-					.append($item_bizname_dv,$item_title_dv ,$item_price_dv,$item_review_wish_dv);
-					
-						
-					
-					$items_container_dv.append($item_img_dv,$item_info_dv);
-					$item_content_dv.append($items_container_dv);
-					$row.append($item_content_dv);
+	                let $item_img_dv = $("<div>").addClass("item-img-div mx-1")
+	                    .css({
+	                        "max-width": "100%", "min-height": "55%", "background-image": 'url(' + e.pro_BANNERIMG + ')',
+	                        "background-size": "cover", "background-position": "center", "overflow": "hidden"
+	                    });
+
+
+	                let $item_info_dv = $("<div>").addClass("m-0 mx-1").attr('id', 'item-info-div')
+	                    .css({ "margin": "1em", "width": "100%", 'height': '10em', "padding-bottom": "1em" ,'padding':'1em'});
+
+	                let $item_title_dv = $("<div>").addClass("item-title-div").attr("id",'item_title_dv')
+	                .css({  "font-size": "1em",  "overflow": "hidden",  "text-overflow": "ellipsis",  "white-space": "nowrap"  })
+	                .append($("<p>").text(e.pro_NAME));
+	                
+	                let $item_bizname_dv = $("<div>").addClass("item-bizname-div")
+	                    .text(e.pro_BIZNAME )
+	                    .css({ "font-weight": "bold", "font-size": "0.9em", "margin-bottom": "0.5em" }); 
+
+	                let $item_price_dv = $("<div>").addClass("item-price-div")
+	                    .text(formatNumber(e.pro_PRICE) + "원")
+	                    .css({ "margin-left": "auto", "margin-right": "1em" });
+
+	                let $item_review_wish_dv = $("<div>").addClass("d-flex flex-row justify-content-between")
+	                .attr('id', 'item-review-wish-div')
+	                    .append(
+	                        $("<div>").append($("<img>").attr("src", "/images/utilities/star_icon.jpg")
+	                        		.css("width", "1.5em"), $("<span>").text(e.rating_avg)),
+	                        		
+	                        $("<div>").append($("<span>").text(e.pro_WISH).css("color", "#f06575"),
+	                        		
+	                            $("<img>").attr("src", "/images/utilities/wish_icon.png").css("width", "1.5em")
+	                            .on("click", function (event) {
+	                                event.preventDefault();
+	                                let countwish = wish_click(e.pro_NO);
+	                                $(this).prev("span").text(countwish);
+	                                return false;//상품상세 링크 이동 방지	                       
+	                                })
+	                        )
+	                    );
+	                $item_info_dv.append($item_title_dv, $item_bizname_dv, $item_price_dv, $item_review_wish_dv);
+	                $item_content_dv.append($item_img_dv, $item_info_dv);
+	                $row.append($item_content_dv);
 				});
 				$("<button >").appendTo($paging_dv).text("<<").on("click",function(){
 					

@@ -51,3 +51,10 @@ $("<a>").attr("href", "www.naver.com").text("고객 문의 >").attr("id", "custo
 
 $("#first_footer, #second_footer, #third_footer").css("height", footerHeight + "px");
 });
+
+
+
+
+
+
+
