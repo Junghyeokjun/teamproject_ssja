@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.InfoProvider;
 import teamproject.ssja.dto.email.MailDTO;
+import teamproject.ssja.dto.product.ProductNumberDTO;
 import teamproject.ssja.dto.userinfo.AddressForm;
 import teamproject.ssja.dto.userinfo.CartItemsDTO;
 import teamproject.ssja.dto.userinfo.MyPageOrdersDTO;
@@ -165,6 +166,14 @@ public class MyPageUserInfoService implements MyPageService{
 		ListObjectPagingDTO data = new ListObjectPagingDTO(total,pageNum);
 		data.setObjectList(list);
 		return data;
+	}
+
+	@Override
+	public void deleteItemFromCart(List<Integer> deleteList) {
+		long id = InfoProvider.getM_NO();
+		ProductNumberDTO data = new ProductNumberDTO(id, deleteList);
+		myPageMapper.deleteCartItem(data);
+		
 	}
 
 	

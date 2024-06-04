@@ -32,4 +32,5 @@ public interface MyPageService {
 	int isAppliedVendor();
 	
 	ListObjectPagingDTO getcartItems(int pageNum);
+	void deleteItemFromCart(List<Integer> deletList);
 }

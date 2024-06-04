@@ -126,5 +126,13 @@ insert into vendor values (v_seq.nextval, #{id},#{v_bizName},#{v_account},#{v_li
 
 	</select>
 
+<delete id="deleteCartItem" parameterType="teamproject.ssja.dto.product.ProductNumberDTO" >
+delete from item_cart where m_no = #{id} and pro_no IN
+  <foreach item="deleteNum" collection="list" open="(" separator="," close=")">
+        #{deleteNum}
+    </foreach>
+
+</delete>
+	
 
 </mapper>

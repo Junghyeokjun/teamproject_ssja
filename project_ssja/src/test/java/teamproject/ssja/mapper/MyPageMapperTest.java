@@ -1,5 +1,6 @@
 package teamproject.ssja.mapper;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import lombok.extern.slf4j.Slf4j;
+import teamproject.ssja.dto.product.ProductNumberDTO;
 import teamproject.ssja.dto.userinfo.CartItemsDTO;
 @Slf4j
 @SpringBootTest
@@ -27,7 +29,7 @@ class MyPageMapperTest {
 		int num = myPageMapper.getTotalCartItems(1);
 		Assertions.assertThat(num).isEqualTo(8);
 	}
-	//@Disabled
+	@Disabled
 	@Test
 	@DisplayName("장바구니 데이터 테스트")
 	void getItemsTest() {
@@ -40,5 +42,13 @@ class MyPageMapperTest {
 			log.info("item {}", c);
 		}
 	}
+	@Test
+	@DisplayName("장바구니 사유품 삭제 테스트")
+	void testDeleteItemFromCart() {
+		List<Integer> list = Arrays.asList(3455,1234);
+		long id = 1;
+		ProductNumberDTO data = new ProductNumberDTO(id,list);
+		myPageMapper.deleteCartItem(data);
+		}
 
 }

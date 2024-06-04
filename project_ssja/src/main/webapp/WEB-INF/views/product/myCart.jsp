@@ -225,6 +225,17 @@ font-size:1.2rem;
 color:#aaa;
 
 }
+#itemName_span {
+	width: 30%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+}
+#cart_last_div > button{
+	width:6em;
+	height:3em;
+}
 
 </style>
 </head>
@@ -291,11 +302,10 @@ let deleteList = [];
 let deleteListInsert = function(num){
 	
 	let ind = deleteList.indexOf(num);
-	
 	if(ind === -1){
-		deleteList.splice(ind,1);
-	}else{
 	deleteList.push(num);
+	}else{
+		deleteList.splice(ind,1);
 		
 	}
 	console.log(deleteList);
@@ -325,34 +335,125 @@ let itemCartPageRender = function(pageNum){
 			
 				let $cart_content_main = $("<div>").appendTo($main_container);
 			data.objectList.forEach(function(item,index){
- 				let $cart_item_content_dv = $("<div>").on('click', function(){
+ 				let $cart_item_content_dv = $("<div>").css('border-bottom','1px solid #ccc').on('click', function(){
 					window.location.href='/product_detail?PRO_NO='  + item.pro_no;
 				}).hover(
 					    function(){
 					    	$(this).css('background-color','#eee');
 					    },
 					    function(){
-					    	
 					    	$(this).css('background-color','white');
 					    }).addClass("p-2 m-1 mx-3")
 					    .appendTo($cart_content_main);
 				
-			$("<input>").attr({'type':'checkbox',"id":item.pro_no}).on('change',function(e){
+			$("<input>").attr({'type':'checkbox',"id":item.pro_no}).on('click',function(event){
 				
-				e.preventDefault();
-				deleteListInsert(item.pro_no);
+				event.stopPropagation();
+				
+					 deleteListInsert(item.pro_no);
 				
 			}).appendTo($cart_item_content_dv);
 			
-			$("<img>").css({'width':'15%','max-height':'15%','margin-left':'1.5rem'}).attr('src',item.pro_bannerimg).appendTo($cart_item_content_dv);
-				
+			$("<img>").css({'width':'15%','max-height':'15%','margin-left':'1.5rem'})
+			.attr('src',item.pro_bannerimg).appendTo($cart_item_content_dv);
+			$("<span>").text(item.pro_name).attr("id","itemName_span").appendTo($cart_item_content_dv);
+				$("<span>").text(item.i_date).appendTo($cart_item_content_dv);
+				$("<span>").css("margin-left","10%").text(item.i_quantity+"개").appendTo($cart_item_content_dv);
+				$("<span>").css("margin-left","10%")
+				.text(formatNumber(item.i_quantity * item.pro_price)+'원').appendTo($cart_item_content_dv);
+
 			});
+
+			let $paging_dv = $("<div>").attr('id','paging_dv')
+				.addClass('my-3 p-4 d-flex flex-row justify-content-center align-items-center')
+				.appendTo($main_container);
+				
+					$("<button >").appendTo($paging_dv).text("<<").on("click",function(){
+					
+					pageNum = 1;
+					itemCartPageRender(pageNum);
+				
+				});
+				
+				
+				if (data.prev == true) {
+					$("<button >").appendTo($paging_dv).text("<").on("click",function(){
+						// 페이징 한단계 내리기
+						pageNum = Math.floor((pageNum - 10 )/ 10)*10+1;
+						itemCartPageRender(pageNum);
+					
+					});
+				}
+				for (let i = data.startPage; i <= data.endPage; i++) {
+					  let $button = $("<button>").appendTo($paging_dv).text(i).on("click", function() {
+					    pageNum=i;
+					    itemCartPageRender(pageNum);
+				
+					  });
+					  
+					  if (i === data.pageNum) {
+					    $button.css('background-color','#95857F').css('color','black');
+					  }
+					}
+				
+				if (data.next == true) {
+					$("<button >").appendTo($paging_dv).text(">").on("click",function(){
+						// 페이징 한단계 올리기
+						pageNum = Math.floor((pageNum + 10 )/ 10)*10+1;
+						itemCartPageRender(pageNum);
+				
+					});
+				}
+				
+				$("<button >").appendTo($paging_dv).text(">>").on("click",function(){
+					pageNum = Math.ceil((data.total * 1.0)/10);
+					itemCartPageRender(pageNum);
+					
+				});
+				let $cart_last_div = $("<div>").attr('id','cart_last_div').addClass("d-flex flex-row justify-content-center align-items-center")
+					.appendTo($main_container);
+					$("<button>").text('구매').addClass("btn btn-dark mx-2").on('click',function(){
+						if(deleteList.length === 0){
+							alert('구매하실 상품을 선택해주세요.');
+							return false;
+						}
+						//구매 링크 
+						//deleteList에 checkbox 내에 선택한 장바구니 제품들의 상품번호들이 있습니다. 
+						//해당 상품번호와 회원 번호를 토대로 장바구니 item_cart테이블(기본키{상품번호, 회원번호})에서 
+						//값을 가져와 구매 페이지 만드시면 될 듯합니다. 
+						//만약 ajax로 하신다면 data: 에  JSON.stringify(deleteList) 그대로 넣어서 파싱(?)하시면 컨트롤러에서
+						//@RequestBody List<Integer> deleteList로 그대로 받아서 활용가능합니다.
+					}).appendTo($cart_last_div);
+
+						$("<button>").text('삭제').addClass("btn btn-secondary mx-2").on('click',function(){
+							if(deleteList.length === 0){
+							
+							return false;
+						}
+						deleteitemFromCart(deleteList);
+					}).appendTo($cart_last_div);
 	        },error:function(){
 	        	console.log('실패');
 	        }
 	})
 }
 itemCartPageRender(1);
+let deleteitemFromCart = function(deleteList){
+	$.ajax({
+		type: "delete",
+		beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+		contentType: "application/json",
+		url: "/user/cart/items",
+		dataType:"text",
+		data: JSON.stringify( deleteList ),
+		success:function(data){
+			console.log("성공");
+			itemCartPageRender(pageNum);
+		}
+	});
+	}
 </script>
 
 </html>

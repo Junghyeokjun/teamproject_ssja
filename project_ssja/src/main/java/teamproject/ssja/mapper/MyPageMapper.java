@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Update;
 
 import java.util.*;
 
+import teamproject.ssja.dto.product.ProductNumberDTO;
 import teamproject.ssja.dto.userinfo.AddressForm;
 import teamproject.ssja.dto.userinfo.CartItemsDTO;
 import teamproject.ssja.dto.userinfo.OrderInfoDTO;
@@ -57,4 +58,6 @@ public interface MyPageMapper {
 	
 	
 	List<CartItemsDTO> getMyCartItems(Map<String, Long> params);
+	
+	void deleteCartItem(ProductNumberDTO data);
 }

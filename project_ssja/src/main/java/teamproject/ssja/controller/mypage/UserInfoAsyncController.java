@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.nimbusds.jose.shaded.json.parser.JSONParser;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +51,7 @@ public class UserInfoAsyncController {
 	PasswordEncoder passwordEncoder;
 	@Autowired
 	MailService mailService;
+	
 	
 	@PostMapping("/info")
 	public ResponseEntity<UserInfoDTO> myPageUser(@AuthenticationPrincipal CustomPrincipal userDetails) {
@@ -209,6 +213,18 @@ public class UserInfoAsyncController {
 			 
 			 return ResponseEntity.ok(data);
 		 }
+	 }
+	 
+	 @DeleteMapping("/cart/items")
+	 public ResponseEntity<String> deleteItemFromCart(@RequestBody List<Integer> deleteList){
+		 log.info("값 확인 {}", deleteList);
+		 try {
+			
+			 myPageService.deleteItemFromCart(deleteList);
+			 return ResponseEntity.ok("success");
+		} catch (Exception e) {
+			  return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");
+		}
 	 }
  
 }
