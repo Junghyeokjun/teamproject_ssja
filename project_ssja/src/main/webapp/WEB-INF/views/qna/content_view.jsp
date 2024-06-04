@@ -286,7 +286,9 @@ body {
 		if($('#board_textarea')[0].scrollHeight > $('#board_textarea').height()){
 			$('#board_textarea').css('height', 'auto');
 		}
-			
+		
+		
+
 		// 댓글 url
 		let replysUrl = '/api/replys';
 
@@ -328,65 +330,106 @@ body {
 		let getReplyLists = function(response){
 			$('#replys').empty(); // 기존 내용 비우기
 			let html1 = '';
+
+			// 커뮤니티 댓글 외형
+			// $.each(response.replys, function(index, reply_view) {
+			// 	html1 += '<div class="rounded border m-1">';
+			// 	html1 += '<div class="input-group">'; 
+			// 	// 댓글 만들기
+			// 	for (let i = 1; i <= reply_view.rindent; i++) {
+			// 		html1 += '<img src="">';
+			// 	}
+			// 	html1 += '<span class="input-group-text bg-replywriter border">' + reply_view.rwriter + '</span>';
+			// 	//html1 += '<input type="text" class="rcontent form-control" data-rno="' + reply_view.rno + '" value="' + reply_view.rcontent + '" readonly="readonly">';				
+			// 	html1 += '<textarea class="rcontent form-control" data-rno="' + reply_view.rno + '" rows="1" readonly="readonly">' + reply_view.rcontent + '</textarea>';				
+			// 	html1 += '</div>';
+				
+			// 	// 좋아요 부분의 숫자는 추후 없애고 따로 처리해야 한다.
+			// 	html1 += '<div class="d-flex justify-content-between"><div><button class="reply-likes btn mx-1">좋아요 '+ 1 +'</button><button class="reply-modify btn">수정</button><button id="reply-delete" class="btn">X</button><button class="reply-report btn">신고</button></div><div class="btn disabled border-0">' + reply_view.rdate + '</div>';
+			// 	html1 += '</div></div>'
+			// });
+
+
+
+			// 관리자 댓글 외형
+			// 현재 페이지에서는 관리자 댓글 외형을 입히기 위해 ajax에 댓글 헤드를 꾸미는 함수를 집어넣었음.
 			$.each(response.replys, function(index, reply_view) {
-				html1 += '<div class="rounded border m-1">';
+				html1 += '<div class="rounded border m-2">';
+				html1 += '<div class="replyhead1 text-center"><h2 class="h2 disabled border-0 m-0 pt-2">관리자 답변</h2></div>'	
+				html1 += '<div class="d-flex flex-row-reverse replyhead2"><div><button class="reply-modify btn">수정</button><button id="reply-delete" class="btn">X</button></div><div class="btn disabled border-0">' + reply_view.rdate + '</div></div>';
 				html1 += '<div class="input-group">'; 
 				// 댓글 만들기
 				for (let i = 1; i <= reply_view.rindent; i++) {
 					html1 += '<img src="">';
 				}
-				html1 += '<span class="input-group-text bg-replywriter border">' + reply_view.rwriter + '</span>';
+
 				//html1 += '<input type="text" class="rcontent form-control" data-rno="' + reply_view.rno + '" value="' + reply_view.rcontent + '" readonly="readonly">';				
 				html1 += '<textarea class="rcontent form-control" data-rno="' + reply_view.rno + '" rows="1" readonly="readonly">' + reply_view.rcontent + '</textarea>';				
 				html1 += '</div>';
 				
-				// 좋아요 부분의 숫자는 추후 없애고 따로 처리해야 한다.
-				html1 += '<div class="d-flex justify-content-between"><div><button class="reply-likes btn mx-1">좋아요 '+ 1 +'</button><button class="reply-modify btn">수정</button><button id="reply-delete" class="btn">X</button><button class="reply-report btn">신고</button></div><div class="btn disabled border-0">' + reply_view.rdate + '</div>';
 				html1 += '</div></div>'
 			});
 
-			$('#replys').html(html1);
-			
+			if(html1 == ''){
+				html1 += '<div class="m-2"><h2 class="h2 text-center no-data-font">현재 댓글이 없습니다.</h2></div>'
+				$('#replys').before(html1);				
+			}else{
+				$('#replys').html(html1);
+			}
 
 			// 페이지네이션 부분
-    		$('#pagination').empty(); // 기존 내용을 비우기.
-			// 서버로부터 받은 데이터를 HTML로 바꿔서 특정 요소에 추가
-			let html2 = '';
+			// qna에서는 댓글에 해당 부분이 필요하지 않다. 주석으로 처리하면 된다.
 
-			// 이전 페이지 링크 추가
-			if (response.pageMaker.prev) {
-				html2 += '<li class="page-item">';
-				html2 += '<a class="page-link" href="${pageContext.request.contextPath}/api/replys/list/' + (response.pageMaker.startPage - 1) + '">&lt;</a>';
-				html2 += '</li>';
-			}
-			
-			// 페이지 번호 링크 추가
-			for (let idx = response.pageMaker.startPage; idx <= response.pageMaker.endPage; idx++) {
-				if (response.pageMaker.criteria.pageNum == idx) {
-					html2 += '<li class="page-item active">';
-					// 문자로 전달된 데이터이므로, 매개변수가 숫자라면 숫자형으로 바꾸기
-					html2 += '<a class="page-link" href="${pageContext.request.contextPath}/api/replys/list/' + idx +  '/' + response.pageMaker.criteria.amount +'">' + idx + '</a>'					
-				} else {
-					html2 += '<li class="page-item">';
-					// 문자로 전달된 데이터이므로, 매개변수가 숫자라면 숫자형으로 바꾸기
-					html2 += '<a class="page-link" href="${pageContext.request.contextPath}/api/replys/list/' + idx +  '/' + response.pageMaker.criteria.amount +'">' + idx + '</a>';							
-				}					
-				html2 += '</li>';
-			}
-			
-			// 다음 페이지 링크 추가
-			if (response.pageMaker.next && response.pageMaker.endPage > 0) {
-				html2 += '<li class="page-item">';
-				html2 += '<a class="page-link" href="${pageContext.request.contextPath}/api/replys/list' + (response.pageMaker.endPage + 1) + '">&gt;</a>';
-				html2 += '</li>';
-			}
+    		// $('#pagination').empty(); // 기존 내용을 비우기.
+			// // 서버로부터 받은 데이터를 HTML로 바꿔서 특정 요소에 추가
+			// let html2 = '';
 
-			// 요소에 HTML 추가
-			$('#pagination').html(html2);
+			// // 이전 페이지 링크 추가
+			// if (response.pageMaker.prev) {
+			// 	html2 += '<li class="page-item">';
+			// 	html2 += '<a class="page-link" href="${pageContext.request.contextPath}/api/replys/list/' + (response.pageMaker.startPage - 1) + '">&lt;</a>';
+			// 	html2 += '</li>';
+			// }
+			
+			// // 페이지 번호 링크 추가
+			// for (let idx = response.pageMaker.startPage; idx <= response.pageMaker.endPage; idx++) {
+			// 	if (response.pageMaker.criteria.pageNum == idx) {
+			// 		html2 += '<li class="page-item active">';
+			// 		// 문자로 전달된 데이터이므로, 매개변수가 숫자라면 숫자형으로 바꾸기
+			// 		html2 += '<a class="page-link" href="${pageContext.request.contextPath}/api/replys/list/' + idx +  '/' + response.pageMaker.criteria.amount +'">' + idx + '</a>'					
+			// 	} else {
+			// 		html2 += '<li class="page-item">';
+			// 		// 문자로 전달된 데이터이므로, 매개변수가 숫자라면 숫자형으로 바꾸기
+			// 		html2 += '<a class="page-link" href="${pageContext.request.contextPath}/api/replys/list/' + idx +  '/' + response.pageMaker.criteria.amount +'">' + idx + '</a>';							
+			// 	}					
+			// 	html2 += '</li>';
+			// }
+			
+			// // 다음 페이지 링크 추가
+			// if (response.pageMaker.next && response.pageMaker.endPage > 0) {
+			// 	html2 += '<li class="page-item">';
+			// 	html2 += '<a class="page-link" href="${pageContext.request.contextPath}/api/replys/list' + (response.pageMaker.endPage + 1) + '">&gt;</a>';
+			// 	html2 += '</li>';
+			// }
+
+			// // 요소에 HTML 추가
+			// $('#pagination').html(html2);
 
 			$('.h5.m-1.p-1').text('댓글 ' + response.pageMaker.total);
 		};
 		
+
+		// 관리자 댓글 헤드 꾸미기 함수
+		let adminReplyHead = function(){
+			$('.replyhead1').css({
+				'border-radius' : '0.375em 0.375em 0 0',
+				'background-color' : '#d7d8da'
+			});
+
+			$('.replyhead2').css({
+				'background-color' : '#d7d8da'
+			});
+		};
 
 		console.log(replysUrl);
 		// 기본적인 댓글 리스트 가져오기
@@ -403,6 +446,7 @@ body {
 				console.log("===============================");
 				getReplyLists(response);	
 				replyTextareaHeight();
+				adminReplyHead();
 			},
 			error : function(xhr, status, error){
 				console.log("error : " + error);
@@ -430,6 +474,7 @@ body {
 					console.log("replyTotal : " + response.pageMaker.total);
 					getReplyLists(response);
 					replyTextareaHeight();
+					adminReplyHead();
 				},
 				error : function(xhr, status, error){
 					console.log("error : " + error);
