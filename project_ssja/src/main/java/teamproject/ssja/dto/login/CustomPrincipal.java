@@ -104,4 +104,5 @@ public class CustomPrincipal implements UserDetails, OAuth2User {
     public boolean isOAuth2User() {
         return isOAuth2User;
     }
+
 }
