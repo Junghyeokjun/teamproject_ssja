@@ -21,7 +21,7 @@ public interface MyPageMapper {
 	void changePasswordProcess(Map<String,String> params);
 	void deleteUserEnroll(long userId);
 	
-	@Delete("delete from members where m_deletedate < sysdate and not m_deletedate is null")
+	@Delete("update members set where m_deletedate < sysdate and not m_deletedate is null")
 	void deleteEnrolled();
 	
 	@Select("select m_id from members where m_deletedate < sysdate and not m_deletedate is null")
