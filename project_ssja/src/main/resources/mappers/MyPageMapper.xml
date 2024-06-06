@@ -84,25 +84,29 @@ update members set m_email = #{email} where m_id = #{userId}
     <result property="PRO_NAME" column="PRO_NAME"/>
     <result property="PRO_BIZNAME" column="PRO_BIZNAME"/>
     <result property="PRO_BANNERIMG" column="PRO_BANNERIMG"/>
+    <result property="totalCount" column="total"/>
     </resultMap>
 
 
 <select id="getPurchaseData" parameterType="Map" resultMap="orderResultMap">
 	SELECT 
-    s.pur_no, s.pur_tot, s.pur_pay, s.pur_date, s.pur_dv , a.* ,s.rnum
-FROM 
-    (SELECT   p.pro_name, p.pro_bannerimg, p.pro_bizname, o.o_no, o.pro_no,o.o_quantity, o.pur_no,
-    o.o_discount, o.o_price, o.o_pay, o.o_usecoupon,o.o_state,
-         (SELECT COUNT(*) FROM board b WHERE b.pro_no = p.pro_no and b.m_no = #{id} and b_c_no =30) AS rv
-    FROM product p 
-    INNER JOIN orders o 
-    ON o.pro_no = p.pro_no) a
-INNER JOIN
-    (SELECT pur_no, pur_tot, pur_pay, pur_date, pur_dv, rnum
-    FROM ( SELECT pur_no, pur_tot, pur_pay, pur_date, pur_dv, 
-    ROW_NUMBER() OVER (ORDER BY pur_date DESC) AS rnum 
-        FROM purchase   WHERE m_no = #{id}  )
-    WHERE rnum BETWEEN ${pageNum} * 10 -9 AND ${pageNum} * 10) s ON a.pur_no = s.pur_no order by s.pur_date desc
+    	s.pur_no,   s.pur_tot,  s.pur_pay,    s.pur_date,    s.pur_dv,    a.*,   s.total
+	FROM 
+    	(SELECT 
+       		p.pro_name,  p.pro_bannerimg,     p.pro_bizname,  o.o_no,   o.pro_no,   o.o_quantity,
+        	o.pur_no,  o.o_discount,   o.o_price,   o.o_pay,   o.o_usecoupon,  o.o_state,
+        	(SELECT COUNT(*)   FROM board b   WHERE b.pro_no = p.pro_no AND b.m_no = 1 AND b.b_c_no = 30) AS rv
+    	 FROM  product p  
+     	INNER JOIN orders o  
+     	 ON   o.pro_no = p.pro_no) a
+	INNER JOIN
+    	(SELECT pur_no, pur_tot, pur_pay, pur_date, pur_dv, rnum, total
+   		 FROM ( SELECT pur_no, pur_tot, pur_pay, pur_date, pur_dv,
+    		ROW_NUMBER() OVER (ORDER BY pur_date DESC) AS rnum , COUNT(*) OVER() AS total
+        		FROM purchase   WHERE m_no = 1  )
+    		WHERE rnum BETWEEN 1 AND 10) s 
+    ON a.pur_no = s.pur_no 
+    order by s.pur_date desc
 </select>
 <select id="getProductCount" resultType="long">
 select count(*) from purchase where m_no =#{id}

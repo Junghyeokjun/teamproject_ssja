@@ -1,5 +1,6 @@
 let $best_item_content = $("#best_item_content");
-
+let token = $("meta[name='_csrf']").attr("content");
+let header = $("meta[name='_csrf_header']").attr("content");
 
 function formatNumber(num) {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -69,13 +70,14 @@ let getListBestToServer = function (pageNum) {
                         		
                         $("<div>").append($("<span>").text(e.pro_WISH).css("color", "#f06575"),
                         		
-                            $("<img>").attr("src", "/images/utilities/wish_icon.png").css("width", "1.5em")
-                            .on("click", function (event) {
-                                event.preventDefault();
-                                let countwish = wish_click(e.pro_NO);
-                                $(this).prev("span").text(countwish);
-                                return false;//상품상세 링크 이동 방지                         
-                                })
+                        		$("<img>").attr("src", "/images/utilities/wish_icon.png").css("width", "1.5em")
+                                 .on("click", function (event) {
+                                	 event.preventDefault();
+                                	 event.stopImmediatePropagation();
+                                	    let countwish = wish_click(e.pro_NO);
+                                        $(this).prev("span").text(countwish);
+                                     return false;//상품상세 링크 이동 방지                         
+                                     })
                         )
                     );
 
@@ -98,11 +100,11 @@ $("#more_best_item_btn").on('click', function () {
 let wish_click = function (productnumber) {
     let count = 0;
     $.ajax({
-        type: "put",
+        type: "patch",
         beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
-        data: JSON.stringify({ "pro_no": productnumber }),
+        data: JSON.stringify({"pro_no": productnumber}),
         url: "/wishlist",
         async: false,
         contentType: "application/json",

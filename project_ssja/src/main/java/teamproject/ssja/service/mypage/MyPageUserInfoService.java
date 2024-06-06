@@ -19,6 +19,7 @@ import teamproject.ssja.dto.product.ProductNumberDTO;
 import teamproject.ssja.dto.userinfo.AddressForm;
 import teamproject.ssja.dto.userinfo.CartItemsDTO;
 import teamproject.ssja.dto.userinfo.MyPageOrdersDTO;
+import teamproject.ssja.dto.userinfo.OrderInfoDTO;
 import teamproject.ssja.dto.userinfo.UserInfoDTO;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
 import teamproject.ssja.mapper.MyPageMapper;
@@ -93,14 +94,16 @@ public class MyPageUserInfoService implements MyPageService{
 	@Override
 	public MyPageOrdersDTO getPurchaseData(long id, int pageNum) {
 		
-		MyPageOrdersDTO ordersInfo = 
-				new MyPageOrdersDTO(myPageMapper.getProductCount(id),pageNum);
+		
 		Map<String,Long> params = new HashMap<>();
 		params.put("id",id);
 		params.put("pageNum",Long.valueOf(pageNum));
+		List<OrderInfoDTO> orderList =myPageMapper.getPurchaseData(params);
 		
-		ordersInfo.setOrderList(myPageMapper.getPurchaseData(params));
-		return ordersInfo;
+		int total = orderList.get(0).getList().get(0).getTotalCount();
+		MyPageOrdersDTO orderDTO = new MyPageOrdersDTO(total,pageNum);
+		orderDTO.setOrderList(orderList);
+		return orderDTO;
 	}
 
 	@Override

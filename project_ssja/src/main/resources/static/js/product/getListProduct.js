@@ -229,7 +229,8 @@ let getListProductToServer = function(condition){
 let wish_click = function(productnumber) {
 	let count = 0;
     $.ajax({
-        type: "PUT",
+    	
+        type: "patch",
         beforeSend: function(xhr) {
             xhr.setRequestHeader(header, token);
         },
