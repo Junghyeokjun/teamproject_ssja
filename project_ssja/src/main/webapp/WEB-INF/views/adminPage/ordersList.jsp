@@ -108,13 +108,13 @@ body {
 		<div id="main_container"
 			class="d-flex flex-row align-items-center justify-content-center">
 			 <div id="content_dv_productsInfo" >
-				<h2>상품목록</h2>
+				<h2>주문목록</h2>
 				<table class="table" style="text-align: center;">
 					<thead class="table-dark">
 						<tr>
+							<td>주문번호</td>
+							<td>구매번호</td>
 							<td>상품번호</td>
-							<td>상품이름</td>
-							<td>가격</td>
 							<td>수량</td>
 							<td>위시 수</td>
 							<td>판매 수</td>
@@ -122,15 +122,15 @@ body {
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="product" items="${products}">
+						<c:forEach var="order" items="${orders}">
 							<tr>
-								<td>${product.getPRO_NO()}</td>
-								<td>${product.getPRO_NAME()}</td>
-								<td>${product.getPRO_PRICE()}</td>
-								<td>${product.getPRO_QUANTITY()}</td>
-								<td>${product.getPRO_WISH()}</td>
-								<td>${product.getPRO_SELLCOUNT()}</td>
-								<td>${product.getPRO_BIZNAME()}</td>
+								<td>${order.getPRO_NO()}</td>
+								<td>${order.getPRO_NAME()}</td>
+								<td>${order.getPRO_PRICE()}</td>
+								<td>${order.getPRO_QUANTITY()}</td>
+								<td>${order.getPRO_WISH()}</td>
+								<td>${order.getPRO_SELLCOUNT()}</td>
+								<td>${order.getPRO_BIZNAME()}</td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -140,24 +140,24 @@ body {
 						<ul class="pagination ch-col justify-content-center">
 							<c:if test="${productpageMaker.prev}">
 								<li class="page-item"><a class="page-link ch-col"
-									href="${pageContext.request.contextPath}/adminPage/productsList${productpageMaker.makeQuery(productpageMaker.startPage-1)}"><</a></li>
+									href="${pageContext.request.contextPath}/adminPage/ordersList${productpageMaker.makeQuery(productpageMaker.startPage-1)}"><</a></li>
 							</c:if>
 							<c:forEach var="idx" begin="${productpageMaker.startPage}"
 								end="${productpageMaker.endPage}">
 								<c:choose>
 									<c:when test="${productpageMaker.criteria.pageNum == idx}">
 										<li class="page-item active"><a class="page-link"
-											href="${pageContext.request.contextPath}/adminPage/productsList${productpageMaker.makeQuery(idx)}">${idx}</a></li>
+											href="${pageContext.request.contextPath}/adminPage/ordersList${productpageMaker.makeQuery(idx)}">${idx}</a></li>
 									</c:when>
 									<c:otherwise>
 										<li class="page-item"><a class="page-link"
-											href="${pageContext.request.contextPath}/adminPage/productsList${productpageMaker.makeQuery(idx)}">${idx}</a></li>
+											href="${pageContext.request.contextPath}/adminPage/ordersList${productpageMaker.makeQuery(idx)}">${idx}</a></li>
 									</c:otherwise>
 								</c:choose>
 							</c:forEach>
 							<c:if test="${productpageMaker.next && productpageMaker.endPage > 0}">
 								<li class="page-item"><a class="page-link ch-col"
-									href="${pageContext.request.contextPath}/adminPage/productsList${productpageMaker.makeQuery(productpageMaker.endPage+1)}">></a></li>
+									href="${pageContext.request.contextPath}/adminPage/ordersList${productpageMaker.makeQuery(productpageMaker.endPage+1)}">></a></li>
 							</c:if>
 						</ul>
 					</nav>
@@ -200,7 +200,8 @@ document.addEventListener("DOMContentLoaded", function() {
             } else if (buttonId === 'adminPage_productsInfo_Select') {
                 // 상품목록 버튼이 클릭되면 productsList() 메서드를 호출합니다.
                 productsList();
-            } else if (buttonId === 'adminPage_ordersInfo_Select') {
+            }
+            else if (buttonId === 'adminPage_ordersInfo_Select') {
                 // 상품목록 버튼이 클릭되면 ordersList() 메서드를 호출합니다.
                 ordersList();
             }
@@ -219,8 +220,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // productsList 페이지로 이동합니다.
         window.location.href = '${pageContext.request.contextPath}/adminPage/productsList';
     }
-    
-    // ordersList() 메서드
+ // ordersList() 메서드
 	function ordersList() {
 		// ordersList 페이지로 이동합니다.
 		window.location.href = '${pageContext.request.contextPath}/adminPage/ordersList';

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-        
+
 <mapper namespace="teamproject.ssja.mapper.AdminPageMapper">
 
-	 <resultMap id="MembersListMap"  type="MembersDto">
+	<resultMap id="MembersListMap" type="MembersDto">
 		<id property="M_NO" column="M_NO" />
 		<result property="M_ID" column="M_ID" />
 		<result property="M_PW" column="M_PW" />
@@ -18,7 +18,7 @@
 		<result property="M_PHONE" column="M_PHONE" />
 		<result property="M_POINT" column="M_POINT" />
 		<result property="M_DATE" column="M_DATE" />
-		<result property="M_NICKNAME" column="M_NICKNAME" />		
+		<result property="M_NICKNAME" column="M_NICKNAME" />
 	</resultMap>
 
 	<select id="getMemberListTotalCount" resultType="long">    
@@ -26,7 +26,7 @@
               	SELECT count(*) FROM Members 
         ]]>
 	</select>
-	
+
 	<select id="getMemberListWithPaging" resultMap="MembersListMap">    
     <![CDATA[
 	select * from 
@@ -41,7 +41,46 @@
     ]]>
 	</select>
 	
-	 <resultMap id="ProductsListMap"  type="ProductDto">
+	<resultMap id="MembersSearchListMap" type="MembersSearchDto">
+		<id property="M_NO" column="M_NO" />
+		<result property="M_ID" column="M_ID" />
+		<result property="M_PW" column="M_PW" />
+		<result property="M_NAME" column="M_NAME" />
+		<result property="M_ADDRESS1" column="M_ADDRESS1" />
+		<result property="M_ADDRESS2" column="M_ADDRESS2" />
+		<result property="M_ZIPCODE" column="M_ZIPCODE" />
+		<result property="M_BIRTH" column="M_BIRTH" />
+		<result property="M_GRADE" column="M_GRADE" />
+		<result property="M_EMAIL" column="M_EMAIL" />
+		<result property="M_PHONE" column="M_PHONE" />
+		<result property="M_POINT" column="M_POINT" />
+		<result property="M_DATE" column="M_DATE" />
+		<result property="M_NICKNAME" column="M_NICKNAME" />
+		<result property="type" column="type" />
+		<result property="keyword" column="keyword" />
+	</resultMap>
+
+	<select id="getMemberSearchList" resultMap="MembersSearchListMap">    
+       <![CDATA[
+
+	SELECT  * FROM Members              
+                where                
+               <choose>
+               <when test="type != null and type.equals('m_name')">
+               AND m_name = #{keyword}
+               </when>
+                <when test="type != null and type.equals('m_id')">
+               AND m_id = #{keyword}
+               </when>
+                <when test="type != null and type.equals('m_grade')">
+               AND m_grade = #{keyword}
+               </when>
+               </choose> 
+                   ]]>
+               
+	</select>	
+	
+	<resultMap id="ProductsListMap" type="ProductDto">
 		<id property="PRO_NO" column="PRO_NO" />
 		<result property="V_NO" column="V_NO" />
 		<result property="P_C_NO" column="P_C_NO" />
@@ -61,8 +100,8 @@
               	SELECT count(*) FROM Product 
         ]]>
 	</select>
-	
-	<select id="getProductListWithPaging" resultMap="ProductsListMap">    
+
+	<select id="getProductListWithPaging" 	resultMap="ProductsListMap">    
     <![CDATA[
 	select * from 
         	(
@@ -75,4 +114,36 @@
 			where rnum > (#{pageNum}-1) * #{amount}
     ]]>
 	</select>
-</mapper>
+	
+	<resultMap id="OrdersListMap" type="OrdersDto">
+		<id property="O_NO" column="O_NO" />
+		<result property="PUR_NO" column="PUR_NO" />
+		<result property="PRO_NO" column="PRO_NO" />
+		<result property="O_QUANTITY" column="O_QUANTITY" />
+		<result property="O_DISCOUNT" column="O_DISCOUNT" />
+		<result property="O_PRICE" column="O_PRICE" />
+		<result property="O_PAY" column="O_PAY" />
+		<result property="O_USECOUPON" column="O_USECOUPON" />
+		<result property="O_STATE" column="O_STATE" />
+	</resultMap>
+
+	<select id="getOrderListTotalCount" resultType="long">    
+    <![CDATA[
+              	SELECT count(*) FROM orders 
+        ]]>
+	</select>
+
+	<select id="getOrderListWithPaging" 	resultMap="OrdersListMap">    
+    <![CDATA[
+	select * from 
+        	(
+			    select
+			        rownum rnum , A.*
+			    from 
+			    (SELECT  * FROM orders order by O_NO desc) A 
+		    	where rownum <= #{pageNum} * #{amount} 
+		    )
+			where rnum > (#{pageNum}-1) * #{amount}
+    ]]>
+	</select>
+	</mapper>
