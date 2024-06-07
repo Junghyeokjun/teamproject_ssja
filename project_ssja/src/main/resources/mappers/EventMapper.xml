@@ -3,34 +3,23 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="teamproject.ssja.mapper.EventMapper">
 
-	<select id="getEventList" resultMap="eventInfoMap">
+	<select id="getEventList" resultType="teamproject.ssja.dto.mainpage.EventInfoDTO">
     	<![CDATA[
-		select  EV_NO, EV_STARTDATE, EV_DUEDATE, EV_BANNER, EV_PAGE  from event where ev_duedate > sysdate
+		select  *  from event where ev_duedate > sysdate
         ]]>
 	</select>
 	
 	
-	<select id="getEventInfoToPage" resultType="teamproject.ssja.dto.event.EventPageDTO">
-    	<![CDATA[
+	<select id="getEventInfoToPage" resultType="teamproject.ssja.dto.mainpage.EventPageDTO">
 		select ev_no, ev_startdate, ev_duedate, 
 		case
 			when ev_duedate > sysdate then 1
 			else  0
 		end as ev_status
 		 from event where ev_no = #{eventNum}
-        ]]>
 	</select>
 
 
-	<resultMap id="eventInfoMap" type="teamproject.ssja.dto.event.EventInfoDTO">
-	
-		<id property="ev_no" column="EV_NO" />
-		<result property="ev_startdate" column="EV_STARTDATE" />
-		<result property="ev_duedate" column="EV_DUEDATE" />
-		<result property="ev_banner" column="EV_BANNER" />
-		<result property="ev_page" column="EV_PAGE" />
-
-	</resultMap>
 	
 	
 

@@ -2,10 +2,9 @@ package teamproject.ssja.mapper;
 
 import java.util.*;
 
-import org.apache.ibatis.annotations.Select;
 
-import teamproject.ssja.dto.event.EventInfoDTO;
-import teamproject.ssja.dto.event.EventPageDTO;
+import teamproject.ssja.dto.mainpage.EventInfoDTO;
+import teamproject.ssja.dto.mainpage.EventPageDTO;
 
 public interface EventMapper {
 	

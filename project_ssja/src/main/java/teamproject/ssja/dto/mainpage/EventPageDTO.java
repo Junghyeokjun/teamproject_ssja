@@ -1,4 +1,4 @@
-package teamproject.ssja.dto.event;
+package teamproject.ssja.dto.mainpage;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

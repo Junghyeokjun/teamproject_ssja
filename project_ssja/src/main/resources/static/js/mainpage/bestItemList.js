@@ -7,12 +7,12 @@ function formatNumber(num) {
 }
 let bestItemPageNum = 0;
 
-let getListBestToServer = function (pageNum) {
+let getListBestToServer = function (bestPageNum) {
     $.ajax({
         type: "get",
         contentType: "application/json",
         url: "/product/best-mainpage",
-        data: { 'page': pageNum },
+        data: { 'page': bestPageNum },
         success: function (data) {
             console.log(data);
             //$best_item_content.empty();

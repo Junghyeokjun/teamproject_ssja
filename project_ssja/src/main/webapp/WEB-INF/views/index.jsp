@@ -194,8 +194,7 @@ height:5em;
 </body>
 <script src="/js/mainpage/mainpage.js" >
 </script>
-<script src="/js/mainpage/bestItemList.js" >
-</script>
+
 
 
 </html>
