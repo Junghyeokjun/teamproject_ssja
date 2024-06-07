@@ -120,9 +120,9 @@ public class CommunityController {
 	
 	//커뮤니티 게시글을 삭제하는 부분
 	@DeleteMapping("/post")
-	public int deletePost(@RequestBody Map<String, Object> data){
-
-		return communityService.deletePost(Long.valueOf(data.get("bno").toString()).longValue());
+	public int deletePost(long bno){
+		
+		return communityService.deletePost(bno);
 	}
 	//커뮤니티 베스트 게시글들을 얻어오는 부분
 	@GetMapping("/bestPost")

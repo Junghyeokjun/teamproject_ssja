@@ -158,11 +158,10 @@
           beforeSend: function(xhr) {
               xhr.setRequestHeader(header, token);
           },
-          contentType:"application/json",
           dataType : 'text',
-          data :JSON.stringify({
+          data :{
             bno : bno_val
-          }),    
+          },    
           success : function(result) {
             alert("해당 게시글이 성공적으로 삭제되었습니다.");
             window.location="/community/main"
