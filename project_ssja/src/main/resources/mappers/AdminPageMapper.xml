@@ -60,23 +60,22 @@
 		<result property="keyword" column="keyword" />
 	</resultMap>
 
-	<select id="getMemberSearchList" resultMap="MembersSearchListMap">    
-       <![CDATA[
+	<select id="getMemberSearchList"  parameterType="string"   resultMap="MembersSearchListMap">    
 
 	SELECT  * FROM Members              
                 where                
                <choose>
-               <when test="type != null and type.equals('m_name')">
-               AND m_name = #{keyword}
+               <when test="#{type} != null and type.equals('m_name')">
+                m_name = '${keyword}'
                </when>
-                <when test="type != null and type.equals('m_id')">
-               AND m_id = #{keyword}
+                <when test="#{type} != null and type.equals('m_id')">
+                m_id = '${keyword}'
                </when>
-                <when test="type != null and type.equals('m_grade')">
-               AND m_grade = #{keyword}
+                <when test="#{type} != null and type.equals('m_grade')">
+                m_grade = '${keyword}'
                </when>
                </choose> 
-                   ]]>
+                   
                
 	</select>	
 	
@@ -115,32 +114,32 @@
     ]]>
 	</select>
 	
-	<resultMap id="OrdersListMap" type="OrdersDto">
-		<id property="O_NO" column="O_NO" />
-		<result property="PUR_NO" column="PUR_NO" />
-		<result property="PRO_NO" column="PRO_NO" />
-		<result property="O_QUANTITY" column="O_QUANTITY" />
-		<result property="O_DISCOUNT" column="O_DISCOUNT" />
-		<result property="O_PRICE" column="O_PRICE" />
-		<result property="O_PAY" column="O_PAY" />
-		<result property="O_USECOUPON" column="O_USECOUPON" />
-		<result property="O_STATE" column="O_STATE" />
+	<resultMap id="PurchasesListMap" type="PurchaseDto">
+		<id property="PUR_NO" column="PUR_NO" />
+		<result property="M_NO" column="M_NO" />
+		<result property="PUR_TOT" column="PUR_TOT" />
+		<result property="PUR_DC" column="PUR_DC" />
+		<result property="PUR_PAY" column="PUR_PAY" />
+		<result property="PUR_PAYMENT" column="PUR_PAYMENT" />
+		<result property="PUR_DATE" column="PUR_DATE" />
+		<result property="PUR_DVADDRESS" column="PUR_DVADDRESS" />
+		<result property="PUR_DV" column="PUR_DV" />
 	</resultMap>
 
-	<select id="getOrderListTotalCount" resultType="long">    
+	<select id="getPerchaseListTotalCount" resultType="long">    
     <![CDATA[
-              	SELECT count(*) FROM orders 
+              	SELECT count(*) FROM purchase 
         ]]>
 	</select>
 
-	<select id="getOrderListWithPaging" 	resultMap="OrdersListMap">    
+	<select id="getPerchaseListWithPaging" 	resultMap="PurchasesListMap">    
     <![CDATA[
 	select * from 
         	(
 			    select
 			        rownum rnum , A.*
 			    from 
-			    (SELECT  * FROM orders order by O_NO desc) A 
+			    (SELECT  * FROM purchase order by PUR_NO desc) A 
 		    	where rownum <= #{pageNum} * #{amount} 
 		    )
 			where rnum > (#{pageNum}-1) * #{amount}

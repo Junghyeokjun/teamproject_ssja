@@ -24,8 +24,6 @@
 </script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-	<script src='https://code.jquery.com/jquery-3.3.1.min.js'></script>
-	
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <meta name="_csrf" content="${_csrf.token}" />
@@ -59,10 +57,7 @@ body {
 	background-color: white;
 	padding: 20px;
 }
-/* #content_dv {
-    width: 500px;
-    margin: 2em;
-} */
+
 #select_MyPage {
 	z-index: 900;
 	position: fixed;
@@ -102,61 +97,95 @@ body {
 				style="border: 1px solid #cccccc">회원목록</button>
 			<button class="MyPage_btn w-100" id="adminPage_productsInfo_Select"
 				style="border: 1px solid #cccccc">상품목록</button>
-			<button class="MyPage_btn w-100" id="adminPage_ordersInfo_Select" style="border: 1px solid #cccccc">주문목록</button>
+			<button class="MyPage_btn w-100" id="adminPage_purchasesInfo_Select"
+				style="border: 1px solid #cccccc">주문목록</button>
 			<button class="MyPage_btn w-100" style="border: 1px solid #cccccc">쿠폰관리</button>
 			<button class="MyPage_btn w-100" style="border: 1px solid #cccccc">게시판관리</button>
 			<button class="MyPage_btn w-100" style="border: 1px solid #cccccc">이벤트관리</button>
 			<button class="MyPage_btn w-100" style="border: 1px solid #cccccc">매출</button>
 		</div>
 	</div>
-
 	<main>
 		<div id="main_container"
 			class="d-flex flex-row align-items-center justify-content-center">
-			<div id="content_dv_membersInfo">
-				<h2>회원목록</h2>
+			<div id="content_dv_productsInfo">
+				<h2>주문목록</h2>
 				<table class="table" style="text-align: center;">
 					<thead class="table-dark">
 						<tr>
-							<td>회원번호</td>
-							<td>아이디</td>
-							<td>이름</td>
+							<td>주문번호</td>
+							<td>구매번호</td>
+							<td>총 금액</td>
+							<td>총 할인액</td>
+							<td>총 결제액</td>
+							<td>결제수단</td>
+							<td>주문일자</td>
 							<td>주소</td>
-							<td>생일</td>
-							<td>등급</td>
-							<td>이메일</td>
-							<td>휴대폰번호</td>
-							<td>포인트</td>
-							<td>닉네임</td>
+							<td>배송업체</td>
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="member" items="${members}">
+						<c:forEach var="purchase" items="${purchases}">
 							<tr>
-								<td>${member.getM_NO()}</td>
-								<td>${member.getM_ID()}</td>
-								<td>${member.getM_NAME()}</td>
-								<td>${member.getM_ADDRESS1()}&nbsp;${member.getM_ADDRESS2()}&nbsp;${member.getM_ZIPCODE()}</td>
-								<td>${member.getM_BIRTH()}</td>
-								<td>${member.getM_GRADE()}</td>
-								<td>${member.getM_EMAIL()}</td>
-								<td>${member.getM_PHONE()}</td>
-								<td>${member.getM_POINT()}</td>
-								<td>${member.getM_NICKNAME()}</td>
+								<td>${purchase.getPUR_NO()}</td>
+								<td>${purchase.getM_NO()}</td>
+								<td>${purchase.getPUR_TOT()}</td>
+								<td>${purchase.getPUR_DC()}</td>
+								<td>${purchase.getPUR_PAY()}</td>
+								<td>${purchase.getPUR_PAYMENT()}</td>
+								<td>${purchase.getPUR_DATE()}</td>
+								<td>${purchase.getPUR_DVADDRESS()}</td>
+								<td>${purchase.getPUR_DV()}</td>
 							</tr>
 						</c:forEach>
 					</tbody>
-				</table>							
+				</table>
+				<form name="search-form" autocomplete="off">
+					<select name="type">
+						<option selected value="">선택</option>
+						<option value="m_name">회원이름</option>
+						<option value="m_id">아이디</option>
+						<option value="m_grade">등급</option>
+					</select> <input type="text" name="keyword" value=""> <input
+						type="button" onclick="membersSearchList()"
+						class="btn btn-outline-primary mr-2" value="검색">
+				</form>
+				<div id="paging_dv">
+					<nav aria-label="Page navigation example">
+						<ul class="pagination ch-col justify-content-center">
+							<c:if test="${purchasepageMaker.prev}">
+								<li class="page-item"><a class="page-link ch-col"
+									href="${pageContext.request.contextPath}/adminPage/purchasesList${purchasepageMaker.makeQuery(purchasepageMaker.startPage-1)}"><</a></li>
+							</c:if>
+							<c:forEach var="idx" begin="${purchasepageMaker.startPage}"
+								end="${purchasepageMaker.endPage}">
+								<c:choose>
+									<c:when test="${purchasepageMaker.criteria.pageNum == idx}">
+										<li class="page-item active"><a class="page-link"
+											href="${pageContext.request.contextPath}/adminPage/purchasesList${purchasepageMaker.makeQuery(idx)}">${idx}</a></li>
+									</c:when>
+									<c:otherwise>
+										<li class="page-item"><a class="page-link"
+											href="${pageContext.request.contextPath}/adminPage/purchasesList${purchasepageMaker.makeQuery(idx)}">${idx}</a></li>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							<c:if
+								test="${purchasepageMaker.next && purchasepageMaker.endPage > 0}">
+								<li class="page-item"><a class="page-link ch-col"
+									href="${pageContext.request.contextPath}/adminPage/purchasesList${purchasepageMaker.makeQuery(purchasepageMaker.endPage+1)}">></a></li>
+							</c:if>
+						</ul>
+					</nav>
+				</div>
 			</div>
 		</div>
 	</main>
-
 	<footer>
 		<div id="first_footer" class="p-3"></div>
 		<div id="second_footer"></div>
 		<div id="third_footer"></div>
 	</footer>
-
 </body>
 <script>
 	document
@@ -166,8 +195,6 @@ body {
 						// select_content div 내의 모든 버튼을 가져옵니다.
 						var buttons = document
 								.querySelectorAll('#select_content button');
-
-						document.getElementById('content_dv_membersInfo').style.display = 'block';
 
 						// 각 버튼에 클릭 이벤트를 추가합니다.
 						buttons
@@ -191,15 +218,15 @@ body {
 
 														// 클릭한 버튼에 대응하는 콘텐츠 div를 표시합니다.
 														if (buttonId === 'adminPage_membersInfo_Select') {
-															document
-																	.getElementById('content_dv_membersInfo').style.display = 'block';
+															// 회원목록 버튼이 클릭되면 membersList() 메서드를 호출합니다.
+															membersList();
 														} else if (buttonId === 'adminPage_productsInfo_Select') {
 															// 상품목록 버튼이 클릭되면 productsList() 메서드를 호출합니다.
 															productsList();
-														} else if (buttonId === 'adminPage_ordersInfo_Select') {
-											                // 상품목록 버튼이 클릭되면 ordersList() 메서드를 호출합니다.
-											                ordersList();
-											            }
+														} else if (buttonId === 'adminPage_purchasesInfo_Select') {
+															// 상품목록 버튼이 클릭되면 ordersList() 메서드를 호출합니다.
+															purchasesList();
+														}
 														// 필요한 경우 다른 버튼에 대한 조건을 추가합니다.
 													});
 								});
@@ -209,19 +236,17 @@ body {
 							// membersList 페이지로 이동합니다.
 							window.location.href = '${pageContext.request.contextPath}/adminPage/membersList';
 						}
+
 						// productsList() 메서드
 						function productsList() {
 							// productsList 페이지로 이동합니다.
 							window.location.href = '${pageContext.request.contextPath}/adminPage/productsList';
 						}
-						// productsList() 메서드
-						function ordersList() {
-							// productsList 페이지로 이동합니다.
-							window.location.href = '${pageContext.request.contextPath}/adminPage/ordersList';
+						// ordersList() 메서드
+						function purchasesList() {
+							// ordersList 페이지로 이동합니다.
+							window.location.href = '${pageContext.request.contextPath}/adminPage/purchasesList';
 						}
 					});
 </script>
-
-
-
 </html>

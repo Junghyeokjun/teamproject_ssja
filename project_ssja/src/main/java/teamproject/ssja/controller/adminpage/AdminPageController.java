@@ -3,12 +3,12 @@ package teamproject.ssja.controller.adminpage;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.MembersSearchDto;
@@ -16,9 +16,10 @@ import teamproject.ssja.page.Criteria;
 import teamproject.ssja.page.Page10VO;
 import teamproject.ssja.service.Admin.MemberListService;
 import teamproject.ssja.service.Admin.ProductListService;
+import teamproject.ssja.service.Admin.PurchaseListService;
 
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/adminPage")
 public class AdminPageController {
 
@@ -28,69 +29,48 @@ public class AdminPageController {
 	@Autowired
 	private ProductListService productListService;
 	
+	@Autowired
+	private PurchaseListService purchaseListService;
+	
 	@RequestMapping("/membersList")
-	public String membersList(Model model, Criteria criteria) {
+	public ModelAndView membersList(ModelAndView model, Criteria criteria) {
 		log.info("membersList()..");
 
 		long Memberstotal = memberListService.getMemberListTotalCount();
-		model.addAttribute("memberpageMaker", new Page10VO(Memberstotal, criteria));
-		model.addAttribute("members", memberListService.getMemberListWithPaging(criteria));
-
-		return "/adminPage/membersList";
+		model.addObject("memberpageMaker", new Page10VO(Memberstotal, criteria));
+		model.addObject("members",memberListService.getMemberListWithPaging(criteria));
+		model.setViewName("/adminPage/membersList");
+		return  model;
 	}
-	
-//	@RequestMapping("/membersSearchList")
-//	public String membersSearchList(@RequestParam(value = "type", required = false) String type, 
-//	                          @RequestParam(value = "keyword", required = false) String keyword, 
-//	                          Model model, 
-//	                          Criteria criteria) {
-//	    log.info("membersSearchList().. Type: {}, Keyword: {}", type, keyword);
-//	    
-//	    // 검색 조건이 있을 경우 검색 조건을 기반으로 총 회원 수와 회원 목록을 가져옴
-//	    long memberTotal;
-//	    List<MembersSearchDto> members;
-//	    
-//	    if (type != null && keyword != null && !type.isEmpty() && !keyword.isEmpty()) {
-//	        members = memberListService.getMemberSearchList(type, keyword);
-//	        memberTotal = members.size();
-//	    } 
-//	    else {
-//	    	return "/adminPage/membersSearchList";
-////	        // 검색 조건이 없을 경우 전체 회원 목록을 가져옴
-////	        memberTotal = memberListService.getMemberListTotalCount();
-////	        members = memberListService.getMemberListWithPaging(criteria);
-//	    }
-//	    
-//	    model.addAttribute("memberpageMaker", new Page10VO(memberTotal, criteria));
-//	    model.addAttribute("members", members);
-//	    
-//	    return "/adminPage/membersSearchList";
-//	}
-	
+		
 	@GetMapping("/membersSearchList")
-	public String membersSearchList(@RequestParam("type") String type, @RequestParam("keyword") String keyword,Model model) {
+	public List<MembersSearchDto> membersSearchList(@RequestParam("type") String type, @RequestParam("keyword") String keyword,Model model) {
 		log.info("membersSearchList()..");
-		model.addAttribute("members", memberListService.getMemberSearchList(type,keyword));
-
-		return "/adminPage/membersSearchList";
+		return memberListService.getMemberSearchList(type,keyword);
 	}
 	
-//	@GetMapping("/membersSearchList")
-//    @ResponseBody
-//    public List<MembersSearchDto> membersSearchList(@RequestParam("type") String type, @RequestParam("keyword") String keyword) {
-//        log.info("membersSearchList()..");
-//        return memberListService.getMemberSearchList(type, keyword);
-//    }
 
-//	@RequestMapping("/productsList")
-//	public String productsList(Model model, Criteria criteria) {
-//		log.info("productsList()..");
-//
-//		long Productstotal = productListService.getProductListTotalCount();
-//		model.addAttribute("productpageMaker", new Page10VO(Productstotal, criteria));
-//		model.addAttribute("products", productListService.getProductListWithPaging(criteria));
-//
-//		return "/adminPage/productsList";
-//	}
+	@RequestMapping("/productsList")
+	public ModelAndView productsList(ModelAndView model, Criteria criteria) {
+		log.info("productsList()..");
+
+		long Productstotal = productListService.getProductListTotalCount();
+		model.addObject("productpageMaker", new Page10VO(Productstotal, criteria));
+		model.addObject("products", productListService.getProductListWithPaging(criteria));
+		model.setViewName("/adminPage/productsList");
+		
+		return model;
+	}
+	@RequestMapping("/purchasesList")
+	public ModelAndView purchasesList(ModelAndView model, Criteria criteria) {
+		log.info("purchasesList()..");
+
+		long Purchasestotal = purchaseListService.getPerchaseListTotalCount();
+		model.addObject("purchasepageMaker", new Page10VO(Purchasestotal, criteria));
+		model.addObject("purchases", purchaseListService.getPerchaseListWithPaging(criteria));
+		model.setViewName("/adminPage/purchasesList");
+		
+		return model;
+	}
 	
 }

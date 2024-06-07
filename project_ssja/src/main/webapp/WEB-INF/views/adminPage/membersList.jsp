@@ -95,7 +95,7 @@ body {
 				style="border: 1px solid #cccccc">회원목록</button>
 			<button class="MyPage_btn w-100" id="adminPage_productsInfo_Select"
 				style="border: 1px solid #cccccc">상품목록</button>
-			<button class="MyPage_btn w-100" id="adminPage_ordersInfo_Select"
+			<button class="MyPage_btn w-100" id="adminPage_purchasesInfo_Select"
 				style="border: 1px solid #cccccc">주문목록</button>
 			<button class="MyPage_btn w-100" style="border: 1px solid #cccccc">쿠폰관리</button>
 			<button class="MyPage_btn w-100" style="border: 1px solid #cccccc">게시판관리</button>
@@ -142,7 +142,7 @@ body {
 						</c:forEach>
 					</tbody>
 				</table>
-				<form name="search-form" autocomplete="off">
+				<form name="members-search-form" autocomplete="off">
 					<select name="type">
 						<option selected value="">선택</option>
 						<option value="m_name">회원이름</option>
@@ -152,7 +152,7 @@ body {
 						type="button" onclick="membersSearchList()"
 						class="btn btn-outline-primary mr-2" value="검색">
 				</form>
-				<div>
+				<div id="paging_dv">				
 					<nav aria-label="Page navigation example">
 						<ul class="pagination ch-col justify-content-center">
 							<c:if test="${memberpageMaker.prev}">
@@ -183,13 +183,11 @@ body {
 			</div>
 		</div>
 	</main>
-
 	<footer>
 		<div id="first_footer" class="p-3"></div>
 		<div id="second_footer"></div>
 		<div id="third_footer"></div>
 	</footer>
-
 </body>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -206,8 +204,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 document.getElementById('content_dv_membersInfo').style.display = 'block';
             } else if (buttonId === 'adminPage_productsInfo_Select') {
                 productsList();
-            } else if (buttonId === 'adminPage_ordersInfo_Select') {
-                ordersList();
+            } else if (buttonId === 'adminPage_purchasesInfo_Select') {
+            	purchasesList();
             }
         });
     });
@@ -221,18 +219,20 @@ function productsList() {
     window.location.href = '${pageContext.request.contextPath}/adminPage/productsList';
 }
 
-function ordersList() {
-    window.location.href = '${pageContext.request.contextPath}/adminPage/ordersList';
+function purchasesList() {
+    window.location.href = '${pageContext.request.contextPath}/adminPage/purchasesList';
 }
-
+});
 function membersSearchList() {
     $.ajax({
         type: 'GET',
         url: "/adminPage/membersSearchList",
-        data: $("form[name=search-form]").serialize(),
+        data: $("form[name=members-search-form]").serialize(),
         success: function(result) {
+			console.log(result);
             $('#memberstable > tbody').empty();
             if (result.length >= 1) {
+            	$("#paging_dv").empty();
                 result.forEach(function(member) {
                     var str = '<tr>';
                     str += "<td>" + member.m_NO + "</td>";
