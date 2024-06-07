@@ -306,6 +306,12 @@
         }
       })
 
+      //게시글 수정
+      update_btn.on("click",function(){
+        location.href="/community/content/modify?bno="+bno_val;
+      })
+
+      //게시글 삭제
       delete_btn.on("click",function(){
         deletePost();
       });
@@ -356,6 +362,11 @@
 </head>
 
 <body>
+  <c:if test="${content==null}">
+    <script>
+        window.location="/community/main";
+    </script>
+  </c:if>
   <header>
     <div id="title_bar" class=" fixed-top">
       <div class="py-2 px-1" id="top-bar">
@@ -402,7 +413,7 @@
             조회수 : <span>${content.bhit}</span> &nbsp;
             작성일 : <span>${content.bdate}</span>
           </div>
-        </div>
+        </div>        
         <img src="${content.img_path}" alt="" class="w-75 d-inline-block mb-5 ">
         <div class="w-75 mb-3">
           ${content.bcontent}
@@ -461,7 +472,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
