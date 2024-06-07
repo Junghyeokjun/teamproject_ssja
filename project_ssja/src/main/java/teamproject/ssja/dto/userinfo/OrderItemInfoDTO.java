@@ -22,5 +22,7 @@ public class OrderItemInfoDTO {
 	private String PRO_NAME;
 	private String PRO_BIZNAME;
 	private String PRO_BANNERIMG;
+	private int totalCount;
+
 	
 }

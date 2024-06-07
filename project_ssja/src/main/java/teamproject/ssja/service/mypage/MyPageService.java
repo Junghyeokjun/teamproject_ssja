@@ -9,6 +9,7 @@ import java.util.*;
 import teamproject.ssja.dto.userinfo.AddressForm;
 import teamproject.ssja.dto.userinfo.UserInfoDTO;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
+import teamproject.ssja.page.ListObjectPagingDTO;
 import teamproject.ssja.dto.userinfo.MyPageOrdersDTO;
 public interface MyPageService {
 
@@ -28,4 +29,8 @@ public interface MyPageService {
 	boolean checkDuplicatedBizname(String bizName);
 	void enrollVendor(VendorInfoDTO vendorInfo);
 	VendorInfoDTO getVendorInfo();
+	int isAppliedVendor();
+	
+	ListObjectPagingDTO getcartItems(int pageNum);
+	void deleteItemFromCart(List<Integer> deletList);
 }

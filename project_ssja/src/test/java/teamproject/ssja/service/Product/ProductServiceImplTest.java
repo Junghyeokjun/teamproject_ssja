@@ -11,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.ProductDto;
+import teamproject.ssja.dto.userinfo.CartItemsDTO;
+import teamproject.ssja.mapper.ProductListMapper;
 
 @Slf4j
 @SpringBootTest
@@ -18,16 +20,18 @@ class ProductServiceImplTest {
 
 	@Autowired
 	ProductService productService;
+	@Autowired
+	ProductListMapper mapper;
 	
-//	@Test
-//	@DisplayName("상품 리스트 db접근 테스트")
-//	void testProductList() {
-//		
-//		List<ProductDto> list = productService.getProductList();
-//		
-//		
-//		assertNotNull(list);
-//		
-//	}
+	@Test
+	@DisplayName("장바구니 데이터 테스트")
+	void itemsCart() {
+		List<CartItemsDTO> list = mapper.getYourItemCrat(1);
+		assertNotNull(list);
+		for(CartItemsDTO d : list) {
+			
+		log.info("item {}",d);	
+		}
+	}
 
 }
