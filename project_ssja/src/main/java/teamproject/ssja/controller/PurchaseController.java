@@ -35,7 +35,10 @@ public class PurchaseController {
 //		return mv;
 //	}
 	@RequestMapping("")
-	public ModelAndView purchase(ModelAndView mv) {
+	public ModelAndView purchase(ModelAndView mv ) {
+		List<ProductDto> dtos=new ArrayList<>();
+		
+		mv.addObject("products", dtos);
 		mv.setViewName("purchase");
 		return mv;
 	}
