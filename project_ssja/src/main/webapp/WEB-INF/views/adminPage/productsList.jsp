@@ -109,7 +109,7 @@ body {
 			class="d-flex flex-row align-items-center justify-content-center">
 			 <div id="content_dv_productsInfo" >
 				<h2>상품목록</h2>
-				<table class="table" style="text-align: center;">
+				<table class="table" id="productstable"  style="text-align: center;">
 					<thead class="table-dark">
 						<tr>
 							<td>상품번호</td>
@@ -236,23 +236,20 @@ function productsSearchList() {
         data: $("form[name=products-search-form]").serialize(),
         success: function(result) {
 			console.log(result);
-            $('#memberstable > tbody').empty();
+            $('#productstable > tbody').empty();
             if (result.length >= 1) {
             	$("#paging_dv").empty();
                 result.forEach(function(product) {
                     var str = '<tr>';
-                    str += "<td>" + member.m_NO + "</td>";
-                    str += "<td>" + member.m_ID + "</td>";
-                    str += "<td>" + member.m_NAME + "</td>";
-                    str += "<td>" + member.m_ADDRESS1 + "</td>";
-                    str += "<td>" + member.m_BIRTH + "</td>";
-                    str += "<td>" + member.m_GRADE + "</td>";
-                    str += "<td>" + member.m_EMAIL + "</td>";
-                    str += "<td>" + member.m_PHONE + "</td>";
-                    str += "<td>" + member.m_POINT + "</td>";
-                    str += "<td>" + member.m_NICKNAME + "</td>";	
+                    str += "<td>" + product.pro_NO + "</td>";
+                    str += "<td>" + product.pro_NAME + "</td>";
+                    str += "<td>" + product.pro_PRICE + "</td>";
+                    str += "<td>" + product.pro_QUANTITY + "</td>";
+                    str += "<td>" + product.pro_WISH + "</td>";
+                    str += "<td>" + product.pro_SELLCOUNT + "</td>";
+                    str += "<td>" + product.pro_BIZNAME + "</td>";              
                     str += "</tr>";
-                    $('#memberstable > tbody').append(str);
+                    $('#productstable > tbody').append(str);
                 });
             }
         }

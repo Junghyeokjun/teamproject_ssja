@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import teamproject.ssja.dto.MembersDto;
 import teamproject.ssja.dto.MembersSearchDto;
 import teamproject.ssja.dto.ProductDto;
+import teamproject.ssja.dto.ProductsSearchDto;
 import teamproject.ssja.dto.PurchaseDto;
 import teamproject.ssja.page.Criteria;
 
@@ -22,10 +23,13 @@ public interface AdminPageMapper {
 	long getProductListTotalCount();
 
 	List<ProductDto> getProductListWithPaging(Criteria criteria);
+	//검색
+	List<ProductsSearchDto> getProductsSearchList(String type, String keyword);
 
 	long getPerchaseListTotalCount();
 
 	List<PurchaseDto> getPerchaseListWithPaging(Criteria criteria);
+
 	
 
 }

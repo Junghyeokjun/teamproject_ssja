@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.MembersSearchDto;
+import teamproject.ssja.dto.ProductsSearchDto;
 import teamproject.ssja.page.Criteria;
 import teamproject.ssja.page.Page10VO;
 import teamproject.ssja.service.Admin.MemberListService;
@@ -47,8 +48,7 @@ public class AdminPageController {
 	public List<MembersSearchDto> membersSearchList(@RequestParam("type") String type, @RequestParam("keyword") String keyword,Model model) {
 		log.info("membersSearchList()..");
 		return memberListService.getMemberSearchList(type,keyword);
-	}
-	
+	}	
 
 	@RequestMapping("/productsList")
 	public ModelAndView productsList(ModelAndView model, Criteria criteria) {
@@ -61,6 +61,13 @@ public class AdminPageController {
 		
 		return model;
 	}
+	
+	@GetMapping("/productsSearchList")
+	public List<ProductsSearchDto> productsSearchList(@RequestParam("type") String type, @RequestParam("keyword") String keyword,Model model) {
+		log.info("productsSearchList()..");
+		return productListService.getProductsSearchList(type,keyword);
+	}	
+	
 	@RequestMapping("/purchasesList")
 	public ModelAndView purchasesList(ModelAndView model, Criteria criteria) {
 		log.info("purchasesList()..");

@@ -130,8 +130,7 @@ body {
 								<td>${member.m_NO}</td>
 								<td>${member.m_ID}</td>
 								<td>${member.m_NAME}</td>
-								<td>${member.m_ADDRESS1}${member.m_ADDRESS2}
-									${member.m_ZIPCODE}</td>
+								<td>${member.m_ADDRESS1}</td>
 								<td>${member.m_BIRTH}</td>
 								<td>${member.m_GRADE}</td>
 								<td>${member.m_EMAIL}</td>
@@ -191,37 +190,53 @@ body {
 </body>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+    // select_content div 내의 모든 버튼을 가져옵니다.
     var buttons = document.querySelectorAll('#select_content button');
-    document.getElementById('content_dv_membersInfo').style.display = 'block';
+    
+    // 각 버튼에 클릭 이벤트를 추가합니다.
     buttons.forEach(function(button) {
         button.addEventListener('click', function() {
+            // 클릭한 버튼의 ID를 가져옵니다.
             var buttonId = button.getAttribute('id');
+
+            // 모든 콘텐츠 div를 숨깁니다.
             var contentDivs = document.querySelectorAll('#main_container > div');
             contentDivs.forEach(function(div) {
                 div.style.display = 'none';
             });
+
+            // 클릭한 버튼에 대응하는 콘텐츠 div를 표시합니다.
             if (buttonId === 'adminPage_membersInfo_Select') {
-                document.getElementById('content_dv_membersInfo').style.display = 'block';
+                // 회원목록 버튼이 클릭되면 membersList() 메서드를 호출합니다.
+                membersList();
             } else if (buttonId === 'adminPage_productsInfo_Select') {
+                // 상품목록 버튼이 클릭되면 productsList() 메서드를 호출합니다.
                 productsList();
             } else if (buttonId === 'adminPage_purchasesInfo_Select') {
-            	purchasesList();
+                // 상품목록 버튼이 클릭되면 ordersList() 메서드를 호출합니다.
+                purchasesList();
             }
+            // 필요한 경우 다른 버튼에 대한 조건을 추가합니다.
         });
     });
-});
 
-function membersList() {
-    window.location.href = '${pageContext.request.contextPath}/adminPage/membersList';
-}
+    // membersList() 메서드
+    function membersList() {
+        // membersList 페이지로 이동합니다.
+        window.location.href = '${pageContext.request.contextPath}/adminPage/membersList';
+    }
 
-function productsList() {
-    window.location.href = '${pageContext.request.contextPath}/adminPage/productsList';
-}
-
-function purchasesList() {
-    window.location.href = '${pageContext.request.contextPath}/adminPage/purchasesList';
-}
+    // productsList() 메서드
+    function productsList() {
+        // productsList 페이지로 이동합니다.
+        window.location.href = '${pageContext.request.contextPath}/adminPage/productsList';
+    }
+    
+    // ordersList() 메서드
+	function purchasesList() {
+		// ordersList 페이지로 이동합니다.
+		window.location.href = '${pageContext.request.contextPath}/adminPage/purchasesList';
+	}
 });
 function membersSearchList() {
     $.ajax({
