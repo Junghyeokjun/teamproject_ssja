@@ -52,7 +52,7 @@ public class CommunityServiceImpl implements CommunityService {
 		BoardDto board= new BoardDto();
 		board.setBno(bno);
 		replyMapper.deleteAllReply(bno);
-		boardMapper.deleteAllBLiked(bno);
+//		boardMapper.deleteAllBLiked(bno);
 		return boardMapper.deleteBoard(board);
 	}
 	

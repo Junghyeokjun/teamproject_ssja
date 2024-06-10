@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -45,13 +46,23 @@ public class CommunityController {
 		mv.setViewName("community/community_main");
 		return mv;
 	}
-	
+
 	//커뮤니티 게시글 내용화면
 	@GetMapping("/content/{bno}")
 	public ModelAndView content(ModelAndView mv,@PathVariable("bno") long bno) {
 		mv.addObject("content", communityService.getContent(bno));
 		mv.addObject("reply_total", communityService.getReplyTotal(bno));
 		mv.setViewName("community/community_content");
+		return mv;
+	}
+
+	//커뮤니티 게시글 내용화면
+	@GetMapping("/content/modify")
+	public ModelAndView modify(ModelAndView mv,@RequestParam("bno") long bno) {
+		System.out.println(1234);
+		mv.addObject("content", communityService.getContent(bno));
+		mv.addObject("reply_total", communityService.getReplyTotal(bno));
+		mv.setViewName("community/community_content_modify");
 		return mv;
 	}
 
@@ -120,9 +131,9 @@ public class CommunityController {
 	
 	//커뮤니티 게시글을 삭제하는 부분
 	@DeleteMapping("/post")
-	public int deletePost(@RequestBody Map<String, Object> data){
-
-		return communityService.deletePost(Long.valueOf(data.get("bno").toString()).longValue());
+	public int deletePost(long bno){
+		
+		return communityService.deletePost(bno);
 	}
 	//커뮤니티 베스트 게시글들을 얻어오는 부분
 	@GetMapping("/bestPost")

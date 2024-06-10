@@ -21,6 +21,17 @@
 		let $modi_email_auth_btn = $("<button>");
 		let $modi_email_change_btn = $("<button>").css("width",'90px');
 		
+		
+		  function openCenteredWindow(url, width, height) {
+	            const screenWidth = $(window).width();
+	            const screenHeight = $(window).height();
+
+	            const left = (screenWidth / 2) - (width / 2);
+	            const top = (screenHeight / 2) - (height / 2);
+
+	            window.open(url, '_blank', 'width=' + width + ',height=' + height + ',top=' + top + ',left=' + left);
+	        }
+		
 
 	let myPageUserInfo = function() {
 		
@@ -62,7 +73,9 @@
 								"background-color", "#eee");
 						let $userInfo_orders = $("<div>").attr("id",
 								"userInfo_orders").append($("<h4>").text("구매"),
-								$("<span>").text(userInfo.countPurchase));
+								$("<span>").text(userInfo.countPurchase)).on('click',function(){
+									 openCenteredWindow('https://www.naver.com', 800, 550);
+								});
 						let $userInfo_wishs = $("<div>").attr("id",
 								"userInfo_wishs").append(
 								$("<h4>").text("위시리스트"),
@@ -78,6 +91,13 @@
 
 						$userInfo_dv2.append($userInfo_orders, $userInfo_wishs,
 								$userInfo_points, $userInfo_coupons);
+						
+						$userInfo_dv2.children("div").hover(function() {
+						    $(this).css("cursor", "pointer");
+						},
+						function(){
+						    $(this).css("cursor", "auto");
+						})
 
 						let $password_title = $("<h4>").addClass("mx-5 my-3")
 								.text("비밀 번호 ");
@@ -255,7 +275,7 @@
 					}
 				});
 	};
-	myPageUserInfo();
+
 
 	let change_address = function() {
 		

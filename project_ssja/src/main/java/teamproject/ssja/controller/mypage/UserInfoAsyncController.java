@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.nimbusds.jose.shaded.json.parser.JSONParser;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +34,7 @@ import teamproject.ssja.dto.userinfo.ChangePasswordForm;
 import teamproject.ssja.dto.userinfo.MyPageOrdersDTO;
 import teamproject.ssja.dto.userinfo.UserInfoDTO;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
+import teamproject.ssja.page.ListObjectPagingDTO;
 import teamproject.ssja.service.mypage.MailService;
 import teamproject.ssja.service.mypage.MyPageService;
 import teamproject.ssja.service.user.CustomUserDetailsService;
@@ -47,6 +51,7 @@ public class UserInfoAsyncController {
 	PasswordEncoder passwordEncoder;
 	@Autowired
 	MailService mailService;
+	
 	
 	@PostMapping("/info")
 	public ResponseEntity<UserInfoDTO> myPageUser(@AuthenticationPrincipal CustomPrincipal userDetails) {
@@ -175,6 +180,7 @@ public class UserInfoAsyncController {
 			 myPageService.enrollVendor(venderInfo);
 			 return ResponseEntity.ok("success");
 		} catch (Exception e) {
+			e.printStackTrace();
 		      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");
 		}
 		 
@@ -184,6 +190,41 @@ public class UserInfoAsyncController {
 	 public ResponseEntity<VendorInfoDTO> getVendorInfo() {
 		VendorInfoDTO vendorInfo =  myPageService.getVendorInfo();
 		 return ResponseEntity.ok(vendorInfo);
+	 }
+	 
+	 @GetMapping("/check/apply-vendor")
+	 public ResponseEntity<String> enrollVendor() {
+		 int whetherApply =  myPageService.isAppliedVendor();
+		 if(whetherApply >= 1) {
+			 return ResponseEntity.ok("Y");
+		 }else {
+			 return ResponseEntity.ok("N");
+		 }
+	 }
+	 
+	 @GetMapping("/cart/items")
+	 public ResponseEntity<ListObjectPagingDTO> itemCartPage(int pageNum){
+		 
+		 ListObjectPagingDTO data = myPageService.getcartItems(pageNum);
+		 if(data == null) {
+			 
+			 return ResponseEntity.ok(null);
+		 }else {
+			 
+			 return ResponseEntity.ok(data);
+		 }
+	 }
+	 
+	 @DeleteMapping("/cart/items")
+	 public ResponseEntity<String> deleteItemFromCart(@RequestBody List<Integer> deleteList){
+		 log.info("값 확인 {}", deleteList);
+		 try {
+			
+			 myPageService.deleteItemFromCart(deleteList);
+			 return ResponseEntity.ok("success");
+		} catch (Exception e) {
+			  return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");
+		}
 	 }
  
 }
