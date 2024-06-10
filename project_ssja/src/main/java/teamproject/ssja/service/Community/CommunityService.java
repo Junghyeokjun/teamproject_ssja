@@ -21,6 +21,8 @@ public interface CommunityService {
 	List<CommunityBoardDto> getBestPost();
 	//게시물 내용 얻어오는 메서드
 	CommunityBoardDto getContent(long bno);
+	//게시물 입력 메서드
+	long insertPost(BoardDto post);
 	//게시물을 삭제하는 메서드
 	int deletePost (long bno);
 	//게시물 좋아요 개수 얻어오는 메서드
@@ -33,10 +35,13 @@ public interface CommunityService {
 	int modifyContent(BoardDto content);
 	//게시글 임시 이미지 업데이트 메서드	
 	String updateTempBoardImg(long bno,MultipartFile file);	
+	//게시글 입력시 임시 이미지 삭제 메서드
+	boolean deleteTempBoardImg(long randomNum);
 	//게시글 이미지 업데이트 메서드	
 	boolean updateBoardImg(long bno,MultipartFile file);
-	//게시글 삭제 메서드
+	//게시글 이미지 삭제 메서드
 	int deleteBoardImg(long bno);
+	
 	
 	
 	//댓글 리스트 얻어오는 메서드

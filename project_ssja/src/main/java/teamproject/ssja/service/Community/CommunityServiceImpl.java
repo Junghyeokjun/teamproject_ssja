@@ -54,6 +54,13 @@ public class CommunityServiceImpl implements CommunityService {
 
 	@Transactional
 	@Override
+	public long insertPost(BoardDto post) {
+		boardMapper.insertBoard(post);
+		return post.getBno();
+	}
+	
+	@Transactional
+	@Override
 	public int deletePost(long bno) {
 		BoardDto board= new BoardDto();
 		board.setBno(bno);
@@ -135,17 +142,23 @@ public class CommunityServiceImpl implements CommunityService {
 		String path="/images/board_content";
 		String fileName="board_img_"+bno+".png";
 		File targetFile=new File(absolutePath+"/"+fileName);
+		File tempFile= new File(absolutePath+"/"+"temp"+bno+".png");
 
-
+		//원래 이미지가 존재하지 않을경우 이미지 삽입 
+		if(boardMapper.selectBoardImg(bno)==0) {
+			boardMapper.insertBoardImg(new BoardImgsDto(0,bno,path+"/temp.png"));
+		}
 		//파일이 존재하지 않을경우리턴 
 		if(file==null || file.isEmpty()) {			
 			return result;
 		}
-//		//원래 이미지가 존재하지 않을경우 이미지 삽입 (작성중 변경으로 사용안함)
-//		if(boardMapper.selectBoardImg(bno)==0) {
-//			boardMapper.insertBoardImg(new BoardImgsDto(0,bno,path+"/"+fileName));
-//		}
+
 		boardMapper.updateBoardImg(new BoardImgsDto(0, bno, path+"/"+fileName));
+		//임시파일 삭제
+		if(tempFile.exists()) {
+			tempFile.delete();
+		}
+		
 		try{
 			FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(targetFile));
             result=true;
@@ -158,12 +171,27 @@ public class CommunityServiceImpl implements CommunityService {
 		return result;
 	}
 
+	
 
 	@Override
 	public int deleteBoardImg(long bno) {
 		boardMapper.updateBoardImg(new BoardImgsDto(0, bno, "/images/board_content/temp.png"));
 		return 0;
 	}
+
+
+	@Override
+	public boolean deleteTempBoardImg(long randomNum) {
+		String absolutePath="C:/Users/601-5/git/temaproject_ssja/project_ssja/src/main/resources/static/images/board_content";
+		String fileName="Temp_"+randomNum+".png";
+		File file= new File(absolutePath+"/"+fileName);
+		if(file.exists()) {
+			file.delete();
+		}
+		return false;
+	}
+
+
 
 
 

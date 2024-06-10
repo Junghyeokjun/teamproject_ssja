@@ -58,6 +58,12 @@ public class CommunityController {
 		return mv;
 	}
 
+	//커뮤니티 게시글 입력 화면
+	@GetMapping("/content/insert")
+	public ModelAndView insert(ModelAndView mv) {
+		mv.setViewName("community/community_content_insert");
+		return mv;
+	}
 	//커뮤니티 게시글 내용 수정화면
 	@GetMapping("/content/modify")
 	public ModelAndView modify(ModelAndView mv,@RequestParam("bno") long bno) {
@@ -159,6 +165,21 @@ public class CommunityController {
 		data.put("postList", communityService.getPost(pageNum, amount));
 
 		return data;
+	}
+	
+	//커뮤니티 게시글을 삭제하는 부분
+	@PostMapping("/post")
+	public long insertPost(@RequestBody Map<String, Object> data){
+		System.out.println(data);
+		return communityService.insertPost(new BoardDto(0, Long.valueOf(data.get("mno").toString()).longValue(), 
+														40, data.get("writer").toString(), 
+														data.get("title").toString(), 
+														data.get("content").toString(), "SYSDATE", 0, 0, 0, 0));
+	}	
+	//게시글 입력시 임시 이미지를 삭제하는 메서드
+	@DeleteMapping("/tempImg/{randomNum}")
+	public boolean deleteTempImg(@PathVariable("randomNum") long randomNum){
+		return communityService.deleteTempBoardImg(randomNum);
 	}
 	
 	//커뮤니티 게시글을 삭제하는 부분

@@ -8,10 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import teamproject.ssja.dto.OrdersDto;
+import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.PurchaseDto;
 import teamproject.ssja.mapper.MembersMapper;
 import teamproject.ssja.mapper.OrdersMapper;
+import teamproject.ssja.mapper.ProductDetailMapper;
 import teamproject.ssja.mapper.PurchaseMapper;
+import teamproject.ssja.service.Product.ProductService;
 
 @Service
 public class PurchaseServiceImpl implements PurchaseService {	
@@ -24,6 +27,9 @@ public class PurchaseServiceImpl implements PurchaseService {
 	
 	@Autowired
 	MembersMapper membersMapper;
+	
+	@Autowired
+	ProductDetailMapper productMapper;
 	
 //	@Autowired
 //	UserInfoDTO userinfo;
@@ -79,6 +85,12 @@ public class PurchaseServiceImpl implements PurchaseService {
 		System.out.println(ordersCount);
 
 		return ordersCount; 
+	}
+
+	
+	@Override
+	public ProductDto getProduct(long proNo) {
+		return productMapper.getProduct(proNo);
 	}
 	
 }

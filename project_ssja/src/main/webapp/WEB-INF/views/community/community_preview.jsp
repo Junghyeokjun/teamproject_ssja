@@ -98,6 +98,11 @@
                 left: 5px;
               }
 
+              .best_post>img:hover{
+                cursor: pointer;
+                opacity: 0.7;
+              }
+
               #recent_post{
                 position: relative;
                 overflow: hidden;
