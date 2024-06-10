@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.BoardIsLikedDto;
 import teamproject.ssja.dto.ReplysDto;
 import teamproject.ssja.dto.community.CommunityBoardDto;
@@ -56,7 +58,7 @@ public class CommunityController {
 		return mv;
 	}
 
-	//커뮤니티 게시글 내용화면
+	//커뮤니티 게시글 내용 수정화면
 	@GetMapping("/content/modify")
 	public ModelAndView modify(ModelAndView mv,@RequestParam("bno") long bno) {
 		System.out.println(1234);
@@ -66,6 +68,36 @@ public class CommunityController {
 		return mv;
 	}
 
+	//게시글 수정 임시 이미지 수정
+	@PostMapping("/content/tempImg/{bno}")
+	public String modifyTempImg(@PathVariable("bno") long bno, @RequestParam("image") MultipartFile file) {
+		return communityService.updateTempBoardImg(bno, file)+"";
+	}
+	//게시글 업데이트
+	@PostMapping("/content/modify/{bno}")
+	public void modifyContent(@PathVariable("bno") long bno, @RequestBody Map<String, Object> data) {
+		BoardDto content= new BoardDto();
+		
+		content.setBno(bno);
+		content.setBtitle(data.get("title").toString());
+		content.setBcontent(data.get("content").toString());
+		
+		communityService.modifyContent(content);
+		
+	}
+	
+	//게시글 이미지 수정
+	@PostMapping("/content/img/{bno}")
+	public String modifyImg(@PathVariable("bno") long bno, @RequestParam("image") MultipartFile file) {
+		return communityService.updateBoardImg(bno, file)+"";
+	}
+	
+	//게시글 이미지 삭제
+	@DeleteMapping("/content/img/{bno}")
+	public String deleteImg(@PathVariable("bno") long bno) {
+		return communityService.deleteBoardImg(bno)+"";
+	}
+	
 	//댓글 페이징해서 얻어오는 부분
 	@GetMapping("/reply")
 	public List<ReplysDto> reply(int replyNum,int amount, long bno){

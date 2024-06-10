@@ -2,6 +2,9 @@ package teamproject.ssja.service.Community;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.BoardIsLikedDto;
 import teamproject.ssja.dto.ReplysDto;
 import teamproject.ssja.dto.community.CommunityBoardDto;
@@ -26,6 +29,15 @@ public interface CommunityService {
 	int insertBoardLiked(BoardIsLikedDto liked);
 	//게시물에 해당 회원이 좋아요를 추가한 이력이 있는지 확인하는 메서드
 	BoardIsLikedDto getBoardLiked(BoardIsLikedDto liked);
+	//게시글 업데이트 메서드
+	int modifyContent(BoardDto content);
+	//게시글 임시 이미지 업데이트 메서드	
+	String updateTempBoardImg(long bno,MultipartFile file);	
+	//게시글 이미지 업데이트 메서드	
+	boolean updateBoardImg(long bno,MultipartFile file);
+	//게시글 삭제 메서드
+	int deleteBoardImg(long bno);
+	
 	
 	//댓글 리스트 얻어오는 메서드
 	List<ReplysDto> getReply(int replyNum,int amount, long bno);

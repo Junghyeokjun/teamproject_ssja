@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import teamproject.ssja.dto.BoardCategoryDto;
 import teamproject.ssja.dto.BoardDto;
+import teamproject.ssja.dto.BoardImgsDto;
 import teamproject.ssja.dto.BoardIsLikedDto;
 import teamproject.ssja.dto.community.CommunityBoardDto;
 import teamproject.ssja.page.Criteria;
@@ -55,4 +56,16 @@ public interface BoardMapper {
 	int deleteAllBLiked(long bno);
 	
 	int updateBLikeDown(long bno);
+	
+	// 게시글의 이미지가 존재하는지 체크하는 메서드
+	int selectBoardImg(long bno);
+		
+	// 게시글의 이미지경로를 DB에 업로드하는 메서드
+	int insertBoardImg(BoardImgsDto boardImg);
+
+	//게시글의 이미지를 업데이트하는 메서드
+	void updateBoardImg(BoardImgsDto boardImg);
+	
+	//게시글의 이미지 경로를 삭제하는 메서드
+	int deleteBoardImg(long bno);
 } 

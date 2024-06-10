@@ -1,13 +1,19 @@
 package teamproject.ssja.service.Community;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.BoardDto;
+import teamproject.ssja.dto.BoardImgsDto;
 import teamproject.ssja.dto.BoardIsLikedDto;
 import teamproject.ssja.dto.ReplysDto;
 import teamproject.ssja.dto.community.CommunityBoardDto;
@@ -95,6 +101,71 @@ public class CommunityServiceImpl implements CommunityService {
 	public BoardIsLikedDto getBoardLiked(BoardIsLikedDto liked) {
 		return boardMapper.selectBIsLiked(liked);
 	}
+
+	@Override
+	public int modifyContent(BoardDto content) {
+		return boardMapper.updateBoard(content);
+	}
+
+	@Override
+	public String updateTempBoardImg(long bno, MultipartFile file) {
+		String absolutePath="C:/Users/601-5/git/temaproject_ssja/project_ssja/src/main/resources/static/images/board_content";
+		String path="/images/board_content";
+		String fileName="Temp_"+bno+".png";
+		File targetFile=new File(absolutePath+"/"+fileName);
+		if(file==null || file.isEmpty()) {
+			
+			return "null";
+		}
+		try{
+			FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(targetFile));
+        }catch (IOException ioException){
+            log.error(ioException.toString(),ioException);
+            return "null";
+        }
+		
+		return path+"/"+fileName;
+	}
+
+	@Override
+	public boolean updateBoardImg(long bno, MultipartFile file) {
+		boolean result=false;
+		//나중에 배포시 사용환경에 따라 경로 수정
+		String absolutePath="C:/Users/601-5/git/temaproject_ssja/project_ssja/src/main/resources/static/images/board_content";
+		String path="/images/board_content";
+		String fileName="board_img_"+bno+".png";
+		File targetFile=new File(absolutePath+"/"+fileName);
+
+
+		//파일이 존재하지 않을경우리턴 
+		if(file==null || file.isEmpty()) {			
+			return result;
+		}
+//		//원래 이미지가 존재하지 않을경우 이미지 삽입 (작성중 변경으로 사용안함)
+//		if(boardMapper.selectBoardImg(bno)==0) {
+//			boardMapper.insertBoardImg(new BoardImgsDto(0,bno,path+"/"+fileName));
+//		}
+		boardMapper.updateBoardImg(new BoardImgsDto(0, bno, path+"/"+fileName));
+		try{
+			FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(targetFile));
+            result=true;
+        }catch (IOException ioException){
+            log.error(ioException.toString(),ioException);
+            return false;
+        }
+		
+		
+		return result;
+	}
+
+
+	@Override
+	public int deleteBoardImg(long bno) {
+		boardMapper.updateBoardImg(new BoardImgsDto(0, bno, "/images/board_content/temp.png"));
+		return 0;
+	}
+
+
 
 
 

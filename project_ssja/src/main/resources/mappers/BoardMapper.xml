@@ -172,10 +172,31 @@
         ]]>
 	</select>
 
+	<!-- 게시글 이미지 체크  -->
+	<select id="selectBoardImg" resultType="int">
+		select count(*) from board_imgs WHERE b_no=#{bno}
+	</select>
+	
+	<!-- 게시글 이미지경로 추가  -->
+	<select id="insertBoardImg" parameterType="BoardImgsDto">
+		insert into board_imgs VALUES(B_IMG_SEQ.nextval,#{B_NO},#{B_IMG_PATH})
+	</select>
+	
+	<!-- 게시글 이미지업데이트  -->
+	<select id="updateBoardImg" parameterType="BoardImgsDto">
+		UPDATE board_imgs SET B_IMG_PATH=#{B_IMG_PATH} WHERE b_no=#{B_NO}
+	</select>
+	
+	<!-- 게시글 이미지 경로 삭제  -->
+	<delete id="deleteBoardImg">
+		DELETE FROM board_imgs WHERE b_no = #{B_NO}
+	</delete>
+	
 	<resultMap type="teamproject.ssja.dto.BoardCategoryDto" id="BoardCategoryDtoMap">
 		<id property="bcno" column="b_c_no"/>
 		<result property="bcname" column="b_c_name"/>
 	</resultMap>
+	
 
 	<!-- 게시글 맵 -->
 	<resultMap type="teamproject.ssja.dto.BoardDto" id="BoardDtoMap">
