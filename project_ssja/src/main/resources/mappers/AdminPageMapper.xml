@@ -138,7 +138,11 @@
                <choose>
                <when test="#{type} != null and type.equals('PRO_NO')">
                 PRO_NO = '${keyword}'
-               </when>               
+               </when>      
+               <when test="#{type} != null and type.equals('PRO_BIZNAME')">
+                PRO_BIZNAME = '${keyword}'
+               </when> 
+                        
                </choose>                          
 	</select>	
 	
