@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import teamproject.ssja.InfoProvider;
 import teamproject.ssja.LoginChecker;
 
 
@@ -15,6 +16,11 @@ public class MyPageController {
 	
 	@GetMapping("")
 	public String myPageP(Model model ) {
+		
+		if(InfoProvider.userAuth().equals("ROLE_ADMIN")) {
+	         return "/adminPage/membersList";
+	      }
+		
 		int loginMethod = LoginChecker.check();
 		
 		//로그인 O, 소셜 로그인만 하는 회원
