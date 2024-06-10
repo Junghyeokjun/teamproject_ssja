@@ -58,10 +58,6 @@ body {
     cursor: default; /* 기본 커서를 사용합니다. */
     transition: none; /* 전환 효과를 없앱니다. */
 }
-
-
-
-
 #logo_img {
 
 	width: 3.5em;
@@ -227,7 +223,7 @@ table {
 					</p>
 					<p class="cartStock input-group">
 						<span class="input-group-text">수량</span> <input class="form-control" type="number" id="quantity" min="1"
-							max="${productdetail.PRO_QUANTITY}" value="1" />
+							max="10-${productdetail.PRO_QUANTITY}" value="1" />
 					</p>
 					<hr>
 					<p class="addToCart">
@@ -385,7 +381,7 @@ table {
 										<div class="d-flex justify-content-between">
 										<input type="button" class="btn btn-primary custom-btn"
 												onclick="wish_click(${productdetail.getPRO_NO()})" value="Wish List">
-											<input type="button" class="btn btn-danger custom-btn" id="purchaseBtn" value="바로구매" >
+											<input type="button" class="btn btn-danger custom-btn" id="purchaseBtn2" value="바로구매" >
 										</div>
 									</p>
 								</div>
@@ -403,12 +399,43 @@ table {
 	</footer>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
-<script>
+  <script>
     document.getElementById('purchaseBtn').addEventListener('click', function() {
         // 페이지 이동
         window.location.href = '/purchase';
     });
-</script>
+    document.getElementById('purchaseBtn2').addEventListener('click', function() {
+        // 페이지 이동
+        window.location.href = '/purchase';
+    });
+    function purchaseProduct() {
+        var quantity = document.getElementById("quantity").value;
+        var productNo = ${productdetail.getPRO_NO()};
+
+        // AJAX 요청 생성
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/purchase", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        
+        // AJAX 요청이 완료되었을 때의 처리
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                // 페이지 이동
+                window.location.href = '/purchase';
+            }
+        };
+
+        // AJAX 요청 본문 생성
+        var params = "quantity=" + quantity + "&productNo=" + productNo;
+        
+        // AJAX 요청 전송
+        xhr.send(params);
+    }
+
+    document.getElementById('purchaseBtn').addEventListener('click', purchaseProduct);
+    document.getElementById('purchaseBtn2').addEventListener('click', purchaseProduct);
+
+</script> 
 	<script>
 	document.addEventListener("DOMContentLoaded", function() {
 	    // 기존 코드 부분
@@ -488,8 +515,28 @@ table {
 	            });
 	        });
 	    });
+	    
+	    document.addEventListener("DOMContentLoaded", function() {
+	        var quantityInput = document.getElementById("quantity");
+	        var maxQuantity = ${productdetail.PRO_QUANTITY};
 
+	        if (maxQuantity < 10) {
+	            quantityInput.max = maxQuantity;
+	        } else {
+	            quantityInput.max = 10;
+	        }
+	     // 수량 입력값 변경 시 제한
+	        quantityInput.addEventListener("input", function() {
+	            var currentValue = parseInt(quantityInput.value);
+	            if (currentValue > parseInt(quantityInput.max)) {
+	                quantityInput.value = quantityInput.max;
+	            }
+	        });
+	    });
+	    
+	 
 	</script>
+	
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
