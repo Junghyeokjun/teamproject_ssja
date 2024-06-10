@@ -1,293 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-   pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
-  <title>SSJA</title>
-  
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-  
-   <meta name="_csrf" content="${_csrf.token}"/>
-	<meta name="_csrf_header" content="${_csrf.headerName}"/>
-
-  <script src="/js/barscript.js">
-
-  </script>
-
-  <script src="/js/footer.js">
-
-  </script>
-  <link href="/css/footerstyle.css?after" rel="stylesheet">
-  <link href="/css/barstyle.css?after" rel="stylesheet">
-  <link href="/css/board.css?after" rel="stylesheet">
-  <link rel="stylesheet" href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
-
-  <style>
-    @font-face {
-      font-family: 'fonts';
-      src: url("https://webfontworld.github.io/NanumSquare/NanumSquare.css") fotmat('font1');
-    }
-
-    body {
-      font-family: 'fonts', NanumSquare;
-      background-color: #f7f0e8;
-      padding-top: 72px;
-    }
-
-	header, main, footer{
-		height: auto;
-		overflow : hidden;
-	}
-	
-    #logo_img {
-      width: 3.5em;
-      height: 3em;
-    }
-    
-  </style>
-  <style>
-    .MyPage_btn {
-      background-color: white;
-      padding: 20px;
-
-    }
-
-    #MyPage_point {
-      margin-left: auto;
-    }
-
-    #select_dv {
-    
-      margin: 2em;
-      height: auto;
-    }
-
-    #content_dv {
-      width: 80%;
-      margin: 2em;
-    }
-    #MyPage_content_name{
-      background-color: #f7f0e8;
-      padding:3em;
-     
-    }
-    #MyPage_content_name > h1{
-    
-      font-weight: bold;
-      margin-left: 1em;
-
-    }
-    #select_MyPage{
-      z-index:900;
-      position: fixed;
-      top:30%;
-      left:5%;
-      width:12%;
-    }
-    #select_mp_top{
-      background-color: #f7f0e8;
-      padding: 2em;
-      height: auto;
-
-    }
-    #userInfo_dv1{
-    display:flex;
-    flex-direction:row;
-    align-items:center;
-  
-    }
-    #userInfo_dv1 > h2 {
-    margin-left:1em;
-    margin-right:1em;
-    }
-    
-    #userInfo_dv2{
-    display:flex;
-    flex-direction:row;
-    justify-content:space-evenly;
-    align-items:center;
-  	height:auto;
-    }
-
-    #userInfo_dv2 > div{
-    font-weight:bold;
-    margin-top:1em;
-    margin-bottom:1em;
-    padding:5px;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-     height:auto;
-     width:100%;
-    }
-    #your_address > input{
-    border:none;
-    }
-    
-    .mx-2.m-auto.input-group-text{
-    	width : 8em;
-        line-height: 3em; /* 높이와 동일하게 설정하여 수직 중앙 정렬 */
-    	text-align: center;
-    	display: flex;
-   		justify-content: center;
-    }
-    
-    .mx-2.m-auto.input-group-text, .form-control{
-    	height: 3em;
-    }
-    
-    #file-container {
-        position: relative;
-        display: inline-block;
-    }
-
-    #file-input {
-        position: absolute;
-        top: 0;
-        right: 0;
-        margin: 0;
-        opacity: 0;
-        font-size: 100px; /* 큰 값으로 설정하여 버튼이 넓은 영역을 차지하도록 함 */
-        cursor: pointer; /* 마우스 커서를 포인터로 변경하여 클릭 가능한 상태로 표시 */
-    }
-
-    #file-label {
-        display: inline-block;
-        padding: 6px 12px;
-        margin-bottom: 0;
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 1.42857143;
-        text-align: center;
-        white-space: nowrap;
-        vertical-align: middle;
-        cursor: pointer;
-        background-color: #e9ecef;
-        border: 1px solid #ced4da;
-        border-radius: 4px;
-    }
-  </style>
-</head>
-
-<body>
-  <header class="fixed-top">
-    <div class="d-flex justify-content-between">   
-        <div class="mx-5 my-2">
-        	<h1 class="h1">&lt;때래땡땡&gt; 판매자</h1> 
-        </div>        
-        <div class="mx-5 my-2 d-flex align-items-end">
-        	<a>로그아웃</a>
-        </div>
-    </div>
-  </header>
-
-  <div id="side_bar">
-    <div id="side_links" class="w-100"></div>
-  </div>
-	   <div id="select_MyPage" class="d-flex flex-column">
-		    <div id="select_mp_top" class="text-center">마이 페이지</div>
-		    <div id="select_content">
-		        <button class="MyPage_btn w-100" id="myPage_userInfo_Select" style="border:1px solid #cccccc">회원 정보</button>
-		        <button class="MyPage_btn w-100" id="myPage_orderInfo_Select" style="border:1px solid #cccccc">상품 등록</button>
-		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc">등록 상품 목록</button>		        
-		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc">문의 및 요청</button>
-		    </div>
-		</div>
-
-  <main>
-  	<div class="main_whitespace p-5 my-2">
-		<h1 class="h3 text-center">상품 등록</h1>
-	</div>
-    <div id="main_container" class="d-flex flex-row align-items-center justify-content-center" >
-    	
-      	
-      <div id="content_dv" >
-        <div id="MyPage_content_container" class="border p-5">
-        	<form role="form" method="post" autocomplete="off">
-				<div id="ProductCategory" class="p-2 input-group w-100">   
-				   <label class="mx-2 m-auto input-group-text" >1차 분류</label>
-				   <select id="category1" class="form-select w-25 mx-2" >
-				   	<option value="">전체</option>
-				   </select>
-				</div>
-				<div id="ProductCategory2" class="p-2 input-group w-100">
-				   <label class="mx-2 m-auto input-group-text" >2차 분류</label>
-				   <select id="category2" class="form-select w-25 mx-2" >
-				    <option value="">전체</option>
-				   </select>
-				</div>
-				
-				<div class="p-2 input-group w-100">
-				   <label class="mx-2 m-auto input-group-text" for="gdsName">상품명</label>
-				   <input type="text" id="proName" name="PRO_NAME" class="border form-control mx-2" />
-				</div>
-				
-				<div class="p-2 input-group w-100">
-				   <label class="mx-2 m-auto input-group-text" for="gdsPrice">상품가격</label>
-				   <input type="text" id="proPrice" name="PRO_PRICE" class="border form-control mx-2"/>
-				</div>
-				
-				<div class="p-2 input-group w-100">
-				   <label class="mx-2 m-auto input-group-text" for="gdsStock">상품수량</label>
-				   <input type="text" id="proQuantity" name="PRO_QUANTITY" class="border form-control mx-2"/>
-				</div>
-				
-				<div class="p-2 w-100 border-secondary d-flex align-center-center">
-				    <label class="mx-2 m-auto input-group-text">배너 이미지</label>
-				    <div id="file-container">
-				    	<label id="file-label" for="customFile">파일 선택하기</label>
-  						<input type="file" id="file-input" name="PRO_BANNERIMG">
-  					</div>
-				</div>
-				
-				<div class="p-2 w-100 border-secondary d-flex">
-				    <label class="mx-2 m-auto input-group-text">설명 이미지</label>
-  					<input type="file" multiple="multiple" class="form-control mx-2" id="explainImgs">
-				</div>
-				
-				<div class="p-2 w-100 border-secondary border-top ">
-				   <button type="submit" id="register_Btn" class="btn btn-primary" class="border form-control mx-2">등록</button>
-				</div>
-				
-			</form>
-        </div>    
-
-        </div>
-      </div>
-
-
-    </div>
-
-  </main>
-
-  <footer>
-    <div id="first_footer" class="p-3"></div>
-    <div id="second_footer"></div>
-    <div id="third_footer"></div>
-  </footer>
-
-</body>
-<!-- 
-<script type="text/javascript">
-
 	/*
 	 $.ajax({
 	 type : `http method type`,
@@ -301,6 +11,7 @@
 	 success : `성공시 수행할 함수`
 	}); 
 	 */
+	
 	let token = $("meta[name='_csrf']").attr("content");
 	let header = $("meta[name='_csrf_header']").attr("content");
 	
@@ -311,7 +22,7 @@
 		let $modi_email_change_btn = $("<button>").css("width",'90px');
 		
 
-	let venderPageUserInfo = function() {
+	let myPageUserInfo = function() {
 		
 		$.ajax({
 					type : "post",
@@ -323,11 +34,16 @@
 					success : function(data) {
 						const userInfo = data;
 						console.log(userInfo);
-						let $h2title = $("<h2>").text("회원 정보");
-						let $myPageContent = $("#MyPage_content_container")
-								.empty();
+						let $h2title = $("<h2>").attr('id','myPageTitle').text("회원 정보");
+						let $myPageContent = $("#MyPage_content_container").removeClass().empty();
 						let $myPageTitle = $("#MyPage_content_name");
 						$myPageTitle.empty().append($h2title);
+						//탈퇴 유보 기간에 속할 경우 보여질 부분
+						/*
+						if(userInfo.m_deletedate !== null){
+							
+							return
+						}*/
 
 						let $userInfo_dv1 = $("<div>").attr("id",
 								"userInfo_dv1").addClass("w-100 my-3 mx-3");
@@ -338,7 +54,7 @@
 								"bold").text(userInfo.m_Grade);
 						let $userInfo_txt2 = $("<span>").text('입니다.');
 
-						$userInfo_dv1.append($userInfo_name, $userInfo_txt1,
+						$userInfo_dv1.css({'margin-top':'2em','margin-bottom':'2em'}).append($userInfo_name, $userInfo_txt1,
 								$userInfo_grade, $userInfo_txt2);
 
 						let $userInfo_dv2 = $("<div>").attr("id",
@@ -366,8 +82,19 @@
 						let $password_title = $("<h4>").addClass("mx-5 my-3")
 								.text("비밀 번호 ");
 						let $modify_password = $("<a>").attr("href",
-								"${pageContext.request.contextPath}/myPage/password/change")
-								.addClass("btn btn-dark").text("변경하기");
+								"/myPage/password/change")
+								.addClass("btn btn-dark").text("변경하기").on('click',function(){
+									if(userInfo.auth === 'social'){
+										  let reject = confirm("소셜 로그인 유저는 비밀번호를 변경하실 수 없습니다. \n 회원으로 로그인하시겠습니까?");
+										  if(reject){
+											 
+											$(this).attr('href','/login');
+										 	 }else{
+											  return false;
+										 	 }
+							    	}
+								});
+						
 						let $userInfo_dv3 = $("<div>")
 								.attr("id", "userInfo_dv3")
 								.css("border-top", "1px solid #cccc")
@@ -378,18 +105,17 @@
 						let $email_title = $("<h4>").addClass("mx-5 my-3")
 								.text("이메일");
 						
-						
-						
 						let $userInfo_email = $("<input>").attr("type","email").addClass("mx-1").attr("id","modi_email_input")
 						.val(userInfo.m_Email).prop("disabled",true);
 						
 						let $email_change_btn = $("<button>").addClass("btn btn-dark").text("변경");
-						let $email_auth_input = $("<input>").attr("id","email_auth_input");
+						let $email_auth_input = $("<input>").attr("id","email_auth_input").css('width','6em');
 						
 						let $modi_email_btn = $("<button>") .attr("id", "modify_email_btn").addClass("btn btn-dark mx-3")
 					    .text("수정").on('click', function() {
 					    	$email_change_btn.remove();
 					    	$email_auth_input.remove();
+					    	
 					    	
 					        $userInfo_email.prop('disabled', false).focus();
 					        $userInfo_dv4.append($email_auth_input, $email_change_btn.on('click',function(){
@@ -400,6 +126,11 @@
 								request_email_change();
 							}));
 					        $(this).removeClass("btn-dark").addClass("btn-outline-secondary").text("인증").on('click',function(e){
+					        	if(userInfo.m_Email === $userInfo_email.val()){
+						    		alert('변경 이메일과 기존 이메일이 같습니다.');
+						    		return false;
+						    	}
+						    	
 					        	$(this).addClass("btn-secondary");
 					        	$email_auth_input.focus();
 					        	
@@ -450,13 +181,15 @@
 
 						let $phone_title = $("<h4>").addClass("mx-5 my-3")
 								.text("전화 번호 ");
+						let $user_phone_info = $("<div>").addClass("py-2 px-4").css('background-color','#eee').text(formatterphone(userInfo.m_Phone));
+						
 						
 						let $userInfo_dv6 = $("<div>")
 								.attr("id", "userInfo_dv6")
 								.css("border-top", "1px solid #ccc")
 								.addClass(
 										"py-3 my-3 mx-3 d-flex flex-row align-items-center")
-								.append($phone_title);
+								.append($phone_title, $user_phone_info);
 
 						let $withdrawl_title = $("<h4>").addClass("mx-5 my-3").text("회원 탈퇴");
 						
@@ -522,7 +255,7 @@
 					}
 				});
 	};
-	venderPageUserInfo();
+	myPageUserInfo();
 
 	let change_address = function() {
 		
@@ -547,7 +280,7 @@
 			dataType : "json",
 			success : function(data){
 				alert('주소가 변경되었습니다');
-				venderPageUserInfo();
+				myPageUserInfo();
 			}
 		})
 	}
@@ -582,7 +315,7 @@
 	        url: "/user/email",
 	        success: function(data) {
 	        	alert('이메일이 변경되었습니다.');
-	        	venderPageUserInfo();
+	        	myPageUserInfo();
 	        }
 	    });
 	};
@@ -624,27 +357,31 @@
 	}
 
 	$("#myPage_userInfo_Select").on('click', function() {
-		venderPageUserInfo();
+		if($("#myPageTitle").text() === '회원 정보')return false;
+		myPageUserInfo();
 	});
-	$("#myPage_orderInfo_Select").on('click', function() {
-		let $h2title = $("<h2>").text("주문 사항");
-		let $myPageContent = $("#MyPage_content_container").empty();
-		let $myPageTitle = $("#MyPage_content_name");
-		$myPageTitle.empty().append($h2title);
-	});
-	
-	
-</script> -->
-<script>
+
 					 
   let select_dv = $("#select_content");
     
     $("#select_mp_top").on('click', function() {
         select_dv.toggle();
     });
-
-
-
-</script>
-
-</html>
+    
+    let formatterphone = function(phoneNum){
+    	if(phoneNum.length === 11){
+    		  let p1 = phoneNum.substring(0, 3);
+    		    let p2 = phoneNum.substring(3, 7);
+    		    let p3 = phoneNum.substring(7, 11);
+    		    
+    		    return p1+'-'+p2+'-'+p3;
+    	}
+    	return phoneNum;
+    }
+    $("#go_qna").on('click', function(){
+    	window.location.href="/board/list/20";
+    })
+    $("vendor_apply").on('click', function(){
+    	window.location.href="/vender/list/20";
+    })
+    

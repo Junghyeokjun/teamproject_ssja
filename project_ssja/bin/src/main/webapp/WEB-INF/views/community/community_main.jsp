@@ -51,27 +51,6 @@
 
 
   </style>
-  <script>
-    $(document).ready(function(){
-      $.ajax({
-        type : 'GET',         
-        beforeSend: function(xhr){
-          xhr.setRequestHeader(header, token);
-        },
-        url : '/community/post',
-        async : true,
-        dataType : 'json',
-        success : function(result) {
-
-        },    
-        error : function(request, status, error) {
-          alert(error);
-        }
-      })
-
-    })
-
-  </script>
 </head>
 
 <body>
@@ -105,7 +84,7 @@
     
     <div id="community_content" class="my-5"></div>
     
-    <div id="community_dv" class="d-flex flex-row justify-content-center align-items-center"> </div>
+    <div id="paging_dv" class="d-flex flex-row justify-content-center align-items-center mb-4"> </div>
  	 
 </div>
   </main>

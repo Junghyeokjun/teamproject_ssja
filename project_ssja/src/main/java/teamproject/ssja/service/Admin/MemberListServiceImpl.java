@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.MembersDto;
+import teamproject.ssja.dto.MembersSearchDto;
 import teamproject.ssja.mapper.AdminPageMapper;
 import teamproject.ssja.page.Criteria;
 
@@ -26,4 +27,12 @@ public class MemberListServiceImpl implements MemberListService {
 		log.info("getMemberListWithPaging()..");
 		return adminPageMapper.getMemberListWithPaging(cri);
 	}
+
+	@Override
+	public List<MembersSearchDto> getMemberSearchList(String type, String keyword) {
+		log.info("getMemberSearchList()..");
+
+		return adminPageMapper.getMemberSearchList(type,keyword);
+	}
+
 }

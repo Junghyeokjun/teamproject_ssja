@@ -5,14 +5,13 @@ let community_content = $("#community_content");
 let $paging_dv = $("#paging_dv")
 
 class PostCondition {
-	  constructor(startPage, endPage, total, prev, next, category, pageNum, amount) {
+	  constructor(startPage, endPage, total, prev, next, pageNum, amount) {
 		  
 	    this.startPage = startPage;
 	    this.endPage = endPage;
 	    this.total = total;
 	    this.prev = prev;
 	    this.next = next;
-	    this.category = category;
 	    this.pageNum = pageNum;
 	    this.amount = amount;
 	  }
@@ -28,7 +27,6 @@ let post_condition = new PostCondition(
 		  null, // total
 		  null, // prev
 		  null, // next
-		  40,    // category
 		  1,    // pageNum
 		  20    // amount
 		);
@@ -41,14 +39,14 @@ let getListProductToServer = function(condition){
 	
 	
 	 $.ajax({
-			type : "Get",
-			contentType:"application/json",
+			type : "GET",
+			data: post_condition,
 			dataType:"json",
 			url : "/community/post",
 			success : function(data){  
 				console.log(data);
 				community_content.empty();
-				paging_dv.empty();
+				$paging_dv.empty();
 				let $list_content_dv = $("<div>").attr("id","list_content_dv").addClass("d-flex flex-column");
 				let $row;
 				data.postList.forEach(function(e, index){
@@ -70,12 +68,14 @@ let getListProductToServer = function(condition){
 				        function() {
 				            $(this).css('background-color', 'white').css('cursor', 'auto');
 				        }
-				    );
+				    ).on("click",function(){
+                        window.location="/community/content/"+e.bno;
+					});
 					
 					let $item_img_dv = $("<div>").attr("id", "item_img_dv").css("width","100%").append($("<img>").attr("src", e.img_path)
 						    .css('width', '100%') .css('height', '10em').css('overflow', 'hidden'));
 					
-					let $item_title_dv=$("<div>").attr("id",'$item_title_dv').text(e.bcontent.substring(0,30) ).css('font-size','1em');
+					let $item_title_dv=$("<div>").attr("id",'$item_title_dv').text(e.bcontent.substring(0,15) ).css('font-size','1em');
 					
 					let $item_bizname_dv=$("<div>").attr("id",'$item_bizname_dv')
 					.text(e.btitle).css("text-bold",'weight').css('font-size','1.5em');
@@ -83,7 +83,7 @@ let getListProductToServer = function(condition){
 					let $item_price_dv = $("<div>").attr("id", "item_price_dv").text("작성자 : "+e.bwriter).css('margin-left','auto').css('margin-right','1em');
 					let $item_review_wish_dv = $("<div>").addClass("d-flex flex-row justify-content-between").attr("id", "item_review_wish_dv")
 				    .append(
-				        $("<div>").append(   $("<img>").attr('src', '/images/utilities/like.jpg').css("width","1.5em"), 
+				        $("<div>").append(   $("<img>").attr('src', '/images/utilities/like.png').css("width","1.5em"), 
 				        		 $("<span>").text(e.blike)),
 				        // $("<div>").append($("<span>").text(e.pro_WISH).css('color', "#f06575"),
 				        //     $("<img>").attr('src', '/images/utilities/wish_icon.png').css("width","1.5em").on('click',function(event){
@@ -96,7 +96,7 @@ let getListProductToServer = function(condition){
 				    );
 
 					
-					let $item_info_dv = $("<div>").attr("id","item_info_dv").addClass("d-flex flex-column")
+					let $item_info_dv = $("<div>").attr("id","item_info_dv").addClass("d-flex flex-column w-100")
 					.append($item_bizname_dv,$item_title_dv ,$item_price_dv,$item_review_wish_dv);
 					
 						
@@ -150,8 +150,17 @@ let getListProductToServer = function(condition){
 				});
 				
 				community_content.append($list_content_dv);
+				
+				//게시글이 존재하지 않을시 
+				//추후에 회의후 이미지 추가 예정
+				if(data.page.total==0){
+					
+					$paging_dv.empty();
+					community_content.css('height','500px');
+					community_content.append('<h1 class="text-center mt-4"> 게시글이 존재하지 않습니다</h1>');
+				}
 			},error: function(xhr, status, error) {
-				console.log("Error:", xhr.responseText);
+				console.log("Error:", error);
 			}
 		})
 		

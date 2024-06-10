@@ -118,7 +118,7 @@ body {
 	</div>
 	<main>
 		<div id="main_container">
-			<div class="main_whitespace">
+			<div class="main_whitespace p-5 my-2">
 				
 			</div>
 			<form action="${pageContext.request.contextPath}/board/modify_view" method="post">
@@ -212,25 +212,30 @@ body {
 						<td colspan="2">
 							<h5 class="h5 m-1 p-1">댓글</h5>		
 							<div class="input-group border">								
-	    						<input id="inputreplyCon" type="text" class="form-control" name="rcontent" data-rbno="${content_view.bno}" data-rmno="" placeholder="댓글을 입력하세요.">
-	    						<span class="input-group-text"><button class="btn btn-primary">입력</button></span>
+	    						<input id="inputReplyCon" type="text" class="form-control" name="rcontent" data-rbno="${content_view.bno}" data-rmno="" placeholder="댓글을 입력하세요.">
+	    						<span class="input-group-text"><button id="inputReply" class="btn btn-primary">입력</button></span>
 	    					</div>	   						    					
 						</td>					
 					</tr>
 					<tr>
-						<td colspan="2">							
-							<div id="replys" class="input-group border">
-								<c:forEach var="re" begin="1" end="${reply_view.rindent}">
-									<img src="">
-								</c:forEach>												
-								<span id="rwriter" class="input-group-text bg-replywriter">${reply_view.rwriter}</span>
-	    						<input id="rcontent" type="text" class="form-control" data-rno="${reply_view.rno}" value="${reply_view.rcontent}" readonly="readonly">
-	    						<span class="input-group-text"><button id="reply-likes" class="btn">좋아요</button></span>
-	    					</div>
+						<td colspan="2">
+							<div id="replys">
+								<!-- <div class="input-group">
+									<c:forEach var="reply_view" items="${replys}">
+										<c:forEach var="re" begin="1" end="${reply_view.rindent}">
+											<img src="">
+										</c:forEach>												
+										<span id="rwriter" class="input-group-text bg-replywriter">${reply_view.rwriter}</span>
+										<input id="rcontent" type="text" class="form-control" data-rno="${reply_view.rno}" value="${reply_view.rcontent}" readonly="readonly">
+										
+										<span class="input-group-text"><button id="reply-likes" class="btn mx-1">좋아요</button><button id="reply-delete" class="btn ">삭제</button></span>
+									</c:forEach>
+								</div> -->
+							</div>							
 	    					<div>	    						
 								<nav aria-label="Page navigation example">
-									<ul id="pagination" class="pagination justify-content-center">
-										<c:if test="${pageMaker.prev}">
+									<ul id="pagination" class="pagination justify-content-center ch-col">
+										<%-- <c:if test="${pageMaker.prev}">
 											<li class="page-item">
 												<a class="page-link" href="${pageContext.request.contextPath}/api/replys/${pageMaker.startPage-1}">&lt;<a>
 											</li>
@@ -255,7 +260,7 @@ body {
 											<li class="page-item">
 												<a class="page-link" href="${pageContext.request.contextPath}/api/replys/${pageMaker.makeQuery(pageMaker.endPage+1)}">&gt;</a>
 											</li>
-										</c:if>
+										</c:if> --%>
 									</ul>
 								</nav>
 							</div>						
@@ -273,6 +278,196 @@ body {
 		<div id="second_footer"></div>
 		<div id="third_footer"></div>
 	</footer>
-	
+<script>
+	$(document).ready(function(){
+		// 댓글 url
+		let replysUrl = '/api/replys';
+
+		// 댓글 쪽에 달린, 게시글 번호 관련 정보
+		let rbno = $('#inputReplyCon').data('rbno');
+
+		console.log("inputReplyBno : " + rbno);		
+
+		// 어느 사용자든 확인할 수 있는, 댓글 좋아요
+		let replyLike = function(){
+			/* $.ajax({
+				
+			}); */
+			
+		};
+
+		// 로그인한 사람만 할 수 있는, 댓글 좋아요 눌렀을 때의 좋아요 숫자 증가 or 감소
+		let replyLiked = function(){
+
+		};
+
+		/* let html1 = ''; 
+		html1+= '<c:forEach var="reply_view" items="${replys}">';
+		html1+=	'<c:forEach var="re" begin="1" end="${reply_view.rindent}">';
+		html1+=	'<img src="">';
+		html1+=	'</c:forEach>';
+		html1+=	'<span id="rwriter" class="input-group-text bg-replywriter">${reply_view.rwriter}</span>';
+		html1+=	'<input id="rcontent" type="text" class="form-control" data-rno="${reply_view.rno}" value="${reply_view.rcontent}" readonly="readonly">';
+		html1+=	'<span class="input-group-text"><button id="reply-likes" class="btn mx-1">좋아요</button><button id="reply-delete" class="btn ">삭제</button></span>';
+		html1+=	'</c:forEach>'; */
+		// 댓글 리스트 가져오는 함수. 재사용성을 위해서 변수에 할당함.
+		let getReplyLists = function(response){
+			$('#replys').empty(); // 기존 내용 비우기
+			let html1 = '';
+			$.each(response.replys, function(index, reply_view) {
+				html1 += '<div class=" rounded border"><div class="input-group">'; 
+				// 댓글 만들기
+				for (let i = 1; i <= reply_view.rindent; i++) {
+					html1 += '<img src="">';
+				}
+				html1 += '<span class="input-group-text bg-replywriter">' + reply_view.rwriter + '</span>';
+				html1 += '<input id="rcontent" type="text" class="form-control" data-rno="' + reply_view.rno + '" value="' + reply_view.rcontent + '" readonly="readonly">';				
+				html1 += '</div>';
+				html1 += '<div class="d-flex justify-content-between"><div><button id="reply-likes" class="btn mx-1">좋아요 '+ 1 +'</button><button id="reply-modify" class="btn">수정</button><button id="reply-delete" class="btn">X</button></div><div class="btn disabled border-0">' + reply_view.rdate + '</div>';
+				html1 += '</div>'
+			});
+
+			$('#replys').html(html1);
+			
+
+			// 페이지네이션 부분
+    		$('#pagination').empty(); // 기존 내용을 비우기.
+			// 서버로부터 받은 데이터를 HTML로 바꿔서 특정 요소에 추가
+			let html2 = '';
+
+			// 이전 페이지 링크 추가
+			if (response.pageMaker.prev) {
+				html2 += '<li class="page-item">';
+				html2 += '<a class="page-link" href="${pageContext.request.contextPath}/api/replys/list' + (response.pageMaker.startPage - 1) + '">&lt;</a>';
+				html2 += '</li>';
+			}
+			
+			// 페이지 번호 링크 추가
+			for (let idx = response.pageMaker.startPage; idx <= response.pageMaker.endPage; idx++) {
+				if (response.pageMaker.criteria.pageNum == idx) {
+					html2 += '<li class="page-item active">';
+					// 문자로 전달된 데이터이므로, 매개변수가 숫자라면 숫자형으로 바꾸기
+					html2 += '<a class="page-link" href="${pageContext.request.contextPath}/api/replys/list/' + idx +  '/' + response.pageMaker.criteria.amount +'}">' + idx + '</a>'
+				} else {
+					html2 += '<li class="page-item">';
+					// 문자로 전달된 데이터이므로, 매개변수가 숫자라면 숫자형으로 바꾸기
+					html2 += '<a class="page-link" href="${pageContext.request.contextPath}/api/replys/list/' + idx +  '/' + response.pageMaker.criteria.amount +'}">' + idx + '</a>';							
+				}					
+				html2 += '</li>';
+			}
+			
+			// 다음 페이지 링크 추가
+			if (response.pageMaker.next && response.pageMaker.endPage > 0) {
+				html2 += '<li class="page-item">';
+				html2 += '<a class="page-link" href="${pageContext.request.contextPath}/api/replys/list' + (response.pageMaker.endPage + 1) + '">&gt;</a>';
+				html2 += '</li>';
+			}
+
+			// 요소에 HTML 추가
+			$('#pagination').html(html2);
+		};
+		
+		// 기본적인 댓글 리스트 가져오기
+		$.ajax({
+			url: replysUrl + '/list',
+			type : 'GET',
+			data : {
+				'bno' : rbno
+			},
+			success :  function(response){
+				console.log("replys : " + response.replys);
+				console.log("pageMaker : " + response.pageMaker);
+				getReplyLists(response);
+			},
+			error : function(xhr, status, error){
+				console.log("error : " + error);
+				console.log("response : " + xhr.responseText);
+			}
+		});
+
+		// 페이지네이션 처리된 부분 클릭 시 
+		$('.page-link').click(function(e){
+			// 이벤트 비활성화(기본 동작 방지하기)
+			e.preventDefault();
+
+			let url = $('.page-link').attr('href');
+			let parts = url.split('/');
+			let pageNum = parts[parts.length - 2]; // 마지막에서 두 번째 요소가 페이지 번호
+			let amount = parts[parts.length - 1]; // 마지막 요소가 개수
+
+			$.ajax({
+				url: url,
+				type : 'GET',
+				success :  function(response){
+					console.log("replys : " + response.replys);
+					console.log("pageMaker : " + response.pageMaker);
+					getReplyLists(response);
+				},
+				error : function(xhr, status, error){
+					console.log("error : " + error);
+					console.log("response : " + xhr.responseText);
+				}
+			});
+		});
+
+
+		// memberNum 변수 값 유무에 따라 로그인 여부를 체크하는 함수(소셜 로그인도 해당 변수에 값이 들어간 상태라고 함)
+		function isLoggedIn(){
+			return sessionStorage.getItem('memberNum')  != null ? true : false;
+		}
+
+		// 댓글 입력 관련
+
+
+		// 제약 1 : 댓글 내용 칸 클릭 시, 로그인이 되어 있지 않다면 로그인 상태를 
+		$('#inputReplyCon').click(function(){
+			if(!isLoggedIn()){
+				alert('댓글을 달 수 없습니다. 로그인 페이지로 이동합니다.');
+				$(location).attr('href', '/login');
+				return;
+			}
+		});
+
+		
+
+		//  댓글 제한
+		$('#inputReply').click(function(e){
+			// 기본 동작을 막음.
+			// 이후 폼 제출이나 링크 이동은 따로 선언해서 이벤트를 진행
+			e.preventDefault();
+					
+			if(!isLoggedIn()){
+				// 로그인이 안된 상태에서 버튼을 클릭 시
+				alert('댓글을 달 수 없습니다. 로그인 페이지로 이동합니다.');
+				$(location).attr('href', '/login');
+				return;		
+			}else if($('#inputReplyCon').val().length <= 2){
+				// 3글자 미만으로 입력시
+				alert('세 글자 이상 입력하시기 바랍니다.');
+				$('#inputReplyCon').val('');
+				return;		
+			} else{
+				// 나머지 경우에는 ajax를 통한 댓글 입력 실행.
+				// $.ajax({
+
+				// });
+			}
+		});
+
+		// 댓글 좋아요 버튼 클릭 시 관련 처리
+		$('#reply-likes').click(function(e){
+			e.preventDefault();
+
+
+			if(!isLoggedIn()){
+				alert('좋아요를 할 수 없습니다.');
+				$(location).attr('href', '/login');
+				return;
+			}else{
+
+			}
+		});		
+	});
+</script>	
 </body>
 </html>
