@@ -51,6 +51,13 @@
 
 
   </style>
+  <script>
+    $(document).ready(function(){
+      $("#insert_btn").on("click",function(){
+        location.href="/community/content/insert"
+      })
+    })
+  </script>
 </head>
 
 <body>
@@ -73,6 +80,9 @@
       <div id="home_user_bar"> </div>
       <div id="sub_bar"></div>
     </nav>
+    <sec:authorize access="isAuthenticated()">
+    	<sec:authentication property="principal" var="principal"/>
+    </sec:authorize>
   </header>
 
   <div id="side_bar"> 
@@ -81,12 +91,18 @@
 
   <main>
     <div id="main_container" >
+
+      <div id="community_content" class="mt-4 mb-2"></div>
+
+
+      <c:if test="${principal != null}">
+        <div class="w-100 d-flex justify-content-end">
+          <button id="insert_btn" type="button" class="btn btn-primary">글쓰기</button>
+        </div>
+      </c:if>
+      <div id="paging_dv" class="d-flex flex-row justify-content-center align-items-center mb-4"> </div>
     
-    <div id="community_content" class="my-5"></div>
-    
-    <div id="paging_dv" class="d-flex flex-row justify-content-center align-items-center mb-4"> </div>
- 	 
-</div>
+    </div>
   </main>
 
   <footer>

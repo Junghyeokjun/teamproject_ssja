@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.ProductDetailDto;
 import teamproject.ssja.dto.ProductDetailReplyDto;
+import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.mapper.ProductDetailMapper;
 import teamproject.ssja.page.Criteria;
 
@@ -35,5 +36,6 @@ public class ProductDetailServiceImpl implements ProductDetailService {
 		log.info("getListWithPaging()..");
 		return productDetailMapper.getListWithPaging(cri);
 	}
+
 
 }

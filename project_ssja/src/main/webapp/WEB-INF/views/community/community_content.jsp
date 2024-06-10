@@ -11,6 +11,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0"> 
   <title>SSJA</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
@@ -413,8 +416,11 @@
             조회수 : <span>${content.bhit}</span> &nbsp;
             작성일 : <span>${content.bdate}</span>
           </div>
-        </div>        
-        <img src="${content.img_path}" alt="" class="w-75 d-inline-block mb-5 ">
+        </div>  
+        <input type="hidden" value="${content.img_path}">
+        <c:if test='${!content.img_path.equals("/images/board_content/temp.png")}'>
+          <img src="${content.img_path}" alt="" class="w-75 d-inline-block mb-5 ">
+        </c:if>
         <div class="w-75 mb-3">
           ${content.bcontent}
         </div>

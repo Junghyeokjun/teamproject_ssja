@@ -90,4 +90,5 @@ class CommunityServiceImplTest {
 	void selcetCommunityBoardLikedTest() {
 		log.info(communityService.getBoardLiked(new BoardIsLikedDto(11620, 21))+"");
 	}
+
 }
