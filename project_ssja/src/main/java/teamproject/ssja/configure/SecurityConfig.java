@@ -96,7 +96,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
            .userInfoEndpoint()
            .userService(oAuth2UserService)
            .and()
-           .defaultSuccessUrl("/home",true)
+           .defaultSuccessUrl("/home")
            .failureUrl("/login?error=true");
 	       
 	    http.

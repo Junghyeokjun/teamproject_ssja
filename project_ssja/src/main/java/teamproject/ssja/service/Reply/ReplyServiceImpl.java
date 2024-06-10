@@ -7,15 +7,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
+import teamproject.ssja.InfoProvider;
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.BoardIsLikedDto;
 import teamproject.ssja.dto.LikesVO;
 import teamproject.ssja.dto.ReplyIsLikedDto;
 import teamproject.ssja.dto.ReplysDto;
+import teamproject.ssja.dto.login.CustomPrincipal;
+import teamproject.ssja.dto.userinfo.ReviewForm;
 import teamproject.ssja.mapper.BoardMapper;
 import teamproject.ssja.mapper.ReplyMapper;
 import teamproject.ssja.page.Criteria;
@@ -79,6 +84,17 @@ public class ReplyServiceImpl implements ReplyService {
 	@Override
 	public long getTotal(long bno) {
 		return replyMapper.selectReplyCount(bno);
+	}
+
+	@Override
+	public void appleReview(ReviewForm form) {
+
+		Long id = InfoProvider.getM_NO();
+		form.setId(id);
+		replyMapper.applyReview(form);
+		
+
+		
 	}
 
 }

@@ -63,6 +63,12 @@
         ]]>
 	</select>
 	
+	<select id="getCategoryItems" resultType="teamproject.ssja.dto.product.ProductItemDto">
+select a.*, (SELECT AVG(b.b_eval)   FROM board b  WHERE b.pro_no = a.pro_no) AS rating_avg
+ from (select p.*,   ROW_NUMBER() OVER (ORDER BY p.pro_hit DESC) AS rnum 
+			FROM product p where p_c_no between #{categoryNum}*10 and #{categoryNum}*10 + 9) a 
+			where rnum between #{pageNum}*8+1 and #{pageNum}*8+8	
+	</select>
 
 	
 </mapper>

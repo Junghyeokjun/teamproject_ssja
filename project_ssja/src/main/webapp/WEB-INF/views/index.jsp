@@ -91,11 +91,18 @@ justify-content:space-between;
 align-items:center;
 
 }
-#show_more_bestItem{
+#show_more_bestItem, #show_more_categoryItems{
 background-color:white;
 with:100%;
 border:1px solid #ddd;
 height:5em;
+}
+#categoru_items_container{
+margin-top:1em;
+margin-bottom:1em;
+}
+#icon_div:hover{
+cursor:pointer;
 }
 
 
@@ -132,7 +139,7 @@ height:5em;
   <main>
     <div id="main_container" >
     
- 	   <div id="carouselExampleIndicators" class="carousel slide">
+ 	   <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
 				<div class="carousel-indicators">
 					<button type="button" data-bs-target="#carouselExampleIndicators"data-bs-slide-to="0" 
 						class="active" aria-current="true"aria-label="Slide 1"></button>
@@ -168,15 +175,23 @@ height:5em;
     
     
     
+      <div id="icon_container" class="d-flex flex-row justify-content-evenly align-items-center">
+          <div id="icon_div"><img id="icon_img1"src="/images/utilities/icon_fur.png"><div id="icn_txt">가구</div></div>
+          <div id="icon_div"><img id="icon_img2" src="/images/utilities/icon_fab.png">  <div id="icn_txt">패브릭</div></div>
+          <div id="icon_div"><img id="icon_img3" src="/images/utilities/icon_inte.png"> <div id="icn_txt">인테리어</div></div>
+          <div id="icon_div"><img id="icon_img4" src="/images/utilities/icon_cook.png"><div id="icn_txt">주방용품</div></div>
+          <div id="icon_div"><img id="icon_img5" src="/images/utilities/icon_life.png"><div id="icn_txt">생활용품</div></div>
     </div>
     
-      <div id="icon_container" class="d-flex flex-row justify-content-evenly align-items-center">
-          <div id="icon_div"><img id="icon_img"src="/images/utilities/icon_fur.png"><div id="icn_txt">가구</div></div>
-          <div id="icon_div"><img id="icon_img" src="/images/utilities/icon_fab.png">  <div id="icn_txt">패브릭</div></div>
-          <div id="icon_div"><img id="icon_img" src="/images/utilities/icon_inte.png"> <div id="icn_txt">인테리어</div></div>
-          <div id="icon_div"><img id="icon_img" src="/images/utilities/icon_cook.png"><div id="icn_txt">주방용품</div></div>
-          <div id="icon_div"><img id="icon_img" src="/images/utilities/icon_life.png"><div id="icn_txt">생활용품</div></div>
+    <div id="categoru_items_container">
+    
     </div>
+    <div>
+    <button id="show_more_categoryItems" class="w-100 my-3">더보기</button>
+    </div>
+    
+    </div>
+    
 </div>
   </main>
 
@@ -193,6 +208,9 @@ height:5em;
 
 </body>
 <script src="/js/mainpage/mainpage.js" >
+</script>
+<script>
+
 </script>
 
 

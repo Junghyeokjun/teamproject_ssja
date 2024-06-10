@@ -12,6 +12,7 @@ public interface ProductService {
 	List<ProductItemDto> getProductList(ProductCondition condition);
 	ProductCondition getTotalItemsCount(ProductCondition condition);
 	List<ProductItemDto> bestItemsList(int page);
+	List<ProductItemDto> getCategoryItems(int categoryNum, int pageNum);
 	
 	List<CartItemsDTO >getYourItemCrat();
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ch.qos.logback.core.pattern.util.RegularEscapeUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.product.ProductCondition;
@@ -43,6 +44,16 @@ public class ProductReseachRestController {
 		List<ProductItemDto> bestItems = productService.bestItemsList(page);
 		
 		return ResponseEntity.ok().body(bestItems);
+	}
+	
+	@GetMapping("/category-mainpage")
+	ResponseEntity<List<ProductItemDto>> mainPageCategoryItems(@RequestParam("categoryNum") int categoryNum,
+																@RequestParam("pageNum") int pageNum){
+		
+		log.info("category {}, pageNum {}", categoryNum, pageNum);
+		List<ProductItemDto> list = productService.getCategoryItems(categoryNum, pageNum);
+		log.info("list = {}", list);
+		return ResponseEntity.ok(list);
 	}
 
 	

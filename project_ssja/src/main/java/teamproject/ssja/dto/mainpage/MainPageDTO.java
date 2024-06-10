@@ -11,10 +11,12 @@ public class MainPageDTO {
 
 	private List<EventInfoDTO> eventList;
 	private List<ProductItemDto> bestList;
+	private List<ProductItemDto> categoryItemList;
 	
-	public MainPageDTO(List<EventInfoDTO> eventList, List<ProductItemDto> bestList) {
+	public MainPageDTO(List<EventInfoDTO> eventList, List<ProductItemDto> bestList, List<ProductItemDto> categoryItemList) {
 		this.eventList = eventList;
 		this.bestList = bestList;
+		this.categoryItemList = categoryItemList;
 	}
 	
 	

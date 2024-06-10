@@ -220,7 +220,45 @@ padding:15px;
 text-align:center;
 border:none;
 }
-
+#totalInfo_container{
+display:none;
+z-index:999;
+position:absolute;
+top:50%-300px;
+left:50%-400px;
+}
+#paging_modal_dv > button{
+border:none;
+background:white;
+}
+#span_porductName, #longpronamespan{
+ white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    width: 50%; 
+}
+#coupon_select_dv > button{
+width:20%;
+height:auto;
+}
+#star_rating .star {
+  width: 25px; 
+  height: 25px; 
+  margin-right: 10px;
+  display: inline-block; 
+  background: url('https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FE2bww%2FbtsviSSBz4Q%2F5UYnwSWgTlFt6CEFZ1L3Q0%2Fimg.png') no-repeat; 
+  background-size: 100%; 
+  box-sizing: border-box; 
+}
+#star_rating .star.on {
+  width: 25px; 
+  height: 25px;
+  margin-right: 10px;
+  display: inline-block; 
+  background: url('https://blog.kakaocdn.net/dn/b2d6gV/btsvbDoal87/XH5b17uLeEJcBP3RV3FyDk/img.png') no-repeat;
+  background-size: 100%; 
+  box-sizing: border-box; 
+}
 </style>
 </head>
 
@@ -273,10 +311,15 @@ border:none;
 		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc" id="mange_yoursell">판매 관리</button>
 		        </c:if>
 		        
+			 <c:if test="${yourAuth == 'ROLE_ADMIN'}"><!--  판매자 권한일 경우 대체 되는 버튼 -->
+		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc" id="mange_yoursell">판매 관리</button>
+		        </c:if>
+		        
 		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc" id="go_qna">문의 및 요청</button>
 		    </div>
 		</div>
   <main>
+  
     <div id="main_container" class="d-flex flex-row align-items-center justify-content-center" >
       <div id="content_dv" >
         <div id="MyPage_content_name" > </div>
@@ -286,9 +329,11 @@ border:none;
         </div>
       </div>
     </div>
+    
+     
 
   </main>
-
+  
   <footer>
     <div id="first_footer" class="p-3"></div>
     <div id="second_footer"></div>
@@ -301,13 +346,36 @@ border:none;
   
 </sec:authorize>
 
+   <div class="modal fade" id="totalInfoModal" tabindex="-1" aria-labelledby="totalInfoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width:800px; height:700px; background-color:white;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="totalInfoModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                  <div class="modal-body" id="totalInfoContent">
+					<p>Modal body text goes here.</p>
+						</div>
+                <div class="modal-footer d-flex flex-row justify-content-center" id="totlaInfoTooter">
+         
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 
 <script src="/js/myPage/userMyPage.js"></script>
 <script src="/js/myPage/userOrders.js"></script>
 <script src="/js/myPage/applyVendor.js"></script>
 <script>
-        myPageUserInfo();
+let path = window.location.pathname;
+ if (path === '/myPage/orderInfo') {
+    myPageOrderInfo(1);
+}else{
+	
+    myPageUserInfo();
+}
 
 </script>
 

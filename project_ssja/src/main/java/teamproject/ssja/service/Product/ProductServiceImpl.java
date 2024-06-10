@@ -42,4 +42,10 @@ public class ProductServiceImpl implements ProductService{
 		return productMapper.getYourItemCrat(id);
 		
 	}
+
+	@Override
+	public List<ProductItemDto> getCategoryItems(int categoryNum, int pageNum) {
+		
+		return productMapper.getCategoryItems(categoryNum, pageNum);
+	}
 }
