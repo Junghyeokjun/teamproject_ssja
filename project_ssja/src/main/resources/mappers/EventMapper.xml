@@ -5,7 +5,7 @@
 
 	<select id="getEventList" resultType="teamproject.ssja.dto.mainpage.EventInfoDTO">
     	<![CDATA[
-		select  *  from event where ev_duedate > sysdate
+		select * from event where ev_duedate > sysdate
         ]]>
 	</select>
 	

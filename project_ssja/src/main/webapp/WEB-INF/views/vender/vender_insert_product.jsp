@@ -240,10 +240,26 @@
 </head>
 
 <body>
+	<c:choose>
+		<!-- 로그인되지 않은 경우 -->
+		<c:when test="${principal == null}">
+			<script type="text/javascript">
+				alert("로그인한 상태에서만 접근하실 수 있습니다.");
+			 	window.location.href = "/login";			
+			</script>
+		</c:when>
+		<!-- 권한이 판매자가 아닌 경우 -->
+		<c:when test="${principal.auth != 'ROLE_VENDOR'}">
+			<script>
+				alert("접근할 수 없습니다.");
+				window.location.href = "/";
+			</script>
+		</c:when>
+	</c:choose>
   <header class="fixed-top">
     <div class="d-flex justify-content-between">   
         <div class="mx-5 my-2">
-        	<h1 class="h1">&lt;때래땡땡&gt; 판매자</h1> 
+        	<h1 class="h1">&lt;<sec:authentication property="principal.userInfo.m_Id"/>&gt; 판매자</h1> 
         </div>        
         <div class="mx-5 my-2 d-flex align-items-end">
         	<a href="/">로그아웃</a>
@@ -275,11 +291,9 @@
 				   <label class="mx-2 m-auto input-group-text" >1차 분류</label>
 				   <!-- 상품 카테고리를 해당 페이지에 뿌려줘야 함 : 한 자리 수 -->
 				   <select id="mainCategory" class="form-select w-25 mx-2" >
-				   	<option value="1">가구</option>
-				   	<option value="2">패브릭</option>
-				   	<option value="3">인테리어</option>
-				   	<option value="4">주방용품</option>
-				   	<option value="5">생활용품</option>
+					   <c:forEach var="proCate" items="${pcMains}">
+					   	<option value="1">가구</option>				  
+					   </c:forEach>				   	
 				   </select>
 				</div>
 				<div id="ProductCategory2" class="p-2 input-group w-100">
@@ -307,7 +321,7 @@
 				<div class="input-group mt-2 p-2 w-100 border-secondary d-flex align-items-center border-top">
 				    <label class="mx-2 m-auto input-group-text">배너 이미지</label>
  					<div class="file-container_ form-control custom-primary m-2 d-flex align-items-center">
-			            <input id="bannerFileText" class="file-upload-name_" placeholder="파일을 선택하세요" disabled="disabled">			
+			            <input id="bannerFileText" class="file-upload-name_" placeholder="파일을 선택하세요" disabled="disabled"> 			
 			            <label for="bannerFile" >올리기</label> 
 			            <input type="file" id="bannerFile" class="upload-image_" name=""> 
 			         </div>
@@ -316,7 +330,7 @@
 				<div class="input-group mt-2 p-2 w-100 border-secondary d-flex align-items-center border-top">					
 				    <label class="mx-2 m-auto input-group-text">설명 이미지</label>
  					<div class="file-container_ form-control custom-primary m-2 d-flex align-items-center">
-			            <input id="explainFileText" class="file-upload-name_" placeholder="파일을 선택하세요" disabled="disabled">			
+			            <input id="explainFileText" class="file-upload-name_" placeholder="파일을 선택하세요" disabled="disabled"> 			
 			            <label for="explainFile" >올리기</label> 
 			            <input type="file" id="explainFile" class="upload-images_" name="" >			        
 			        </div>			        
@@ -378,13 +392,12 @@
 		let explainFile = $('#explainFile');
 		let uploadedExplainFiles = $('#uploadedExplainFiles');
 		
-		
-		
-		
 		// 배너 이미지 경로 가져오기
 		bannerFile.change(function(e){
 		    let filename = "";
 		    let files = e.target.files;
+		    console.log("bannerFiles : " + files);
+
 		    let bannerDeleteButton = $('<button></button>').addClass('btn font-weight-bold').text('X').attr('id','BnDelBtn');
 		    
 		    if (files.length > 0) {
@@ -413,7 +426,8 @@
 		explainFile.change(function(e){
 		    let filename;
 		    let files = e.target.files;
-		   
+
+			console.log("explainFiles : " + files);
 		    // 파일을 선택한 경우
 		    if (files.length > 0) {
 		        filename = files[0].name;

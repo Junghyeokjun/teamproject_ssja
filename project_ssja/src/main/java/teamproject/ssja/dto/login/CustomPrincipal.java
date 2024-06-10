@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import lombok.Getter;
 import lombok.Setter;
 import teamproject.ssja.dto.userinfo.UserInfoDTO;
+
 @Getter
 @Setter
 public class CustomPrincipal implements UserDetails, OAuth2User {

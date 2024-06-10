@@ -261,6 +261,24 @@
 </head>
 
 <body>
+	<sec:authorize access="isAuthenticated()">
+    	<sec:authentication property="principal" var="principal"/>
+    	<c:choose>		
+			<c:when test="${principal.auth != 'ROLE_VENDOR'}">
+			<!-- 권한이 판매자가 아닌 경우 -->
+				<script>
+					alert("접근할 수 없습니다.");
+					window.location.href = "/";
+				</script>
+			</c:when>
+		</c:choose>
+    </sec:authorize>
+	<sec:authorize access="isAnonymous()">
+	    <script type="text/javascript">
+			alert("로그인한 상태에서만 접근하실 수 있습니다.");
+		 	window.location.href = "/login";			
+		</script>
+	</sec:authorize>	
 	<header>
 		<div id="title_bar" class="fixed-top">
 			<div class="py-2 px-1 d-flex justify-content-between" id="top-bar">
@@ -272,7 +290,13 @@
 						로그인 시 venderDto에 담기는 vender.vbizname 또한 가져오기						
 						그냥 조인을 쓴다면 venderDto가 아니라 조인한 결과를 담는 다른 Dto가 필요할 것이다.
 					 -->
-        			<h1 class="h1 venderName"> &lt;땡땡땡땡&gt;</h1>        			
+					 
+        			<h1 class="h1 venderName"> 
+        				&lt;
+        				<sec:authorize access="isAuthenticated()">
+        					<sec:authentication property="principal.userInfo.m_Id"/>
+        				</sec:authorize>
+        				&gt;</h1>        			
         		</div>
 				<a id="user_link"><img id="login_img"></a>
 			</div>
@@ -305,11 +329,9 @@
 				   <label class="mx-2 m-auto input-group-text" >1차 분류</label>
 				   <!-- 상품 카테고리를 해당 페이지에 뿌려줘야 함 : 한 자리 수 -->
 				   <select id="mainCategory" class="form-select w-25 mx-2" >
-				   	<option value="1">가구</option>
-				   	<option value="2">패브릭</option>
-				   	<option value="3">인테리어</option>
-				   	<option value="4">주방용품</option>
-				   	<option value="5">생활용품</option>
+				   	<c:forEach var="proCate" items="${pcMains}">
+					 	<option value="${proCate.pcNum}">${proCate.pcSubName}</option>				  
+					</c:forEach>	
 				   </select>
 				</div>
 				<div id="ProductCategory2" class="p-2 input-group w-100">

@@ -240,10 +240,22 @@
 </head>
 
 <body>
+	<c:choose>
+		<!-- 로그인되지 않은 경우 -->
+		<c:when test="${principal == null}">
+			<script type="text/javascript">
+			 	window.location.href = ""			
+			</script>
+		</c:when>
+		<c:when test="">
+		
+		</c:when>
+	</c:choose>
+	<c:if test=""></c:if>
   <header class="fixed-top">
     <div class="d-flex justify-content-between">   
         <div class="mx-5 my-2">
-        	<h1 class="h1">&lt;때래땡땡&gt; 판매자</h1> 
+        	<h1 class="h1">&lt;<sec:authentication property="	" />&gt; 판매자</h1> 
         </div>        
         <div class="mx-5 my-2 d-flex align-items-end">
         	<a href="/">로그아웃</a>

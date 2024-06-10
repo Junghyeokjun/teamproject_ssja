@@ -1,25 +1,16 @@
 package teamproject.ssja.controller;
 
-import java.lang.reflect.Member;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.extern.slf4j.Slf4j;
-import teamproject.ssja.dto.BoardDto;
-import teamproject.ssja.dto.ProductDto;
-import teamproject.ssja.page.Criteria;
-import teamproject.ssja.page.PageVO;
-import teamproject.ssja.service.Board.BoardService;
+import teamproject.ssja.dto.login.CustomPrincipal;
+import teamproject.ssja.service.Product.ProductCategoryService;
 
 @Slf4j
 @Controller
@@ -27,17 +18,25 @@ import teamproject.ssja.service.Board.BoardService;
 public class VenderController {
 
 	//vender, product를 가져오는 service autowired해야 함
-
+	//상품 카테고리를 가져오는 서비스 
 	@Autowired
+	ProductCategoryService productCategoryService;
 	
+	@GetMapping("")
+	public String venderHome() {
+		return "redirect:/vender/product/list";
+	}
 	
 	@GetMapping("/product/write")
-	public String writeProduct() {
+	public String writeProduct(Model model) {
 		log.info("writeProduct()..");
-		// 
+		// 카테고리
+		model.addAttribute("pcMains", productCategoryService.getPCMain());
 		
 		return "/vender/vender_write_product";
 	}
+	
+	@GetMapping("/product/category")
 	
 	@PostMapping("/product/add")
 	public String addOne() {
