@@ -504,7 +504,9 @@
   <div id="side_bar"></div>
   <main style="background-color: #f7f0e8;">
     <!--결제 페이지부 -->
-    
+     <h1>결제가 정상적으로 이루어졌습니다.</h1>
+    <p>구매 수량: <%= request.getParameter("quantity") %></p>
+    <p>제품 번호: <%= request.getParameter("productNo") %></p>
     <div id="main_container" class="d-flex flex-column " style="min-height:800px;">
       
       <h2 class="mt-3 fw-bold">주문/결제</h2>

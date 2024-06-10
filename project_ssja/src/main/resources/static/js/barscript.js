@@ -133,7 +133,7 @@ $(document).ready(function () {
   });
   $side_container2.on('click', function(e){
       e.stopPropagation();
-      window.location.href = "https://www.naver.com";
+      window.location.href = "/community";
   });
   $side_container3.on('click', function(e){
       e.stopPropagation();

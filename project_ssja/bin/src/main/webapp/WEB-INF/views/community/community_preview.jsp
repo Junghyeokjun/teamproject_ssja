@@ -75,11 +75,29 @@
                 flex-direction: row;
                 justify-content: space-between;
               }
-
+              
               #best_post img{
+                width: 100%; 
+                height: 100%;
+              }
+
+              .best_post{
+                position: relative;
                 width: 23%; 
                 height: 20vh;
               }
+
+              .best_post>span:nth-child(2){
+                position: absolute;
+                bottom: 20px;
+                left: 5px;
+              }
+              .best_post>span:nth-child(3){
+                position: absolute;
+                bottom: 5px;
+                left: 5px;
+              }
+
               #recent_post{
                 position: relative;
                 overflow: hidden;
@@ -90,17 +108,31 @@
                 width: 280%;
                 height: 250px;
               }
+
+              .recent_post>span{
+                position: absolute;
+                bottom: -110px;
+                left: 5px;
+              }
               
-              #recent_post_wrap>img{
+              #recent_post_wrap>span{
+                position: relative;
+                margin-left: 20px;
+              }
+
+              #recent_post_wrap>span>img{
                 width: 8.8vw;
                 min-width: 125px;
                 height: 250px;
-                margin-left: 20px;
               }
-              #recent_post_wrap>img:nth-child(7n){
-                margin-left: 100px;
+              #recent_post_wrap>span>img:hover{
+                cursor: pointer;
+                opacity: 0.7;
               }
-              #recent_post_wrap>img:first-child{
+              #recent_post_wrap > span:nth-child(7n){
+                margin-left: 140px;
+              }
+              #recent_post_wrap>span:first-child{
                 margin-left: 1vw;
               }
               #prev_btn{
@@ -146,12 +178,12 @@
                 #main_container{
                   min-width: 700px;
                 }
-                #recent_post_wrap>img{
+                #recent_post_wrap>span>img{
                   width: 20vw;
                   min-width: 150px;
                 }
 
-                #recent_post_wrap>img:nth-child(7n){
+                #recent_post_wrap>span:nth-child(7n){
                   margin-left: 20px;
                 }
                 #prev_btn,#next_btn{
@@ -164,26 +196,100 @@
                   flex-wrap: wrap;
                 }
 
-                #best_post img{
+                #best_post>span{
                   width: 49%; 
                   height: 25vh;
                   margin-bottom: 2%;
                 }
-                #recent_post_wrap>img:nth-child(4n){
-                  margin-right: 0px;
-                }
-                #recent_post_wrap>img{
-                  width: 30vw;
-                  min-width: 0px;
+                #recent_post_wrap>span{
                   margin-left: 20px;
                   margin-right: 0px;
+                }
 
+                #recent_post_wrap>span:nth-child(4n){
+                  margin-right: 0px;
+                }
+                #recent_post_wrap>span>img{
+                  width: 30vw;
+                  min-width: 0px;
                 }
               }
             </style>
 
             <script>
               $(document).ready(function(){
+
+                let best_post=$("#best_post");
+                let recent_post_wrap=$("#recent_post_wrap");
+                
+                //베스트 게시물을 추가하는 부분
+                $.ajax({
+                  type : "GET",
+                  async : false,
+                  dataType:"json",
+                  url : "/community/bestPost",
+                  data :{
+                    pageNum : 1,
+                    amount : 11
+                  },    
+                  success : function(data) {
+                    var temp_node;
+                    var temp_child;
+                    data.forEach(function(e, idx){
+                      temp_node=$('<span class="best_post"></span>');
+                      temp_child=$('<img  src="'+e.img_path+'" alt=""></img>')
+                      temp_child.on("click",function(){
+                        window.location="/community/content/"+e.bno;
+                      })
+
+                      temp_node.append(temp_child);
+                      temp_node.append('<span class="fs-4 fw-bold">'+e.btitle +'</span>');
+                      temp_node.append('<span>'+e.bwriter +'</span>');
+                      best_post.append(temp_node);
+                    })
+                  },    
+                  error : function(request, status, error) {
+                    alert(error);
+                  }
+                })
+
+                //최신게시물 추가하는 부분
+                $.ajax({
+                  type : "GET",
+                  async : false,
+                  dataType:"json",
+                  url : "/community/post",
+                  data :{
+                    pageNum : 1,
+                    amount : 11
+                  },    
+                  success : function(data) {
+                    var temp_node;
+                    var temp_child;
+                    data.postList.forEach(function(e, idx){
+                      temp_node=$('<span class="recent_post"></span>');
+                      temp_child=$('<img  src="'+e.img_path+'" alt=""></img>')
+                      temp_child.on("click",function(){
+                        window.location="/community/content/"+e.bno;
+                      })
+
+                      temp_node.append(temp_child);
+                      temp_node.append('<span>'+e.bwriter +'</span>');
+                      recent_post_wrap.append(temp_node);
+                    })
+
+                    temp_node=$('<a id="img_link" href="${pageContext.request.contextPath}/community/main"></a>');
+                    temp_node.append($('<img src="/images/utilities/arrow1.png" alt="">'));
+                    temp_node.append($('<span>더보기</span>'));
+                    recent_post_wrap.append(temp_node);
+                    
+                  },    
+                  error : function(request, status, error) {
+                    alert(error);
+                  }
+                })
+
+                //최신게시물 화살표 이벤트
                 $(document).on("click","#next_btn",function(){
                   $("#recent_post_wrap").css("animation","next_full_post 0.3s ease-in-out forwards");
                   $("#prev_btn").css("display","inline");
@@ -228,46 +334,50 @@
               <div id="side_links" class="w-100"></div>
             </div>
 
-            <main style="height: 600px;">
-              <div id="main_container" class="vh-100 mt-4 px-2">
+            <main style="min-height: 650px;">
+              <div id="main_container" class="mt-4 px-2">
                 <div class="d-flex justify-content-between  mb-1">
                   <span class="fs-3">베스트 게시물</span>
-                  <span style="line-height: 40px;">더보기</span>
                 </div>
                 <div id="best_post" class="mb-4">
                   <!-- ajax로 데이터추가 -->
-                  <img src="/images/product_banner/product_banner_1.jpg" alt="">
-                  <img src="/images/product_banner/product_banner_2.jpg" alt="">
-                  <img src="/images/product_banner/product_banner_3.jpg" alt="">
-                  <img src="/images/product_banner/product_banner_2.jpg" alt="">
+                  <!-- <span class="best_post">                  
+                    <img src="/images/product_banner/product_banner_1.jpg" alt="">
+                    <span class="fs-4 fw-bold"> title</span>
+                    <span>name</span>
+                  </span>
+                  <span class="best_post">                  
+                    <img src="/images/product_banner/product_banner_2.jpg" alt="">
+                  </span>
+                  <span class="best_post">                  
+                    <img src="/images/product_banner/product_banner_3.jpg" alt="">
+                  </span>
+                  <span class="best_post">                  
+                    <img src="/images/product_banner/product_banner_2.jpg" alt="">
+                  </span> -->
+
                   
                 </div>
                 <div class="d-flex justify-content-between">
                   <span class="fs-3">최신 게시물</span>
-                  <span style="line-height: 40px;">더보기</span>
+                  <span style="line-height: 40px;"><a href="${pageContext.request.contextPath}/community/main" style="text-decoration: none; color: black;">더보기</a></span>
                 </div>
-                <div id="recent_post">
+                <div id="recent_post" class="mb-3">
                   <button id="prev_btn" type="button">
                     <img src="/images/utilities/arrow1.png" alt="">
                   </button>
                   <div id="recent_post_wrap">
                     <!-- ajax로 데이터추가 -->
-                    <img src="/images/product_banner/product_banner_1.jpg" alt="">
-                    <img src="/images/product_banner/product_banner_2.jpg" alt="">
-                    <img src="/images/product_banner/product_banner_3.jpg" alt="">
-                    <img src="/images/product_banner/product_banner_1.jpg" alt="">
-                    <img src="/images/product_banner/product_banner_2.jpg" alt="">
-                    <img src="/images/product_banner/product_banner_3.jpg" alt="">
-                    <img src="/images/product_banner/product_banner_1.jpg" alt="">
-                    <img src="/images/product_banner/product_banner_2.jpg" alt="">
-                    <img src="/images/product_banner/product_banner_3.jpg" alt="">
-                    <img src="/images/product_banner/product_banner_1.jpg" alt="">
-                    <img src="/images/product_banner/product_banner_2.jpg" alt="">
+                    <!-- <span class="recent_post">
+                      <img src="/images/product_banner/product_banner_1.jpg" alt="">
+                      <span>sss</span>
+                    </span> -->
+                    
                     <!-- ajax로 데이터 추가후 추가 -->
-                    <a id="img_link" href=""> 
+                    <!-- <a id="img_link" href="${pageContext.request.contextPath}/community/main"> 
                       <img src="/images/utilities/arrow1.png" alt="">
                       <span>더보기</span>
-                    </a>
+                    </a> -->
 
                   </div>
                   <button id="next_btn" type="button">

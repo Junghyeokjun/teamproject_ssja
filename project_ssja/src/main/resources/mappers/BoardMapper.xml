@@ -32,10 +32,18 @@
         ]]>
 	</select>
 	<insert id="insertBoard" parameterType="BoardDto">
-	    <![CDATA[
+
         	INSERT INTO board (B_NO, M_NO, B_C_NO, B_WRITER, B_TITLE, B_CONTENT, B_DATE, B_LIKE, B_HIT, B_EVAL, PRO_NO)
         	VALUES (B_SEQ.NEXTVAL, #{bmno}, #{bbcno}, #{bwriter}, #{btitle}, #{bcontent}, sysdate, #{blike}, #{bhit}, #{beval}, #{prono})
-        ]]>
+	        <selectKey keyProperty="bno" resultType="int" order="AFTER">
+				select B_NO
+				from (SELECT B_NO ,rowNum
+				FROM board
+				WHERE M_NO=#{bmno}
+				order by B_NO desc)
+				where rownum=1
+			</selectKey>
+
 	</insert>
 	<update id="updateBoard" parameterType="BoardDto">
 		<![CDATA[
@@ -172,10 +180,31 @@
         ]]>
 	</select>
 
+	<!-- 게시글 이미지 체크  -->
+	<select id="selectBoardImg" resultType="int">
+		select count(*) from board_imgs WHERE b_no=#{bno}
+	</select>
+	
+	<!-- 게시글 이미지경로 추가  -->
+	<insert id="insertBoardImg" parameterType="BoardImgsDto">
+		insert into board_imgs VALUES(B_IMG_SEQ.nextval,#{B_NO},#{B_IMG_PATH})
+	</insert>
+	
+	<!-- 게시글 이미지업데이트  -->
+	<update id="updateBoardImg" parameterType="BoardImgsDto">
+		UPDATE board_imgs SET B_IMG_PATH=#{B_IMG_PATH} WHERE b_no=#{B_NO}
+	</update>
+	
+	<!-- 게시글 이미지 경로 삭제  -->
+	<delete id="deleteBoardImg">
+		DELETE FROM board_imgs WHERE b_no = #{B_NO}
+	</delete>
+	
 	<resultMap type="teamproject.ssja.dto.BoardCategoryDto" id="BoardCategoryDtoMap">
 		<id property="bcno" column="b_c_no"/>
 		<result property="bcname" column="b_c_name"/>
 	</resultMap>
+	
 
 	<!-- 게시글 맵 -->
 	<resultMap type="teamproject.ssja.dto.BoardDto" id="BoardDtoMap">

@@ -4,6 +4,7 @@ import java.util.List;
 
 import teamproject.ssja.dto.ProductDetailDto;
 import teamproject.ssja.dto.ProductDetailReplyDto;
+import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.page.Criteria;
 
 public interface ProductDetailService {

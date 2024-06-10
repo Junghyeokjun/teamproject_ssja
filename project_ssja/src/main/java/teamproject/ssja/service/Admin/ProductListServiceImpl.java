@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.MembersDto;
 import teamproject.ssja.dto.ProductDto;
+import teamproject.ssja.dto.ProductsSearchDto;
 import teamproject.ssja.mapper.AdminPageMapper;
 import teamproject.ssja.page.Criteria;
 
@@ -26,5 +27,12 @@ public class ProductListServiceImpl implements ProductListService {
 	public List<ProductDto> getProductListWithPaging(Criteria cri) {
 		log.info("getProductListWithPaging()..");
 		return adminPageMapper.getProductListWithPaging(cri);
+	}
+
+	@Override
+	public List<ProductsSearchDto> getProductsSearchList(String type, String keyword) {
+		log.info("getProductsSearchList()..");
+
+		return adminPageMapper.getProductsSearchList(type,keyword);
 	}
 }

@@ -2,6 +2,8 @@ package teamproject.ssja.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.io.File;
+
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.BoardCategoryDto;
 import teamproject.ssja.dto.BoardDto;
+import teamproject.ssja.dto.BoardImgsDto;
 import teamproject.ssja.dto.community.CommunityBoardDto;
 import teamproject.ssja.page.Criteria;
 
@@ -166,4 +169,24 @@ class BoardMapperTest {
 			log.info("communitydto : " + boardMapper.selectCommunityContent(600));
 	
 	}
+	// 보드 이미지 체크 테스트
+	
+	@Disabled
+	@Test
+	void selectBoardImgTest() {
+		log.info(boardMapper.selectBoardImg(11614)+"");
+	}
+	// 보드 이미지 체크 테스트
+	
+	@Disabled
+	@Test
+	void updateBoardImgTest() {
+		boardMapper.updateBoardImg(new BoardImgsDto(0, 11614, "/images/board_content/temp.png"));
+	}
+	
+//	@Test
+//	void temp() {
+//		File file=new File("C:/Users/601-5/git/temaproject_ssja/project_ssja/src/main/resources/static/images/board_content/board_img_11614.png");
+//		System.out.println(file.exists());
+//	}
 }

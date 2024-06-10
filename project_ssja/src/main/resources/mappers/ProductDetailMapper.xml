@@ -39,6 +39,12 @@
 		WHERE P.PRO_NO = #{PRO_NO}
 	     ]]>
 	</select>
+	
+	<select id="getProduct" resultType="ProductDto">
+	    <![CDATA[		
+	   SELECT * WHERE PRO_NO = #{PRO_NO}
+	     ]]>
+	</select>
 
 	 <resultMap id="ProductDetailReplyMap"  type="ProductDetailReplyDto">
 		<id property="PRO_NO" column="PRO_NO" />

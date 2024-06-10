@@ -19,10 +19,10 @@
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-	crossorigin="anonymous">
-</script>
+	crossorigin="anonymous"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src='https://code.jquery.com/jquery-3.3.1.min.js'></script>
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <meta name="_csrf" content="${_csrf.token}" />
@@ -32,14 +32,13 @@
 <link href="/css/footerstyle.css?after" rel="stylesheet">
 <link href="/css/barstyle.css?after" rel="stylesheet">
 <link href="/css/board.css?after" rel="stylesheet">
-
 <link rel="stylesheet"
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
 <style>
 @font-face {
 	font-family: 'fonts';
 	src: url("https://webfontworld.github.io/NanumSquare/NanumSquare.css")
-		fotmat('font1');
+		format('font1');
 }
 
 body {
@@ -56,10 +55,7 @@ body {
 	background-color: white;
 	padding: 20px;
 }
-/* #content_dv {
-    width: 500px;
-    margin: 2em;
-} */
+
 #select_MyPage {
 	z-index: 900;
 	position: fixed;
@@ -99,7 +95,8 @@ body {
 				style="border: 1px solid #cccccc">회원목록</button>
 			<button class="MyPage_btn w-100" id="adminPage_productsInfo_Select"
 				style="border: 1px solid #cccccc">상품목록</button>
-			<button class="MyPage_btn w-100" style="border: 1px solid #cccccc">주문목록</button>
+			<button class="MyPage_btn w-100" id="adminPage_purchasesInfo_Select"
+				style="border: 1px solid #cccccc">주문목록</button>
 			<button class="MyPage_btn w-100" style="border: 1px solid #cccccc">쿠폰관리</button>
 			<button class="MyPage_btn w-100" style="border: 1px solid #cccccc">게시판관리</button>
 			<button class="MyPage_btn w-100" style="border: 1px solid #cccccc">이벤트관리</button>
@@ -110,9 +107,9 @@ body {
 	<main>
 		<div id="main_container"
 			class="d-flex flex-row align-items-center justify-content-center">
-			<div id="content_dv_membersInfo" >
+			<div id="content_dv_membersInfo">
 				<h2>회원목록</h2>
-				<table class="table" style="text-align: center;">
+				<table class="table" id="memberstable" style="text-align: center;">
 					<thead class="table-dark">
 						<tr>
 							<td>회원번호</td>
@@ -130,21 +127,32 @@ body {
 					<tbody>
 						<c:forEach var="member" items="${members}">
 							<tr>
-								<td>${member.getM_NO()}</td>
-								<td>${member.getM_ID()}</td>
-								<td>${member.getM_NAME()}</td>
-								<td>${member.getM_ADDRESS1()}&nbsp;${member.getM_ADDRESS2()}&nbsp;${member.getM_ZIPCODE()}</td>
-								<td>${member.getM_BIRTH()}</td>
-								<td>${member.getM_GRADE()}</td>
-								<td>${member.getM_EMAIL()}</td>
-								<td>${member.getM_PHONE()}</td>
-								<td>${member.getM_POINT()}</td>
-								<td>${member.getM_NICKNAME()}</td>
+								<td>${member.m_NO}</td>
+								<td>${member.m_ID}</td>
+								<td>${member.m_NAME}</td>
+								<td>${member.m_ADDRESS1}</td>
+								<td>${member.m_BIRTH}</td>
+								<td>${member.m_GRADE}</td>
+								<td>${member.m_EMAIL}</td>
+								<td>${member.m_PHONE}</td>
+								<td>${member.m_POINT}</td>
+								<td>${member.m_NICKNAME}</td>
 							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
-				 <div>
+				<form name="members-search-form" autocomplete="off">
+					<select name="type">
+						<option selected value="">선택</option>
+						<option value="m_name">회원이름</option>
+						<option value="m_id">아이디</option>
+						<option value="m_grade">등급</option>
+					</select>
+					 <input type="text" name="keyword" value=""> <input
+						type="button" onclick="membersSearchList()"
+						class="btn btn-outline-primary mr-2" value="검색">
+				</form>
+				<div id="paging_dv">				
 					<nav aria-label="Page navigation example">
 						<ul class="pagination ch-col justify-content-center">
 							<c:if test="${memberpageMaker.prev}">
@@ -164,7 +172,8 @@ body {
 									</c:otherwise>
 								</c:choose>
 							</c:forEach>
-							<c:if test="${memberpageMaker.next && memberpageMaker.endPage > 0}">
+							<c:if
+								test="${memberpageMaker.next && memberpageMaker.endPage > 0}">
 								<li class="page-item"><a class="page-link ch-col"
 									href="${pageContext.request.contextPath}/adminPage/membersList${memberpageMaker.makeQuery(pageMaker.endPage+1)}">></a></li>
 							</c:if>
@@ -173,24 +182,17 @@ body {
 				</div>
 			</div>
 		</div>
-
-
-
 	</main>
-
 	<footer>
 		<div id="first_footer" class="p-3"></div>
 		<div id="second_footer"></div>
 		<div id="third_footer"></div>
 	</footer>
-
 </body>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     // select_content div 내의 모든 버튼을 가져옵니다.
     var buttons = document.querySelectorAll('#select_content button');
-    
-    document.getElementById('content_dv_membersInfo').style.display = 'block';
     
     // 각 버튼에 클릭 이벤트를 추가합니다.
     buttons.forEach(function(button) {
@@ -206,29 +208,65 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // 클릭한 버튼에 대응하는 콘텐츠 div를 표시합니다.
             if (buttonId === 'adminPage_membersInfo_Select') {
-                document.getElementById('content_dv_membersInfo').style.display = 'block';
+                // 회원목록 버튼이 클릭되면 membersList() 메서드를 호출합니다.
+                membersList();
             } else if (buttonId === 'adminPage_productsInfo_Select') {
                 // 상품목록 버튼이 클릭되면 productsList() 메서드를 호출합니다.
                 productsList();
+            } else if (buttonId === 'adminPage_purchasesInfo_Select') {
+                // 상품목록 버튼이 클릭되면 ordersList() 메서드를 호출합니다.
+                purchasesList();
             }
             // 필요한 경우 다른 버튼에 대한 조건을 추가합니다.
         });
     });
-    
- // membersList() 메서드
+
+    // membersList() 메서드
     function membersList() {
         // membersList 페이지로 이동합니다.
         window.location.href = '${pageContext.request.contextPath}/adminPage/membersList';
     }
+
     // productsList() 메서드
     function productsList() {
         // productsList 페이지로 이동합니다.
         window.location.href = '${pageContext.request.contextPath}/adminPage/productsList';
     }
+    
+    // ordersList() 메서드
+	function purchasesList() {
+		// ordersList 페이지로 이동합니다.
+		window.location.href = '${pageContext.request.contextPath}/adminPage/purchasesList';
+	}
 });
-
+function membersSearchList() {
+    $.ajax({
+        type: 'GET',
+        url: "/adminPage/membersSearchList",
+        data: $("form[name=members-search-form]").serialize(),
+        success: function(result) {
+			console.log(result);
+            $('#memberstable > tbody').empty();
+            if (result.length >= 1) {
+            	$("#paging_dv").empty();
+                result.forEach(function(member) {
+                    var str = '<tr>';
+                    str += "<td>" + member.m_NO + "</td>";
+                    str += "<td>" + member.m_ID + "</td>";
+                    str += "<td>" + member.m_NAME + "</td>";
+                    str += "<td>" + member.m_ADDRESS1 + "</td>";
+                    str += "<td>" + member.m_BIRTH + "</td>";
+                    str += "<td>" + member.m_GRADE + "</td>";
+                    str += "<td>" + member.m_EMAIL + "</td>";
+                    str += "<td>" + member.m_PHONE + "</td>";
+                    str += "<td>" + member.m_POINT + "</td>";
+                    str += "<td>" + member.m_NICKNAME + "</td>";	
+                    str += "</tr>";
+                    $('#memberstable > tbody').append(str);
+                });
+            }
+        }
+    });
+}
 </script>
-
-
-
 </html>
