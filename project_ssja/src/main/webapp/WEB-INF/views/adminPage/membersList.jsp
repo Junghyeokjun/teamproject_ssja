@@ -27,7 +27,7 @@
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <meta name="_csrf" content="${_csrf.token}" />
 <meta name="_csrf_header" content="${_csrf.headerName}" />
-<script src="/js/barscript.js"></script>
+<script src="/js/barscript_admin.js"></script>
 <script src="/js/footer.js"></script>
 <link href="/css/footerstyle.css?after" rel="stylesheet">
 <link href="/css/barstyle.css?after" rel="stylesheet">
@@ -69,26 +69,87 @@ body {
 	padding: 2em;
 	height: auto;
 }
+
+#icon_div  img {
+	width: 40%;
+	text-align: center;
+}
+
+#icon_div {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+#icon_container {
+	padding: 1.5em;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+#icn_txt {
+	text-align: center;
+}
+
+#event_banners {
+	width: 100% auto;
+	height: 30em;
+}
+
+#title_best_conner  button {
+	width: 3em;
+	background-color: white;
+	border: none;
+	font-size: 2.5em;
+	color: #aaa;
+}
+
+#title_best_conner  button:hover {
+	color: #333;
+}
+
+#title_best_conner {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+#show_more_bestItem {
+	background-color: white;
+	with: 100%;
+	border: 1px solid #ddd;
+	height: 5em;
+}
 </style>
 </head>
 <body>
 	<header>
 		<div id="title_bar" class=" fixed-top">
 			<div class="py-2 px-1" id="top-bar">
+
+				 <button type="toggle-button" class="top_btn" id="top_btn"></button>
 				<a id="logo_toHome" href=""><img id="logo_img"
 					src="/images/utilities/logoSSJA.png"></a>
-				<form action="http://www.naver.com" id=searchForm method="get">
-				</form>
+				<!-- <form action="/logout" id=searchForm method="post"></form>
 				<button id="search_icon"></button>
-				<a id="user_link"><img id="login_img"></a>
+				<a id="cart_link"><img id="cart_img"></a> 
+				<a id="user_link"><img id="login_img"></a> -->
 			</div>
+
 		</div>
 		<nav id="total_bar">
-			<div id="home_user_bar"></div>
-			<div id="sub_bar"></div>
+			<!-- <div id="home_user_bar"></div>
+			 <div id="sub_bar"></div>  -->
 		</nav>
 	</header>
-	<div id="select_MyPage" class="d-flex flex-column">
+	<div id="side_bar">
+		<div id="side_links" class="w-100"></div>
+	</div>
+	<!--  <div id="select_MyPage" class="d-flex flex-column">
 		<div id="select_mp_top" class="text-center">관리자 메뉴</div>
 		<div id="select_content">
 			<button class="MyPage_btn w-100" id="adminPage_membersInfo_Select"
@@ -102,7 +163,7 @@ body {
 			<button class="MyPage_btn w-100" style="border: 1px solid #cccccc">이벤트관리</button>
 			<button class="MyPage_btn w-100" style="border: 1px solid #cccccc">매출</button>
 		</div>
-	</div>
+	</div>  -->
 
 	<main>
 		<div id="main_container"
@@ -147,12 +208,11 @@ body {
 						<option value="m_name">회원이름</option>
 						<option value="m_id">아이디</option>
 						<option value="m_grade">등급</option>
-					</select>
-					 <input type="text" name="keyword" value=""> <input
+					</select> <input type="text" name="keyword" value=""> <input
 						type="button" onclick="membersSearchList()"
 						class="btn btn-outline-primary mr-2" value="검색">
 				</form>
-				<div id="paging_dv">				
+				<div id="paging_dv">
 					<nav aria-label="Page navigation example">
 						<ul class="pagination ch-col justify-content-center">
 							<c:if test="${memberpageMaker.prev}">
@@ -190,7 +250,7 @@ body {
 	</footer>
 </body>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
+/* document.addEventListener("DOMContentLoaded", function() {
     // select_content div 내의 모든 버튼을 가져옵니다.
     var buttons = document.querySelectorAll('#select_content button');
     
@@ -238,7 +298,8 @@ document.addEventListener("DOMContentLoaded", function() {
 		// ordersList 페이지로 이동합니다.
 		window.location.href = '${pageContext.request.contextPath}/adminPage/purchasesList';
 	}
-});
+}); */
+
 function membersSearchList() {
     $.ajax({
         type: 'GET',
