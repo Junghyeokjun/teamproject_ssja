@@ -6,101 +6,52 @@ let $paging_dv = $("#paging_dv")
 const url = new URL(window.location.href);
 const params = new URLSearchParams(url.search);
 
-let category = params.get('category');
-
-class ProductCondition {
-	  constructor(startPage, endPage, total, prev, next, conditionSelect, conditionName, 
-			  conditionStart, conditionEnd, category, pageNum, amount) {
-		  
-	    this.startPage = startPage;
-	    this.endPage = endPage;
-	    this.total = total;
-	    this.prev = prev;
-	    this.next = next;
-	    this.conditionSelect = conditionSelect;
-	    this.conditionName = conditionName;
-	    this.conditionStart = conditionStart;
-	    this.conditionEnd = conditionEnd;
-	    this.category = category;
-	    this.pageNum = pageNum;
-	    this.amount = amount;
-	  }
-
-	  
-	  setConditionSelect(conditionSelect) {
-	    this.conditionSelect = conditionSelect;
-	  }
-	  
-	  setConditionName(conditionName) {
-	    this.conditionName = conditionName;
-	  }
-	  
-	  setConditionStart(conditionStart) {
-	    this.conditionStart = conditionStart;
-	  }
-	  
-	  setConditionEnd(conditionEnd) {
-	    this.conditionEnd = conditionEnd;
-	  }
-	  setPageNum(pageNum){
-		  this.pageNum = pageNum
-	  }
-	  
-	}
-let product_condition = new ProductCondition(
-		  null, // startPage
-		  null, // endPage
-		  null, // total
-		  null, // prev
-		  null, // next
-		  'pro_sellcount desc', // conditionSelect
-		  null, // conditionName
-		  null, // conditionStart
-		  null, // conditionEnd
-		  category,    // category
-		  1,    // pageNum
-		  40    // amount
-		);
 
 function formatNumber(num) {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-let getListProductToServer = function(condition){
-	
-	
+let keyword= $("#keyword_repoisotry").val() ;
+let start = 0;
+let end = null;
+let pageNum = 1;
+let selectedCondition = '';
+
+let getListProductToServer = function(keyword,start,end,pageNum,selectedCondition){
+	console.log(keyword);
 	 $.ajax({
 			type : "post",
 			beforeSend : function(xhr) {
 				xhr.setRequestHeader(header, token);
 			},
-			data: JSON.stringify(condition),
+			data: JSON.stringify({
+				pageNum:pageNum,
+				keyword:keyword,
+				start:start,
+				end:end,
+				selectedCondition:selectedCondition
+			}),
 			contentType:"application/json",
 			dataType:"json",
-			url : "/product/lists",
+			url : "/search/items",
 			success : function(data){  
 				console.log(data);
+				if(data.itemList.length < 1){
+					let $main_container = $("#main_container");
+					$main_container.empty();
+					$("<div>").addClass('d-flex flex-column align-items-center').append(
+							$("<div>").text("검색어 결과 : " + data.keyword)
+							.css({'padding-left':'2em','margin':'2em','color':'#ccc','font-size':'1.7em','width':'100%'}),
+							$("<img>").attr("src",'/images/utilities/warn_icon.png').css({'width':'30%','height':'auto'}),
+							$("<div>").addClass("my-5").text('해당 검색어 결과가 없습니다.')
+							.css({'color':'#ccc','font-size':'1.5em'})
+							
+					).appendTo($main_container);
+					return;
+				}
 				$product_content.empty();
 				$paging_dv.empty();
 				
-				//상품이 존재하지 않을 경우
-				if(data.itemList.length == 0){
-					console.log('없음');
-					$("#product_search_select").empty();
-					let $logo_img = $("<img>").css({'width':'10em','height': '7em','margin-left':'4em','margin-right':'auto'}).attr('src','/images/utilities/logoSSJA.png');
-					
-					let $noneProductImg = $("<img>").css({'width':'13em','height': '10em','margin-bottom':'2em'})
-					.attr('src','/images/utilities/warn_icon.png');
-					
-					let $notice_none = $("<h2>").css({'text-align':'center','font-weight':'bold'}).text('상품이 존재하지 않습니다.');
-					
-					let $goBack_btn = $("<button>").addClass('btn btn-dark my-3').css({'border':'none','width':'14em','height':'5em'})
-					.text('홈으로 돌아가기').on('click',function(){window.location.href="/home";});
-					
-					$("#product_content").css({'display':'flex','flex-direction':'column','align-items':'center','justify-content':'between'})
-					.append($logo_img, $noneProductImg, $notice_none, $goBack_btn);
-					return;
-					};
 					
 					let $list_content_dv = $("<div>").attr("id","list_content_dv").addClass("d-flex flex-column");
 					let $row;
@@ -269,68 +220,68 @@ function handleClick(selector, resetFunc, conditionSetter) {
     $(selector).on('click', function() {
         resetFunc();
         conditionSetter();
-        getListProductToServer(product_condition);
+        getListProductToServer(keyword,start,end,pageNum, selectedCondition);
         $(window).scrollTop(200);
         $(this).css("font-weight", 'bold').css('font-size', '1.2em');
     });
 }
 handleClick("#select_name_asc", fontBoldResetDiv1, function() {
-    product_condition.setConditionName('pro_name asc');
+	selectedCondition = 'pro_name asc';
 });
 
 handleClick("#select_name_desc", fontBoldResetDiv1, function() {
-    product_condition.setConditionName('pro_name desc');
+	selectedCondition = 'pro_name desc';
 });
 
 handleClick("#select_name_long", fontBoldResetDiv1, function() {
-    product_condition.setConditionName('LENGTH(pro_name) desc');
+	selectedCondition = 'LENGTH(pro_name) desc';
 });
 
 handleClick("#select_name_short", fontBoldResetDiv1, function() {
-    product_condition.setConditionName('LENGTH(pro_name) asc');
+	selectedCondition = 'LENGTH(pro_name) asc';
 });
 handleClick("#select_price_0to3", fontBoldResetDiv2, function() {
-    product_condition.setConditionStart(0);
-    product_condition.setConditionEnd(30000);
+    start = 0;
+    end=30000;
 });
 
 handleClick("#select_price_3to5", fontBoldResetDiv2, function() {
-    product_condition.setConditionStart(30000);
-    product_condition.setConditionEnd(50000);
+    start = 30000;
+    end=50000;
 });
 
 handleClick("#select_price_5to10", fontBoldResetDiv2, function() {
-    product_condition.setConditionStart(50000);
-    product_condition.setConditionEnd(100000);
+	start = 50000;
+    end=100000;
 });
 
 handleClick("#select_price_10to20", fontBoldResetDiv2, function() {
-    product_condition.setConditionStart(100000);
-    product_condition.setConditionEnd(200000);
+	start = 100000;
+    end=200000;
 });
 
 handleClick("#select_hot", fontBoldResetDiv3, function() {
-    product_condition.setConditionSelect('pro_sellcount desc');
+	selectedCondition = 'pro_sellcount desc';
 });
 
 handleClick("#select_rowPrice", fontBoldResetDiv3, function() {
-    product_condition.setConditionSelect('pro_price asc');
+	selectedCondition = 'pro_price asc';
 });
 
 handleClick("#select_rating", fontBoldResetDiv3, function() {
-    product_condition.setConditionSelect('rating_avg desc');
+	selectedCondition = 'rating_avg desc';
 });
 
 handleClick("#select_review", fontBoldResetDiv3, function() {
-    product_condition.setConditionSelect('REVIEW_COUNT desc');
+	selectedCondition = 'REVIEW_COUNT desc';
 });
 
 handleClick("#select_wish", fontBoldResetDiv3, function() {
-    product_condition.setConditionSelect('RATING_AVG desc');
+	selectedCondition = 'pro_wish desc';
 });
 
 handleClick("#select_new", fontBoldResetDiv3, function() {
-    product_condition.setConditionSelect('pro_date desc');
+	selectedCondition = 'pro_date desc';
 });
 
 $('#search_custom_money_btn').on('click',function(){
@@ -339,12 +290,13 @@ $('#search_custom_money_btn').on('click',function(){
 	return;
 	}
 	fontBoldResetDiv2();
-	product_condition.setConditionStart($("#start_price").val());
-	product_condition.setConditionEnd($("#end_price").val());
-	getListProductToServer(product_condition);
+	start = $("#start_price").val();
+	end = $("#end_price").val();
+	getListProductToServer(keyword,start,end,pageNum, selectedCondition);
 	$(window).scrollTop(200);
 })
 
 
-getListProductToServer(product_condition);
+getListProductToServer(keyword,start,end,pageNum, selectedCondition);
+
 

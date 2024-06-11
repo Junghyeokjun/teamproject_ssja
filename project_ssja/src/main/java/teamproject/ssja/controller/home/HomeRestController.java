@@ -6,11 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.mainpage.MainPageDTO;
+import teamproject.ssja.dto.product.ProductItemDto;
+import teamproject.ssja.dto.product.SearchForm;
+import teamproject.ssja.dto.product.SearchResultsWithConditionDTO;
+import teamproject.ssja.service.Product.ProductService;
 import teamproject.ssja.service.mainpage.MainPageService;
 
 @RestController
@@ -19,6 +26,8 @@ public class HomeRestController {
 
 	@Autowired
 	MainPageService mainPageService;
+	@Autowired
+	ProductService productService;
 
 	@GetMapping("/home/event-banners")
 	public ResponseEntity<?> eventTrans() {
@@ -33,6 +42,21 @@ public class HomeRestController {
 		MainPageDTO data = mainPageService.getMainPageData(bestPageNum);
 		
 		return ResponseEntity.ok(data);
+	}
+	
+	@PostMapping("/search/items")
+	public ResponseEntity<SearchResultsWithConditionDTO> searchitems(@RequestBody SearchForm form){
+		try {
+			
+		log.info("fornm {}", form);
+		List<ProductItemDto> list = productService.getSearchItems(form);
+		SearchResultsWithConditionDTO data = new SearchResultsWithConditionDTO(form);
+		data.setItemList(list);
+		 
+		return ResponseEntity.ok(data);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(null);
+		}
 	}
 	
 	
