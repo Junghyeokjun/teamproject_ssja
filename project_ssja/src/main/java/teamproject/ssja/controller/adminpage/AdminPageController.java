@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.extern.slf4j.Slf4j;
-import teamproject.ssja.InfoProvider;
+import teamproject.ssja.dto.MembersSearchDto;
+import teamproject.ssja.dto.ProductsSearchDto;
 import teamproject.ssja.page.Criteria;
 import teamproject.ssja.page.Page10VO;
 import teamproject.ssja.service.Admin.MemberListService;
