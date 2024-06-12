@@ -30,6 +30,10 @@ public class CommunityServiceImpl implements CommunityService {
 	@Autowired
 	ReplyMapper replyMapper;
 
+	//배포시에 경로에 따라 수정
+	final String absolutePath="C:/Users/601-5/git/temaproject_ssja/project_ssja/src/main/resources/static/images/board_content";
+	final String path = "/images/board_content";
+	
 	@Override
 	public List<CommunityBoardDto> getPost(int pageNum, int amount) {
 		return boardMapper.selectCommunityDto(pageNum, amount);
@@ -116,8 +120,6 @@ public class CommunityServiceImpl implements CommunityService {
 
 	@Override
 	public String updateTempBoardImg(long bno, MultipartFile file) {
-		String absolutePath="C:/Users/601-5/git/temaproject_ssja/project_ssja/src/main/resources/static/images/board_content";
-		String path="/images/board_content";
 		String fileName="Temp_"+bno+".png";
 		File targetFile=new File(absolutePath+"/"+fileName);
 		if(file==null || file.isEmpty()) {
@@ -137,9 +139,6 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public boolean updateBoardImg(long bno, MultipartFile file) {
 		boolean result=false;
-		//나중에 배포시 사용환경에 따라 경로 수정
-		String absolutePath="C:/Users/601-5/git/temaproject_ssja/project_ssja/src/main/resources/static/images/board_content";
-		String path="/images/board_content";
 		String fileName="board_img_"+bno+".png";
 		File targetFile=new File(absolutePath+"/"+fileName);
 		File tempFile= new File(absolutePath+"/"+"Temp_"+bno+".png");
@@ -182,7 +181,6 @@ public class CommunityServiceImpl implements CommunityService {
 
 	@Override
 	public boolean deleteTempBoardImg(long randomNum) {
-		String absolutePath="C:/Users/601-5/git/temaproject_ssja/project_ssja/src/main/resources/static/images/board_content";
 		String fileName="Temp_"+randomNum+".png";
 		File file= new File(absolutePath+"/"+fileName);
 		if(file.exists()) {

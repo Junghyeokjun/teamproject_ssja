@@ -70,9 +70,10 @@
       let insert_btn=$("#insert_btn");
       let more_btn=$("#more_btn");
       let like_btn=$("#like_btn");
+      let list_btn=$("#list_btn");
       let delete_btn=$("#delete_btn");
       let update_btn=$("#update_btn");
-
+      
 
       let m_no_val=$("#m_no").val();
       let m_NickName_val=$("#m_NickName").val();
@@ -309,6 +310,12 @@
         }
       })
 
+      //게시글 목록
+      list_btn.on("click",function(){
+        location.href="/community/main"
+      })
+
+
       //게시글 수정
       update_btn.on("click",function(){
         location.href="/community/content/modify?bno="+bno_val;
@@ -318,6 +325,7 @@
       delete_btn.on("click",function(){
         deletePost();
       });
+
 
       //댓글 더보기
       more_btn.on("click",function(){
@@ -430,12 +438,13 @@
         </span>
         <div class="ps-3 py-2 w-100 border-top border-bottom d-flex flex-row justify-content-between">
           <span class="fs-5" style="line-height: 38px;">댓글:[<span class="reply_total">${reply_total}</span>]</span>
-          <c:if test="${principal.userInfo.m_No == content.bmno}">
-          	<span>
-              <button class="btn btn-outline-primary" id="update_btn" >수정하기</button>
-              <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">삭제하기</button>
-            </span>
-          </c:if>
+          <span>
+            <button class="btn btn-outline-secondary" id="list_btn" >목록</button>
+            <c:if test="${principal.userInfo.m_No == content.bmno}">
+                <button class="btn btn-outline-primary" id="update_btn" >수정하기</button>
+                <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">삭제하기</button>
+            </c:if>
+          </span>
         </div>
         
         <div class="w-100 px-3" style="position: relative;">
