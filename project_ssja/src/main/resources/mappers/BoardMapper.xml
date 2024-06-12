@@ -25,14 +25,32 @@
         	select * from board_category where b_c_no=#{bcno}
         ]]>
 	</select>
+	
 <!-- 게시글 -->
+	<!-- 유저나 판매자 본인이 작성한 qna 게시판 리스트 -->	
+	<select id="selectMemberQnaList" parameterType="teamproject.ssja.page.Criteria" resultMap="BoardDtoMap">
+		<![CDATA[
+			select * from 
+        	(
+			    select
+			        rownum rnum , A.*
+			    from 
+			    (select
+			     * 
+		    	 from board where b_c_no=#{bcno} and m_no = #{bmno} order by b_no desc) A 
+		    	where rownum <= #{pageNum} * #{amount} 
+		    )
+			where rnum > (#{pageNum}-1) * #{amount}
+		]]>
+	</select>
+
 	<select id="read" resultMap="BoardDtoMap">
     	<![CDATA[
         	select * from board where b_no=#{bno}
         ]]>
 	</select>
+	
 	<insert id="insertBoard" parameterType="BoardDto">
-
         	INSERT INTO board (B_NO, M_NO, B_C_NO, B_WRITER, B_TITLE, B_CONTENT, B_DATE, B_LIKE, B_HIT, B_EVAL, PRO_NO)
         	VALUES (B_SEQ.NEXTVAL, #{bmno}, #{bbcno}, #{bwriter}, #{btitle}, #{bcontent}, sysdate, #{blike}, #{bhit}, #{beval}, #{prono})
 	        <selectKey keyProperty="bno" resultType="int" order="AFTER">
@@ -43,8 +61,8 @@
 				order by B_NO desc)
 				where rownum=1
 			</selectKey>
-
 	</insert>
+	
 	<update id="updateBoard" parameterType="BoardDto">
 		<![CDATA[
         	update board set b_title=#{btitle}, b_content=#{bcontent} where b_no=#{bno}

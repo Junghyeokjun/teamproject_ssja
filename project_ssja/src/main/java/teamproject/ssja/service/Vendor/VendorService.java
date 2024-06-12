@@ -12,6 +12,8 @@ import teamproject.ssja.dto.ReplysDto;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
 import teamproject.ssja.page.Criteria;
 
-public interface VendorService {	
+public interface VendorService {
+	// 판매자 본인의 판매자 정보 가져오기
 	public VendorInfoDTO getVendor(long mNo);
+
 }
