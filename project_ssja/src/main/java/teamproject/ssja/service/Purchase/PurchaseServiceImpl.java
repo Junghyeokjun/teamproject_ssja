@@ -11,6 +11,7 @@ import teamproject.ssja.dto.OrdersDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.PurchaseDto;
 import teamproject.ssja.dto.userinfo.CouponDTO;
+import teamproject.ssja.mapper.ChargePointMapper;
 import teamproject.ssja.mapper.MembersMapper;
 import teamproject.ssja.mapper.OrdersMapper;
 import teamproject.ssja.mapper.ProductDetailMapper;
@@ -28,6 +29,9 @@ public class PurchaseServiceImpl implements PurchaseService {
 	
 	@Autowired
 	MembersMapper membersMapper;
+	
+	@Autowired
+	ChargePointMapper pointMapper;
 	
 	@Autowired
 	ProductDetailMapper productMapper;
@@ -52,7 +56,9 @@ public class PurchaseServiceImpl implements PurchaseService {
 		
 //		userinfo.setM_Point((int)(userinfo.getM_Point()-Long.valueOf((String) purchaseData.get("USE_POINT"))));
 		
-		purchaseData.remove("USE_POINT");
+		
+		pointMapper.usePurchasePoint(Long.valueOf((String) purchaseData.get("M_NO")), 
+				   					 Long.valueOf((String) purchaseData.get("USE_POINT")));
 		
 		//http요청을 가공하여 purchase를 출력하는 부분
 		purchase= new PurchaseDto(0,Long.valueOf((String) purchaseData.get("M_NO")),

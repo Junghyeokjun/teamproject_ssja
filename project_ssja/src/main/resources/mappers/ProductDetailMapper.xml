@@ -42,7 +42,7 @@
 	
 	<select id="getProduct" resultType="ProductDto">
 	    <![CDATA[		
-	   SELECT * WHERE PRO_NO = #{PRO_NO}
+	   SELECT * from product WHERE PRO_NO = #{PRO_NO}
 	     ]]>
 	</select>
 

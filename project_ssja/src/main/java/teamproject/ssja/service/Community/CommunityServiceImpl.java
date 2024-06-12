@@ -142,7 +142,7 @@ public class CommunityServiceImpl implements CommunityService {
 		String path="/images/board_content";
 		String fileName="board_img_"+bno+".png";
 		File targetFile=new File(absolutePath+"/"+fileName);
-		File tempFile= new File(absolutePath+"/"+"temp"+bno+".png");
+		File tempFile= new File(absolutePath+"/"+"Temp_"+bno+".png");
 
 		//원래 이미지가 존재하지 않을경우 이미지 삽입 
 		if(boardMapper.selectBoardImg(bno)==0) {

@@ -159,6 +159,10 @@ table {
 			<div id="home_user_bar"></div>
 			<div id="sub_bar"></div>
 		</nav>
+		<sec:authorize access="isAuthenticated()">
+			<sec:authentication property="principal" var="principal"/>
+		</sec:authorize>
+		<input type="hidden" id="m_no" value="${principal.userInfo.m_No}">
 	</header>
 	<div id="side_bar">
 		<div id="side_links" class="w-100"></div>
@@ -400,36 +404,86 @@ table {
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
   <script>
-    document.getElementById('purchaseBtn').addEventListener('click', function() {
+	//추가부분
+	var header = $("meta[name='_csrf_header']").attr('content');
+	var token = $("meta[name='_csrf']").attr('content');	
+    //추가부분 끝
+	
+	document.getElementById('purchaseBtn').addEventListener('click', function() {
         // 페이지 이동
-        window.location.href = '/purchase';
+		purchaseProduct()
+        // window.location.href = '/purchase';
     });
     document.getElementById('purchaseBtn2').addEventListener('click', function() {
         // 페이지 이동
-        window.location.href = '/purchase';
+
+		purchaseProduct()
+        // window.location.href = '/purchase';
     });
     function purchaseProduct() {
+
         var quantity = document.getElementById("quantity").value;
         var productNo = ${productdetail.getPRO_NO()};
 
-        // AJAX 요청 생성
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "/purchase", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        
-        // AJAX 요청이 완료되었을 때의 처리
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                // 페이지 이동
-                window.location.href = '/purchase';
-            }
-        };
+		//임의적으로 통일하기위하여 추가하였으나 나중에 필요에 따라 지우셔도 됩니다.
 
-        // AJAX 요청 본문 생성
-        var params = "quantity=" + quantity + "&productNo=" + productNo;
+		var form = document.createElement("form");
+		form.setAttribute("id", "dynamicForm");
+		form.setAttribute("method", "POST");
+		form.setAttribute("action", '/purchase');
+		
+		// CSRF 토큰을 저장할 hidden input 요소 추가
+		var csrfInput = document.createElement("input");
+		csrfInput.setAttribute("type", "hidden");
+		csrfInput.setAttribute("name", "_csrf");
+		csrfInput.setAttribute("value", token);
+		form.appendChild(csrfInput);
+
+		var pronoInput = document.createElement("input");
+		pronoInput.setAttribute("type", "hidden");
+		pronoInput.setAttribute("name", "productNo");
+		pronoInput.setAttribute("value", productNo);
+		form.appendChild(pronoInput);
+
+		var mnoInput = document.createElement("input");
+		mnoInput.setAttribute("type", "hidden");
+		mnoInput.setAttribute("name", "mno");
+		mnoInput.setAttribute("value", $("#m_no").val());
+		form.appendChild(mnoInput);
+
+		var quanInput = document.createElement("input");
+		quanInput.setAttribute("type", "hidden");
+		quanInput.setAttribute("name", "quantity");
+		quanInput.setAttribute("value", quantity);
+		form.appendChild(quanInput);
+
+		// 폼을 body에 추가
+		document.body.appendChild(form);
+
+		// 폼을 서버로 제출
+		form.submit();
+
+
+        // // AJAX 요청 생성
+        // var xhr = new XMLHttpRequest();
+        // xhr.open("POST", "/purchase", true);
+        // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        // xhr.setRequestHeader(header, token);
         
-        // AJAX 요청 전송
-        xhr.send(params);
+		// //수정전
+        // // AJAX 요청이 완료되었을 때의 처리
+        // xhr.onreadystatechange = function() {
+        //     if (xhr.readyState === XMLHttpRequest.DONE) {
+        //         // 페이지 이동
+        //         window.location.href = '/purchase';
+        //     }
+        // };
+
+        // // AJAX 요청 본문 생성
+        // var params = "quantity=" + quantity + "&productNo=" + productNo;
+        
+        // // AJAX 요청 전송
+        // xhr.send(params);
     }
 
     document.getElementById('purchaseBtn').addEventListener('click', purchaseProduct);
