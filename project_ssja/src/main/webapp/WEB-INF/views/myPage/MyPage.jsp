@@ -5,9 +5,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
-<!DOCTYPE html>
-
 <sec:authentication property="principal" var="principal" />
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -261,17 +260,12 @@ border:none;
 	  </header>
   </c:when>
   <c:when test="${principal.auth == 'ROLE_VENDOR'}">
-  	<header>
-		<div id="title_bar" class="fixed-top">
+  	<header class="fixed-top">
+		<div id="title_bar" >
 			<div class="py-2 px-1 d-flex justify-content-between" id="top-bar">
 				<button type="toggle-button" class="top_btn"></button>
 				<div class="mx-5 my-2 d-flex ">
 					<h1 class="h1 vendorTitle" >판매자 :&nbsp;</h1>
-					<!-- 
-						땡땡땡땡 : 상호명
-						로그인 시 vendorDto에 담기는 vendor.vbizname 또한 가져오기						
-						그냥 조인을 쓴다면 vendorDto가 아니라 조인한 결과를 담는 다른 Dto가 필요할 것이다.
-					 -->
         			<h1 class="h1 vendorNames"> 
         				&lt;
         				<sec:authorize access="isAuthenticated()">
@@ -281,15 +275,13 @@ border:none;
         				${vendorMember.m_Name}
         				&gt;</h1>      			
         		</div>
+        		<a id="cart_link" hidden="hidden"></a>
 				<a id="user_link"><img id="login_img"></a>
 			</div>
 		</div>
 		<nav id="total_bar">
 		</nav>
 	</header>
-		<div id="side_bar">
-		<div id="side_links" class="w-100"></div>
-	</div>
   </c:when>
 </c:choose>
   <div id="side_bar">

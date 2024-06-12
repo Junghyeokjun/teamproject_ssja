@@ -24,7 +24,6 @@
 		<result property="M_ZIPCODE" column="M_ZIPCODE" />
 		<result property="M_EMAIL" column="M_EMAIL" />
 		<result property="M_PHONE" column="M_PHONE" />
-
 	</resultMap>
 
 	<select id="read" resultMap="ProductDetailMap">

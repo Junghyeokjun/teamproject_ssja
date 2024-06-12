@@ -54,17 +54,14 @@ public class VendorController {
 
 		return "/vendor/vendor_write_product";
 	}
-
-	@GetMapping("/product/category")
-
 	
 	@PostMapping("/product/add")
 	public String addOne() {
 		log.info("addOne()..");
-		//
-
+		
+		
 		// 초기화면으로 돌아가기(해당 페이지는 초기 화면 역할을 하며, 이후 변경할 예정)
-		return "/vendor/vendor_insert_product";
+		return "/vendor/vendor_view";
 	}
 
 	@GetMapping("/product/list")

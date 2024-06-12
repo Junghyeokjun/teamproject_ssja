@@ -10,6 +10,9 @@ $(document).ready(function () {
       xhr.setRequestHeader(header, token);
   });*/  
 
+// html 상단에 받은 jstl 데이터 principal을 받는 변수  
+  let getPrincipal = ${principal};
+  
   //상단 카테고리 바 분류
   let $ul = $("<ul>").attr("id", "list_category").appendTo($home_user_bar);
   let $li1 = $("<li>").css("order", "1").text("가구").addClass("px-3 py-2").attr("id", "nav-links").appendTo($ul);
@@ -380,20 +383,21 @@ $(document).ready(function () {
 	    }
 	}
 
-	$total_bar.on('mouseleave', hideSubBar);
-	$sub_bar.on('mouseleave', hideSubBar);
+//	$total_bar.on('mouseleave', hideSubBar);
+//	$sub_bar.on('mouseleave', hideSubBar);
 	
   $(window).on('scroll', function () {
     let $side_bar = $('#side_bar');
     let scrollPosition = $(this).scrollTop();
     let $windowWidth = window.innerWidth;
-    if (scrollPosition < 100 && $windowWidth >=780) {
-
-      $side_bar.css('top', '181px');
-    } else {
-
-      $side_bar.css('top', '95px');
-    }
+    $side_bar.css('top', '125px');
+//    if (scrollPosition < 100 && $windowWidth >=780) {
+//
+//      $side_bar.css('top', '125px');
+//    } else {
+//
+//      $side_bar.css('top', '95px');
+//    }
   });
   
   
@@ -407,4 +411,34 @@ $(document).ready(function () {
   let currentPosition = window.scrollY;
 	
 
+// 판매자 상호명 가져오기  
+  
+  	let $vendorData = $('#vendorData').val();
+	console.log("vendorData : " + $vendorData);
+	
+	// value 기본값은 "" 이다. 빈 문자열이 아니라는 의미는, 값이 들어갔다는 의미이다.
+	if($vendorData != ""){
+		// 값이 들어온 상태라면, 판매자의 상호명을 노출시키는 ajax 실행
+		$.ajax({
+			type : "POST",
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			url : "/api/vendor/vendorInfo",
+			data : { 'vendorData' : $vendorData },
+			success : function(response){
+				console.log(response);
+				if($vendorData == response.id){
+					$('.vendorNames').append(' [ ' +  response.v_bizName + ' ]');
+				}else{
+					console.log("warning : " + vendorData + "와(과) 일치하지 않음");
+				}
+			},
+			error : function(xhr, status, error){
+				alert("판매자 정보를 가져오기가 실패했습니다");
+				console.error(xhr.responseText);
+			}
+		});
+	}
+  
 });

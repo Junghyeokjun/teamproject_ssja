@@ -5,7 +5,8 @@
 	uri="http://www.springframework.org/security/tags"%>
 	<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-	
+
+<sec:authentication property="principal" var="principal" />	
 <!DOCTYPE html>
 <html lang="en">
 
