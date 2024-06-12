@@ -84,4 +84,7 @@
     ]]>
 	</select>
 
+	<update id="updateProductQuantity">
+		UPDATE product SET PRO_QUANTITY = PRO_QUANTITY-#{O_QUANTITY} where pro_no=#{PRO_NO} 
+	</update>
 </mapper>

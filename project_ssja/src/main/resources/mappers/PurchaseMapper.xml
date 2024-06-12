@@ -23,5 +23,13 @@
 		select * from coupon c ,ownedcoupon o WHERE c.c_no=o.c_no and c.c_duedate>=SYSDATE and o.m_no=#{mno}
 	</select>
 	
+	<delete id="deleteCoupon">
+		DELETE FROM ownedcoupon WHERE m_no=#{mno} and c_no=#{cno}
+	</delete>
+	
+	<delete id="deleteItemCart">
+		DELETE FROM item_cart WHERE m_no=#{mno} and pro_no=#{prono}
+	</delete>
+	
 	
 </mapper>

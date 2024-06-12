@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import teamproject.ssja.dto.OrdersDto;
 import teamproject.ssja.dto.ProductDetailDto;
 import teamproject.ssja.dto.ProductDetailReplyDto;
 import teamproject.ssja.dto.ProductDto;
@@ -24,5 +25,7 @@ public interface ProductDetailMapper {
 	
 	ProductDto getCartProduct(long PRO_NO,long M_NO);
 
+	//구매한 상품의 갯수를 차감하는 메서드
+	int updateProductQuantity (OrdersDto order);
 }
 

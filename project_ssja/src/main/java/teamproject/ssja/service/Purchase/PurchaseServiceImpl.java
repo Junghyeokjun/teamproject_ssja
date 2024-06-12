@@ -41,8 +41,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 		List<OrdersDto> orders= new ArrayList<>();
 		int ordersCount=0;
 		
-		long mno;
-		long useCoupon;
+		long mno =0;
+		long useCoupon = 0;
 
 		System.out.println(purchaseData);
 		
@@ -63,6 +63,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 									"SYSDATE", 
 									(String)purchaseData.get("PUR_DVADDRESS"), 
 									(String)purchaseData.get("PUR_DV"));
+		mno=Long.valueOf((String) purchaseData.get("M_NO"));
 		purchaseData.remove("M_NO");
 		purchaseData.remove("PUR_TOT");
 		purchaseData.remove("PUR_DC");
@@ -82,12 +83,21 @@ public class PurchaseServiceImpl implements PurchaseService {
 										Long.valueOf((String)purchaseData.get("products["+i+"][price]")),
 										Double.valueOf((String)purchaseData.get("products["+i+"][pay]")).longValue(),
 										Long.valueOf((String)purchaseData.get("products["+i+"][coupon]")),"결제완료"));
+			useCoupon=Long.valueOf((String)purchaseData.get("products["+i+"][coupon]"));
 		}
+		//주문 상세 추가, 상품에서 구매한만큼의 갯수를 차감, 구매한 상품을 장바구니에서 삭제
 		for (OrdersDto order : orders) {
 			ordersCount+=ordersMapper.insertOrder(order);
+			productMapper.updateProductQuantity(order);
+			purchaseMapper.deleteItemCart(mno, order.getPRO_NO());
 		}
 		System.out.println(ordersCount);
 
+		//0일때는 쿠폰을 사용하지 않음
+		if(useCoupon != 0) {
+			purchaseMapper.deleteCoupon(mno, useCoupon);
+		}
+		
 		return ordersCount; 
 	}
 
