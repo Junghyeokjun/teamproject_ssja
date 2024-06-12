@@ -242,6 +242,7 @@ color:#aaa;
 
 <body>
 <sec:authentication property="principal" var="principal" />
+
   <header>
     <div id="title_bar" class=" fixed-top">
       <div class="py-2 px-1" id="top-bar">
@@ -261,6 +262,7 @@ color:#aaa;
       <div id="home_user_bar"> </div>
       <div id="sub_bar"></div>
     </nav>
+	<input type="hidden" id="mno" value="${principal.userInfo.m_No}">
   </header>
 
  
@@ -423,6 +425,34 @@ let itemCartPageRender = function(pageNum){
 						//값을 가져와 구매 페이지 만드시면 될 듯합니다. 
 						//만약 ajax로 하신다면 data: 에  JSON.stringify(deleteList) 그대로 넣어서 파싱(?)하시면 컨트롤러에서
 						//@RequestBody List<Integer> deleteList로 그대로 받아서 활용가능합니다.
+							$.ajax({
+								type:'post', 
+								url: '/purchase/'+$("#mno").val(),
+								data: JSON.stringify(deleteList),
+								contentType: 'text/html', 
+								success: function(data) {
+									$("#modal_close").click();
+									
+									if(data=="null"){
+									return;
+									}
+									if($("#view_img").attr("src")==undefined){
+									$("#content").prepend('<img src="'+data+'?'+(new Date().getTime())+'" alt="" id="view_img" class="w-75 d-inline-block mb-5 ">')
+									$("#update_content").css("min-height","30px");
+									img_update.val("true");
+									return;
+									}
+
+									$("#view_img").attr("src","");
+
+									$("#view_img").attr("src",data+"?"+(new Date().getTime()));
+
+									img_update.val("true");
+								},
+								error: function(e) {
+									alert("error:" + e);
+								}
+							});	
 					}).appendTo($cart_last_div);
 
 						$("<button>").text('삭제').addClass("btn btn-secondary mx-2").on('click',function(){

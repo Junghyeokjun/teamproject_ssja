@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,6 +45,17 @@ public class PurchaseController {
 		mv.setViewName("purchase");
 		return mv;
 	}
+//	@PostMapping("/{mno}")
+//	public String purchaseCart(ModelAndView mv ,int quantity,int productNo) {
+//		List<ProductDto> dtos=new ArrayList<>();
+//		ProductDto dto=purchaseService.getProduct(productNo);
+//		dto.setPRO_QUANTITY(quantity);
+//		dtos.add(dto);
+//		mv.addObject("products", dtos);
+//		mv.setViewName("purchase");
+//		return ;
+//	}
+	
 	@RequestMapping("/test")
 	public ModelAndView testPurchase(ModelAndView mv) {
 		List<ProductDto> dtos=new ArrayList<>();
