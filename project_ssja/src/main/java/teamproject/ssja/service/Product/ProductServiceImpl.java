@@ -9,14 +9,18 @@ import org.springframework.stereotype.Service;
 import teamproject.ssja.InfoProvider;
 import teamproject.ssja.dto.product.ProductCondition;
 import teamproject.ssja.dto.product.ProductItemDto;
+import teamproject.ssja.dto.product.SearchForm;
 import teamproject.ssja.dto.userinfo.CartItemsDTO;
 import teamproject.ssja.mapper.ProductListMapper;
+import teamproject.ssja.mapper.SearchMapper;
 
 @Service
 public class ProductServiceImpl implements ProductService{
 
 	@Autowired
 	 ProductListMapper productMapper;
+	@Autowired
+	SearchMapper searchMapper;
 
 	@Override
 	public List<ProductItemDto> getProductList(ProductCondition conditionItems) {
@@ -41,5 +45,17 @@ public class ProductServiceImpl implements ProductService{
 		long id = InfoProvider.getM_NO();
 		return productMapper.getYourItemCrat(id);
 		
+	}
+
+	@Override
+	public List<ProductItemDto> getCategoryItems(int categoryNum, int pageNum) {
+		
+		return productMapper.getCategoryItems(categoryNum, pageNum);
+	}
+
+	@Override
+	public List<ProductItemDto> getSearchItems(SearchForm form) {
+		
+		return searchMapper.searchItemList(form);
 	}
 }

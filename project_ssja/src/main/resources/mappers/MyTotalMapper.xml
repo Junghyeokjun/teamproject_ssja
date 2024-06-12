@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="teamproject.ssja.mapper.totalInfoMyPageMapper">
+	
+	<select id="getMyPurchaseList" resultType="PurchaseDto">
+        select * from
+        (select p.*, row_number() over(order by pur_date desc) as rnum from purchase p where p.m_no=#{id}) 
+        where rnum between #{pageNum} * 10 - 9 and #{pageNum} * 10
+	</select>
+	
+	<select id="getMyWishProducts" resultType="teamproject.ssja.dto.userinfo.WishProductDTO">
+		select * 
+		from
+			(select s.* ,row_number() over(order by s.wish_date desc) as rnum from wishlist s where m_no=#{id}) w 
+		inner join 
+			product p on p.pro_no = w.pro_no
+			where rnum between #{pageNum} * 5 -4 and #{pageNum} * 5
+	</select>
+	
+	<select id="getMyPointInfo" resultType="PointDTO">
+select * from
+        (select p.*, row_number() over(order by pt_date desc) as rnum 
+        from points p where p.m_no=#{id}) 
+        where rnum between  #{pageNum} * 5 -4 and #{pageNum} * 5
+	</select>
+	
+	<select id="getMyCouponInfo" resultType="teamproject.ssja.dto.userinfo.CouponDTO">
+	select * from(SELECT c_no,c_duedate,c_name,c_dcper,  ROW_NUMBER() OVER (ORDER BY ${orderFirst} DESC, ${orderSecond} desc) AS rnum 
+	FROM coupon where sysdate &lt; c_duedate) r 
+       inner join (select c_no from ownedcoupon where m_no = #{id}) a 
+       on r.c_no = a.c_no where rnum between #{pageNum} * 10 - 9 and #{pageNum} * 10
+	</select>
+	
+	
+	
+	
+	<select id="getMyPurchaseCount" resultType="int">
+	select count(*) from purchase where m_no=#{id}
+	</select>
+	<select id="getMyWishCount" resultType="int">
+	select count(*) from wishlist where m_no=#{id}
+	</select>
+	<select id="getMyPointCount" resultType="int">
+	select count(*) from points where m_no=#{id}
+	</select>
+	
+	<select id="getMyCouponCount" resultType="int">
+	select count(*) from ownedcoupon where m_no=#{id} 
+	</select>
+	
+</mapper>

@@ -80,5 +80,12 @@ public class HomeController {
 	void logoutP() {
 		
 	}
+	@GetMapping("/search")
+	public String searchPage(Model model, @RequestParam("keyword") String keyword) {
+		log.info("keyword");
+		model.addAttribute("keyword", keyword);
+		
+		return "/product/searchResults";
+	}
 
 }

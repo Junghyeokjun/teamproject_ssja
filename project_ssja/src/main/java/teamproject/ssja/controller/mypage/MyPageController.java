@@ -5,9 +5,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import lombok.extern.slf4j.Slf4j;
+import teamproject.ssja.InfoProvider;
 import teamproject.ssja.LoginChecker;
 
-
+@Slf4j
 @Controller
 @RequestMapping("/myPage")
 public class MyPageController {
@@ -15,6 +17,7 @@ public class MyPageController {
 	
 	@GetMapping("")
 	public String myPageP(Model model ) {
+
 		int loginMethod = LoginChecker.check();
 		
 		//로그인 O, 소셜 로그인만 하는 회원
@@ -33,7 +36,7 @@ public class MyPageController {
 	@GetMapping("/orderInfo")
 	public String myOrderP() {
 		
-	return "/myPage/ordersInfo";
+	return "/myPage/MyPage";
 	}
 	
 	@GetMapping("/password/check")

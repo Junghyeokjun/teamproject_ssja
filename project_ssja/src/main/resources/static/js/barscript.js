@@ -61,12 +61,11 @@ $(document).ready(function () {
   let $link5_3 = $("<a>").attr("href", link5_3).addClass("btn w-100").text("세탁").css("text-decoration", "none");
   let $link5_4 = $("<a>").attr("href", link5_3).addClass("btn w-100").text("생활잡화").css("text-decoration", "none");
 
-  let $searchForm = $("#searchForm");
+  let $searchForm = $("#searchForm").attr('method','get');
   let $searchIn = $("<input>").attr("placeholder", "search").attr("id", "searchIn").appendTo($searchForm);
-  let $searchBtn = $("<button>").attr("id", "searchBtn").attr("type", "submit");
+  let $searchBtn = $("<button>").attr("id", "searchBtn").attr("type", "submit").appendTo($searchForm);
 
   let $searchImg=$("<img>").attr("src", "/images/utilities/search-32.png").attr("id", "searchImg").appendTo($searchBtn);//검색창 돋보기 이미지 경로
-  $searchBtn.appendTo($searchForm);
  
   $("#logo_img").parent().attr('href','/home');
   let $cartLink = $("#cart_link").attr("href", "/myPage/cart");//카트 이미지 버튼 링크
@@ -75,23 +74,28 @@ $(document).ready(function () {
 
   let $userLink = $("#user_link").attr("href", "/myPage");//로그인 이미지 버튼 링크
 
-  
-  let $search_icon = $("#search_icon").append($("<img>").attr("src", "/images/utilities/sear.png").attr("id", "searchImg"))
-  .on('click', function(){
-
-    e.stopPropagation();
-
-    window.location.href = "https://www.google.com";
+ 
+  $searchForm.submit(function(event){
+      let search_keyword = $searchIn.val();
+      if(search_keyword === ''){
+          $searchIn.attr('placeholder','검색어를 입력해주세요.');
+          event.preventDefault(); 
+          return false;
+      }
+      $searchForm.attr('action','/search');
+      $('<input>').attr({
+          type: 'hidden',
+          name: 'keyword',
+          value: search_keyword
+      }).appendTo($searchForm);
+      return true;
   });
+	 
+ 
   //==============================
   
 
-  if ($("#searchForm input[name='_csrf']").length === 0) {
-      $("#searchForm").attr('action','/logout').attr('method','post').append($("<input>")
-          .attr('type', 'hidden')
-          .attr('name', '_csrf')
-          .attr('value', token));
-  }
+
 
   $(document).ajaxSend(function(e, xhr, options) {
       xhr.setRequestHeader(header, token);

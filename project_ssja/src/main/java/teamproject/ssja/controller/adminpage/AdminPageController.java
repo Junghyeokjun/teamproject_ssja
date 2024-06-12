@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import lombok.extern.slf4j.Slf4j;
-import teamproject.ssja.dto.MembersSearchDto;
-import teamproject.ssja.dto.ProductsSearchDto;
+import teamproject.ssja.InfoProvider;
 import teamproject.ssja.page.Criteria;
 import teamproject.ssja.page.Page10VO;
 import teamproject.ssja.service.Admin.MemberListService;
@@ -72,12 +71,18 @@ public class AdminPageController {
 	public ModelAndView purchasesList(ModelAndView model, Criteria criteria) {
 		log.info("purchasesList()..");
 
+
 		long Purchasestotal = purchaseListService.getPerchaseListTotalCount();
 		model.addObject("purchasepageMaker", new Page10VO(Purchasestotal, criteria));
 		model.addObject("purchases", purchaseListService.getPerchaseListWithPaging(criteria));
 		model.setViewName("/adminPage/purchasesList");
 		
 		return model;
+	}
+	@GetMapping("/noticeList")
+	public String adminNoticePage() {
+		
+		return "/adminPage/noticeMain";
 	}
 	
 }

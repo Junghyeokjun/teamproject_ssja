@@ -80,7 +80,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	    http
 	    .addFilterBefore(sessionRenewFilter, SessionManagementFilter.class)
 	    .authorizeRequests()
-	    .antMatchers("/logout","/user","/myPage","/myPage/**","/userInfo","/user",
+	    .antMatchers("/logout","/user","/myPage","/myPage/**","/userInfo","/user","/charge","/charge/**",
 	    		"/user/**","/wishlist","/wishlist/**","/sign-up","/sign-up/**").hasAnyRole("USER","SOCIAL")
 	    .anyRequest().permitAll();
 	    
@@ -96,7 +96,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
            .userInfoEndpoint()
            .userService(oAuth2UserService)
            .and()
-           .defaultSuccessUrl("/home",true)
+           .defaultSuccessUrl("/home")
            .failureUrl("/login?error=true");
 	       
 	    http.

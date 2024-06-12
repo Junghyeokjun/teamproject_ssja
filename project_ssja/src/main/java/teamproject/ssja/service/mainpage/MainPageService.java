@@ -17,12 +17,12 @@ public class MainPageService {
 	@Autowired
 	private EventMapper eventMapper;
 	
-	public MainPageDTO getMainPageData(int bestPageNum){
-		
-				MainPageDTO data = new MainPageDTO(eventMapper.getEventList(),
-										productListMapper.bestItemsList(bestPageNum));
-				return	data;
-		
+	public MainPageDTO getMainPageData(int bestPageNum) {
+
+		MainPageDTO data = new MainPageDTO(eventMapper.getEventList(),
+							productListMapper.bestItemsList(bestPageNum) ,productListMapper.getCategoryItems(1, 1));
+		return data;
+
 	}
 	
 }

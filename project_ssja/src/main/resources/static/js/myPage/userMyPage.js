@@ -14,12 +14,21 @@
 	
 	let token = $("meta[name='_csrf']").attr("content");
 	let header = $("meta[name='_csrf_header']").attr("content");
+	let totalInfo_pageNum = 1;
+	function formatNumber(num) {
+		return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원';
+	};
+
 	
 	let email_auth_code='00000000';
 	const withdrawl_comment = '회원을 탈퇴하시면 계정이 삭제 되며 내가 쓴글, 구매내역, 리뷰, 채팅 등 모든 정보가 삭제됩니다.<br>' 
 		+'계정 삭제 후 7일 간에 유보기간이 주어지며, 유보기간 동안 마이페이지 > 회원정보로 오셔서 탈퇴 취소를 누르시면 다시 회원으로 지내실 수 있습니다.';
 		let $modi_email_auth_btn = $("<button>");
 		let $modi_email_change_btn = $("<button>").css("width",'90px');
+		
+	
+        let modal = new bootstrap.Modal(document.getElementById('totalInfoModal'));
+        let condition = 'd';
 		
 		
 		  function openCenteredWindow(url, width, height) {
@@ -49,12 +58,12 @@
 						let $myPageContent = $("#MyPage_content_container").removeClass().empty();
 						let $myPageTitle = $("#MyPage_content_name");
 						$myPageTitle.empty().append($h2title);
-						//탈퇴 유보 기간에 속할 경우 보여질 부분
+						// 탈퇴 유보 기간에 속할 경우 보여질 부분
 						/*
-						if(userInfo.m_deletedate !== null){
-							
-							return
-						}*/
+						 * if(userInfo.m_deletedate !== null){
+						 * 
+						 * return }
+						 */
 
 						let $userInfo_dv1 = $("<div>").attr("id",
 								"userInfo_dv1").addClass("w-100 my-3 mx-3");
@@ -71,23 +80,60 @@
 						let $userInfo_dv2 = $("<div>").attr("id",
 								"userInfo_dv2").addClass(" my-3 mx-3").css(
 								"background-color", "#eee");
+						
 						let $userInfo_orders = $("<div>").attr("id",
 								"userInfo_orders").append($("<h4>").text("구매"),
 								$("<span>").text(userInfo.countPurchase)).on('click',function(){
-									 openCenteredWindow('https://www.naver.com', 800, 550);
+									if($("#totalInfoModalLabel").text() === '나의 구매'){
+										modal.show();
+										return false;
+									}
+									$("#totalInfoModalLabel").text('나의 구매');
+									totalInfo_pageNum=1;
+									getTotalInfo_order(totalInfo_pageNum);
+									   modal.show();
 								});
 						let $userInfo_wishs = $("<div>").attr("id",
 								"userInfo_wishs").append(
 								$("<h4>").text("위시리스트"),
-								$("<span>").text(userInfo.countWish));
+								$("<span>").text(userInfo.countWish)).on('click',function(){
+									if($("#totalInfoModalLabel").text() === '나의 위시리스트'){
+										modal.show();
+										return false;
+									}
+									$("#totalInfoModalLabel").text('나의 위시리스트');
+									totalInfo_pageNum=1;
+									getTotalInfo_wish(totalInfo_pageNum);
+									   modal.show();
+								});
+						
 						let $userInfo_points = $("<div>").attr("id",
 								"userInfo_points").append(
 								$("<h4>").text("포인트"),
-								$("<span>").text(userInfo.m_Point));
+								$("<span>").attr('id','span_tot_point').text(userInfo.m_Point)).on('click',function(){
+									if($("#totalInfoModalLabel").text() === '나의 포인트'){
+										modal.show();
+										return false;
+									}
+									$("#totalInfoModalLabel").text('나의 포인트');
+									totalInfo_pageNum=1;
+									getTotalInfo_point(totalInfo_pageNum);
+									   modal.show();
+								});
+						
 						let $userInfo_coupons = $("<div>").attr("id",
 								"userInfo_coupons").append(
 								$("<h4>").text("쿠폰"),
-								$("<span>").text(userInfo.countCoupon));
+								$("<span>").text(userInfo.countCoupon)).on('click',function(){
+									if($("#totalInfoModalLabel").text() === '나의 쿠폰'){
+										modal.show();
+										return false;
+									}
+									$("#totalInfoModalLabel").text('나의 쿠폰');
+									totalInfo_pageNum=1;
+									getTotalInfo_coupon(totalInfo_pageNum, condition);
+									modal.show();
+								});
 
 						$userInfo_dv2.append($userInfo_orders, $userInfo_wishs,
 								$userInfo_points, $userInfo_coupons);
@@ -329,7 +375,7 @@
 	        beforeSend : function(xhr) {
 				xhr.setRequestHeader(header, token);
 			},
-			//async:false,
+			// async:false,
 		    data: $("#modi_email_input").val(),
 	        contentType: "application/json",
 	        url: "/user/email",
@@ -354,9 +400,10 @@
 					addr = data.jibunAddress;
 				}
 				if (data.userSelectedType == 'R') {
-					/* if (data.bname !== "" && /[동|로|가]$/g.test(data.bname)) {
-						extraAddr += databname;
-					} */
+					/*
+					 * if (data.bname !== "" && /[동|로|가]$/g.test(data.bname)) {
+					 * extraAddr += databname; }
+					 */
 					if (data.buildingName !== '' && data.apartment === 'Y') {
 						extraAddr += (extraAddr !== '' ? ', '
 								+ data.buildingName : data.buildingName);
@@ -404,4 +451,261 @@
     $("vendor_apply").on('click', function(){
     	window.location.href="/vender/list/20";
     })
+    
+    	let getTotalInfo_order = function(totalInfo_pageNum) {
+    	console.log(totalInfo_pageNum)
+	    $.ajax({
+	        type: "post",
+	        beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+	        contentType: "application/json",
+	        url: "/user-info/total/order?pageNum=" + totalInfo_pageNum,
+	        success: function(data) {
+	        	console.log(data);
+	        	let $totalInfoContent = $("#totalInfoContent");
+	        	$totalInfoContent.children().remove();
+	        	let $total_dv = $("<div>").css({'border-top':'1px solid black','border-bottom':'1px solid black'})
+	        	.addClass("my-3 py-3 d-flex justify-content-evenly px-2").append(
+	        	$("<span>").css('width','10%').text("번호"),		
+	        	$("<span>").css('width','25%').text("날짜"),		
+	        	$("<span>").css('width','45%').text("배송사"),	
+	        	$("<span>").css('width','20%').text("금액")		
+	        	).appendTo($totalInfoContent);
+	        	if(data.objectList.length === 0){
+	        		return false;
+	        	}
+	        	data.objectList.forEach(function(item, index){
+	        		let purDate = item.pur_DATE ? item.pur_DATE.split(' ')[0] : 'N/A';
+	        		let $content_orders = $("<div>").addClass("d-flex flex-row justify-content-evenly py-1 px-2")
+	        		.css({'border-top':'1px solid #ccc','border-bottom':'1px solid #ccc'}).append(
+	        				$("<span>").css('width','10%').text(item.pur_NO),		
+	        	        	$("<span>").css('width','25%').text(purDate),		
+	        	        	$("<span>").css('width','45%').text(item.pur_DVADDRESS),	
+	        	        	$("<span>").css('width','20%').text(formatNumber(item.pur_TOT) )	
+	        				 ).appendTo( $totalInfoContent);
+	        	})
+	        	pageModal(data.next,data.prev,totalInfo_pageNum,data.startPage, data.endPage, data.total, getTotalInfo_order,10);
+	        	
+	        }
+	    })
+    };
+    
+    let getTotalInfo_coupon= function(totalInfo_pageNum, condition) {
+    	console.log(totalInfo_pageNum)
+	    $.ajax({
+	        type: "post",
+	        beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+	        contentType: "application/json",
+	        url: "/user-info/total/coupon?pageNum=" + totalInfo_pageNum + '&condition='+condition,
+	        success: function(data) {
+	        	console.log(data);
+	        	let $totalInfoContent = $("#totalInfoContent");
+	        	$totalInfoContent.empty();
+	        	$("<div>").addClass('d-flex flex-row justify-content-center my-4').attr("id", 'coupon_select_dv').append(
+	        			$("<button>").attr('id','due_btn').text("기간만료순").on('click', function(){
+	        				if(condition === 'd')return false;
+	        				condition = 'd';
+	        				colorOrder(condition);
+	        				getTotalInfo_coupon(1,condition);
+	        				
+	        			}),
+	        			$("<button>").attr('id','per_btn').text('할인율순').on('click', function(){
+	        				if(condition !== 'd')return false;
+	        				condition = 'p';
+	        				colorOrder(condition);
+	        				
+	        				getTotalInfo_coupon(1,condition);
+	        			})
+	        			).appendTo($totalInfoContent);
+	        	colorOrder(condition);
+	        	
+	        	let $coupon_content_dv= $("<div>").attr('id','coupon_content_dv')
+	        	.css({'margin-top':'auto','margin-bottom':'auto'}).appendTo( $totalInfoContent);
+	        	
+	        	data.objectList.forEach(function(item, index){
+	        		let dueDate = item.c_duedate ? item.c_duedate.split(' ')[0] : 'N/A';
+	        		
+	        		let $content_coupons = $("<div>").addClass("d-flex flex-row justify-content-evenly py-1 px-2")
+	        		.css({'border-top':'1px solid #ccc','border-bottom':'1px solid #ccc'}).append(
+	        				$("<span>").css({'width':'50%','text-align':'center'}).text(item.c_name),		
+	        	        	$("<span>").css('width','35%').text(dueDate),	
+	        	        	$("<span>").css('width','15%').text(item.c_dcper + "%")	
+	        				 ).appendTo( $coupon_content_dv);
+	        	})
+	        	pageModal(data.next,data.prev,totalInfo_pageNum,data.startPage, data.endPage, data.total, getTotalInfo_coupon,5);
+	        }
+	    })
+    };
+    
+    let getTotalInfo_point = function(totalInfo_pageNum) {
+    	console.log(totalInfo_pageNum)
+	    $.ajax({
+	        type: "post",
+	        beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+	        contentType: "application/json",
+	        url: "/user-info/total/point?pageNum=" + totalInfo_pageNum,
+	        success: function(data) {
+	        	console.log(data);
+	        	let $totalInfoContent = $("#totalInfoContent");
+	        	$totalInfoContent.children().remove();
+	        	$totalInfoContent.addClass('d-flex flex-column ');
+	        	$("<div>").appendTo($totalInfoContent);
+	        	
+	        	data.objectList.forEach(function(item, index){
+	        		let pm ="";
+	        		if(item.pt_change === 1){
+						 pm = "+";
+					}else{
+						pm = "-";
+					}
+	        		
+	        		$("<div>").addClass("d-flex flex-row justify-content-evenly align-items-center p-2")
+	        		.css({'border-top':'1px solid #ddd',"border-bottom":"1px solid #ddd"}).append(
+	        				$("<span>").text(item.pt_date.split(' ')[0]),
+	        				$("<span>").text(pm + " " + item.pt_amount),
+	        				$("<span>").text(item.pt_reason)
+	        		).appendTo($totalInfoContent);
+	        		
+	        	});
+	        	$("<span>").text('현재 포인트 : '+$('#span_tot_point').text())
+	        	.css({'font-size':'1.3em','font-weight':'bold','margin-left':'auto','margin-top':'auto'})
+	        	.appendTo($totalInfoContent);
+	        	pageModal(data.next,data.prev,totalInfo_pageNum,data.startPage, data.endPage, data.total, getTotalInfo_point,5);
+	        }
+	    })
+    };
+    
+    let getTotalInfo_wish= function(totalInfo_pageNum) {
+    	console.log(totalInfo_pageNum)
+	    $.ajax({
+	        type: "post",
+	        beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+	        contentType: "application/json",
+	        url: "/user-info/total/wish?pageNum=" + totalInfo_pageNum,
+	        success: function(data) {
+	        	console.log(data);
+	        	let $totalInfoContent = $("#totalInfoContent");
+	        	$totalInfoContent.empty();
+	        	let $total_dv = $("<div>").css({'border-top':'1px solid black','border-bottom':'1px solid black'})
+	        	.addClass("my-3 py-3 d-flex justify-content-evenly px-2").append(
+	        	$("<span>").css({'width':'50%','text-align':'center'}).text("상품"),		
+	        	$("<span>").css('width','20%').text("날짜"),		
+	        	$("<span>").css('width','20%').text("가격"),
+	        	$("<span>").css('width','10%').text("제거")
+	        	).appendTo($totalInfoContent);
+	        	data.objectList.forEach(function(item, index){
+	        		let $content_orders = $("<div>").addClass("d-flex flex-row justify-content-evenly align-items-center py-1 px-2")
+	        		.css({'border-top':'1px solid #ccc','border-bottom':'1px solid #ccc'}).append(
+	        				$("<div>").addClass('d-flex flex-row').css('width','50%').append(
+	        				$("<img>").attr('src',item.pro_bannerimg).css({'width':'15%',"height":'auto'})		
+	        				,$("<div>").addClass(" d-flex flex-column").append(
+	        						$("<span>").text('상품번호 : '+item.pro_no),
+	        						$("<span>").text(item.pro_name).attr('id','span_porductName'),
+	        						$("<span>").text(item.pro_bizname))),		
+	        	        	$("<span>").css('width','20%').text(item.wish_date.split(' ')[0]),		
+	        	        	$("<span>").css('width','20%').text(formatNumber(item.pro_price) )	,
+	        	        	$("<button>").addClass('btn btn-dark').text('삭제').on('click',function(event){
+	        	        		event.preventDefault();
+	        	        		  event.stopPropagation();
+	        	        		  deleteWish(item.pro_no);
+	        	        		  getTotalInfo_wish(totalInfo_pageNum);
+	        	        	})
+	        				 ).appendTo( $totalInfoContent);
+	        		
+	        		$content_orders.on('click',function(event){
+	        			event.preventDefault();
+	        			window.location.href="/product_detail?PRO_NO="+item.pro_no ; 
+	        		}).hover(function() {
+	        	        $(this).css('cursor', 'pointer');
+	        	    }, function() {
+	        	        $(this).css('cursor', 'auto');
+	        	    });
+	        	})
+	        	pageModal(data.next,data.prev,totalInfo_pageNum,data.startPage, data.endPage, data.total, getTotalInfo_wish,5);
+	        }
+	    })
+    };
+    
+    
+    
+    
+    let pageModal = function(next, prev, pageNum,startPage, endPage, total, callback, number){
+    	$("#totlaInfoTooter").empty();
+    	let $paging_dv = $("<div>").attr('id','paging_modal_dv').appendTo("#totlaInfoTooter")
+		.addClass(' d-flex flex-row justify-content-center align-items-center');
+		
+			$("<button >").appendTo($paging_dv).text("<<").on("click",function(){
+			
+			pageNum = 1;
+			callback(pageNum);
+		});
+		
+		
+		if (prev == true) {
+			$("<button >").appendTo($paging_dv).text("<").on("click",function(){
+				// 페이징 한단계 내리기
+				pageNum = Math.floor((pageNum - number )/ number)*number+1;
+				callback(pageNum);
+			});
+		}
+		for (let i = startPage; i <= endPage; i++) {
+			  let $button = $("<button>").appendTo($paging_dv).text(i).on("click", function() {
+			    pageNum=i;
+			    callback(pageNum);
+			  });
+			  
+			  if (i === pageNum) {
+			    $button.css('background-color','#ddd').css('color','black');
+			  }
+			}
+		
+		if (next == true) {
+			$("<button >").appendTo($paging_dv).text(">").on("click",function(){
+				// 페이징 한단계 올리기
+				pageNum = Math.floor((pageNum + number )/ number)*number+1;
+				callback(pageNum);
+			});
+		}
+		
+		$("<button >").appendTo($paging_dv).text(">>").on("click",function(){
+			pageNum = Math.ceil((total * 1.0)/number);
+			callback(pageNum);
+		});
+		
+    }
+    
+   let deleteWish = function(productNum){
+	   $.ajax({
+	        type: "delete",
+	        beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+	        contentType: "application/json",
+	        url: "/wishlist?productNum=" + productNum,
+	        success: function(data) {
+	        	console.log(data);
+	        }
+		})
+	}
+   
+   let colorOrder = function(condition){
+	   if(condition === 'd'){
+		   $("#due_btn").removeClass().addClass("btn btn-dark");
+		   $("#per_btn").removeClass().addClass("btn btn-outline-dark");
+	   }else{
+		   $("#due_btn").removeClass().addClass("btn btn-outline-dark");
+		   $("#per_btn").removeClass().addClass("btn btn-dark");
+		   
+	   }
+   }
+   
+    
+    
     
