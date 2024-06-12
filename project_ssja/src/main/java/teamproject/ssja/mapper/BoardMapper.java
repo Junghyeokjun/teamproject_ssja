@@ -68,4 +68,8 @@ public interface BoardMapper {
 	
 	//게시글의 이미지 경로를 삭제하는 메서드
 	int deleteBoardImg(long bno);
+	
+	
+	
+	// 
 } 

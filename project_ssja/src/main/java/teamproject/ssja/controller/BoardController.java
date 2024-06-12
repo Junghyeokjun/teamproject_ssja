@@ -27,7 +27,7 @@ public class BoardController {
 	private BoardService boardService;
 	
 	@GetMapping("/list/{category}")
-	public String boardList(Model model, Criteria criteria,@PathVariable("category") long bcno) {
+	public String boardList(Model model, Criteria criteria, @PathVariable("category") long bcno) {
 		log.info("boardList()..");
 		model.addAttribute("bc", boardService.showBoardCategory(bcno));
 		criteria.setBcno(bcno);
@@ -47,17 +47,18 @@ public class BoardController {
 //		return "/qna/content_view";
 //	}
 	
-	@GetMapping("/content_view")
-	public String showView(HttpServletRequest request, HttpServletResponse response, Model model) {
+	@GetMapping("/content_view/{category}")
+	public String showView(@PathVariable("category") long bcno,HttpServletRequest request, HttpServletResponse response, Model model) {
 		log.info("showView()..");
 		model.addAttribute("content_view", boardService.showContent(request, response));
+		model.addAttribute("bcNo", bcno);		
 		return "/qna/content_view";
 	}
 
 	@GetMapping("/write_view/{category}")
 	public String writeView(Model model, @PathVariable("category") long bcno) {
 		log.info("writeView()..");
-		model.addAttribute("bcno", bcno);
+		model.addAttribute("bcNo", bcno);
 		return "/qna/write_view";
 	}
 

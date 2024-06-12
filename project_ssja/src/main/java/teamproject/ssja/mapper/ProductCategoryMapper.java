@@ -13,7 +13,7 @@ public interface ProductCategoryMapper {
 	List<ProductCategoryGroupDto> selectPCMainList();
 	
 	// 소분류
-	List<ProductCategoryGroupDto> selectPCSubList();
+	List<ProductCategoryGroupDto> selectPCSubList(long mainPCNum);
 	
 	// 모든 카테고리 개수(소분류 카테고리 개수)
 	long selectPCAllCount();

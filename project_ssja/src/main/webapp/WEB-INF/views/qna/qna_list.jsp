@@ -83,6 +83,16 @@ body {
 </head>
 
 <body>
+<!-- 우선 권한 처리 -->
+	<sec:authentication property="principal" var="principal"/>
+	<sec:authorize access="isAnonymous()">
+	    <script type="text/javascript">
+	    	$(document).ready(function(){
+				alert("해당 게시판에 접근하기 위해서는 로그인이 필요합니다.");
+			 	window.location.href = "/login";
+	    	});
+		</script>
+	</sec:authorize>
 	<header>
 		<div id="title_bar" class=" fixed-top">
 			<div class="py-2 px-1" id="top-bar">
@@ -113,7 +123,10 @@ body {
 		</div>
 		<div id="main_container" style="margin: 0 auto;">
 			<div class="d-flex justify-content-end p-1">
+			<!-- 권한별  -->
 				<a href="${pageContext.request.contextPath}/board/write_view/${bc.bcno}" class="btn btn-primary btn-tuning">글 작성</a>
+			<!-- 관리자 권한인 경우에만 버튼 노출 -->
+				
 			</div>
 			<table class="table table-hover" style="text-align: center;">
 				<thead class="table-dark">
@@ -127,9 +140,9 @@ body {
 				<tbody>
 					<c:forEach var="board" items="${boards}">
 						<tr>
-							<td>${board.bno}</td>
-							<td><a id="board_title" class=""
-								href="${pageContext.request.contextPath}/board/content_view?bno=${board.bno}">${board.btitle}</a>
+							<td>${board.bno}</td>					
+							<td>
+								<a id="board_title"	href="${pageContext.request.contextPath}/board/content_view/${bc.bcno}?bno=${board.bno}">${board.btitle}</a>
 							</td>
 							<td>${board.bwriter}</td>
 							<td class="date_str">${board.bdate}</td>
@@ -184,4 +197,10 @@ body {
 	</footer>
 
 </body>
+<script type="text/javascript">
+	$(document).ready(function(){
+		
+	});
+</script>
+
 </html>

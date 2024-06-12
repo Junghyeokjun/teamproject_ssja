@@ -26,8 +26,8 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 	}
 
 	@Override
-	public List<ProductCategoryGroupDto> getPCSub() {
-		return productCategoryMapper.selectPCSubList();
+	public List<ProductCategoryGroupDto> getPCSub(long mainPCNum) {
+		return productCategoryMapper.selectPCSubList(mainPCNum);
 	}
 
 	@Override

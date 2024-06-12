@@ -4,6 +4,7 @@
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 	<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 	
 <!DOCTYPE html>
 <html lang="en">
@@ -91,6 +92,47 @@ body {
 </head>
 
 <body>
+	<!-- 카테고리 문자열을 숫자로 전환 -->
+	<fmt:parseNumber var="bcNum" value="${bcNo}" type="number" />
+	<sec:authorize access="isAuthenticated()">
+		<sec:authentication property="principal" var="principal"/>
+	    <script type="text/javascript">
+			var bcNum = '${bcNum}';
+			// content_view를 그대로 넣으면 안됨. 모두 문자열로 변환된 상태로 넘어오니까.
+			// 객체로 받고 싶다면 json 객체로 받기. 물론 담당자는 필요 데이터만 뽑아서 처리함.
+			var contentViewBmo = '${content_view.bmno}';
+	        var principal = {
+	            memberNum: "${principal.memberNum}",
+	            auth: "${principal.auth}"
+	        };
+
+			// QnA 게시판이고, 로그인 유저의 권한이 관리자가 아니며, 해당 작성자 번호와 로그인 번호가 다른 경우
+			if(principal.auth != 'ROLE_ADMIN' && bcNum == 20 && contentViewBmo != principal.memberNum){
+				alert("작성자의 문의 내용이 아니므로 확인하실 수 없습니다.");
+				window.location.href = "${pageContext.request.contextPath}/board/list/20";
+			}
+
+	        $(document).ready(function() {
+				// console.log("bcNum: " + bcNum);
+				// console.log("contentViewBmo: " + contentViewBmo);
+	            // console.log("Member Number: " + principal.memberNum);
+	            // console.log("Auth: " + principal.auth);
+	            // 여기서 principal 값을 사용하여 추가 작업 수행 가능
+				
+	        });
+	    </script>
+			
+		
+		<c:if test="${bcNo == 20 && principal.auth == 'ROLE_USER' && content_view.bmno != principal.memberNum}">
+			<script type="text/javascript">
+				function role(){
+					alert("관리자와 본인만 해당 페이지를 확인하실 수 있습니다. 목록으로 돌아갑니다.");
+					window.location.href = "${pageContext.request.contextPath}/board/list/20";
+				};				
+				role();
+			</script>
+		</c:if>
+	</sec:authorize>								
 	<header>
 		<div id="title_bar" class=" fixed-top">
 			<div class="py-2 px-1" id="top-bar">
@@ -166,32 +208,44 @@ body {
 	    					</div>
 						</td>		
 					</tr>
-					<tr>
-						<td  colspan="2">
-							<div class="d-flex justify-content-center">
-								<!-- data-likebmno 값 변경 필요 -->
-								<button id="like-button" class="btn" data-likebno="${content_view.bno}" data-likebmno="${content_view.bmno}">
-									<img class="board-like" >
-								</button>
-							</div>
-					</tr>
-					<tr>
-						<td  colspan="2" style="border: none;">
-							<div class="text-center">
-								<p>
-									좋아요 수 : <span id="like-count">${content_view.blike}</span>
-								</p>
-							</div>
-						</td>
-					</tr>
+					
+					<c:if test="${bcNum >= 30}">
+						<tr>
+							<td  colspan="2">
+								<div class="d-flex justify-content-center">
+									<!-- data-likebmno 값 변경 필요 -->
+									<button id="like-button" class="btn" data-likebno="${content_view.bno}" data-likebmno="${principal.memberNum}">
+										<img class="board-like" >
+									</button>
+								</div>
+						</tr>					
+						<tr>
+							<td  colspan="2" style="border: none;">
+								<div class="text-center">
+									<p>
+										좋아요 수 : <span id="like-count">${content_view.blike}</span>
+									</p>
+								</div>
+							</td>
+						</tr>
+					</c:if>
 					<tr>
 						<td  colspan="2">
 							<div class="d-flex justify-content-between">
-								<div>
-									<input type="submit" class="btn btn-danger customed-ssja" value="수정">
-									<a id="deleteBoard" href="${pageContext.request.contextPath}/board/delete?bno=${content_view.bno}" class="btn btn-danger">삭제</a>
-								</div>
-								
+							<sec:authorize access="isAuthenticated()">
+								<c:choose>								
+									<c:when test="${principal.memberNum == content_view.bmno || principal.auth eq 'ROLE_ADMIN'} ">
+										<div>
+											<input type="submit" class="btn btn-danger customed-ssja" value="수정">
+											<a id="deleteBoard" href="${pageContext.request.contextPath}/board/delete?bno=${content_view.bno}" class="btn btn-danger">삭제</a>
+										</div>
+									</c:when>
+									<c:otherwise>
+										<div>
+										</div>									
+									</c:otherwise>
+								</c:choose>
+							</sec:authorize>								
 								<a class="btn btn-primary customed-ssja" href="${pageContext.request.contextPath}/board/list/${content_view.bbcno}">되돌아가기</a>								
 								<%-- &nbsp;&nbsp;<a href="${pageContext.request.contextPath}/board/delete?bno=${content_view.bno}">삭제</a> --%>
 							<%-- <sec:authorize access="hasRole('ROLE_ADMIN')">
@@ -209,13 +263,27 @@ body {
 						</td>
 					</tr>
 					<tr>
-						<td colspan="2">
-							<h5 class="h5 m-1 p-1">댓글 </h5>		
-							<div class="input-group border">								
-	    						<input id="inputReplyCon" type="text" class="form-control" name="rcontent" data-rbno="${content_view.bno}" data-rmno="" placeholder="댓글을 입력하세요.">
-	    						<span class="input-group-text"><button id="inputReply" class="btn btn-primary btn-format">입력</button></span>
-	    					</div>	   						    					
-						</td>					
+						<c:choose>
+							<c:when test="${(bcNum == 20 && principal.auth != 'ROLE_ADMIN') 
+											|| (bcNum == 10 && principal.auth == 'ROLE_USER')
+											|| (bcNum == 30 && principal.auth == 'ROLE_USER') }">
+								<td colspan="2">
+									<h5 class="h5 m-1 p-1 text-center">댓글 </h5>
+									<div class="input-group border visually-hidden">								
+			    						<input id="inputReplyCon" type="text" class="form-control" name="rcontent" data-rbno="${content_view.bno}" data-rmno="" placeholder="관리자만 달 수 있는 댓글입니다.">
+			    					</div>	
+								</td>
+							</c:when>
+							<c:otherwise>
+								<td colspan="2">
+									<h5 class="h5 m-1 p-1">댓글 </h5>		
+									<div class="input-group border">								
+			    						<input id="inputReplyCon" type="text" class="form-control" name="rcontent" data-rbno="${content_view.bno}" data-rmno="" placeholder="댓글을 입력하세요.">
+			    						<span class="input-group-text"><button id="inputReply" class="btn btn-primary btn-format">입력</button></span>
+			    					</div>	   						    					
+								</td>
+							</c:otherwise>
+						</c:choose>					
 					</tr>
 					<tr>
 						<td colspan="2">
@@ -280,6 +348,8 @@ body {
 	</footer>
 <script>
 	$(document).ready(function(){
+		let token = $("meta[name='_csrf']").attr("content");
+		let header = $("meta[name='_csrf_header']").attr("content");
 		// 해당 jsp 파일에서만 텍스트 영역의 스크롤바를 없애고 내용에 따라 높이를 조정해 줄 예정
 		// srollHeight : 컨텐츠가 차지하는 공간 높이. 제이쿼리로는 접근을 못해서, DOM 객체로 변환 후 접근해야 함.
 		// $('#board_textarea')[0] : 해당 제이쿼리 객체에서 첫 번째 DOM 요소로 접근한다는 것을 의미.
@@ -355,9 +425,11 @@ body {
 			// 현재 페이지에서는 관리자 댓글 외형을 입히기 위해 ajax에 댓글 헤드를 꾸미는 함수를 집어넣었음.
 			$.each(response.replys, function(index, reply_view) {
 				html1 += '<div class="rounded border m-2">';
-				html1 += '<div class="replyhead1 text-center"><h2 class="h2 disabled border-0 m-0 pt-2">관리자 답변</h2></div>'	
-				html1 += '<div class="d-flex flex-row-reverse replyhead2"><div><button class="reply-modify btn">수정</button><button id="reply-delete" class="btn">X</button></div><div class="btn disabled border-0">' + reply_view.rdate + '</div></div>';
-				html1 += '<div class="input-group">'; 
+				html1 += '<div class="replyhead1 text-center"><h2 class="h2 disabled border-0 m-0 pt-2">관리자 답변</h2></div><div class="d-flex flex-row-reverse replyhead2">'	
+				if(principal.auth == "ROLE_ADMIN"){
+					html1 += '<div><button class="reply-modify btn">수정</button><button id="reply-delete" class="btn">X</button></div>';
+				}
+				html1 += '<div class="btn disabled border-0">' + reply_view.rdate + '</div></div><div class="input-group">'; 
 				// 댓글 만들기
 				for (let i = 1; i <= reply_view.rindent; i++) {
 					html1 += '<img src="">';
@@ -418,6 +490,39 @@ body {
 			$('.h5.m-1.p-1').text('댓글 ' + response.pageMaker.total);
 		};
 		
+		// $('.reply-modify').on('click',function(){
+		// 	let replyParent = $(this).parents('div').eq(2);
+		// 	let textarea = replyParent.find('textarea')
+		// 	if($(this).text == '수정'){
+		// 		textarea.prop('readonly', false);
+		// 		textarea.focus();
+		// 		$(this).text = '완료';
+		// 	}else if($(this).text == '완료'){
+		// 		$.ajax({
+		// 			url: replysUrl + '/modify',
+		// 			type : 'POST',
+		// 			beforeSend : function(xhr) {
+		// 				xhr.setRequestHeader(header, token);
+		// 			},
+		// 			data : {
+		// 				'bno' : rbno
+		// 			},					
+		// 			success :  function(response){
+		// 				console.log("replys : " + response.replys);
+		// 				console.log("pageMaker : " + response.pageMaker);
+		// 				console.log("replyTotal : " + response.pageMaker.total);
+		// 				console.log("===============================");
+		// 				getReplyLists(response);	
+		// 				replyTextareaHeight();
+		// 				adminReplyHead();
+		// 			},
+		// 			error : function(xhr, status, error){
+		// 				console.log("error : " + error);
+		// 				console.log("response : " + xhr.responseText);
+		// 			}
+		// 		});
+		// 	}			
+		// });
 
 		// 관리자 댓글 헤드 꾸미기 함수
 		let adminReplyHead = function(){
@@ -493,9 +598,8 @@ body {
 
 		// 제약 1 : 댓글 내용 칸 클릭 시, 로그인이 되어 있지 않다면 로그인 상태를 방지
 		$(document).on('click', '#inputReplyCon', function(){
-			if(!isLoggedIn()){
-				alert('댓글을 달 수 없습니다. 로그인 페이지로 이동합니다.');
-				$(location).attr('href', '/login');
+			if(principal.auth != "ROLE_ADMIN"){
+				alert('관리자만 댓글을 달 수 있습니다');
 				return;
 			}
 		});

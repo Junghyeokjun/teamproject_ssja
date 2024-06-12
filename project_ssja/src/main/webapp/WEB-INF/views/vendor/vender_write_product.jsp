@@ -262,21 +262,25 @@
 
 <body>
 	<sec:authorize access="isAuthenticated()">
-    	<sec:authentication property="principal" var="principal"/>
+    	<sec:authentication property="principal.auth" var="myAuth"/>
     	<c:choose>		
-			<c:when test="${principal.auth != 'ROLE_VENDOR'}">
+			<c:when test="${myAuth != 'ROLE_VENDOR'}">
 			<!-- 권한이 판매자가 아닌 경우 -->
 				<script>
-					alert("접근할 수 없습니다.");
-					window.location.href = "/";
+					$(document).ready(function() {
+		                alert("접근할 수 없습니다.");
+		                window.location.href = "/";
+		            });
 				</script>
 			</c:when>
 		</c:choose>
     </sec:authorize>
 	<sec:authorize access="isAnonymous()">
 	    <script type="text/javascript">
-			alert("로그인한 상태에서만 접근하실 수 있습니다.");
-		 	window.location.href = "/login";			
+	    	$(document).ready(function(){
+				alert("해당 게시판에 접근하기 위해서는 로그인이 필요합니다.");
+			 	window.location.href = "/login";
+	    	});
 		</script>
 	</sec:authorize>	
 	<header>
@@ -290,13 +294,14 @@
 						로그인 시 venderDto에 담기는 vender.vbizname 또한 가져오기						
 						그냥 조인을 쓴다면 venderDto가 아니라 조인한 결과를 담는 다른 Dto가 필요할 것이다.
 					 -->
-					 
-        			<h1 class="h1 venderName"> 
+        			<h1 class="h1 venderNames"> 
         				&lt;
         				<sec:authorize access="isAuthenticated()">
-        					<sec:authentication property="principal.userInfo.m_Id"/>
+        					<sec:authentication property="principal.userInfo" var="venderMember"/>
         				</sec:authorize>
-        				&gt;</h1>        			
+        				<input type="hidden" id="venderId" value="${venderMember.m_Id}">
+        				${venderMember.m_Name}
+        				&gt;</h1>      			
         		</div>
 				<a id="user_link"><img id="login_img"></a>
 			</div>
@@ -400,6 +405,30 @@
 </body>
 <script type="text/javascript">
 	$(document).ready(function(){
+		let $venderId = $('#venderId').val();
+		
+		// value 기본값은 "" 이다. 빈 문자열이 아니라는 의미는, 값이 들어갔다는 의미이다. 
+		if($venderId != ""){
+
+			$.ajax({
+				type : "POST",
+				beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+				},
+				url : "/api/vendor/venderInfo",
+				data : { 'venderId' : $venderId },
+				success : function(response){
+					console.log(response);
+					$('.venderNames').append(response.)
+				},
+				error : function(xhr, status, error){
+					console.log("서브 카테고리 가져오기가 실패했습니다");
+				}
+			});
+		}
+		
+		
+		
 		/* 
 			메인 카테고리 작업 중
 		

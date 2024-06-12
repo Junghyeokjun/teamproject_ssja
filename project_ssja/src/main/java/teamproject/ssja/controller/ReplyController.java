@@ -35,7 +35,7 @@ public class ReplyController {
 	public ResponseEntity<Map<String, Object>> getReplyList(Criteria criteria, @RequestParam("bno") long bno){
 		Map<String, Object> responseData = new HashMap<>();
 		try {
-			criteria.setBno(bno);
+			// criteria.setBno(bno);
 			responseData.put("replys", replyService.showReplys(criteria.getBno()));
 			log.info("replys : " + responseData.get("replys"));
 			responseData.put("pageMaker", new PageVO(replyService.getTotal(criteria.getBno()), criteria));
@@ -54,9 +54,9 @@ public class ReplyController {
 		
 		Map<String, Object> responseData = new HashMap<>();
 		try {			
-			criteria.setBno(bno);
-			criteria.setPageNum(pageNum);
-			criteria.setAmount(amount);
+//			criteria.setBno(bno);
+//			criteria.setPageNum(pageNum);
+//			criteria.setAmount(amount);
 			responseData.put("replys", replyService.showReplys(criteria.getBno()));
 			log.info("replys : " + responseData.get("replys"));
 			responseData.put("pageMaker", new PageVO(replyService.getTotal(criteria.getBno()), criteria));
