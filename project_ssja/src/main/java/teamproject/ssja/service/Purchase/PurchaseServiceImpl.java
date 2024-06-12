@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import teamproject.ssja.dto.OrdersDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.PurchaseDto;
+import teamproject.ssja.dto.userinfo.CouponDTO;
 import teamproject.ssja.mapper.MembersMapper;
 import teamproject.ssja.mapper.OrdersMapper;
 import teamproject.ssja.mapper.ProductDetailMapper;
@@ -39,6 +40,9 @@ public class PurchaseServiceImpl implements PurchaseService {
 		PurchaseDto purchase;
 		List<OrdersDto> orders= new ArrayList<>();
 		int ordersCount=0;
+		
+		long mno;
+		long useCoupon;
 
 		System.out.println(purchaseData);
 		
@@ -91,6 +95,23 @@ public class PurchaseServiceImpl implements PurchaseService {
 	@Override
 	public ProductDto getProduct(long proNo) {
 		return productMapper.getProduct(proNo);
+	}
+
+
+	@Override
+	public List<ProductDto> getProducts(List<Integer> itemList,long mno) {
+		List<ProductDto> list= new ArrayList<ProductDto>();
+		for (Integer prono : itemList) {
+			list.add(productMapper.getCartProduct(prono, mno));
+		}
+		
+		return list;
+	}
+	
+	@Override
+	public List<CouponDTO> getUserCoupon(long mno) {
+		
+		return purchaseMapper.selectOwnCoupons(mno);
 	}
 	
 }

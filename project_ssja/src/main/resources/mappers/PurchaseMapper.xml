@@ -19,6 +19,9 @@
 	
 	</insert>
 	
+	<select id="selectOwnCoupons" resultType="CouponDto">
+		select * from coupon c ,ownedcoupon o WHERE c.c_no=o.c_no and c.c_duedate>=SYSDATE and o.m_no=#{mno}
+	</select>
 	
 	
 </mapper>

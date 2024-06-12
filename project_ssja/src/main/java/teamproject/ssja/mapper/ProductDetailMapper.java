@@ -21,6 +21,8 @@ public interface ProductDetailMapper {
 	List<ProductDetailReplyDto> getListWithPaging(Criteria cri);
 	//하나의 상품을 가져오는 메서드
 	ProductDto getProduct(long PRO_NO);
+	
+	ProductDto getCartProduct(long PRO_NO,long M_NO);
 
 }
 

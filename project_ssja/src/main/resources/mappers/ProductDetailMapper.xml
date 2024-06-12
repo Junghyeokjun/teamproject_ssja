@@ -46,6 +46,14 @@
 	     ]]>
 	</select>
 
+	<select id="getCartProduct" resultType="ProductDto">
+	    <![CDATA[		
+		   	select p.pro_no,p.v_no,p.p_c_no,p.pro_price,i.i_quantity as "PRO_QUANTITY",p.pro_bannerimg,p.pro_wish,p.pro_sellcount,p.pro_hit,p.pro_bizname,p.pro_name,p.pro_date
+			from item_cart i, product p
+			where i.pro_no=p.pro_no and i.m_no=#{M_NO} and  i.pro_no=#{PRO_NO}
+	     ]]>
+	</select>
+
 	 <resultMap id="ProductDetailReplyMap"  type="ProductDetailReplyDto">
 		<id property="PRO_NO" column="PRO_NO" />
 		<result property="B_WRITER" column="B_WRITER" />
