@@ -203,8 +203,16 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public int deleteReply(long rno) {
 		ReplysDto reply=replyMapper.selectReply(rno);
-		int result=replyMapper.deleteReply(reply);		
-		replyMapper.updateRShape(reply);
+		int result=0;
+		if(replyMapper.selectReReplyCount(reply)==0) {
+			result=replyMapper.deleteReply(reply);		
+			replyMapper.updateRShape(reply);
+		}else {
+			reply.setRcontent("삭제된 댓글입니다.");
+			reply.setRmno(0);
+			reply.setRmnickname(" ");
+			replyMapper.updateDeleteReply(reply);
+		}
 		return result;
 	}
 

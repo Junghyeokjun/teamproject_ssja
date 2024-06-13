@@ -215,7 +215,11 @@
                   $('<span>'+e.rdate+'</span>').appendTo(reply_wrap2);
                 }
                 reply_wrap2.appendTo(reply_wrap1);
-                $('<div class="p-2 reply">'+e.rcontent+'</div>').appendTo(reply_wrap1);
+                if(e.rmno!=0){
+                  $('<div class="p-2 reply">'+e.rcontent+'</div>').appendTo(reply_wrap1);
+                }else{
+                  $('<div class="p-2 ">'+e.rcontent+'</div>').appendTo(reply_wrap1);
+                }
                 reply.append(reply_wrap1);
               });
               
@@ -354,6 +358,18 @@
               more_btn.removeAttr("hidden");
               for(var i=0;i<temp;i++){
                 more_reply();
+              }
+              console.log(reply_count.total);
+              if(reply_count.total==0){
+                reply.append($('<div id="none_reply" class="my-2" style="margin-left: 16px; margin-right: 16px; box-sizing: content-box; border: 1px solid #BBB;"  >' +
+                                  '<div class="ps-2" style="background-color: #EEE;">'+
+                                    'admin' +
+                                  '</div>' +
+                                  '<div class="p-2">'+
+                                    '댓글이 존재하지 않습니다.'+
+                                  '</div>'+
+                                '</div>'));
+                
               }
               window.scrollTo({top : temp_scroll , left : 0 , behavior : 'instant',});
             },    
