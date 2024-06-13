@@ -21,6 +21,7 @@
 
  -->
  	
+ <!-- 상품  -->
  	<!-- 페이징은 기본으로 깔고 가기 -->
 	<select id="selectVendorProducts" resultMap="VendorDtoMap">
 		 <![CDATA[
@@ -35,7 +36,16 @@
 			where rnum > (#{pageNum}-1) * #{amount}
    		 ]]>
 	</select>
+
+<!-- 	
+	<insert id="">
+		<![CDATA[
+			insert into Product values 
+		]]>
+	</insert>
 	
+ -->	
+<!-- 문의 -->	
 	<!-- 페이징은 기본으로 깔고 가기 -->
 	<select id="selectVendorQnas" resultMap="BoardDtoMap">
 		 <![CDATA[

@@ -173,7 +173,7 @@
 		border: 0;
 	}
 	
-	/* 커스텀 시작1 - label */
+	/* 커스텀 시작 - label */
 	.file-container_ label {
 	  display: inline-block;
 	  padding: .5em .75em;
@@ -332,6 +332,7 @@
     <div id="main_container" class="d-flex flex-row align-items-center justify-content-center" >      	
         <div id="MyPage_content_container" class="border p-5">
         	<form id="productAdd" action="${pageContext.request.contextPath}/vendor/product/add" method="post" autocomplete="off" encType="multipart/form-data">
+				<sec:csrfInput/>
 				<div id="ProductCategory" class="p-2 input-group w-100">   
 				   <label class="mx-2 m-auto input-group-text" >1차 분류</label>
 				   <!-- 상품 카테고리를 해당 페이지에 뿌려줘야 함 : 한 자리 수 -->
@@ -377,7 +378,7 @@
  					<div class="file-container_ form-control custom-primary m-2 d-flex align-items-center">
 			            <input id="coverFileText" class="file-upload-name_" placeholder="파일을 선택하세요" disabled="disabled">			
 			            <label for="coverFile" >올리기</label> 
-			            <input type="file" id="coverFile" class="upload-images_" multiple="multiple" name="coverFile[]" >			        
+			            <input type="file" id="coverFile" class="upload-images_" multiple="multiple" name="coverFile" >			        
 			        </div>			        
 				</div>
 				<div class="input-group w-100 p-2">	
@@ -392,7 +393,7 @@
  					<div class="file-container_ form-control custom-primary m-2 d-flex align-items-center">
 			            <input id="explainFileText" class="file-upload-name_" placeholder="파일을 선택하세요" disabled="disabled">			
 			            <label for="explainFile" >올리기</label> 
-			            <input type="file" id="explainFile" class="upload-images_" multiple="multiple" name="explainFile[]" >			        
+			            <input type="file" id="explainFile" class="upload-images_" multiple="multiple" name="explainFile" >			        
 			        </div>			        
 				</div>
 				<div class="input-group w-100 p-2">	
@@ -641,8 +642,10 @@
 					$(this).children($('#exDelBtn')).remove();
 				}
 			}
-
-			console.log("files : " + files);
+			for(let i = 0; i < selectedExplainFiles.length ; i++){
+				console.log("explainFile : " + selectedExplainFiles[i].name);
+			}
+			console.log("==")
 		});
 
 		console.log("proprice val 타입 : " + typeof $("#proPrice").val());
@@ -683,10 +686,10 @@
 			}else if($("#proName").val()=="" || $("#proName").val()==null){
 				alert("상품명을 입력하셔야 합니다.");
 				return;
-			}else if($("#proName").length() <= 5){
+			}else if($("#proName").val().length < 5){
 				alert("상품명은 다섯 글자 이상 입력하셔야 합니다.");
 				return;
-			}else if($("#proPrice").val()=="" || $("#proPrice").val()==null){
+			}else if($("#proPrice").val()=="" || $("#proPrice").val()==null || isNaN(Number($("#proPrice").val()))){
 				alert("상품 가격을 입력하셔야 합니다.");
 				return;
 			}else if( Number($("#proPrice").val()) < 0){
@@ -695,7 +698,7 @@
 			}else if( !Number.isInteger(Number($("#proPrice").val()))){
 				alert("상품 가격에 소수는 입력하시면 안됩니다.");
 				return;
-			}else if($("#proQuantity").val()=="" || $("#proQuantity").val()==null){
+			}else if($("#proQuantity").val()=="" || $("#proQuantity").val()==null || isNaN(Number($("#proQuantity").val())) ){
 				alert("상품수량을 입력하셔야 합니다.");
 				return;
 			}else if( Number($("#proQuantity").val()) < 0 ){
@@ -706,7 +709,7 @@
 				return;
 			}else{
 				// 위 제약조건에 해당되지 않는 나머지 경우에 한해, 로직을 실행한다.	
-
+				this.submit();
 			}
 		});
 

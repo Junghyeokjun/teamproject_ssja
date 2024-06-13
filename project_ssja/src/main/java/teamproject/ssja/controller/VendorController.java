@@ -1,5 +1,7 @@
 package teamproject.ssja.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,8 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.slf4j.Slf4j;
+import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.login.CustomPrincipal;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
 import teamproject.ssja.page.Criteria;
@@ -64,10 +68,22 @@ public class VendorController {
 		return "/vendor/vendor_write_product";
 	}
 	
+	// 경로 - service에 넣을 예정
+	private String bannerFileUploadPath = "src/main/resources/static/images/product_banner";
+	private String coverFilesUploadPath = "src/main/resources/static/images/product_banner";
+	private String explainFilesUploadPath = "src/main/resources/static/images/product_banner";
+	
+	// 파일 업로드
 	@PostMapping("/product/add")
-	public String addOne() {
-		log.info("addOne()..");
+	public String addOne(MultipartFile bannerFile, 
+						 List<MultipartFile> coverFile, 
+						 List<MultipartFile> explainFile,
+						 ProductDto productDto) {
+		log.info("addOne()..");	
 		
+		log.info("bannerFile : {} " , bannerFile);
+		log.info("coverFiles : {} " , coverFile);
+		log.info("explainFiles : {} " , explainFile);
 		
 		// 초기화면으로 돌아가기(해당 페이지는 초기 화면 역할을 하며, 이후 변경할 예정)
 		return "/vendor/vendor_view";
