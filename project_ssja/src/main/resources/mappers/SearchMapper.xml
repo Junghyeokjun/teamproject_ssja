@@ -83,4 +83,15 @@
    
     </select>
     
+    
+    <select id="countSearchItemList" parameterType="teamproject.ssja.dto.product.SearchForm" resultType="int">
+   SELECT COUNT(*)
+   FROM product p
+   WHERE 1=1 
+     <include refid="conditionSearch"/>
+     <if test='start != null and end != null'>
+        AND pro_price BETWEEN #{start} AND #{end}
+     </if>
+	</select>
+    
 </mapper>

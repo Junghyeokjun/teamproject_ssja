@@ -42,11 +42,7 @@
       background-color: #f7f0e8;
     }
 
-    #logo_img {
-      width: 3.5em;
-      height: 3em;
-      width:90%;
-    }
+ 
     
 /* 추가 */
 #product_search_select{

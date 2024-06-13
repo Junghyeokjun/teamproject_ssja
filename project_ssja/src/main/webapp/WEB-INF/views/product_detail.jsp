@@ -58,11 +58,7 @@ body {
     cursor: default; /* 기본 커서를 사용합니다. */
     transition: none; /* 전환 효과를 없앱니다. */
 }
-#logo_img {
 
-	width: 3.5em;
-	height: 3em;
-}
 
 .yellowStar {
 	color: gold;

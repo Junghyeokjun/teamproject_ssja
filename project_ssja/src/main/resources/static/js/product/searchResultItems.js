@@ -126,8 +126,8 @@ let getListProductToServer = function(keyword,start,end,pageNum,selectedConditio
 				});
 				$("<button >").appendTo($paging_dv).text("<<").on("click",function(){
 					
-					product_condition.setPageNum(1);
-					getListProductToServer(product_condition);
+					pageNum=1;
+					getListProductToServer(keyword,start,end,pageNum, selectedCondition);
 					$(window).scrollTop(350);
 				});
 				
@@ -135,19 +135,19 @@ let getListProductToServer = function(keyword,start,end,pageNum,selectedConditio
 				if (data.prev == true) {
 					$("<button >").appendTo($paging_dv).text("<").on("click",function(){
 						// 페이징 한단계 내리기
-						product_condition.setPageNum(Math.floor((condition.pageNum - 10 )/ 10)*10+1);
-						getListProductToServer(product_condition);
+						pageNum = Math.floor((pageNum - 10 )/ 10)*10+1;
+						getListProductToServer(keyword,start,end,pageNum, selectedCondition);
 						$(window).scrollTop(350);
 					});
 				}
 				for (let i = data.startPage; i <= data.endPage; i++) {
 					  let $button = $("<button>").appendTo($paging_dv).text(i).on("click", function() {
-					    product_condition.setPageNum(i);
-					    getListProductToServer(product_condition);
+					    pageNum=i;
+					    getListProductToServer(keyword,start,end,pageNum, selectedCondition);
 					    $(window).scrollTop(350);
 					  });
 					  
-					  if (i === condition.pageNum) {
+					  if (i === pageNum) {
 					    $button.css('background-color','#95857F').css('color','black');
 					  }
 					}
@@ -155,16 +155,16 @@ let getListProductToServer = function(keyword,start,end,pageNum,selectedConditio
 				if (data.next == true) {
 					$("<button >").appendTo($paging_dv).text(">").on("click",function(){
 						// 페이징 한단계 올리기
-						product_condition.setPageNum(Math.floor((condition.pageNum + 10)/ 10)*10+1);
-						getListProductToServer(product_condition);
+						pageNum=((pageNum + 10)/ 10)*10+1;
+						getListProductToServer(keyword,start,end,pageNum, selectedCondition);
 						$(window).scrollTop(350);
 					});
 				}
 				
 				$("<button >").appendTo($paging_dv).text(">>").on("click",function(){
 					
-					product_condition.setPageNum(Math.ceil((data.total * 1.0) / 40));
-					getListProductToServer(product_condition);
+					pageNum = (Math.ceil((data.total * 1.0) / 40));
+					getListProductToServer(keyword,start,end,pageNum, selectedCondition);
 					$(window).scrollTop(350);
 				});
 				

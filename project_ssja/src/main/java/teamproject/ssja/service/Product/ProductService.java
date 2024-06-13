@@ -6,6 +6,7 @@ import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.product.ProductCondition;
 import teamproject.ssja.dto.product.ProductItemDto;
 import teamproject.ssja.dto.product.SearchForm;
+import teamproject.ssja.dto.product.SearchResultsWithConditionDTO;
 import teamproject.ssja.dto.userinfo.CartItemsDTO;
 
 public interface ProductService {
@@ -17,5 +18,5 @@ public interface ProductService {
 	
 	List<CartItemsDTO >getYourItemCrat();
 	
-	List<ProductItemDto> getSearchItems(SearchForm form);
+	SearchResultsWithConditionDTO getSearchItems(SearchForm form);
 }

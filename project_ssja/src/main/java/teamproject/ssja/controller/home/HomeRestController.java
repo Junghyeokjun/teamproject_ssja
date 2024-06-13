@@ -49,12 +49,13 @@ public class HomeRestController {
 		try {
 			
 		log.info("fornm {}", form);
-		List<ProductItemDto> list = productService.getSearchItems(form);
-		SearchResultsWithConditionDTO data = new SearchResultsWithConditionDTO(form);
-		data.setItemList(list);
-		 
+		
+		SearchResultsWithConditionDTO data = productService.getSearchItems(form);
+		
 		return ResponseEntity.ok(data);
+		
 		} catch (Exception e) {
+			
 			return ResponseEntity.badRequest().body(null);
 		}
 	}
