@@ -95,11 +95,25 @@
       <div id="community_content" class="mt-4 mb-2"></div>
 
 
-      <c:if test="${principal != null}">
-        <div class="w-100 d-flex justify-content-end">
-          <button id="insert_btn" type="button" class="btn btn-primary">글쓰기</button>
+        <div class="w-100 d-flex justify-content-between ms-4" style="">
+          <span></span>
+          <span class="ms-4">
+            <select name="" id="search_opt" style="height: 29px;">
+              <option value="all" selected>전체</option>
+              <option value="title">제목</option>
+              <option value="content">내용</option>
+              <option value="title_and_content">제목+내용</option>
+              <option value="writer">작성자</option>
+            </select>
+            <input type="text" id="search_keyword" class="ms-2">
+            <button type="button" id="search_btn">검색</button>
+          </span>
+          <span style="width: 70px;height: 40px;">
+            <c:if test="${principal != null}">
+              <button id="insert_btn" type="button" class="btn btn-primary">글쓰기</button>
+            </c:if>
+          </span>
         </div>
-      </c:if>
       <div id="paging_dv" class="d-flex flex-row justify-content-center align-items-center mb-4"> </div>
     
     </div>
