@@ -95,7 +95,7 @@
       <div id="community_content" class="mt-4 mb-2"></div>
 
 
-        <div class="w-100 d-flex justify-content-between ms-4" style="">
+        <div class="w-100 d-flex justify-content-between ms-4">
           <span></span>
           <span class="ms-4">
             <select name="" id="search_opt" style="height: 29px;">

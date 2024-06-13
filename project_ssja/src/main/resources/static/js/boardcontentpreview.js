@@ -44,17 +44,23 @@ $(document).ready(function(){
     //최신게시물 화살표 이벤트
     $(document).on("click","#next_btn",function(){
         $("#recent_post_wrap").css("animation","next_full_post 0.3s ease-in-out forwards");
-        $("#prev_btn").css("display","inline");
-        $("#next_btn").css("display","none");
+        $("#prev_btn").removeAttr("hidden");
+        $("#next_btn").attr("hidden","hidden");
+        })
+        // $("#prev_btn").css("display","inline");
+        // $("#next_btn").css("display","none");
+
+        $(document).on("click","#prev_btn",function(){
+            $("#recent_post_wrap").css("animation","prev_full_post 0.3s ease-in-out forwards");
+            $("#next_btn").removeAttr("hidden");
+            $("#prev_btn").attr("hidden","hidden");
+            // $("#next_btn").css("display","inline");
+            // $("#prev_btn").css("display","none");
+            
+        })
+        $("#prev_btn").attr("hidden","hidden");
     })
 
-    $(document).on("click","#prev_btn",function(){
-        $("#recent_post_wrap").css("animation","prev_full_post 0.3s ease-in-out forwards");
-        $("#next_btn").css("display","inline");
-        $("#prev_btn").css("display","none");
-        
-    })
-    $("#prev_btn").css("display","none");
+
     
 
-    })
