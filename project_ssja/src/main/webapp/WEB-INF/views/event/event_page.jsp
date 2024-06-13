@@ -42,10 +42,7 @@
       background-color: #f7f0e8;
     }
 
-    #logo_img {
-      width: 3.5em;
-      height: 3em;
-    }
+
     
     #event_top{
     border-bottom:1px solid #cccccc;

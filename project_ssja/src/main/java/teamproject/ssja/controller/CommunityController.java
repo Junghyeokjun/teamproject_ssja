@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -107,7 +108,7 @@ public class CommunityController {
 	//댓글 페이징해서 얻어오는 부분
 	@GetMapping("/reply")
 	public List<ReplysDto> reply(int replyNum,int amount, long bno){
-		
+
 		return communityService.getReply(replyNum, amount, bno);
 	}
 	
@@ -124,6 +125,21 @@ public class CommunityController {
 															 Long.valueOf(data.get("rgroup").toString()).longValue(),  
 															 Long.valueOf(data.get("rstep").toString()).longValue(),  
 															 Long.valueOf(data.get("rindent").toString()).longValue()));
+	}
+	
+	//댓글 수정하는 부분
+	@PutMapping("/reply/{rno}")
+	public int updateReply(@PathVariable("rno") long rno,@RequestBody Map<String, String> data) {
+		ReplysDto reply=new ReplysDto();
+		reply.setRno(rno);
+		reply.setRcontent(data.get("content"));
+		return communityService.updateReply(reply);
+	}
+	
+	//댓글 삭제하는 부분
+	@DeleteMapping("/reply/{rno}")
+	public int deleteReply(@PathVariable("rno") long rno) {
+		return communityService.deleteReply(rno);
 	}
 
 	//댓글 총개수 얻어오는 부분
@@ -174,7 +190,7 @@ public class CommunityController {
 		return communityService.insertPost(new BoardDto(0, Long.valueOf(data.get("mno").toString()).longValue(), 
 														40, data.get("writer").toString(), 
 														data.get("title").toString(), 
-														data.get("content").toString(), "SYSDATE", 0, 0, 0, 0));
+														data.get("content").toString(), "SYSDATE", 0, 0, 0, 0, 0));
 	}	
 	//게시글 입력시 임시 이미지를 삭제하는 메서드
 	@DeleteMapping("/tempImg/{randomNum}")

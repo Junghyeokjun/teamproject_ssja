@@ -221,7 +221,7 @@
     <div id="main_container" class="border-start border-end container">
         
       <div class="d-flex flex-column align-items-center mt-3 container-fluid">
-        <input class="w-100 ps-3 py-2 mb-3 border-top border-bottom fs-3 " id="title" value="${content.btitle}" > 
+        <input class="w-100 ps-3 py-2 mb-3 border-top border-bottom fs-3 " id="title" style="border-right: 0px; border-left: 0px;" value="${content.btitle}" > 
         <div class="w-100 mb-3 d-flex flex-column align-items-center" id="content" contentEditable >
           <c:if test='${!content.img_path.equals("/images/board_content/temp.png")}'>
             <img src="${content.img_path}" alt="" id="view_img" class="w-75 d-inline-block mb-5 ">

@@ -19,6 +19,7 @@ class ReplyMapperTest {
 	ReplyMapper replyMapper;
 	
 	// 일반적인 댓글 달기
+	@Disabled
 	@Test
 	void testInsertReply(){
 		// 예시를 위한 댓글 데이터. 데이터베이스에 실제로 들어갈 땐 sysdate나 sequence를 통해 들어감.
@@ -99,7 +100,7 @@ class ReplyMapperTest {
 		log.info("100번 글의 총 댓글 개수 : " + replyMapper.selectReplyCount(100));
 	}
 	
-
+	@Disabled
 	@Test
 	void testSelectPartReply() {
 		log.info(replyMapper.selectPartReplys(1, 20, 11620).toString());
@@ -151,6 +152,11 @@ class ReplyMapperTest {
 	@Test
 	void testUpdateRLikeDown() {
 		fail("Not yet implemented");
+	}
+	
+	@Test
+	void testSelectReply() {
+		System.out.println(replyMapper.selectReply(488));
 	}
 
 }

@@ -50,6 +50,11 @@ public interface CommunityService {
 	long getReplyTotal(long bno);
 	//댓글 입력 메서드
 	int insertReply(ReplysDto reply);
+	//댓글 수정 메서드
+	int updateReply(ReplysDto reply);
+	//댓글 삭제 메서드
+	int deleteReply(long rno);
+	
 	
 	
 }

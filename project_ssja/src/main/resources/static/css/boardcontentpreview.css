@@ -1,0 +1,141 @@
+@keyframes next_full_post{
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(-38%);
+    }
+  }
+  @keyframes prev_full_post{
+    0% {
+      transform: translateX(-38%);
+    }
+
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+  #recent_post{
+    position: relative;
+    overflow: hidden;
+    height: 250px;
+  }
+
+  #recent_post_wrap{
+    width: 280%;
+    height: 250px;
+  }
+
+  .recent_post>span{
+    position: absolute;
+    bottom: -110px;
+    left: 5px;
+  }
+  
+  #recent_post_wrap>span{
+    position: relative;
+    margin-left: 20px;
+  }
+
+  #recent_post_wrap>span>img{
+    width: 8.8vw;
+    min-width: 125px;
+    height: 250px;
+  }
+  #recent_post_wrap>span>img:hover{
+    cursor: pointer;
+    opacity: 0.7;
+  }
+  #recent_post_wrap > span:nth-child(7n){
+    margin-left: 180px;
+  }
+  #recent_post_wrap>span:first-child{
+    margin-left: 2vw;
+  }
+  #prev_btn{
+    z-index: 1;
+    position: absolute;
+    top: 95px;
+    left: -18px;
+    background-color: transparent;
+    border-color: transparent;
+  }
+  #prev_btn img{
+    width: 60px;
+    height: 60px;
+  }
+  #next_btn{
+    position: absolute;
+    top: 95px;
+    right: -18px;
+    background-color: transparent;
+    border-color: transparent;
+  }
+  #next_btn img{
+    transform: scaleX(-1);
+    width: 60px;
+    height: 60px;
+  }
+  #img_link{
+    position: relative;
+    margin-left: 40px;
+  }
+  #img_link img{
+    width: 60px;
+    height: 60px;
+    transform: scaleX(-1);
+  }
+  #img_link span{
+    position: absolute;
+    width: 60px;
+    top: 30px;
+    right:-10px;
+  }
+  @media screen and (max-width : 1400px) {
+
+
+    #recent_post_wrap>span:nth-child(7n){
+      margin-left: 100px;
+    }
+
+  }
+  @media screen and (max-width : 1121px) {
+
+
+    #recent_post_wrap>span:nth-child(7n){
+      margin-left: 180px;
+    }
+
+  }
+  @media screen and (max-width : 1024px) {
+
+    #recent_post_wrap>span>img{
+      width: 20vw;
+      min-width: 150px;
+    }
+
+    #recent_post_wrap>span:nth-child(7n){
+      margin-left: 20px;
+    }
+    #prev_btn,#next_btn{
+      display: none;
+    }
+  }
+
+  @media screen and (max-width : 768px) {
+
+    #recent_post_wrap>span{
+      margin-left: 20px;
+      margin-right: 0px;
+    }
+
+    #recent_post_wrap>span:nth-child(4n){
+      margin-right: 0px;
+    }
+    #recent_post_wrap>span>img{
+      width: 30vw;
+      min-width: 0px;
+    }
+  }

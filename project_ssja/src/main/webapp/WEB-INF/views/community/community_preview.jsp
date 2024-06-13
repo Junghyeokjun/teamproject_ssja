@@ -179,6 +179,8 @@
                 top: 30px;
                 right:-10px;
               }
+
+              
               @media screen and (max-width : 1024px) {
                 #main_container{
                   min-width: 700px;
@@ -222,6 +224,7 @@
             </style>
 
             <script>
+              
               $(document).ready(function(){
 
                 let best_post=$("#best_post");
@@ -309,6 +312,7 @@
                 })
                 $("#prev_btn").css("display","none");
                 
+
               })
             </script>
           </head>

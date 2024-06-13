@@ -345,7 +345,7 @@
         var amount=this.parentNode.parentNode.querySelector(".product_price");
         pcs.innerHTML=Number(pcs.innerHTML)+1;
         full_amount_val=Number(full_amount_val)+Number(amount.innerHTML);
-        discount_val=full_amount_val/100*coupon_discount;
+        discount_val=Math.ceil(full_amount_val/100*coupon_discount);
         result_price_val=full_amount_val-discount_val;
         amountSet();
       })
@@ -359,7 +359,7 @@
         }
         pcs.innerHTML=Number(pcs.innerHTML)-1;
         full_amount_val=Number(full_amount_val)-Number(amount.innerHTML);
-        discount_val=full_amount_val/100*coupon_discount;
+        discount_val=Math.ceil(full_amount_val/100*coupon_discount);
         result_price_val=full_amount_val-discount_val;
         amountSet();
       })
@@ -370,7 +370,7 @@
         var pcs=this.parentNode.parentNode.querySelector(".product_pcs");
         var amount=this.parentNode.parentNode.querySelector(".product_price");
         full_amount_val-=Number(amount.innerHTML)*Number(pcs.innerHTML);
-        discount_val=full_amount_val/100*coupon_discount;
+        discount_val=Math.ceil(full_amount_val/100*coupon_discount);
         result_price_val=full_amount_val-discount_val;
         point.val(0);
         use_point=0;
@@ -385,7 +385,7 @@
         point.val(use_point);
         //할인액 계산
         coupon_discount=$('#coupon option:selected').attr("discount")
-        discount_val=full_amount_val/100*coupon_discount;
+        discount_val=Math.ceil(full_amount_val/100*coupon_discount);
         result_price_val=full_amount_val-discount_val;
         amountSet();
       })
@@ -395,7 +395,7 @@
         //포인트의 기존값이 0이 아닐경우의 처리
         if(use_point!="0"){
           use_point=0;
-          discount_val=full_amount_val/100*coupon_discount;
+          discount_val=Math.ceil(full_amount_val/100*coupon_discount);
           result_price_val=full_amount_val-discount_val;
         }
         //포인트 최대값 제한
@@ -410,7 +410,7 @@
         }
         use_point=point.val();
         //할인액 수정
-        discount_val=full_amount_val/100*coupon_discount+Number(use_point);
+        discount_val=Math.ceil(full_amount_val/100*coupon_discount)+Number(use_point);
         //결제액 수정
         result_price_val=full_amount_val-discount_val;
         amountSet();
@@ -420,7 +420,7 @@
         //포인트의 기존값이 0이 아닐경우의 처리
         if(use_point!=0){
           point.val(0);
-          discount_val=full_amount_val/100*coupon_discount;
+          discount_val=Math.ceil(full_amount_val/100*coupon_discount);
           result_price_val=full_amount_val-discount_val;
         }
         //포인트 전액사용시 값에 따른 처리
@@ -431,7 +431,7 @@
         }
         use_point=point.val();
         //할인액 수정
-        discount_val=full_amount_val/100*coupon_discount+Number(use_point);
+        discount_val=Math.ceil(full_amount_val/100*coupon_discount)+Number(use_point);
         discount.text(discount_val);
         //결제액 수정
         result_price_val=full_amount_val-discount_val;
@@ -504,9 +504,6 @@
   <div id="side_bar"></div>
   <main style="background-color: #f7f0e8;">
     <!--결제 페이지부 -->
-     <h1>결제가 정상적으로 이루어졌습니다.</h1>
-    <p>구매 수량: <%= request.getParameter("quantity") %></p>
-    <p>제품 번호: <%= request.getParameter("productNo") %></p>
     <div id="main_container" class="d-flex flex-column " style="min-height:800px;">
       
       <h2 class="mt-3 fw-bold">주문/결제</h2>
@@ -561,9 +558,12 @@
           <option value="0" discount="0">선택안함</option>
           <!--데이터를 받아오는 곳에 따라 추후 서버측에서 직접적으로 받을경우 c:foreach-->
           <!--현재 페이지에서 ajax를 통해 받을경우 javascrip append  -->
-          <option value="1" discount="10">쿠폰1</option>
+          <c:forEach var="coupon" items="${coupons}">
+            <option value="${coupon.c_no}" discount="${coupon.c_dcper}">${coupon.c_name}</option>
+					</c:forEach>
+          <!-- <option value="1" discount="10">쿠폰1</option>
           <option value="2" discount="20">쿠폰2</option>
-          <option value="3" discount="30">쿠폰3</option>
+          <option value="3" discount="30">쿠폰3</option> -->
         </select>
       </div>
       <div class="ms-3 mb-3" style="margin-right: 30%;">

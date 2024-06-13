@@ -19,6 +19,7 @@ public interface ProductListMapper {
 	
 	List<ProductItemDto> bestItemsList(int page);
 	
+	List<ProductItemDto> getCategoryItems(int categoryNum, int pageNum);
 	
 	List<CartItemsDTO> getYourItemCrat(long id);
 }

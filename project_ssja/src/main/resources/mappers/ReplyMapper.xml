@@ -10,6 +10,12 @@
         ]]>
 	</update>
 	
+	<update id="updateRShape" parameterType="ReplysDto">
+		<![CDATA[
+        	update replys set r_step = r_step - 1 where r_group = #{rgroup} and r_step > #{rstep}
+        ]]>
+	</update>
+	
 	<!-- 댓글 입력. 최신 댓글은 언제나 게시글 바로 아래에 위치한다. -->
 	<insert id="insertReply" parameterType="ReplysDto">
 	    <![CDATA[
@@ -53,13 +59,13 @@
 	
 
 	
-<!-- 이전 데이터 	
-	<select id="selectReplys" parameterType="long" resultMap="ReplysDtoMap">
+	<!-- 번호에 해당하는 댓글 조회  -->
+	<select id="selectReply" parameterType="long" resultMap="ReplysDtoMap">
 		<![CDATA[
-        	SELECT * FROM replys where b_no = #{bno} ORDER BY r_group desc, r_step desc
+        	SELECT * FROM replys where r_no = #{rno}
         ]]>
 	</select> 
--->
+
 	<!-- 해당 게시글의 댓글들을 조회하기(멤버 정보도 가져와야 하므로 멤버 테이블도 조인) -->
 	<select id="selectReplys" parameterType="long" resultMap="ReplysDtoMap">
 		<![CDATA[

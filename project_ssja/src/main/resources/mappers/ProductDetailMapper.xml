@@ -41,7 +41,15 @@
 	
 	<select id="getProduct" resultType="ProductDto">
 	    <![CDATA[		
-	   SELECT * WHERE PRO_NO = #{PRO_NO}
+	   SELECT * from product WHERE PRO_NO = #{PRO_NO}
+	     ]]>
+	</select>
+
+	<select id="getCartProduct" resultType="ProductDto">
+	    <![CDATA[		
+		   	select p.pro_no,p.v_no,p.p_c_no,p.pro_price,i.i_quantity as "PRO_QUANTITY",p.pro_bannerimg,p.pro_wish,p.pro_sellcount,p.pro_hit,p.pro_bizname,p.pro_name,p.pro_date
+			from item_cart i, product p
+			where i.pro_no=p.pro_no and i.m_no=#{M_NO} and  i.pro_no=#{PRO_NO}
 	     ]]>
 	</select>
 
@@ -75,4 +83,7 @@
     ]]>
 	</select>
 
+	<update id="updateProductQuantity">
+		UPDATE product SET PRO_QUANTITY = PRO_QUANTITY-#{O_QUANTITY} where pro_no=#{PRO_NO} 
+	</update>
 </mapper>
