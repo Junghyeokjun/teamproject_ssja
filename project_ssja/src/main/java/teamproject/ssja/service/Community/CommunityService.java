@@ -15,6 +15,10 @@ public interface CommunityService {
 	
 	//게시물 총개수 얻어오는 메서드
 	long getCommunityTotal();
+	//검색요건에 맞는 게시물의 총개수를 얻어오는 메서드
+	long getCommunitySearchTotal(String option, String keyword);
+	//검색요건에 맞는 게시물의 리스트를 얻어오는 메서드
+	List<CommunityBoardDto> getSearchPost(int pageNum, int amount, String option, String keyword);
 	//게시물 리스트 얻어오는 메서드
 	List<CommunityBoardDto> getPost(int pageNum,int amount);
 	//베스트 게시물 리스트 얻어오는 메서드

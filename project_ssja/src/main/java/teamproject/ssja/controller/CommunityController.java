@@ -210,4 +210,21 @@ public class CommunityController {
 		return communityService.getBestPost();
 
 	}
+
+	//커뮤니티 게시글을 검색하여 얻어오는 부분
+	@GetMapping("/search")
+	public Map<String,Object> search(int pageNum, int amount,String option, String keyword){
+		Map<String, Object> data= new HashMap<String, Object>();
+
+		System.out.println(pageNum);
+		System.out.println(amount);
+		System.out.println(option);
+		System.out.println(keyword);
+		CommunityPage page= new CommunityPage(pageNum , communityService.getCommunitySearchTotal(option, keyword));
+		data.put("page", page);
+		data.put("postList", communityService.getSearchPost(pageNum, amount,option,keyword));
+
+		return data;
+	}
+	
 }

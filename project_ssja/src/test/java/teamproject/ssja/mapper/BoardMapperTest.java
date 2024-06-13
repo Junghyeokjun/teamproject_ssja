@@ -184,6 +184,17 @@ class BoardMapperTest {
 		boardMapper.updateBoardImg(new BoardImgsDto(0, 11614, "/images/board_content/temp.png"));
 	}
 	
+	@Disabled
+	@Test
+	void selectSearchTotal() {
+		System.out.println(boardMapper.selectSearchTotalCount(40, "title", "파일 구현"));
+	}
+
+	@Test
+	void selectSearchPost() {
+		System.out.println(boardMapper.selectSearchCommunityDto(1,20, "content", "파일 구현"));
+	}
+	
 //	@Test
 //	void temp() {
 //		File file=new File("C:/Users/601-5/git/temaproject_ssja/project_ssja/src/main/resources/static/images/board_content/board_img_11614.png");

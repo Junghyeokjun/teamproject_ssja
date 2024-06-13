@@ -30,10 +30,14 @@ public interface BoardMapper {
 	BoardCategoryDto selectBC(long bcno);
 	
 	long selectTotalCount(long bcno);
+	long selectSearchTotalCount(long bcno,String option, String keyword);
 	List<BoardDto> selectListWithPaging(Criteria criteria);
 
 	//커뮤니티용 게시글들을 가져오는 메서드
 	List<CommunityBoardDto> selectCommunityDto(int pageNum,int amount);
+	
+	//검색조건에 맞는 커뮤니티 게시글들을 가져오는 메서드
+	List<CommunityBoardDto> selectSearchCommunityDto(int pageNum,int amount,String option, String keyword);
 
 	//커뮤니티용 베스트 게시글들을 가져오는 메서드
 	List<CommunityBoardDto> selectBestCommunityDto();

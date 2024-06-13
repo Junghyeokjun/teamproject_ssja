@@ -39,6 +39,11 @@ public class CommunityServiceImpl implements CommunityService {
 		return boardMapper.selectCommunityDto(pageNum, amount);
 	}
 
+	@Override
+	public List<CommunityBoardDto> getSearchPost(int pageNum, int amount, String option, String keyword) {
+		return boardMapper.selectSearchCommunityDto(pageNum, amount, option, keyword);
+	}
+
 	
 	@Override
 	public List<CommunityBoardDto> getBestPost() {
@@ -49,6 +54,11 @@ public class CommunityServiceImpl implements CommunityService {
 	public long getCommunityTotal() {
 		
 		return boardMapper.selectTotalCount(40);
+	}
+	
+	@Override
+	public long getCommunitySearchTotal(String option, String keyword) {
+		return boardMapper.selectSearchTotalCount(40, option, keyword);
 	}
 
 	@Override
@@ -203,11 +213,6 @@ public class CommunityServiceImpl implements CommunityService {
 	public int updateReply(ReplysDto reply) {
 		return replyMapper.updateReply(reply);
 	}
-
-
-
-
-
 
 
 }
