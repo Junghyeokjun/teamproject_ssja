@@ -132,6 +132,13 @@ table {
 	background-color:  #cfb439;
 	border-color:  #cfb439;
 }
+.production-selling-table{
+padding:30px;
+padding-bottom:100px;
+}
+#vendorInfo_tbody > tr > th{
+margin-right:2em;
+}
 </style>
 
 
@@ -230,7 +237,7 @@ table {
 							</span>
 						</div>
 						<div class="d-flex justify-content-between">
-							<input type="button" class="btn btn-primary custom-btn"
+					<input type="button" class="btn btn-primary custom-btn"
 								onclick="wish_click(${productdetail.getPRO_NO()})" value="Wish List">
 							<input type="button" class="btn btn-danger custom-btn" id="purchaseBtn"  value="바로구매" >
 						</div>
@@ -330,8 +337,8 @@ table {
 									<div class="tab-pane fade mb-2" id="ex1-pills-3"
 										role="tabpanel" aria-labelledby="ex1-tab-3">
 										<section class="production-selling-section">
-											<table class="production-selling-table ">
-												<tbody>
+											<table class="production-selling-table">
+												<tbody id="vendorInfo_tbody">
 													<tr>
 														<th>상호명</th>
 														<td>${productdetail.getV_BIZNAME()}</td>
