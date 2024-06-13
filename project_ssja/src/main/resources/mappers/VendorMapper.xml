@@ -8,7 +8,6 @@
 			select * from vendor where m_no=#{mNo}
 		]]>	
 	</select>
-
 <!-- 
 	private long vno;
 	private long vmno;
@@ -29,6 +28,6 @@
 		<result property="v_account" column="V_ACCOUNT"/>
 		<result property="v_license" column="V_LICENSE"/>
 		<result property="v_FAX" column="V_FAX"/>
-	</resultMap>
+	</resultMap>	
 	
 </mapper>

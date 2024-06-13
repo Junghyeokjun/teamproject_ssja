@@ -24,6 +24,7 @@
   <script src="/js/barscript.js">
 
   </script>
+  
   <script src="/js/footer.js">
 
   </script>
@@ -31,6 +32,9 @@
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
   <link href="/css/footerstyle.css?after" rel="stylesheet">
   <link href="/css/barstyle.css?after" rel="stylesheet">
+  <sec:authorize access="isAuthenticated()">
+    <sec:authentication property="principal" var="principal"/>
+  </sec:authorize>
 
   <link rel="stylesheet" href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
 
@@ -70,10 +74,12 @@
       let insert_btn=$("#insert_btn");
       let more_btn=$("#more_btn");
       let like_btn=$("#like_btn");
+      let list_btn=$("#list_btn");
       let delete_btn=$("#delete_btn");
       let update_btn=$("#update_btn");
+      
 
-
+      let m_no=$("#m_no");
       let m_no_val=$("#m_no").val();
       let m_NickName_val=$("#m_NickName").val();
 
@@ -201,8 +207,13 @@
                   reply_wrap1=$('<div class="my-2" style="margin-left: 106px; margin-right: 16px; box-sizing: content-box; border: 1px solid #BBB;" group="'+e.rgroup+'" indent="'+e.rindent+'" step="'+e.rstep+'"></div>')
                 }
                 var reply_wrap2=$('<div class="px-2 d-flex justify-content-between" style="background-color: #EEE;">');
-                $('<span>'+e.rwriter+'</span>').appendTo(reply_wrap2);
-                $('<span>'+e.rdate+'</span>').appendTo(reply_wrap2);
+                $('<span>'+e.rwriter+' </span>').appendTo(reply_wrap2);
+                  //삭제버튼 이벤트 추가예정
+                if(m_no_val== e.rmno){
+                  $('<span>'+e.rdate+' |<button class="delete_reply_btn"  style="border-color: transparent; background-color :transparent" rno="'+e.rno+'">삭제</button> |<button class="update_reply_btn"  style="border-color: transparent; background-color :transparent" rno="'+e.rno+'">수정</button></span>').appendTo(reply_wrap2);
+                }else{
+                  $('<span>'+e.rdate+'</span>').appendTo(reply_wrap2);
+                }
                 reply_wrap2.appendTo(reply_wrap1);
                 $('<div class="p-2 reply">'+e.rcontent+'</div>').appendTo(reply_wrap1);
                 reply.append(reply_wrap1);
@@ -291,6 +302,69 @@
         
 
       }
+      //댓글 수정 함수
+      let update_reply= function(rno, content){
+        $.ajax({
+            type : 'PUT',
+            url : '/community/reply/'+rno,
+            async : false,
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            contentType:"application/json",
+            dataType : 'text',
+            data :JSON.stringify({content}),    
+            success : function(result) {
+              reply_total();
+              var temp_scroll = document.documentElement.scrollTop
+              reply.empty();
+              var temp=reply_count.count-1;
+
+              reply_count.count=1;
+              more_btn.removeAttr("hidden");
+              for(var i=0;i<temp;i++){
+                more_reply();
+              }
+              window.scrollTo({top : temp_scroll , left : 0 , behavior : 'instant',});
+            },    
+            error : function(request, status, error) {
+              alert(error);
+            }
+          })
+      }
+
+      //댓글 삭제 함수
+      let delete_reply= function(rno){
+
+          $.ajax({
+            type : 'DELETE',
+            url : '/community/reply/'+rno,
+            async : false,
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            dataType : 'text',
+            success : function(result) {
+              reply_total();
+              var temp_scroll = document.documentElement.scrollTop
+              reply.empty();
+              var temp=reply_count.count-1;
+
+              reply_count.count=1;
+              more_btn.removeAttr("hidden");
+              for(var i=0;i<temp;i++){
+                more_reply();
+              }
+              window.scrollTo({top : temp_scroll , left : 0 , behavior : 'instant',});
+            },    
+            error : function(request, status, error) {
+              alert(error);
+            }
+          })
+        
+        
+
+      }
       more_reply();
 
       //게시글 추천 버튼 클릭 이벤트
@@ -309,6 +383,12 @@
         }
       })
 
+      //게시글 목록
+      list_btn.on("click",function(){
+        location.href="/community/main"
+      })
+
+
       //게시글 수정
       update_btn.on("click",function(){
         location.href="/community/content/modify?bno="+bno_val;
@@ -318,6 +398,7 @@
       delete_btn.on("click",function(){
         deletePost();
       });
+
 
       //댓글 더보기
       more_btn.on("click",function(){
@@ -357,8 +438,28 @@
           insert_reply(insert_re_reply.attr("step"),insert_re_reply.attr("indent"),$("#insert_re_reply_content").val(),insert_re_reply.attr("group"));
         }
       })
+      //댓글 수정 버튼
+      $(document).on("click","#update_re_btn",function(){
+        
+        if($("#insert_re_reply_content").val()==""){
+          alert("수정할 내용을 입력해주세요.")
+        }else{
+          update_reply(this.getAttribute("rno"),$("#insert_re_reply_content").val());
+        }
+      })
 
+      //삭제 버튼
+      $(document).on("click",".delete_reply_btn",function(){
+        delete_reply(this.getAttribute("rno"));
+      })
+      //수정 버튼
+      $(document).on("click",".update_reply_btn",function(){
+        var content = this.parentNode.parentNode.nextSibling;
+        content.click();
+        $("#insert_re_btn").attr("id","update_re_btn")
+        $("#update_re_btn").attr("rno",this.getAttribute("rno"));
 
+      })
     })
 
   </script>
@@ -430,12 +531,13 @@
         </span>
         <div class="ps-3 py-2 w-100 border-top border-bottom d-flex flex-row justify-content-between">
           <span class="fs-5" style="line-height: 38px;">댓글:[<span class="reply_total">${reply_total}</span>]</span>
-          <c:if test="${principal.userInfo.m_No == content.bmno}">
-          	<span>
-              <button class="btn btn-outline-primary" id="update_btn" >수정하기</button>
-              <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">삭제하기</button>
-            </span>
-          </c:if>
+          <span>
+            <button class="btn btn-outline-secondary" id="list_btn" >목록</button>
+            <c:if test="${principal.userInfo.m_No == content.bmno}">
+                <button class="btn btn-outline-primary" id="update_btn" >수정하기</button>
+                <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">삭제하기</button>
+            </c:if>
+          </span>
         </div>
         
         <div class="w-100 px-3" style="position: relative;">

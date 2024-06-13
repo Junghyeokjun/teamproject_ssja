@@ -8,12 +8,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.login.CustomPrincipal;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
+import teamproject.ssja.service.Board.BoardService;
 import teamproject.ssja.service.Product.ProductCategoryService;
 import teamproject.ssja.service.Vendor.VendorService;
 
@@ -30,9 +32,12 @@ public class VendorController {
 	@Autowired
 	VendorService vendorService;
 	
+	@Autowired
+	BoardService boardService;
+	
 	@GetMapping("")
 	public String vendorHome() {
-		return "redirect:/vendor/product/list";
+		return "/vendor/vendor_view";
 	}
 	
 //	@PostMapping("/vendorInfo")
@@ -49,20 +54,18 @@ public class VendorController {
 
 		return "/vendor/vendor_write_product";
 	}
-
-	@GetMapping("/product/category")
-
+	
 	@PostMapping("/product/add")
 	public String addOne() {
 		log.info("addOne()..");
-		//
-
+		
+		
 		// 초기화면으로 돌아가기(해당 페이지는 초기 화면 역할을 하며, 이후 변경할 예정)
-		return "/vendor/vendor_insert_product";
+		return "/vendor/vendor_view";
 	}
 
 	@GetMapping("/product/list")
-	public String ProductList() {
+	public String ProductList(Model model) {
 		log.info("ProductList()..");
 		//
 
@@ -70,10 +73,9 @@ public class VendorController {
 	}
 
 	@GetMapping("/question/list")
-	public String showProductList() {
-		log.info("showProductList()..");
+	public String showProductList(Model model) {
+		log.info("showProductList()..");	
 
-		//
 		return "/vendor/vendor_qna_list";
 	}
 

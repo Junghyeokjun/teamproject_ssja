@@ -22,7 +22,10 @@ public class VendorServiceImpl implements VendorService{
 	@Autowired
 	VendorMapper vendorMapper;
 	
+	@Override
 	public VendorInfoDTO getVendor(long mNo) {
 		return vendorMapper.selectVendor(mNo);
 	}
+
+
 }

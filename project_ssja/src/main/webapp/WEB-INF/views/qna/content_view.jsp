@@ -5,7 +5,8 @@
 	uri="http://www.springframework.org/security/tags"%>
 	<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-	
+
+<sec:authentication property="principal" var="principal" />	
 <!DOCTYPE html>
 <html lang="en">
 
@@ -432,7 +433,7 @@ body {
 				html1 += '<div class="btn disabled border-0">' + reply_view.rdate + '</div></div><div class="input-group">'; 
 				// 댓글 만들기
 				for (let i = 1; i <= reply_view.rindent; i++) {
-					html1 += '<img src="">';
+					html1 += '<span class=""></span>';
 				}
 
 				//html1 += '<input type="text" class="rcontent form-control" data-rno="' + reply_view.rno + '" value="' + reply_view.rcontent + '" readonly="readonly">';				

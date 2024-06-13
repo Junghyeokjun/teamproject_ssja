@@ -93,6 +93,7 @@ cursor:pointer;
 
 
   </style>
+  <link rel="stylesheet" href="/css/boardcontentpreview.css">
 </head>
 
 <body>
@@ -156,10 +157,35 @@ cursor:pointer;
     <div>
     <button id="show_more_bestItem" class="w-100">더보기</button>
     </div>
-    
-    
-    
-      <div id="icon_container" class="d-flex flex-row justify-content-evenly align-items-center">
+    <!-- 추가부분 -->
+    <div class="d-flex justify-content-between">
+      <span class="fs-3 my-4">최신 게시물</span>
+      <span style="line-height: 40px;"><a href="${pageContext.request.contextPath}/community/main" style="text-decoration: none; color: black;">더보기</a></span>
+    </div>
+    <div id="recent_post" class="mb-3">
+      <button id="prev_btn" type="button">
+        <img src="/images/utilities/arrow1.png" alt="">
+      </button>
+      <div id="recent_post_wrap">
+        <!-- ajax로 데이터추가 -->
+        <!-- <span class="recent_post">
+          <img src="/images/product_banner/product_banner_1.jpg" alt="">
+          <span>sss</span>
+        </span> -->
+        
+        <!-- ajax로 데이터 추가후 추가 -->
+        <!-- <a id="img_link" href="${pageContext.request.contextPath}/community/main"> 
+          <img src="/images/utilities/arrow1.png" alt="">
+          <span>더보기</span>
+        </a> -->
+
+      </div>
+      <button id="next_btn" type="button">
+        <img src="/images/utilities/arrow1.png" alt="">
+      </button>
+    </div>
+    <!-- 추가부분끝 -->
+    <div id="icon_container" class="d-flex flex-row justify-content-evenly align-items-center">
           <div id="icon_div"><img id="icon_img1"src="/images/utilities/icon_fur.png"><div id="icn_txt">가구</div></div>
           <div id="icon_div"><img id="icon_img2" src="/images/utilities/icon_fab.png">  <div id="icn_txt">패브릭</div></div>
           <div id="icon_div"><img id="icon_img3" src="/images/utilities/icon_inte.png"> <div id="icn_txt">인테리어</div></div>
@@ -193,7 +219,7 @@ cursor:pointer;
 </body>
 <script src="/js/mainpage/mainpage.js" >
 </script>
-<script>
+<script src="/js/boardcontentpreview.js">
 
 </script>
 

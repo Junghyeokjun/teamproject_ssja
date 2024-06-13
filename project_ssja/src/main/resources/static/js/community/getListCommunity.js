@@ -4,6 +4,10 @@ let header = $("meta[name='_csrf_header']").attr("content");
 let community_content = $("#community_content");
 let $paging_dv = $("#paging_dv")
 
+let search_opt =$ ("#search_opt");
+let search_keyword = $("#search_keyword");
+let search_btn = $("#search_btn");
+
 class PostCondition {
 	  constructor(startPage, endPage, total, prev, next, pageNum, amount) {
 		  
@@ -166,6 +170,12 @@ let getListProductToServer = function(condition){
 		
 		
 }
+$(document).on("click",search_btn,function(){
+	console.log($('#search_opt option:selected').selected());
+	console.log(search_keyword.val());
+})
+
+
 //찜 관련 이벤트 차후 쓸모가 있을시 사용
 // let wish_click = function(productnumber) {
 // 	let count = 0;

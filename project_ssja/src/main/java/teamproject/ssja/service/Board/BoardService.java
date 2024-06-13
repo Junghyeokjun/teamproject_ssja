@@ -20,7 +20,8 @@ public interface BoardService {
 	
 	int addBoard(BoardDto boardDto);
 	int removeBoard(BoardDto boardDto);	
-	BoardDto showContent(HttpServletRequest request, HttpServletResponse response); 
+	BoardDto showContent(HttpServletRequest request, HttpServletResponse response);	
+	
 	// 조회수 처리 내장됨.
 	
 	int modifyBoard(BoardDto boardDto);
@@ -28,6 +29,9 @@ public interface BoardService {
 	public void setCookie(HttpServletResponse response, String name, String value, int maxAge);
 	public String getCookieValue(HttpServletRequest request, String name);
 	public long getTotal(long category);
+	
+	// 판매자 본인의 QnA 리스트 가져오기
+	public List<BoardDto> getMyQnaList(Criteria criteria);	
 	
 	// 페이징
 	public List<BoardDto> showListWithPaging(Criteria criteria);
