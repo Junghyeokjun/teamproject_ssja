@@ -75,7 +75,19 @@
     
       
       cancel_btn.on('click',function(){
+        $.ajax({
+          type:'DELETE', 
+          url: '/community/tempImg/'+randomNum,
+          dataType: 'text',
+          success: function(data) {
+
+          },
+          error: function(e) {
+            alert("error:" + e);
+          }          
+        });
         location.href="/community/main";
+
       })
 
       img_insert_dtn.on('click',function(){

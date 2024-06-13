@@ -77,6 +77,16 @@
     
 
       cancel_btn.on('click',function(){
+        $.ajax({
+            type:'DELETE', 
+            url: '/community/tempImg/'+bno_val,
+            contentType: 'text',
+            success: function(data) {
+            },
+            error: function(e) {
+              alert("error:" + e);
+            }
+          });
         location.href="/community/content/"+bno_val;
       })
 

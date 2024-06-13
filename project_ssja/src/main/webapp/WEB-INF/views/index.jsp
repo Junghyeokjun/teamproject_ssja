@@ -160,7 +160,7 @@ cursor:pointer;
     <!-- 추가부분 -->
     <div class="d-flex justify-content-between">
       <span class="fs-3 my-4">최신 게시물</span>
-      <span style="line-height: 40px;"><a href="${pageContext.request.contextPath}/community/main" style="text-decoration: none; color: black;">더보기</a></span>
+      <span style="line-height: 60px;"><a href="${pageContext.request.contextPath}/community/main" class=" fs-4" style="text-decoration: none; color: black;">더보기</a></span>
     </div>
     <div id="recent_post" class="mb-3">
       <button id="prev_btn" type="button">
