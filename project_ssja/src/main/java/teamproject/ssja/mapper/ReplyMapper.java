@@ -21,6 +21,8 @@ public interface ReplyMapper {
 	
 	int updateShape(ReplysDto replysDto);
 	
+	int updateRShape(ReplysDto replysDto);
+	
 	int updateReply(ReplysDto replysDto);
 	
 	int deleteReply(ReplysDto replysDto);
@@ -28,6 +30,9 @@ public interface ReplyMapper {
 	//한 게시물의 모든 댓글을 삭제하는 메서드
 	int deleteAllReply(long bno);
 
+	//특정 댓글을 가져오는 메서드
+	ReplysDto selectReply(long rno);
+	
 	List<ReplysDto> selectReplys(long bno);
 
 	List<ReplysDto> selectPartReplys(int replyNum, int amount, long bno);

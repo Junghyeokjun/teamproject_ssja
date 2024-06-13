@@ -190,6 +190,21 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 
+	@Override
+	public int deleteReply(long rno) {
+		ReplysDto reply=replyMapper.selectReply(rno);
+		int result=replyMapper.deleteReply(reply);		
+		replyMapper.updateRShape(reply);
+		return result;
+	}
+
+
+	@Override
+	public int updateReply(ReplysDto reply) {
+		return replyMapper.updateReply(reply);
+	}
+
+
 
 
 

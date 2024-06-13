@@ -24,6 +24,7 @@
   <script src="/js/barscript.js">
 
   </script>
+  
   <script src="/js/footer.js">
 
   </script>
@@ -31,6 +32,9 @@
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
   <link href="/css/footerstyle.css?after" rel="stylesheet">
   <link href="/css/barstyle.css?after" rel="stylesheet">
+  <sec:authorize access="isAuthenticated()">
+    <sec:authentication property="principal" var="principal"/>
+  </sec:authorize>
 
   <link rel="stylesheet" href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
 
@@ -75,6 +79,7 @@
       let update_btn=$("#update_btn");
       
 
+      let m_no=$("#m_no");
       let m_no_val=$("#m_no").val();
       let m_NickName_val=$("#m_NickName").val();
 
@@ -202,8 +207,13 @@
                   reply_wrap1=$('<div class="my-2" style="margin-left: 106px; margin-right: 16px; box-sizing: content-box; border: 1px solid #BBB;" group="'+e.rgroup+'" indent="'+e.rindent+'" step="'+e.rstep+'"></div>')
                 }
                 var reply_wrap2=$('<div class="px-2 d-flex justify-content-between" style="background-color: #EEE;">');
-                $('<span>'+e.rwriter+'</span>').appendTo(reply_wrap2);
-                $('<span>'+e.rdate+'</span>').appendTo(reply_wrap2);
+                $('<span>'+e.rwriter+' </span>').appendTo(reply_wrap2);
+                  //삭제버튼 이벤트 추가예정
+                if(m_no_val== e.rmno){
+                  $('<span>'+e.rdate+' |<button class="delete_reply_btn"  style="border-color: transparent; background-color :transparent" rno="'+e.rno+'">삭제</button> |<button class="update_reply_btn"  style="border-color: transparent; background-color :transparent" rno="'+e.rno+'">수정</button></span>').appendTo(reply_wrap2);
+                }else{
+                  $('<span>'+e.rdate+'</span>').appendTo(reply_wrap2);
+                }
                 reply_wrap2.appendTo(reply_wrap1);
                 $('<div class="p-2 reply">'+e.rcontent+'</div>').appendTo(reply_wrap1);
                 reply.append(reply_wrap1);
@@ -271,6 +281,69 @@
               rstep : step,
               rindent : indent
             }),    
+            success : function(result) {
+              reply_total();
+              var temp_scroll = document.documentElement.scrollTop
+              reply.empty();
+              var temp=reply_count.count-1;
+
+              reply_count.count=1;
+              more_btn.removeAttr("hidden");
+              for(var i=0;i<temp;i++){
+                more_reply();
+              }
+              window.scrollTo({top : temp_scroll , left : 0 , behavior : 'instant',});
+            },    
+            error : function(request, status, error) {
+              alert(error);
+            }
+          })
+        
+        
+
+      }
+      //댓글 수정 함수
+      let update_reply= function(rno, content){
+        $.ajax({
+            type : 'PUT',
+            url : '/community/reply/'+rno,
+            async : false,
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            contentType:"application/json",
+            dataType : 'text',
+            data :JSON.stringify({content}),    
+            success : function(result) {
+              reply_total();
+              var temp_scroll = document.documentElement.scrollTop
+              reply.empty();
+              var temp=reply_count.count-1;
+
+              reply_count.count=1;
+              more_btn.removeAttr("hidden");
+              for(var i=0;i<temp;i++){
+                more_reply();
+              }
+              window.scrollTo({top : temp_scroll , left : 0 , behavior : 'instant',});
+            },    
+            error : function(request, status, error) {
+              alert(error);
+            }
+          })
+      }
+
+      //댓글 삭제 함수
+      let delete_reply= function(rno){
+
+          $.ajax({
+            type : 'DELETE',
+            url : '/community/reply/'+rno,
+            async : false,
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            dataType : 'text',
             success : function(result) {
               reply_total();
               var temp_scroll = document.documentElement.scrollTop
@@ -365,8 +438,28 @@
           insert_reply(insert_re_reply.attr("step"),insert_re_reply.attr("indent"),$("#insert_re_reply_content").val(),insert_re_reply.attr("group"));
         }
       })
+      //댓글 수정 버튼
+      $(document).on("click","#update_re_btn",function(){
+        
+        if($("#insert_re_reply_content").val()==""){
+          alert("수정할 내용을 입력해주세요.")
+        }else{
+          update_reply(this.getAttribute("rno"),$("#insert_re_reply_content").val());
+        }
+      })
 
+      //삭제 버튼
+      $(document).on("click",".delete_reply_btn",function(){
+        delete_reply(this.getAttribute("rno"));
+      })
+      //수정 버튼
+      $(document).on("click",".update_reply_btn",function(){
+        var content = this.parentNode.parentNode.nextSibling;
+        content.click();
+        $("#insert_re_btn").attr("id","update_re_btn")
+        $("#update_re_btn").attr("rno",this.getAttribute("rno"));
 
+      })
     })
 
   </script>
