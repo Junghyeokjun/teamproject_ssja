@@ -12,6 +12,7 @@ public class InfoProvider {
 	      return  user.getAuth();
 	   }
 
+	
 	public static long getM_NO() {
 		CustomPrincipal user = (CustomPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

@@ -49,10 +49,7 @@
       background-color: #f7f0e8;
     }
 
-    #logo_img {
-      width: 3.5em;
-      height: 3em;
-    }
+ 
   </style>
   <style>
 .MyPage_btn {
@@ -242,6 +239,7 @@ color:#aaa;
 
 <body>
 <sec:authentication property="principal" var="principal" />
+
   <header>
     <div id="title_bar" class=" fixed-top">
       <div class="py-2 px-1" id="top-bar">
@@ -261,6 +259,7 @@ color:#aaa;
       <div id="home_user_bar"> </div>
       <div id="sub_bar"></div>
     </nav>
+	<input type="hidden" id="mno" value="${principal.userInfo.m_No}">
   </header>
 
  
@@ -423,6 +422,46 @@ let itemCartPageRender = function(pageNum){
 						//값을 가져와 구매 페이지 만드시면 될 듯합니다. 
 						//만약 ajax로 하신다면 data: 에  JSON.stringify(deleteList) 그대로 넣어서 파싱(?)하시면 컨트롤러에서
 						//@RequestBody List<Integer> deleteList로 그대로 받아서 활용가능합니다.
+							var form = document.createElement("form");
+							form.setAttribute("id", "dynamicForm");
+							form.setAttribute("method", "POST");
+							form.setAttribute("action", '/purchase/'+$("#mno").val());
+							
+							// CSRF 토큰을 저장할 hidden input 요소 추가
+							var csrfInput = document.createElement("input");
+							csrfInput.setAttribute("type", "hidden");
+							csrfInput.setAttribute("name", "_csrf");
+							csrfInput.setAttribute("value", token);
+							form.appendChild(csrfInput);
+
+							var listInput = document.createElement("input");
+							listInput.setAttribute("type", "hidden");
+							listInput.setAttribute("name", "deleteList");
+							listInput.setAttribute("value", deleteList);
+							form.appendChild(listInput);
+
+							// 폼을 body에 추가
+							document.body.appendChild(form);
+
+							// 폼을 서버로 제출
+							form.submit();
+							
+							// $.ajax({
+							// 	type:'post', 
+							// 	url: '/purchase/'+$("#mno").val(),
+							// 	beforeSend: function(xhr) {
+							// 		xhr.setRequestHeader(header, token);
+							// 	},	
+							// 	dataType:'text/html' ,
+							// 	data: JSON.stringify(deleteList),
+							// 	contentType: "application/json", 
+							// 	success: function(data) {
+									
+							// 	},
+							// 	error: function(error) {
+							// 		console.log("error: " + error);
+							// 	}
+							// });	
 					}).appendTo($cart_last_div);
 
 						$("<button>").text('삭제').addClass("btn btn-secondary mx-2").on('click',function(){

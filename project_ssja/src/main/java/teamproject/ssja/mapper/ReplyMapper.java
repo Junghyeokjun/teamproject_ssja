@@ -3,11 +3,13 @@ package teamproject.ssja.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Update;
 
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.BoardIsLikedDto;
 import teamproject.ssja.dto.ReplyIsLikedDto;
 import teamproject.ssja.dto.ReplysDto;
+import teamproject.ssja.dto.userinfo.ReviewForm;
 import teamproject.ssja.page.Criteria;
 
 @Mapper
@@ -19,6 +21,8 @@ public interface ReplyMapper {
 	
 	int updateShape(ReplysDto replysDto);
 	
+	int updateRShape(ReplysDto replysDto);
+	
 	int updateReply(ReplysDto replysDto);
 	
 	int deleteReply(ReplysDto replysDto);
@@ -26,6 +30,9 @@ public interface ReplyMapper {
 	//한 게시물의 모든 댓글을 삭제하는 메서드
 	int deleteAllReply(long bno);
 
+	//특정 댓글을 가져오는 메서드
+	ReplysDto selectReply(long rno);
+	
 	List<ReplysDto> selectReplys(long bno);
 
 	List<ReplysDto> selectPartReplys(int replyNum, int amount, long bno);
@@ -48,4 +55,8 @@ public interface ReplyMapper {
 	int deleteRLiked(ReplyIsLikedDto replyIsLiked);
 	
 	int updateRLikeDown(long rno);
+	
+	@Update("insert into board values (b_seq.nextval, #{id}, 30, #{writer},concat('review',#{proNum}) ,"
+			+ "#{content}, sysdate, 0, 0 ,#{eval}, #{proNum})")
+	void applyReview(ReviewForm form);
 } 

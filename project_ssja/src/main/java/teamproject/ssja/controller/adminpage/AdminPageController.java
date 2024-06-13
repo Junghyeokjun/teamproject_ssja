@@ -1,6 +1,8 @@
 package teamproject.ssja.controller.adminpage;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +52,8 @@ public class AdminPageController {
 		return  "/adminPage/membersList";
 	}
 		
+
+	
 	@GetMapping("/membersSearchList")
     public ResponseEntity<List<MembersSearchDto>> membersSearchList(@RequestParam("type") String type, @RequestParam("keyword") String keyword) {
         log.info("membersSearchList()..");
@@ -78,6 +82,8 @@ public class AdminPageController {
 	public String purchasesList(Model model, Criteria criteria) {
 		log.info("purchasesList()..");
 
+		
+
 		long Purchasestotal = purchaseListService.getPerchaseListTotalCount();
 		model.addAttribute("purchasepageMaker", new Page10VO(Purchasestotal, criteria));
 		model.addAttribute("purchases", purchaseListService.getPerchaseListWithPaging(criteria));
@@ -102,6 +108,7 @@ public class AdminPageController {
 		couponListService.addCoupon(couponDto);
 		return "redirect:/adminPage/couponsList";
 	}
+	
 	
 	
 //	@RequestMapping("/membersList")

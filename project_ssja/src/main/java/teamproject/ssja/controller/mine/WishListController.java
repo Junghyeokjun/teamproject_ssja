@@ -2,12 +2,15 @@ package teamproject.ssja.controller.mine;
 
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -33,5 +36,11 @@ public class WishListController {
 		int wishCount = wishListService.changeWish(memberNum, itemNum);
 		
 		return ResponseEntity.ok(wishCount);
+	}
+	
+	@DeleteMapping("")
+	public ResponseEntity<String> deleteWish(@RequestParam("productNum") int productNum){
+		wishListService.deleteWish(productNum);
+		return ResponseEntity.ok("success");
 	}
 }

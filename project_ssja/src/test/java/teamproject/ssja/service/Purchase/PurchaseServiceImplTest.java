@@ -2,7 +2,9 @@ package teamproject.ssja.service.Purchase;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Disabled;
@@ -50,6 +52,14 @@ class PurchaseServiceImplTest {
 		data.put("products[1][pay]", "0");
 		data.put("products[1][coupon]", "0");
 		System.out.println(PurchaseService.Purchase(data));
+	}
+	
+	@Test
+	void itemPurchaseTest() {
+		List<Integer> list=new ArrayList<Integer>();
+		list.add(3244);
+		list.add(3556);
+		System.out.println(PurchaseService.getProducts(list, 1));
 	}
 	
 }

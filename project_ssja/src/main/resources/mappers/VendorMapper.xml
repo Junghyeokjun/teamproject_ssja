@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="teamproject.ssja.mapper.VendorMapper">
+	<select id="selectVendor" parameterType="long" resultMap="VendorDtoMap">
+		<![CDATA[
+			select * from vendor where m_no=#{mNo}
+		]]>	
+	</select>
+<!-- 
+	private long vno;
+	private long vmno;
+	private String vbizname;
+	private String vaccount;
+	private String vlicense;
+	private String vfax;
+	
+	// 조인을 통해 member에 있는 이름을 가져오기
+	private String vmname;
+
+ -->
+	
+	<resultMap type="teamproject.ssja.dto.vendor.VendorInfoDTO" id="VendorDtoMap">
+		<id property="v_no" column="V_NO"/>
+		<result property="id" column="M_NO"/>
+		<result property="v_bizName" column="V_BIZNAME"/>
+		<result property="v_account" column="V_ACCOUNT"/>
+		<result property="v_license" column="V_LICENSE"/>
+		<result property="v_FAX" column="V_FAX"/>
+	</resultMap>	
+	
+</mapper>

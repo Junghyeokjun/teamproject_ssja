@@ -38,6 +38,14 @@ public class WishListService {
 		}
 	}
 	
+	public void deleteWish(int productNum) {
+		long id = InfoProvider.getM_NO();
+		Long proNum = Long.valueOf((long)productNum);
+		Map<String, Long> params = new HashMap<String, Long>();
+		params.put("memberNum", id);
+		params.put("productNum",proNum);
+		wishListMapper.removeWishList(params);
+	}
 	
 	
 }

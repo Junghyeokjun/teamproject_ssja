@@ -218,7 +218,7 @@
     <div id="main_container" class="border-start border-end container">
         
       <div class="d-flex flex-column align-items-center mt-3 container-fluid">
-        <input class="w-100 ps-3 py-2 mb-3 border-top border-bottom fs-3 " id="title" > 
+        <input class="w-100 ps-3 py-2 mb-3 border-top border-bottom fs-3" id="title" style="border-right: 0px; border-left: 0px;"> 
         <div class="w-100 mb-3 d-flex flex-column align-items-center" id="content" style="min-height: 400px;" contentEditable >
           <div contentEditable="true" id="update_content" class="w-75" style="min-height: 400px;"></div>
 

@@ -1,8 +1,8 @@
 package teamproject.ssja.dto.userinfo;
 
 import java.sql.Date;
-
 import lombok.Data;
+
 @Data
 public class UserInfoDTO {
 	

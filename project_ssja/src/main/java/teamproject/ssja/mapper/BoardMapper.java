@@ -22,6 +22,9 @@ public interface BoardMapper {
 	int updateBoard(BoardDto boardDto);
 	int updateHit(long bno);
 	
+	// 판매자(작성자) 자신의 QnA 작성글 가져오기
+	List<BoardDto> selectMemberQnaList(Criteria criteria);
+	
 	List<BoardCategoryDto> selectBoardCategorys(); 
 	BoardCategoryDto selectBoardCategory(String category);
 	BoardCategoryDto selectBC(long bcno);
@@ -68,4 +71,8 @@ public interface BoardMapper {
 	
 	//게시글의 이미지 경로를 삭제하는 메서드
 	int deleteBoardImg(long bno);
+	
+	
+	
+	// 
 } 

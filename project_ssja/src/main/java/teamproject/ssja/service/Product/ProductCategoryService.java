@@ -14,7 +14,7 @@ public interface ProductCategoryService {
 	List<ProductCategoryGroupDto> getPCMain();
 
 	// 소분류
-	List<ProductCategoryGroupDto> getPCSub();
+	List<ProductCategoryGroupDto> getPCSub(long mainPCNum);
 	
 	// 대분류 개수
 	long getMainPCTotal();

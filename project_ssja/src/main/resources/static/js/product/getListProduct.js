@@ -348,4 +348,3 @@ $('#search_custom_money_btn').on('click',function(){
 
 getListProductToServer(product_condition);
 
-
