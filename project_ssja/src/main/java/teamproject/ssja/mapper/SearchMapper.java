@@ -11,5 +11,5 @@ import teamproject.ssja.dto.product.SearchForm;
 public interface SearchMapper {
 	
 	List<ProductItemDto> searchItemList(SearchForm form);
-
+	int countSearchItemList(SearchForm form);
 }

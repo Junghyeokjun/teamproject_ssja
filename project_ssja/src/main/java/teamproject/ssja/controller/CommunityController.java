@@ -174,7 +174,7 @@ public class CommunityController {
 		return communityService.insertPost(new BoardDto(0, Long.valueOf(data.get("mno").toString()).longValue(), 
 														40, data.get("writer").toString(), 
 														data.get("title").toString(), 
-														data.get("content").toString(), "SYSDATE", 0, 0, 0, 0));
+														data.get("content").toString(), "SYSDATE", 0, 0, 0, 0, 0));
 	}	
 	//게시글 입력시 임시 이미지를 삭제하는 메서드
 	@DeleteMapping("/tempImg/{randomNum}")

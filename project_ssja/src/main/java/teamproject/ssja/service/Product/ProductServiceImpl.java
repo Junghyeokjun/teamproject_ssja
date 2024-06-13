@@ -10,6 +10,7 @@ import teamproject.ssja.InfoProvider;
 import teamproject.ssja.dto.product.ProductCondition;
 import teamproject.ssja.dto.product.ProductItemDto;
 import teamproject.ssja.dto.product.SearchForm;
+import teamproject.ssja.dto.product.SearchResultsWithConditionDTO;
 import teamproject.ssja.dto.userinfo.CartItemsDTO;
 import teamproject.ssja.mapper.ProductListMapper;
 import teamproject.ssja.mapper.SearchMapper;
@@ -54,8 +55,11 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public List<ProductItemDto> getSearchItems(SearchForm form) {
+	public SearchResultsWithConditionDTO getSearchItems(SearchForm form) {
+		long total = searchMapper.countSearchItemList(form);
+		SearchResultsWithConditionDTO data = new SearchResultsWithConditionDTO(form,total);
+		data.setItemList(searchMapper.searchItemList(form));
 		
-		return searchMapper.searchItemList(form);
+		return data;
 	}
 }

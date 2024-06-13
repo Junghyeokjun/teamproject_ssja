@@ -55,10 +55,7 @@
 		overflow : hidden;
 	}
 	
-    #logo_img {
-      width: 3.5em;
-      height: 3em;
-    }
+ 
     
   </style>
   <style>

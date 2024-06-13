@@ -41,6 +41,7 @@ public class BoardDto {
 	private long bhit;
 	private long beval;
 	private long prono;
+	private long total;
 	
 	// 자바 스크립트 버전으로 할지, 자바로 할지 선택하는 '날짜 형태 변환'
 	// 자바 스크립트로 하기 싫다면 아래 메서드를 활용해서 날짜를 가져오기
