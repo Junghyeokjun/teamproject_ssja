@@ -31,7 +31,7 @@ public class CommunityServiceImpl implements CommunityService {
 	ReplyMapper replyMapper;
 
 	//배포시에 경로에 따라 수정
-	final String absolutePath="C:/Users/601-5/git/temaproject_ssja/project_ssja/src/main/resources/static/images/board_content";
+	final String absolutePath="\\\\DESKTOP-RDUHP84\\board_content";
 	final String path = "/images/board_content";
 	
 	@Override

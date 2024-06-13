@@ -10,6 +10,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/images/board_content/**")
-                .addResourceLocations("file:///C:/Users/601-5/git/temaproject_ssja/project_ssja/src/main/resources/static/images/board_content/");
+                .addResourceLocations("file://desktop-rduhp84/board_content/");
     }
 }
