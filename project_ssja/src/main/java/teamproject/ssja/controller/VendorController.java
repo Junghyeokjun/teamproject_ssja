@@ -2,6 +2,7 @@ package teamproject.ssja.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.login.CustomPrincipal;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
+import teamproject.ssja.page.Criteria;
+import teamproject.ssja.page.Page10VO;
+import teamproject.ssja.page.PageVO;
+import teamproject.ssja.service.Admin.ProductListService;
 import teamproject.ssja.service.Board.BoardService;
 import teamproject.ssja.service.Product.ProductCategoryService;
 import teamproject.ssja.service.Vendor.VendorService;
@@ -34,6 +39,9 @@ public class VendorController {
 	
 	@Autowired
 	BoardService boardService;
+	
+	@Autowired
+	ProductListService productListService;
 	
 	@GetMapping("")
 	public String vendorHome() {
@@ -65,17 +73,27 @@ public class VendorController {
 	}
 
 	@GetMapping("/product/list")
-	public String ProductList(Model model) {
+	public String showProductList(@AuthenticationPrincipal CustomPrincipal principal, Model model, Criteria criteria) {
 		log.info("ProductList()..");
-		//
-
+		criteria.setBmno(principal.getMemberNum());
+		// 일시적으로 목록을 불러오기 위해 사용. 판매자 자신의 상품 목록 리스트는 요구 메서드가 다름
+		long Productstotal = productListService.getProductListTotalCount();
+		model.addAttribute("productpageMaker", new Page10VO(Productstotal, criteria));
+		model.addAttribute("products", productListService.getProductListWithPaging(criteria));
 		return "/vendor/vendor_product_list";
 	}
 
 	@GetMapping("/question/list")
-	public String showProductList(Model model) {
+	public String showQnaList(@AuthenticationPrincipal CustomPrincipal principal, Model model, Criteria criteria) {
 		log.info("showProductList()..");	
+		criteria.setBmno(principal.getMemberNum());
+		model.addAttribute("bc", boardService.showBoardCategory(20));
+		criteria.setBcno(20);
+		// 일시적으로 목록을 불러오기 위해 사용. 판매자 자신의 문의 내역 리스트는 요구 메서드가 다름 
+		model.addAttribute("boards",  boardService.showListWithPaging(criteria));
 
+		model.addAttribute("pageMaker", new PageVO(boardService.getTotal(criteria.getBcno()), criteria));
+		
 		return "/vendor/vendor_qna_list";
 	}
 

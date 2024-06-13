@@ -11,7 +11,7 @@ $(document).ready(function () {
   });*/  
 
 // html 상단에 받은 jstl 데이터 principal을 받는 변수  
-  let getPrincipal = ${principal};
+  let getPrincipal = '${principal}';
   
   //상단 카테고리 바 분류
   let $ul = $("<ul>").attr("id", "list_category").appendTo($home_user_bar);
@@ -121,24 +121,6 @@ $(document).ready(function () {
 
   //======================
   
-  // 버튼을 눌렀을 때의 동작을 담는 함수. 
-  // post 방식으로 보내서 링크에 데이터 노출되는 것을 막음
-  function buttonForm(link){
-	let $form = $("<form>").attr({
-	    method: "POST",
-	    action: link
-	});
-
-	$form.append(
-	    $("<input>").attr({
-	        type: "hidden",
-	        name: "memberId", // 서버에서 받을 파라미터 이름
-	        value: memberId // 멤버 번호 변수
-	    })
-	);
-	$form.appendTo("body").submit();
-  }
-  
   //사이드 관련
   let $side_container1 = $("<button>").addClass("side_containers").text("회원정보");
   let $side_containerEx = $("<button>").addClass("side_containers").text("상품 관리");
@@ -155,7 +137,7 @@ $(document).ready(function () {
   });
   $side_container2.on('click', function(e){
       e.stopPropagation();
-      buttonform("/vendor/question/list");
+      window.location.href = "/vendor/question/list";
   });
 //  $side_container3.on('click', function(e){
 //      e.stopPropagation();
@@ -322,7 +304,7 @@ $(document).ready(function () {
     }
   });
 
-  let $barbtn = $(".top_btn").addClass("btn btn-ouyline-dark").attr("id", "barbtn").text("☰");
+  let $barbtn = $(".top_btn").addClass("btn btn-outline-dark").attr("id", "barbtn").text("☰");
   let side_h = $(window).height();
   let $side_bar = $("#side_bar").css("height",side_h);
   
@@ -360,9 +342,11 @@ $(document).ready(function () {
   $barbtn.on("click", function () {
 
     if ($side_bar.css("display") === "block") {
-      hideSideBar();
+    	hideSideBar();
+    	// 포커스 상태 해제
+    	$barbtn.blur();
     } else {
-      showSideBar();
+    	showSideBar();    	
     }
   });
 

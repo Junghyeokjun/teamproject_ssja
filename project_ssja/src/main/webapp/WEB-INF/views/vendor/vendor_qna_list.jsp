@@ -28,7 +28,7 @@
    <meta name="_csrf" content="${_csrf.token}"/>
 	<meta name="_csrf_header" content="${_csrf.headerName}"/>
 
-  <script src="/js/barscript.js">
+  <script src="/js/vendorbarscript.js">
 
   </script>
 
@@ -36,7 +36,7 @@
 
   </script>
   <link href="/css/footerstyle.css?after" rel="stylesheet">
-  <link href="/css/barstyle.css?after" rel="stylesheet">
+  <link href="/css/vendor barstyle.css?after" rel="stylesheet">
   <link href="/css/board.css?after" rel="stylesheet">
   <link rel="stylesheet" href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
 
@@ -242,42 +242,57 @@
 </head>
 
 <body>
-	<c:choose>
-		<!-- 로그인되지 않은 경우 -->
-		<c:when test="${principal == null}">
-			<script type="text/javascript">
-			 	window.location.href = ""			
-			</script>
-		</c:when>
-		<c:when test="">
-		
-		</c:when>
-	</c:choose>
-	<c:if test=""></c:if>
-  <header class="fixed-top">
-    <div class="d-flex justify-content-between">   
-        <div class="mx-5 my-2">
-        	<h1 class="h1">&lt;<sec:authentication property="	" />&gt; 판매자</h1> 
-        </div>        
-        <div class="mx-5 my-2 d-flex align-items-end">
-        	<a href="/">로그아웃</a>
-        </div>
-    </div>
-  </header>
-
-  <div id="side_bar">
-    <div id="side_links" class="w-100"></div>
-  </div>
-	   <div id="select_MyPage" class="d-flex flex-column">
-		    <div id="select_mp_top" class="text-center">판매자 페이지</div>
-		    <div id="select_content">
-		        <button class="MyPage_btn w-100" id="myPage_userInfo_Select" style="border:1px solid #cccccc">회원 정보</button>
-		        <button class="MyPage_btn w-100" id="myPage_orderInfo_Select" style="border:1px solid #cccccc">상품 등록</button>
-		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc">등록 상품 목록</button>		        
-		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc">문의 및 요청</button>
-		    </div>
+	<sec:authorize access="isAuthenticated()">
+    	<sec:authentication property="principal.auth" var="myAuth"/>
+    	<c:choose>		
+			<c:when test="${myAuth != 'ROLE_VENDOR'}">
+			<!-- 권한이 판매자가 아닌 경우 -->
+				<script>
+					$(document).ready(function() {
+		                alert("접근할 수 없습니다.");
+		                window.location.href = "/";
+		            });
+				</script>
+			</c:when>
+		</c:choose>
+    </sec:authorize>
+	<sec:authorize access="isAnonymous()">
+	    <script type="text/javascript">
+	    	$(document).ready(function(){
+				alert("해당 게시판에 접근하기 위해서는 로그인이 필요합니다.");
+			 	window.location.href = "/login";
+	    	});
+		</script>
+	</sec:authorize>
+	<header class="fixed-top">
+		<div id="title_bar" >
+			<div class="py-2 px-1 d-flex justify-content-between" id="top-bar">
+				<button type="toggle-button" class="top_btn"></button>
+				<div class="mx-5 my-2 d-flex ">
+					<h1 class="h1 vendorTitle" >판매자 :&nbsp;</h1>
+					<!-- 
+						땡땡땡땡 : 상호명
+						로그인 시 vendorDto에 담기는 vendor.vbizname 또한 가져오기						
+						그냥 조인을 쓴다면 vendorDto가 아니라 조인한 결과를 담는 다른 Dto가 필요할 것이다.
+					 -->
+        			<h1 class="h1 vendorNames"> 
+        				&lt;
+        				<sec:authorize access="isAuthenticated()">
+        					<sec:authentication property="principal.userInfo" var="vendorMember"/>
+        				</sec:authorize>
+        				<input type="hidden" id="vendorData" value="${vendorMember.m_No}">
+        				${vendorMember.m_Name}
+        				&gt;</h1>      			
+        		</div>
+				<a id="user_link"><img id="login_img"></a>
+			</div>
 		</div>
-
+		<nav id="total_bar">
+		</nav>
+	</header>
+	<div id="side_bar">
+		<div id="side_links" class="w-100"></div>
+	</div>
 	<main style="margin: 0 auto;">
 		<div class="main_whitespace p-5 my-2">
 			<h1 class="h3 text-center">${bc.bcname} 게시판</h1>

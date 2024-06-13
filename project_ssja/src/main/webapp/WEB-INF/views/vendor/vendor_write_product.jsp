@@ -311,7 +311,7 @@
 		<nav id="total_bar">
 		</nav>
 	</header>
-		<div id="side_bar">
+	<div id="side_bar">
 		<div id="side_links" class="w-100"></div>
 	</div>
 <!-- 	   
