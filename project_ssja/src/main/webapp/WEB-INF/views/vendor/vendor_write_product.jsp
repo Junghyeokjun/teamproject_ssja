@@ -5,6 +5,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
+<sec:authentication property="principal" var="principal" />
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -283,8 +285,8 @@
 	    	});
 		</script>
 	</sec:authorize>	
-	<header>
-		<div id="title_bar" class="fixed-top">
+	<header class="fixed-top">
+		<div id="title_bar" >
 			<div class="py-2 px-1 d-flex justify-content-between" id="top-bar">
 				<button type="toggle-button" class="top_btn"></button>
 				<div class="mx-5 my-2 d-flex ">
@@ -305,7 +307,6 @@
         		</div>
 				<a id="user_link"><img id="login_img"></a>
 			</div>
-
 		</div>
 		<nav id="total_bar">
 		</nav>
@@ -313,7 +314,8 @@
 		<div id="side_bar">
 		<div id="side_links" class="w-100"></div>
 	</div>
-<!-- 	   <div id="select_MyPage" class="d-flex flex-column">
+<!-- 	   
+		<div id="select_MyPage" class="d-flex flex-column">
 		    <div id="select_mp_top" class="text-center">판매자 페이지</div>
 		    <div id="select_content">
 		        <button class="MyPage_btn w-100" id="myPage_userInfo_Select" style="border:1px solid #cccccc">회원 정보</button>
@@ -329,7 +331,7 @@
 	</div>
     <div id="main_container" class="d-flex flex-row align-items-center justify-content-center" >      	
         <div id="MyPage_content_container" class="border p-5">
-        	<form role="form" method="post" action="" autocomplete="off">
+        	<form role="form" method="post" action="${pageContext.request.contextPath}/vendor/product/add" autocomplete="off" encType="multipart/form-data">
 				<div id="ProductCategory" class="p-2 input-group w-100">   
 				   <label class="mx-2 m-auto input-group-text" >1차 분류</label>
 				   <!-- 상품 카테고리를 해당 페이지에 뿌려줘야 함 : 한 자리 수 -->
@@ -342,7 +344,7 @@
 				<div id="ProductCategory2" class="p-2 input-group w-100">
 				   <label class="mx-2 m-auto input-group-text" >2차 분류</label>
 				   <!-- 상품 카테고리를 해당 페이지에 뿌려줘야 함 : 10으로 나눈 값이 한 자리 수인 경우 -->
-				   <select id="subCategory" class="form-select w-25 mx-2">
+				   <select id="subCategory" class="form-select w-25 mx-2" name="P_C_NO">
 				   </select>
 				</div>
 				
@@ -353,12 +355,12 @@
 				
 				<div class="p-2 input-group w-100">
 				   <label class="mx-2 m-auto input-group-text" for="gdsPrice">상품가격</label>
-				   <input type="text" id="proPrice" name="PRO_PRICE" class="border form-control mx-2"/>
+				   <input type="number" id="proPrice" name="PRO_PRICE" class="border form-control mx-2"/>
 				</div>
 				
 				<div class="p-2 input-group w-100">
 				   <label class="mx-2 m-auto input-group-text" for="gdsStock">상품수량</label>
-				   <input type="text" id="proQuantity" name="PRO_QUANTITY" class="border form-control mx-2"/>
+				   <input type="number" id="proQuantity" name="PRO_QUANTITY" class="border form-control mx-2"/>
 				</div>
 				
 				<div class="input-group mt-2 p-2 w-100 border-secondary d-flex align-items-center border-top">
@@ -375,7 +377,7 @@
  					<div class="file-container_ form-control custom-primary m-2 d-flex align-items-center">
 			            <input id="explainFileText" class="file-upload-name_" placeholder="파일을 선택하세요" disabled="disabled">			
 			            <label for="explainFile" >올리기</label> 
-			            <input type="file" id="explainFile" class="upload-images_" name="" >			        
+			            <input type="file" id="explainFile" class="upload-images_" multiple="multiple" name="" >			        
 			        </div>			        
 				</div>
 				<div class="input-group w-100 p-2">	
@@ -386,8 +388,8 @@
 		        	</div>
 		        </div> 
 				<div class="p-2 w-100 border-secondary border-top d-flex justify-content-end">
-				   <button type="submit" id="register_Btn" class="btn btn-primary btn-tuning border mx-2">등록</button>
-				   <button id="cancel_Btn" class="btn btn-danger btn-tuning border mx-2">취소</button>
+				   <input type="submit" id="register_Btn" value="등록" class="btn btn-primary btn-tuning border mx-2">
+				   <input type="button" id="cancel_Btn" class="btn btn-danger btn-tuning border mx-2" value="취소">
 				</div>				
 			</form>
       	</div>    
@@ -404,38 +406,7 @@
 
 </body>
 <script type="text/javascript">
-	$(document).ready(function(){
-		let $vendorData = $('#vendorData').val();
-		console.log("vendorData : " + $vendorData);
-		
-		let token = $("meta[name='_csrf']").attr("content");
-		let header = $("meta[name='_csrf_header']").attr("content");
-		
-		// value 기본값은 "" 이다. 빈 문자열이 아니라는 의미는, 값이 들어갔다는 의미이다.
-		if($vendorData != ""){
-			// 값이 들어온 상태라면, 판매자의 상호명을 노출시키는 ajax 실행
-			$.ajax({
-				type : "POST",
-				beforeSend : function(xhr) {
-					xhr.setRequestHeader(header, token);
-				},
-				url : "/api/vendor/vendorInfo",
-				data : { 'vendorData' : $vendorData },
-				success : function(response){
-					console.log(response);
-					if($vendorData == response.id){
-						$('.vendorNames').append(' [ ' +  response.v_bizName + ' ]');
-					}else{
-						console.log("warning : " + vendorData + "와(과) 일치하지 않음");
-					}
-				},
-				error : function(xhr, status, error){
-					alert("판매자 정보를 가져오기가 실패했습니다");
-					console.error(xhr.responseText);
-				}
-			});
-		}
-		
+	$(document).ready(function(){		
 		
 		// 메인 카테고리 작업 중
 		
@@ -458,7 +429,7 @@
 					for(let i=0; i< response.length; i++){
 						$('#subCategory').append($('<option>', {
 					        value: response[i].pcNum,
-					        text: response[i].pcSubName
+					        text: response[i].pcSubName							
 					    }));
 					}
 				},
@@ -470,25 +441,34 @@
 			});
 		}); 
 		
-	
-		
-		
-		
-		
 		let bannerFile = $('#bannerFile');
 		let explainFile = $('#explainFile');
 		let uploadedExplainFiles = $('#uploadedExplainFiles');
 		
-		
-		
-		
+		function fileImageOnly(file){
+			if (!file.type.match("image/.*")) {
+					alert("이미지 파일만 업로드하셔야 합니다.");
+					return false; // 전체 로직 종료
+			}else{
+				return true;
+			}
+		}
+
 		// 배너 이미지 경로 가져오기
 		bannerFile.change(function(e){
 		    let filename = "";
 		    let files = e.target.files;
 		    let bannerDeleteButton = $('<button></button>').addClass('btn font-weight-bold').text('X').attr('id','BnDelBtn');
-		    
+
 		    if (files.length > 0) {
+		    	let file = files[0];
+		    	// if (!file.type.match("image/.*")) {
+				// 	alert("이미지 파일만 업로드하셔야 합니다.");
+				// 	return; // 전체 로직 종료
+				// }
+				if(!fileImageOnly(file)){
+					return;
+				}
 		        filename = files[0].name;
 		        $(this).siblings('#bannerFileText').val(filename);
 		        $('#bannerFileText').after(bannerDeleteButton);
@@ -496,6 +476,9 @@
 		    	// 이외의 경우에는 취소로 받아들이고 경고창을 띄우겠음.
 		    	alert("배너 이미지 업로드가 취소되었습니다. 다시 올려주세요.");
 		    	$(this).siblings('#bannerFileText').val('파일을 선택하세요');
+				if($(this).children(bannerDeleteButton).length !== 0){
+					$(this).children(bannerDeleteButton).remove();
+				}
 		    }		    
 		    
 		    bannerDeleteButton.on('click',function(){
@@ -511,416 +494,189 @@
 		});
 		
 		// 설명 이미지 경로 가져오기
-		explainFile.change(function(e){
-		    let filename;
-		    let files = e.target.files;
-		   
-		    // 파일을 선택한 경우
-		    if (files.length > 0) {
-		        filename = files[0].name;
-		     // siblings() 메서드는 선택한 요소의 형제 요소들을 선택하여 반환
-			    // -> explainFile의 형제인 #explainFileText(파일명 출력 공간)의 텍스트 값 입력
-			    $(this).siblings('#explainFileText').val(filename);		        
-		    } else {    			    	
-		    	// 파일 전체 경로 -> /로 분할 -> 마지막 요소 추출 -> 다시 \\로 분할  -> 마지막 요소 추출	
-		    	// -> 파일 이름 추출
-		    	// filename = $(this).val().split('/').pop().split('\\').pop();
-		        
-		    	// 이외의 경우에는 취소로 받아들이고 경고창을 띄우겠음.
-		    	alert("설명 이미지 업로드가 취소되었습니다. 다시 올려주세요.");
-		    }  
+		explainFile.change(function(e) {
+			let files = e.target.files;
+			let maxFiles = 15;
+			let uploadedFilesCount = $('#uploadedExplainFiles li').length;
+
+			// 최대 파일 개수를 초과하는지 확인
+			if ((uploadedFilesCount + files.length) > maxFiles) {
+				alert("이미지는 최대 15개까지만 업로드할 수 있습니다.");
+				return;
+			}
+
 			
-			/*  파일 리스트를 보여주는 <ul> 태그 내 <li> 태그 만들기 작업 	*/		
-			
-		    // 파일 리스트로 보여주기 위한 <li> 
-		    let newItem = $('<li></li>').addClass('list-group-item');
-		    
-			// 삭제 버튼
-		    let explainDeleteButton = $('<button></button>').addClass('btn font-weight-bold').text('X').attr('id','exDelBtn');
-		    
 			// files 배열의 각 요소에 대해 반복
-		    $.each(files, function(index, file){
-		    	// 현재 파일명
-                let fileName = file.name;  			    
-		    	
-    		 	// <li> 에 삭제 버튼 및 파일이름 추가 
-    		    newItem.text(fileName).append(explainDeleteButton);    		 	
-    		 	
-                // 새로운 li 요소 생성 및  ul에 추가
-                $('#uploadedExplainFiles').append(newItem);
-            });    	 	
-			
-		 	// 삭제 버튼을 클릭할 때 파일을 삭제하는 이벤트를 추가
-		    explainDeleteButton.on('click', function() {
-		    	// 삭제 버튼을 포함한 파일 아이템을 삭제
-		    	// closest() 메서드는 선택한 요소를 기준으로 가장 근접한 상위 요소를 찾아 반환
-		    	
-		    	// parents() : 현재 요소의 모든 부모 요소
-		    	// parent() : 현재 요소의 직계 부모 요소
-		    	
-		    	// 버튼 직계 부모가 newItem이면
-		    	if($(this).parent().is(newItem)){
-		    		// 직계 부모 삭제
-		       		$(this).parent().remove();
-		    		$('#explainFileText').val('');
-		       	}
-		    });
-		});
+			// $.each가 아니라 for()를 활용하여 파일 배열 전체를 검토
+			for (let i = 0; i < files.length; i++) {
+				let file = files[i];
+
+				// 이미지 타입에 맞는가, 맞지 않는가를 확인
+				// 정규식을 사용하여 MIME 타입이 image/로 시작하는지 확인
+				if (!fileImageOnly(file)) {				
+					return; // 전체 로직 종료
+				}
+
+				// 파일 리스트를 보여주기 위한 <li>
+				let newItem = $('<li></li>').addClass('list-group-item');
+
+				// 삭제 버튼
+				let explainDeleteButton = $('<button></button>').addClass('btn font-weight-bold').text('X').attr('id', 'exDelBtn');
+
+				// 현재 파일명
+				let fileName = file.name;
+
+				// <li>에 삭제 버튼 및 파일이름 추가
+				newItem.text(fileName).append(explainDeleteButton);
+
+				// 새로운 li 요소 생성 및 ul에 추가
+				$('#uploadedExplainFiles').append(newItem);
+
+				// 삭제 버튼을 클릭할 때 파일을 삭제하는 이벤트를 추가
+				explainDeleteButton.on('click', function() {
+					// 삭제 버튼을 포함한 파일 아이템을 삭제
+					$(this).parent().remove();
+					$('#explainFileText').val('');
+				});
+			}
 		
-	
+
+			// 파일을 선택한 경우 첫 번째 파일명 표시
+			if (files.length > 0) {
+				let filename = files[0].name;
+				// explainFile의 형제인 #explainFileText(파일명 출력 공간)의 텍스트 값 입력
+				$(this).siblings('#explainFileText').val(filename);
+			} else {
+				// 파일이 선택되지 않은 경우 경고창을 띄움
+				alert("설명 이미지 업로드가 취소되었습니다. 다시 올려주세요.");
+				if($(this).children(explainDeleteButton).length !== 0){
+					$(this).children(explainDeleteButton).remove();
+				}
+			}
+
+			console.log("files : " + files);
+		});
+
+
+		// // 설명 이미지 경로 가져오기
+		// explainFile.change(function(e){
+		//     let filename;
+		//     let files = e.target.files;	   
+
+		// 	// files 배열의 각 요소에 대해 반복
+		//     $.each(files, function(index, file){
+		    
+		// 		// 이미지 타입에 맞는가, 맞지 않는가를 확인
+		// 		// 정규식을 사용하여 MIME 타입이 image/로 시작하는지 확인
+	    // 	 	if(!file.type.match("image/.")){
+		// 			alert("이미지 파일만 업로드하셔야 합니다.");
+		// 			return;
+		// 		}
+				
+		// 		// 현재 파일명
+		// 		let fileName = file.name;  			    
+				
+		// 		// <li> 에 삭제 버튼 및 파일이름 추가 
+		// 		newItem.text(fileName).append(explainDeleteButton);    		 	
+				
+		// 		// 새로운 li 요소 생성 및  ul에 추가
+		// 		$('#uploadedExplainFiles').append(newItem);
+		// 	});    	 	
+			
+		// 	if(files.length >= 7){
+		// 		alert("이미지는 최대 6개까지만 업로드할 수 있습니다.");
+		// 		return;
+		// 	}
+
+		//     // 파일을 선택한 경우
+		//     if (files.length > 0) {
+		//         filename = files[0].name;
+		//      // siblings() 메서드는 선택한 요소의 형제 요소들을 선택하여 반환
+		// 	    // -> explainFile의 형제인 #explainFileText(파일명 출력 공간)의 텍스트 값 입력
+		// 	    $(this).siblings('#explainFileText').val(filename);		        
+		//     } else {    			    	
+		//     	// 파일 전체 경로 -> /로 분할 -> 마지막 요소 추출 -> 다시 \\로 분할  -> 마지막 요소 추출	
+		//     	// -> 파일 이름 추출
+		//     	// filename = $(this).val().split('/').pop().split('\\').pop();
+		        
+		//     	// 이외의 경우에는 취소로 받아들이고 경고창을 띄우겠음.
+		//     	alert("설명 이미지 업로드가 취소되었습니다. 다시 올려주세요.");
+		//     }  
+			
+		// 	/*  파일 리스트를 보여주는 <ul> 태그 내 <li> 태그 만들기 작업 	*/		
+			
+		//     // 파일 리스트로 보여주기 위한 <li> 
+		//     let newItem = $('<li></li>').addClass('list-group-item');
+		    
+		// 	// 삭제 버튼
+		//     let explainDeleteButton = $('<button></button>').addClass('btn font-weight-bold').text('X').attr('id','exDelBtn');		
+
+			
+		//  	// 삭제 버튼을 클릭할 때 파일을 삭제하는 이벤트를 추가
+		//     explainDeleteButton.on('click', function() {
+		//     	// 삭제 버튼을 포함한 파일 아이템을 삭제
+		//     	// closest() 메서드는 선택한 요소를 기준으로 가장 근접한 상위 요소를 찾아 반환
+		    	
+		//     	// parents() : 현재 요소의 모든 부모 요소
+		//     	// parent() : 현재 요소의 직계 부모 요소
+		    	
+		//     	// 버튼 직계 부모가 newItem이면
+		//     	if($(this).parent().is(newItem)){
+		//     		// 직계 부모 삭제
+		//        		$(this).parent().remove();
+		//     		$('#explainFileText').val('');
+		//        	}
+		//     });
+		// });
+		console.log("proprice val 타입 : " + typeof $("#proPrice").val());
+
+		$('#register_Btn').on('submit',function(e){
+			e.preventDefault();
+			// 기존 submit 동작 중지
+			if($("#subCategory").val()=="" || $("#subCategory").val()==null){
+				alert("1차 분류를 선택한 후, 2차 분류를 선택하십시오.");
+				return;
+			}else if($("#proName").val()=="" || $("#proName").val()==null){
+				alert("상품명을 입력하셔야 합니다.");
+				return;
+			}else if($("#proName").length() <= 5){
+				alert("상품명은 다섯 글자 이상 입력하셔야 합니다.");
+				return;
+			}else if($("#proPrice").val()=="" || $("#proPrice").val()==null){
+				alert("상품 가격을 입력하셔야 합니다.");
+				return;
+			}else if( Number($("#proPrice").val()) < 0){
+				alert("상품 가격은 음수가 될 수 없습니다.");
+				return;
+			}else if( !Number.isInteger(Number($("#proPrice").val()))){
+				alert("상품 가격에 소수는 입력하시면 안됩니다.");
+				return;
+			}else if($("#proQuantity").val()=="" || $("#proQuantity").val()==null){
+				alert("상품수량을 입력하셔야 합니다.");
+				return;
+			}else if( Number($("#proQuantity").val()) < 0 ){
+				alert("상품 수량은 음수가 될 수 없습니다.");
+				return;
+			}else if( !Number.isInteger(Number($("#proPrice").val()))){
+				alert("상품 수량에 소수는 입력하시면 안됩니다.");
+				return;
+			}else{
+				// 위 제약조건에 해당되지 않는 나머지 경우에 한해, 로직을 실행한다.	
+
+			}
+		});
+
+		$("#cancel_Btn").on("click",function(){
+			if (confirm("취소하시겠습니까?")){
+				window.location.href = "/vendor";
+			}else{
+				return;
+			}			
+		});
 	}); 
 </script>
 
-<!-- 
-<script type="text/javascript">
 
-	/*
-	 $.ajax({
-	 type : `http method type`,
-	 url : `url`,
-	 data : `서버에 전송할 데이터`,
-	 contentType : "전송할 데이터 타입",
-	 //기본 값 : "application / x-www-form-urlencoded; charset = UTF-8"  
-	 dataType : '서버로 부터 수신할 데이터 타입',
-	 //아무것도 지정하지 않으면 jQuery는 응답의 MIME 유형을 기반으로 해석을 시도
-	 error : `에러 발생시 수행할 함수`,
-	 success : `성공시 수행할 함수`
-	}); 
-	 */
-	let token = $("meta[name='_csrf']").attr("content");
-	let header = $("meta[name='_csrf_header']").attr("content");
-	
-	let email_auth_code='00000000';
-	const withdrawl_comment = '회원을 탈퇴하시면 계정이 삭제 되며 내가 쓴글, 구매내역, 리뷰, 채팅 등 모든 정보가 삭제됩니다.<br>' 
-		+'계정 삭제 후 7일 간에 유보기간이 주어지며, 유보기간 동안 마이페이지 > 회원정보로 오셔서 탈퇴 취소를 누르시면 다시 회원으로 지내실 수 있습니다.';
-		let $modi_email_auth_btn = $("<button>");
-		let $modi_email_change_btn = $("<button>").css("width",'90px');
-		
-
-	let vendorPageUserInfo = function() {
-		
-		$.ajax({
-					type : "post",
-					beforeSend : function(xhr) {
-						xhr.setRequestHeader(header, token);
-					},
-					url : "/user/info", // 정적인 URL 사용
-					dataType : "json", // 받을 데이터의 유형 지정
-					success : function(data) {
-						const userInfo = data;
-						console.log(userInfo);
-						let $h2title = $("<h2>").text("회원 정보");
-						let $myPageContent = $("#MyPage_content_container")
-								.empty();
-						let $myPageTitle = $("#MyPage_content_name");
-						$myPageTitle.empty().append($h2title);
-
-						let $userInfo_dv1 = $("<div>").attr("id",
-								"userInfo_dv1").addClass("w-100 my-3 mx-3");
-						let $userInfo_name = $("<h2>").css("font-weight",
-								"bold").text(userInfo.m_NickName);
-						let $userInfo_txt1 = $("<span>").text('님의 등급은');
-						let $userInfo_grade = $("<h2>").css("font-weight",
-								"bold").text(userInfo.m_Grade);
-						let $userInfo_txt2 = $("<span>").text('입니다.');
-
-						$userInfo_dv1.append($userInfo_name, $userInfo_txt1,
-								$userInfo_grade, $userInfo_txt2);
-
-						let $userInfo_dv2 = $("<div>").attr("id",
-								"userInfo_dv2").addClass(" my-3 mx-3").css(
-								"background-color", "#eee");
-						let $userInfo_orders = $("<div>").attr("id",
-								"userInfo_orders").append($("<h4>").text("구매"),
-								$("<span>").text(userInfo.countPurchase));
-						let $userInfo_wishs = $("<div>").attr("id",
-								"userInfo_wishs").append(
-								$("<h4>").text("위시리스트"),
-								$("<span>").text(userInfo.countWish));
-						let $userInfo_points = $("<div>").attr("id",
-								"userInfo_points").append(
-								$("<h4>").text("포인트"),
-								$("<span>").text(userInfo.m_Point));
-						let $userInfo_coupons = $("<div>").attr("id",
-								"userInfo_coupons").append(
-								$("<h4>").text("쿠폰"),
-								$("<span>").text(userInfo.countCoupon));
-
-						$userInfo_dv2.append($userInfo_orders, $userInfo_wishs,
-								$userInfo_points, $userInfo_coupons);
-
-						let $password_title = $("<h4>").addClass("mx-5 my-3")
-								.text("비밀 번호 ");
-						let $modify_password = $("<a>").attr("href",
-								"${pageContext.request.contextPath}/myPage/password/change")
-								.addClass("btn btn-dark").text("변경하기");
-						let $userInfo_dv3 = $("<div>")
-								.attr("id", "userInfo_dv3")
-								.css("border-top", "1px solid #cccc")
-								.addClass(
-										"py-3 my-3 mx-3 d-flex flex-row align-items-center")
-								.append($password_title, $modify_password);
-
-						let $email_title = $("<h4>").addClass("mx-5 my-3")
-								.text("이메일");
-						
-						
-						
-						let $userInfo_email = $("<input>").attr("type","email").addClass("mx-1").attr("id","modi_email_input")
-						.val(userInfo.m_Email).prop("disabled",true);
-						
-						let $email_change_btn = $("<button>").addClass("btn btn-dark").text("변경");
-						let $email_auth_input = $("<input>").attr("id","email_auth_input");
-						
-						let $modi_email_btn = $("<button>") .attr("id", "modify_email_btn").addClass("btn btn-dark mx-3")
-					    .text("수정").on('click', function() {
-					    	$email_change_btn.remove();
-					    	$email_auth_input.remove();
-					    	
-					        $userInfo_email.prop('disabled', false).focus();
-					        $userInfo_dv4.append($email_auth_input, $email_change_btn.on('click',function(){
-								
-								if(email_auth_code !== $email_auth_input.val()){
-									return;
-									}
-								request_email_change();
-							}));
-					        $(this).removeClass("btn-dark").addClass("btn-outline-secondary").text("인증").on('click',function(e){
-					        	$(this).addClass("btn-secondary");
-					        	$email_auth_input.focus();
-					        	
-					        	request_email_auth();
-					        });
-					        
-					    });
-						
-						
-						let $userInfo_dv4 = $("<div>")
-								.attr("id", "userInfo_dv4")
-								.css("border-top", "1px solid #ccc")
-								.addClass(
-										"py-3 my-3 mx-3 d-flex flex-row align-items-center")
-								.append($email_title, $userInfo_email,$modi_email_btn
-										);
-
-						let $address_title = $("<h4>").addClass("mx-5 my-3")
-								.text("배송지");
-						let $userInfo_address1 = $("<div>")
-								.attr("id", "your_address")
-								.addClass('mx-5')
-								.html(
-										'우편번호 : <input type="text" id="zip_code" name="zip_code" value="' + userInfo.m_ZipCode + '"><br>' +
-									    '주소 : <input type="text" id="address" name="address" style="width:100%;" value="' + userInfo.m_Address1 + '"><br>' +
-									    '상세 : <input type="text" id="extra_address" name="extra_address" style="width:70%;" value="' + userInfo.m_Address2 + '"><br>' +
-									    '<input type="hidden" id="address_detail" name="detail"><br>'
-
-								);
-						let $chang_address_btn = $("<button>").attr("id",
-								"chang_address_btn").addClass(
-								"btn btn-dark m-3").text("변경").on('click',function(){
-									change_address();
-								});
-						let $modify_address = $("<button>").attr("id",
-								"address_modify_btn").addClass("btn btn-dark")
-								.text("조회").on('click', function() {
-									search_address();
-								});
-
-						let $userInfo_dv5 = $("<div>")
-								.attr("id", "userInfo_dv5")
-								.css("border-top", "1px solid #ccc")
-								.addClass(
-										"py-3 my-3 mx-3 d-flex flex-row align-items-center")
-								.append($address_title, $userInfo_address1,
-										$modify_address, $chang_address_btn);
-
-						let $phone_title = $("<h4>").addClass("mx-5 my-3")
-								.text("전화 번호 ");
-						
-						let $userInfo_dv6 = $("<div>")
-								.attr("id", "userInfo_dv6")
-								.css("border-top", "1px solid #ccc")
-								.addClass(
-										"py-3 my-3 mx-3 d-flex flex-row align-items-center")
-								.append($phone_title);
-
-						let $withdrawl_title = $("<h4>").addClass("mx-5 my-3").text("회원 탈퇴");
-						
-						let $withdrawl_btn = $("<button>").attr('id','withdrawl_btn').addClass("btn btn-outline-danger").text('탈퇴하기').on('click',function(){
-							$("#wd_detail_dv1").empty();
-							
-							let $wd_detail_1 = $("<h4>").text(userInfo.m_NickName+'님과 이별인가요? 너무 아쉬워요')
-							.css('font-weight','bold').addClass("my-3").appendTo($wd_detail_dv1);
-							
-							
-							let $wd_detail_2 = $("<div>").addClass("mx-5").html(withdrawl_comment).appendTo($wd_detail_dv1);
-							
-							let $wd_detail_3 = $("<input>").addClass("my-3").attr("type","checkbox").attr('id',"withdrawl_check").appendTo($wd_detail_dv1);
-							
-							let $wd_detail_4 = $("<p>").text("위에 대해 확인하였고 탈퇴하겠습니다.").appendTo($wd_detail_dv1);
-							let $wd_detail_5 = $("<div>").addClass("d-flex flex-row my-3 justify-conten-center align-items-center").appendTo($wd_detail_dv1);
-							
-							let $delete_ok_btn = $("<button>").addClass('btn btn-dark mx-1').text('탈퇴').on('click',function(){
-								 if($wd_detail_3.is(':checked')===false){
-										$wd_detail_6.text('확인란에 체크해 주시길 바랍니다.');
-										return ;
-									} 
-									 $.ajax({
-											type : "delete",
-											beforeSend : function(xhr) {
-												xhr.setRequestHeader(header, token);
-											},
-											url : "/user",
-											success : function(data){
-												alert('삭제 되었습니다.');
-											},
-											error : function(data){
-												alert('에러 발생');
-											}
-										})
-									
-								});
-							let $delete_no_btn = $("<button>").addClass("btn btn-outline-secondary mx-1").text('취소').on('click',function(){
-								$wd_detail_dv1.empty();
-							});
-							
-							$wd_detail_5.append($delete_ok_btn,$delete_no_btn);
-							
-							let $wd_detail_6 =$("<div>").addClass('text-center').css('color','red').appendTo($wd_detail_dv1);
-						}
-						);
-						let $withdrawl_main = $("<div>").addClass("d-flex flex-row align-items-center")
-						.attr("id","withdrawl_main").css("display","flex").append($withdrawl_title,$withdrawl_btn );
-							let $wd_detail_dv1 = $("<div>").addClass("d-flex flex-column align-items-center justify-content-center")
-							.attr("id","wd_detail_dv1").css("widh","90%");
-						
-						let $userInfo_dv7 = $("<div>")
-						.attr("id", "userInfo_dv7")
-						.css("border-top", "1px solid #ccc")
-						.addClass(
-								"py-3 my-3 mx-3 d-flex flex-column justify-content-center").append($withdrawl_main,$wd_detail_dv1);
-						
-						
-						$myPageContent.append($userInfo_dv1, $userInfo_dv2,
-								$userInfo_dv3, $userInfo_dv4, $userInfo_dv5,
-								$userInfo_dv6,$userInfo_dv7);
-
-					}
-				});
-	};
-	vendorPageUserInfo();
-
-	let change_address = function() {
-		
-		if($("#extra_address").val() == null || $("#extra_address").val() == ""){
-			alert("상세주소를 입력해주세요.");
-			return;
-		}
-		let address_data = {
-			zip_code : $("#zip_code").val(),
-			address : $("#address").val(),
-			extra_address : $("#extra_address").val()
-		};
-
-		$.ajax({
-			type : "post",
-			beforeSend : function(xhr) {
-				xhr.setRequestHeader(header, token);
-			},
-			data : JSON.stringify(address_data),
-			contentType : "application/json",
-			url : "/user/address",
-			dataType : "json",
-			success : function(data){
-				alert('주소가 변경되었습니다');
-				vendorPageUserInfo();
-			}
-		})
-	}
-	
-	let request_email_auth = function() {
-	    $.ajax({
-	        type: "post",
-	        beforeSend : function(xhr) {
-				xhr.setRequestHeader(header, token);
-			},
-			  data: JSON.stringify({'receiver': $("#modi_email_input").val()}),
-	        contentType: "application/json",
-	        url: "/user/email/auth",
-	        success: function(data) {
-	        	console.log(email_auth_code);
-	        	
-	            alert('해당 이메일로 인증번호를 전송하였습니다. \n 인증을 완료해주세요.');
-	            email_auth_code = data.authNum;
-	            console.log(email_auth_code);
-	        }
-	    });
-	};
-	let request_email_change = function() {
-	    $.ajax({
-	        type: "PATCH",
-	        beforeSend : function(xhr) {
-				xhr.setRequestHeader(header, token);
-			},
-			//async:false,
-		    data: $("#modi_email_input").val(),
-	        contentType: "application/json",
-	        url: "/user/email",
-	        success: function(data) {
-	        	alert('이메일이 변경되었습니다.');
-	        	vendorPageUserInfo();
-	        }
-	    });
-	};
-
-	let search_address = function() {
-
-		console.log('눌림');
-
-		new daum.Postcode({
-			onComplete : function(data) {
-				let addr = ''; // 주소 변수
-				let extraAddr = '';
-				if (data.userSelectedType === 'R') {
-					addr = data.roadAddress;
-				} else {
-					addr = data.jibunAddress;
-				}
-				if (data.userSelectedType == 'R') {
-					/* if (data.bname !== "" && /[동|로|가]$/g.test(data.bname)) {
-						extraAddr += databname;
-					} */
-					if (data.buildingName !== '' && data.apartment === 'Y') {
-						extraAddr += (extraAddr !== '' ? ', '
-								+ data.buildingName : data.buildingName);
-					}
-					if (extraAddr !== '') {
-						extraAddr = ' (' + extraAddr + ')';
-					}
-					document.getElementById("extra_address").value = extraAddr;
-				} else {
-					document.getElementById("extra_address").value = '';
-				}
-				document.getElementById('zip_code').value = data.zonecode;
-				document.getElementById("address").value = addr;
-
-				document.getElementById("extra_address").focus();
-			}
-		}).open();
-	}
-
-	$("#myPage_userInfo_Select").on('click', function() {
-		vendorPageUserInfo();
-	});
-	$("#myPage_orderInfo_Select").on('click', function() {
-		let $h2title = $("<h2>").text("주문 사항");
-		let $myPageContent = $("#MyPage_content_container").empty();
-		let $myPageTitle = $("#MyPage_content_name");
-		$myPageTitle.empty().append($h2title);
-	});
-	
-	
-</script> -->
 <script>
 					 
   let select_dv = $("#select_content");

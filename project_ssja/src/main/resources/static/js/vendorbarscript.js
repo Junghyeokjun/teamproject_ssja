@@ -10,15 +10,16 @@ $(document).ready(function () {
       xhr.setRequestHeader(header, token);
   });*/  
 
+// html 상단에 받은 jstl 데이터 principal을 받는 변수  
+  let getPrincipal = ${principal};
+  
   //상단 카테고리 바 분류
   let $ul = $("<ul>").attr("id", "list_category").appendTo($home_user_bar);
-  let $li1 = $("<li>").css("order", "1").text("회원 정보").addClass("px-3 py-2").attr("id", "nav-links").appendTo($ul);
-  let $li2 = $("<li>").css("order", "2").text("상품 관리").addClass("px-3 py-2").attr("id", "nav-links").appendTo($ul);
-  let $li3 = $("<li>").css("order", "3").text("문의 및 요청").addClass("px-3 py-2").attr("id", "nav-links").appendTo($ul);
-  // let $li4 = $("<li>").css("order", "4").text("문의 및 요청").addClass("px-3 py-2").attr("id", "nav-links").appendTo($ul);
-	
-	//let $li5 = $("<li>").css("order", "5").text("생활용품").addClass("px-3 py-2").attr("id", "nav-links").appendTo($ul);
-
+  let $li1 = $("<li>").css("order", "1").text("가구").addClass("px-3 py-2").attr("id", "nav-links").appendTo($ul);
+  let $li2 = $("<li>").css("order", "2").text("패브릭").addClass("px-3 py-2").attr("id", "nav-links").appendTo($ul);
+  let $li3 = $("<li>").css("order", "3").text("인테리어").addClass("px-3 py-2").attr("id", "nav-links").appendTo($ul);
+  let $li4 = $("<li>").css("order", "4").text("주방용품").addClass("px-3 py-2").attr("id", "nav-links").appendTo($ul);
+  let $li5 = $("<li>").css("order", "5").text("생활용품").addClass("px-3 py-2").attr("id", "nav-links").appendTo($ul);
 
 //카테고리 별 링크 변수
   const  link1_1 = "/product/search?category=11";
@@ -120,10 +121,28 @@ $(document).ready(function () {
 
   //======================
   
+  // 버튼을 눌렀을 때의 동작을 담는 함수. 
+  // post 방식으로 보내서 링크에 데이터 노출되는 것을 막음
+  function buttonForm(link){
+	let $form = $("<form>").attr({
+	    method: "POST",
+	    action: link
+	});
+
+	$form.append(
+	    $("<input>").attr({
+	        type: "hidden",
+	        name: "memberId", // 서버에서 받을 파라미터 이름
+	        value: memberId // 멤버 번호 변수
+	    })
+	);
+	$form.appendTo("body").submit();
+  }
+  
   //사이드 관련
   let $side_container1 = $("<button>").addClass("side_containers").text("회원정보");
   let $side_containerEx = $("<button>").addClass("side_containers").text("상품 관리");
-  let $side_container2 = $("<button>").addClass("side_containers").text("문의 요청");
+  let $side_container2 = $("<button>").addClass("side_containers").text("문의 요청 내역");
 
   // 확장되는 사이드 영역
   // 사용은 안하지만 해당 부분은 나중을 위해 참조용으로 남겨두기
@@ -132,11 +151,11 @@ $(document).ready(function () {
   // 클릭 이벤트 추가
   $side_container1.on('click', function(e){
       e.stopPropagation();
-      window.location.href = "https://www.google.com";
+      window.location.href = "/myPage";
   });
   $side_container2.on('click', function(e){
       e.stopPropagation();
-      window.location.href = "https://www.naver.com";
+      buttonform("/vendor/question/list");
   });
 //  $side_container3.on('click', function(e){
 //      e.stopPropagation();
@@ -152,12 +171,12 @@ $(document).ready(function () {
   
   let $category1 = $("<button>").addClass("category").text("상품 등록").on('click',function(e){
 	    e.stopPropagation();
-	    window.location.href = "http://localhost:8282/vender/product/write";
+	    window.location.href = "/vendor/product/write";
   });
   
   let $category2 = $("<button>").addClass("category").text("등록 상품 목록").on('click',function(e){
 	    e.stopPropagation();
-	    window.location.href = "http://localhost:8282/vender/product/list";
+	    window.location.href = "/vendor/product/list";
   });
   
 //  let $category1 = $("<button>").addClass("category").text("가구").on('click',function(e){
@@ -228,71 +247,71 @@ $(document).ready(function () {
   }
 
 
-//  $li1.mouseenter(function () {
-//    $sub_bar.css("display", "block");
-//    $("#sub_bar").children().remove();
-//    let $subUl = $("<ul>").addClass("sub-nav").appendTo($sub_bar);
-//    let $subLi1 = $("<li>").addClass("sub-px-3").appendTo($subUl);
-//    $link1_1.appendTo($subLi1);
-//    let $subLi2 = $("<li>").addClass("sub-px-3").appendTo($subUl);
-//    $link1_2.appendTo($subLi2);
-//    let $subLi3 = $("<li>").addClass("sub-px-3").appendTo($subUl);
-//    $link1_3.appendTo($subLi3);
-//  });
-//  
-//  $li2.mouseenter(function () {
-//    $sub_bar.css("display", "block");
-//    $("#sub_bar").children().remove();
-//    let $subUl = $("<ul>").addClass("sub-nav").appendTo($sub_bar);
-//    let $subLi1 = $("<li>").addClass("sub-px-3").appendTo($subUl);
-//    $link2_1.appendTo($subLi1);
-//    let $subLi2 = $("<li>").addClass("sub-px-3").appendTo($subUl);
-//    $link2_2.appendTo($subLi2);
-//    let $subLi3 = $("<li>").addClass("sub-px-3").appendTo($subUl);
-//    $link2_3.appendTo($subLi3);
-//
-//  });
-//  $li3.mouseenter(function () {
-//    $sub_bar.css("display", "block");
-//    $("#sub_bar").children().remove();
-//    let $subUl = $("<ul>").addClass("sub-nav").appendTo($sub_bar);
-//    let $subLi1 = $("<li>").addClass("sub-px-3").appendTo($subUl);
-//    $link3_1.appendTo($subLi1);
-//    let $subLi2 = $("<li>").addClass("sub-px-3").appendTo($subUl);
-//    $link3_2.appendTo($subLi2);
-//    let $subLi3 = $("<li>").addClass("sub-px-3").appendTo($subUl);
-//    $link3_3.appendTo($subLi3);
-//
-//  });
-//  $li4.mouseenter(function () {
-//    $sub_bar.css("display", "block");
-//    $("#sub_bar").children().remove();
-//    let $subUl = $("<ul>").addClass("sub-nav").appendTo($sub_bar);
-//    let $subLi1 = $("<li>").addClass("sub-px-3").appendTo($subUl);
-//    $link4_1.appendTo($subLi1);
-//    let $subLi2 = $("<li>").addClass("sub-px-3").appendTo($subUl);
-//    $link4_2.appendTo($subLi2);
-//    let $subLi3 = $("<li>").addClass("sub-px-3").appendTo($subUl);
-//    $link4_3.appendTo($subLi3);
-//    let $subLi4 = $("<li>").addClass("sub-px-3").appendTo($subUl);
-//    $link4_4.appendTo($subLi4);
-//
-//  });
+  $li1.mouseenter(function () {
+    $sub_bar.css("display", "block");
+    $("#sub_bar").children().remove();
+    let $subUl = $("<ul>").addClass("sub-nav").appendTo($sub_bar);
+    let $subLi1 = $("<li>").addClass("sub-px-3").appendTo($subUl);
+    $link1_1.appendTo($subLi1);
+    let $subLi2 = $("<li>").addClass("sub-px-3").appendTo($subUl);
+    $link1_2.appendTo($subLi2);
+    let $subLi3 = $("<li>").addClass("sub-px-3").appendTo($subUl);
+    $link1_3.appendTo($subLi3);
+  });
   
-//  $li5.mouseenter(function () {
-//    $sub_bar.css("display", "block");
-//    $("#sub_bar").children().remove();
-//    let $subUl = $("<ul>").addClass("sub-nav").appendTo($sub_bar);
-//    let $subLi1 = $("<li>").addClass("sub-px-3").appendTo($subUl);
-//    $link5_1.appendTo($subLi1);
-//    let $subLi2 = $("<li>").addClass("sub-px-3").appendTo($subUl);
-//    $link5_2.appendTo($subLi2);
-//    let $subLi3 = $("<li>").addClass("sub-px-3").appendTo($subUl);
-//    $link5_3.appendTo($subLi3);
-//    let $subLi4 = $("<li>").addClass("sub-px-3").appendTo($subUl);
-//    $link5_4.appendTo($subLi4);
-//
-//  });
+  $li2.mouseenter(function () {
+    $sub_bar.css("display", "block");
+    $("#sub_bar").children().remove();
+    let $subUl = $("<ul>").addClass("sub-nav").appendTo($sub_bar);
+    let $subLi1 = $("<li>").addClass("sub-px-3").appendTo($subUl);
+    $link2_1.appendTo($subLi1);
+    let $subLi2 = $("<li>").addClass("sub-px-3").appendTo($subUl);
+    $link2_2.appendTo($subLi2);
+    let $subLi3 = $("<li>").addClass("sub-px-3").appendTo($subUl);
+    $link2_3.appendTo($subLi3);
+
+  });
+  $li3.mouseenter(function () {
+    $sub_bar.css("display", "block");
+    $("#sub_bar").children().remove();
+    let $subUl = $("<ul>").addClass("sub-nav").appendTo($sub_bar);
+    let $subLi1 = $("<li>").addClass("sub-px-3").appendTo($subUl);
+    $link3_1.appendTo($subLi1);
+    let $subLi2 = $("<li>").addClass("sub-px-3").appendTo($subUl);
+    $link3_2.appendTo($subLi2);
+    let $subLi3 = $("<li>").addClass("sub-px-3").appendTo($subUl);
+    $link3_3.appendTo($subLi3);
+
+  });
+  $li4.mouseenter(function () {
+    $sub_bar.css("display", "block");
+    $("#sub_bar").children().remove();
+    let $subUl = $("<ul>").addClass("sub-nav").appendTo($sub_bar);
+    let $subLi1 = $("<li>").addClass("sub-px-3").appendTo($subUl);
+    $link4_1.appendTo($subLi1);
+    let $subLi2 = $("<li>").addClass("sub-px-3").appendTo($subUl);
+    $link4_2.appendTo($subLi2);
+    let $subLi3 = $("<li>").addClass("sub-px-3").appendTo($subUl);
+    $link4_3.appendTo($subLi3);
+    let $subLi4 = $("<li>").addClass("sub-px-3").appendTo($subUl);
+    $link4_4.appendTo($subLi4);
+
+  });
+
+  $li5.mouseenter(function () {
+    $sub_bar.css("display", "block");
+    $("#sub_bar").children().remove();
+    let $subUl = $("<ul>").addClass("sub-nav").appendTo($sub_bar);
+    let $subLi1 = $("<li>").addClass("sub-px-3").appendTo($subUl);
+    $link5_1.appendTo($subLi1);
+    let $subLi2 = $("<li>").addClass("sub-px-3").appendTo($subUl);
+    $link5_2.appendTo($subLi2);
+    let $subLi3 = $("<li>").addClass("sub-px-3").appendTo($subUl);
+    $link5_3.appendTo($subLi3);
+    let $subLi4 = $("<li>").addClass("sub-px-3").appendTo($subUl);
+    $link5_4.appendTo($subLi4);
+
+  });
 
   $side_containerEx.on('click', function(e){
     e.stopPropagation();
@@ -364,20 +383,21 @@ $(document).ready(function () {
 	    }
 	}
 
-	$total_bar.on('mouseleave', hideSubBar);
-	$sub_bar.on('mouseleave', hideSubBar);
+//	$total_bar.on('mouseleave', hideSubBar);
+//	$sub_bar.on('mouseleave', hideSubBar);
 	
   $(window).on('scroll', function () {
     let $side_bar = $('#side_bar');
     let scrollPosition = $(this).scrollTop();
     let $windowWidth = window.innerWidth;
-    if (scrollPosition < 100 && $windowWidth >=780) {
-
-      $side_bar.css('top', '181px');
-    } else {
-
-      $side_bar.css('top', '95px');
-    }
+    $side_bar.css('top', '125px');
+//    if (scrollPosition < 100 && $windowWidth >=780) {
+//
+//      $side_bar.css('top', '125px');
+//    } else {
+//
+//      $side_bar.css('top', '95px');
+//    }
   });
   
   
@@ -391,4 +411,34 @@ $(document).ready(function () {
   let currentPosition = window.scrollY;
 	
 
+// 판매자 상호명 가져오기  
+  
+  	let $vendorData = $('#vendorData').val();
+	console.log("vendorData : " + $vendorData);
+	
+	// value 기본값은 "" 이다. 빈 문자열이 아니라는 의미는, 값이 들어갔다는 의미이다.
+	if($vendorData != ""){
+		// 값이 들어온 상태라면, 판매자의 상호명을 노출시키는 ajax 실행
+		$.ajax({
+			type : "POST",
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			url : "/api/vendor/vendorInfo",
+			data : { 'vendorData' : $vendorData },
+			success : function(response){
+				console.log(response);
+				if($vendorData == response.id){
+					$('.vendorNames').append(' [ ' +  response.v_bizName + ' ]');
+				}else{
+					console.log("warning : " + vendorData + "와(과) 일치하지 않음");
+				}
+			},
+			error : function(xhr, status, error){
+				alert("판매자 정보를 가져오기가 실패했습니다");
+				console.error(xhr.responseText);
+			}
+		});
+	}
+  
 });

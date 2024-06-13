@@ -5,6 +5,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
+<sec:authentication property="principal" var="principal" />
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,7 +28,7 @@
    <meta name="_csrf" content="${_csrf.token}"/>
 	<meta name="_csrf_header" content="${_csrf.headerName}"/>
 
-  <script src="/js/venderbarscript.js">
+  <script src="/js/vendorbarscript.js">
 
   </script>
 
@@ -34,7 +36,7 @@
 
   </script>
   <link href="/css/footerstyle.css?after" rel="stylesheet">
-  <link href="/css/venderbarstyle.css?after" rel="stylesheet">
+  <link href="/css/vendorbarstyle.css?after" rel="stylesheet">
   <link href="/css/board.css?after" rel="stylesheet">
   <link rel="stylesheet" href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
 
@@ -235,28 +237,6 @@
 		background-color: #c43c3c;	
 	}
 
-	.venderName {
-		border-bottom: 5PX SOLID #222222;
-		background-color: white;
-		padding: 3px;
-		border-radius: 15 15 15 15;
-		margin: auto;	
-	}
-	
-	.venderTitle{
-		padding-top: 3px; 
-	}
-	
-	.top_btn{
-		font-size : 2em;
-
-	}
-@media screen and (max-width: 860px){	
-	.venderTitle {
-		display: none;
-	}
-	
-}	
   </style>
 </head>
 
@@ -283,29 +263,28 @@
 	    	});
 		</script>
 	</sec:authorize>	
-	<header>
-		<div id="title_bar" class="fixed-top">
+	<header class="fixed-top">
+		<div id="title_bar" >
 			<div class="py-2 px-1 d-flex justify-content-between" id="top-bar">
 				<button type="toggle-button" class="top_btn"></button>
 				<div class="mx-5 my-2 d-flex ">
-					<h1 class="h1 venderTitle" >판매자 :&nbsp;</h1>
+					<h1 class="h1 vendorTitle" >판매자 :&nbsp;</h1>
 					<!-- 
 						땡땡땡땡 : 상호명
-						로그인 시 venderDto에 담기는 vender.vbizname 또한 가져오기						
-						그냥 조인을 쓴다면 venderDto가 아니라 조인한 결과를 담는 다른 Dto가 필요할 것이다.
+						로그인 시 vendorDto에 담기는 vendor.vbizname 또한 가져오기						
+						그냥 조인을 쓴다면 vendorDto가 아니라 조인한 결과를 담는 다른 Dto가 필요할 것이다.
 					 -->
-        			<h1 class="h1 venderNames"> 
+        			<h1 class="h1 vendorNames"> 
         				&lt;
         				<sec:authorize access="isAuthenticated()">
-        					<sec:authentication property="principal.userInfo" var="venderMember"/>
+        					<sec:authentication property="principal.userInfo" var="vendorMember"/>
         				</sec:authorize>
-        				<input type="hidden" id="venderId" value="${venderMember.m_Id}">
-        				${venderMember.m_Name}
+        				<input type="hidden" id="vendorData" value="${vendorMember.m_No}">
+        				${vendorMember.m_Name}
         				&gt;</h1>      			
         		</div>
 				<a id="user_link"><img id="login_img"></a>
 			</div>
-
 		</div>
 		<nav id="total_bar">
 		</nav>
@@ -313,16 +292,6 @@
 		<div id="side_bar">
 		<div id="side_links" class="w-100"></div>
 	</div>
-<!-- 	   <div id="select_MyPage" class="d-flex flex-column">
-		    <div id="select_mp_top" class="text-center">판매자 페이지</div>
-		    <div id="select_content">
-		        <button class="MyPage_btn w-100" id="myPage_userInfo_Select" style="border:1px solid #cccccc">회원 정보</button>
-		        <button class="MyPage_btn w-100" id="myPage_orderInfo_Select" style="border:1px solid #cccccc">상품 등록</button>
-		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc">등록 상품 목록</button>		        
-		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc">문의 및 요청</button>
-		    </div>
-		</div>
- -->
   <main>
   	<div class="main_whitespace p-5 my-2">
 		<h1 class="h3 text-center ">상품 등록</h1>
@@ -334,9 +303,9 @@
 				   <label class="mx-2 m-auto input-group-text" >1차 분류</label>
 				   <!-- 상품 카테고리를 해당 페이지에 뿌려줘야 함 : 한 자리 수 -->
 				   <select id="mainCategory" class="form-select w-25 mx-2" >
-				   	<c:forEach var="proCate" items="${pcMains}">
-					 	<option value="${proCate.pcNum}">${proCate.pcSubName}</option>				  
-					</c:forEach>	
+					   <c:forEach var="proCate" items="${pcMains}">
+					   	<option value="1">가구</option>				  
+					   </c:forEach>				   	
 				   </select>
 				</div>
 				<div id="ProductCategory2" class="p-2 input-group w-100">
@@ -364,7 +333,7 @@
 				<div class="input-group mt-2 p-2 w-100 border-secondary d-flex align-items-center border-top">
 				    <label class="mx-2 m-auto input-group-text">배너 이미지</label>
  					<div class="file-container_ form-control custom-primary m-2 d-flex align-items-center">
-			            <input id="bannerFileText" class="file-upload-name_" placeholder="파일을 선택하세요" disabled="disabled">			
+			            <input id="bannerFileText" class="file-upload-name_" placeholder="파일을 선택하세요" disabled="disabled"> 			
 			            <label for="bannerFile" >올리기</label> 
 			            <input type="file" id="bannerFile" class="upload-image_" name=""> 
 			         </div>
@@ -373,7 +342,7 @@
 				<div class="input-group mt-2 p-2 w-100 border-secondary d-flex align-items-center border-top">					
 				    <label class="mx-2 m-auto input-group-text">설명 이미지</label>
  					<div class="file-container_ form-control custom-primary m-2 d-flex align-items-center">
-			            <input id="explainFileText" class="file-upload-name_" placeholder="파일을 선택하세요" disabled="disabled">			
+			            <input id="explainFileText" class="file-upload-name_" placeholder="파일을 선택하세요" disabled="disabled"> 			
 			            <label for="explainFile" >올리기</label> 
 			            <input type="file" id="explainFile" class="upload-images_" name="" >			        
 			        </div>			        
@@ -405,32 +374,7 @@
 </body>
 <script type="text/javascript">
 	$(document).ready(function(){
-		let $venderId = $('#venderId').val();
-		
-		// value 기본값은 "" 이다. 빈 문자열이 아니라는 의미는, 값이 들어갔다는 의미이다. 
-		if($venderId != ""){
-
-			$.ajax({
-				type : "POST",
-				beforeSend : function(xhr) {
-				xhr.setRequestHeader(header, token);
-				},
-				url : "/api/vendor/venderInfo",
-				data : { 'venderId' : $venderId },
-				success : function(response){
-					console.log(response);
-					$('.venderNames').append(response.)
-				},
-				error : function(xhr, status, error){
-					console.log("서브 카테고리 가져오기가 실패했습니다");
-				}
-			});
-		}
-		
-		
-		
-		/* 
-			메인 카테고리 작업 중
+		/* 메인 카테고리 작업 중
 		
 		let mainCategoryValue = $('#mainCategory').val(); 
 		$('#mainCategory').on('change',function(){								
@@ -456,19 +400,16 @@
 		*/
 		
 		
-		
-		
 		let bannerFile = $('#bannerFile');
 		let explainFile = $('#explainFile');
 		let uploadedExplainFiles = $('#uploadedExplainFiles');
-		
-		
-		
 		
 		// 배너 이미지 경로 가져오기
 		bannerFile.change(function(e){
 		    let filename = "";
 		    let files = e.target.files;
+		    console.log("bannerFiles : " + files);
+
 		    let bannerDeleteButton = $('<button></button>').addClass('btn font-weight-bold').text('X').attr('id','BnDelBtn');
 		    
 		    if (files.length > 0) {
@@ -497,7 +438,8 @@
 		explainFile.change(function(e){
 		    let filename;
 		    let files = e.target.files;
-		   
+
+			console.log("explainFiles : " + files);
 		    // 파일을 선택한 경우
 		    if (files.length > 0) {
 		        filename = files[0].name;
@@ -549,9 +491,8 @@
 		       	}
 		    });
 		});
-		
-	
 	}); 
+
 </script>
 
 <!-- 
@@ -912,7 +853,7 @@
         select_dv.toggle();
     });
 
-	
+
 
 </script>
 
