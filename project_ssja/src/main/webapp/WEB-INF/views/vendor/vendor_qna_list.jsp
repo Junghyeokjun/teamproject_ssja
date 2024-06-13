@@ -36,7 +36,7 @@
 
   </script>
   <link href="/css/footerstyle.css?after" rel="stylesheet">
-  <link href="/css/vendor barstyle.css?after" rel="stylesheet">
+  <link href="/css/vendorbarstyle.css?after" rel="stylesheet">
   <link href="/css/board.css?after" rel="stylesheet">
   <link rel="stylesheet" href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
 
@@ -49,7 +49,6 @@
     body {
       font-family: 'fonts', NanumSquare;
       background-color: #f7f0e8;
-      padding-top: 72px;
     }
 
 	header, main, footer{
@@ -242,6 +241,7 @@
 </head>
 
 <body>
+<div id="principalData" data-username="${principal.username}" data-email="${principal.email}" hidden></div>
 	<sec:authorize access="isAuthenticated()">
     	<sec:authentication property="principal.auth" var="myAuth"/>
     	<c:choose>		
@@ -293,7 +293,7 @@
 	<div id="side_bar">
 		<div id="side_links" class="w-100"></div>
 	</div>
-	<main style="margin: 0 auto;">
+	<main>
 		<div class="main_whitespace p-5 my-2">
 			<h1 class="h3 text-center">${bc.bcname} 게시판</h1>
 		</div>
@@ -314,7 +314,7 @@
 						<tr>
 							<td>${board.bno}</td>
 							<td><a id="board_title" class=""
-								href="${pageContext.request.contextPath}/board/content_view?bno=${board.bno}">${board.btitle}</a>	
+								href="${pageContext.request.contextPath}/board/content_view/${bc.bcno}?bno=${board.bno}">${board.btitle}</a>	
 							</td>
 							<td class="date_str">${board.bdate}</td>
 							<%-- <td><button type="button" onclick="location.href='/dept/remove?deptno=${dept.deptno}';">삭제</button></td> --%>
@@ -327,19 +327,19 @@
 					<ul class="pagination ch-col justify-content-center">
 						<c:if test="${pageMaker.prev}">
 							<li class="page-item"><a class="page-link ch-col"
-								href="${pageContext.request.contextPath}/board/list/${category}/${pageMaker.makeQuery(pageMaker.startPage-1)}"><</a></li>
+								href="${pageContext.request.contextPath}${category}${pageMaker.makeQuery(pageMaker.startPage-1)}"><</a></li>
 						</c:if>
 						<c:forEach var="idx" begin="${pageMaker.startPage}"
 							end="${pageMaker.endPage}">
 							<c:choose>
 								<c:when test="${pageMaker.criteria.pageNum == idx}">
 									<li class="page-item active"><a class="page-link"
-										href="${pageContext.request.contextPath}/board/list/${category}/${pageMaker.makeQuery(idx)}">${idx}</a>
+										href="${pageContext.request.contextPath}${category}${pageMaker.makeQuery(idx)}">${idx}</a>
 									</li>
 								</c:when>
 								<c:when test="${pageMaker.criteria.pageNum != idx}">
 									<li class="page-item"><a class="page-link"
-										href="${pageContext.request.contextPath}/board/list/${category}/${pageMaker.makeQuery(idx)}">${idx}</a></li>
+										href="${pageContext.request.contextPath}${category}${pageMaker.makeQuery(idx)}">${idx}</a></li>
 								</c:when>
 								<c:otherwise>
 								</c:otherwise>
@@ -347,7 +347,7 @@
 						</c:forEach>
 						<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
 							<li class="page-item"><a class="page-link ch-col"
-								href="${pageContext.request.contextPath}/board/list/${category}/${pageMaker.makeQuery(pageMaker.endPage+1)}">></a></li>
+								href="${pageContext.request.contextPath}${category}${pageMaker.makeQuery(pageMaker.endPage+1)}">></a></li>
 						</c:if>
 					</ul>
 				</nav>

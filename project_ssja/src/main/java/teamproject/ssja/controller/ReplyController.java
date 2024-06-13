@@ -78,7 +78,7 @@ public class ReplyController {
 			form.setWriter(user.getUserInfo().getM_NickName());
 		}
 		replyService.appleReview(form);
-			return ResponseEntity.ok("succese");
+			return ResponseEntity.ok("success");
 		}catch(Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("에러 발 생");
 		}

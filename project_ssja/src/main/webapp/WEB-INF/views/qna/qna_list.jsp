@@ -142,6 +142,7 @@ body {
 						<tr>
 							<td>${board.bno}</td>					
 							<td>
+							
 								<a id="board_title"	href="${pageContext.request.contextPath}/board/content_view/${bc.bcno}?bno=${board.bno}">${board.btitle}</a>
 							</td>
 							<td>${board.bwriter}</td>
@@ -156,19 +157,19 @@ body {
 					<ul class="pagination ch-col justify-content-center">
 						<c:if test="${pageMaker.prev}">
 							<li class="page-item"><a class="page-link ch-col"
-								href="${pageContext.request.contextPath}/board/list/${category}/${pageMaker.makeQuery(pageMaker.startPage-1)}"><</a></li>
+								href="${pageContext.request.contextPath}/board/list/${category}${pageMaker.makeQuery(pageMaker.startPage-1)}"><</a></li>
 						</c:if>
 						<c:forEach var="idx" begin="${pageMaker.startPage}"
 							end="${pageMaker.endPage}">
 							<c:choose>
 								<c:when test="${pageMaker.criteria.pageNum == idx}">
 									<li class="page-item active"><a class="page-link"
-										href="${pageContext.request.contextPath}/board/list/${category}/${pageMaker.makeQuery(idx)}">${idx}</a>
+										href="${pageContext.request.contextPath}/board/list/${category}${pageMaker.makeQuery(idx)}">${idx}</a>
 									</li>
 								</c:when>
 								<c:when test="${pageMaker.criteria.pageNum != idx}">
 									<li class="page-item"><a class="page-link"
-										href="${pageContext.request.contextPath}/board/list/${category}/${pageMaker.makeQuery(idx)}">${idx}</a></li>
+										href="${pageContext.request.contextPath}/board/list/${category}${pageMaker.makeQuery(idx)}">${idx}</a></li>
 								</c:when>
 								<c:otherwise>
 								</c:otherwise>
@@ -176,7 +177,7 @@ body {
 						</c:forEach>
 						<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
 							<li class="page-item"><a class="page-link ch-col"
-								href="${pageContext.request.contextPath}/board/list/${category}/${pageMaker.makeQuery(pageMaker.endPage+1)}">></a></li>
+								href="${pageContext.request.contextPath}/board/list/${category}${pageMaker.makeQuery(pageMaker.endPage+1)}">></a></li>
 						</c:if>
 					</ul>
 				</nav>

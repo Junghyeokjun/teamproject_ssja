@@ -10,8 +10,10 @@ $(document).ready(function () {
       xhr.setRequestHeader(header, token);
   });*/  
 
-// html 상단에 받은 jstl 데이터 principal을 받는 변수  
-  let getPrincipal = '${principal}';
+// html 상단에 받은 jstl 데이터 principal을 받는지 확인  
+  if(typeof getPrincipal !== 'undefined'){
+	  console.log(getPrincipal);
+  }
   
   //상단 카테고리 바 분류
   let $ul = $("<ul>").attr("id", "list_category").appendTo($home_user_bar);
@@ -122,22 +124,26 @@ $(document).ready(function () {
   //======================
   
   //사이드 관련
-  let $side_container1 = $("<button>").addClass("side_containers").text("회원정보");
-  let $side_containerEx = $("<button>").addClass("side_containers").text("상품 관리");
-  let $side_container2 = $("<button>").addClass("side_containers").text("문의 요청 내역");
+  let $side_container1 = $("<button>").addClass("side_containers align-middle").text("회원정보");
+  let $side_containerEx = $("<button>").addClass("side_containers align-middle").text("상품 관리");
+  let $side_container2 = $("<button>").addClass("side_containers align-middle").text("문의 요청 내역");
 
+  const sideLink1 = "/myPage";
+  const sideLink2 = "/vendor/product/write";
+  const sideLink3 = "/vendor/product/list";
+  const sideLink4 = "/vendor/question/20";
   // 확장되는 사이드 영역
   // 사용은 안하지만 해당 부분은 나중을 위해 참조용으로 남겨두기
-  
+
   
   // 클릭 이벤트 추가
   $side_container1.on('click', function(e){
       e.stopPropagation();
-      window.location.href = "/myPage";
+      window.location.href = sideLink1;
   });
   $side_container2.on('click', function(e){
       e.stopPropagation();
-      window.location.href = "/vendor/question/list";
+      window.location.href = sideLink4;
   });
 //  $side_container3.on('click', function(e){
 //      e.stopPropagation();
@@ -149,16 +155,17 @@ $(document).ready(function () {
 //  });
   
   
+  
   let $cate_dv = $("<div>").attr("id","cate_container");
   
-  let $category1 = $("<button>").addClass("category").text("상품 등록").on('click',function(e){
+  let $category1 = $("<button>").addClass("category align-middle").text("상품 등록").on('click',function(e){
 	    e.stopPropagation();
-	    window.location.href = "/vendor/product/write";
+	    window.location.href = sideLink2;
   });
   
-  let $category2 = $("<button>").addClass("category").text("등록 상품 목록").on('click',function(e){
+  let $category2 = $("<button>").addClass("category align-middle").text("등록 상품 목록").on('click',function(e){
 	    e.stopPropagation();
-	    window.location.href = "/vendor/product/list";
+	    window.location.href = sideLink3;
   });
   
 //  let $category1 = $("<button>").addClass("category").text("가구").on('click',function(e){
@@ -217,7 +224,6 @@ $(document).ready(function () {
 //  $cate_dv.append($category1, $category2, $category3, $category4, $category5);
   $cate_dv.append($category1, $category2);
   $side_containerEx.text("상품 카테고리").append($cate_dv);
-  
   
 
   let remove_ct_detail = function(){
@@ -299,8 +305,10 @@ $(document).ready(function () {
     e.stopPropagation();
     if($cate_dv.css('display') === "none"){
       $cate_dv.css('display','flex');
+      $side_containerEx.css("color","brown");
     }else{
       $cate_dv.css('display','none');
+      $side_containerEx.css("color","black");
     }
   });
 
@@ -344,9 +352,26 @@ $(document).ready(function () {
     if ($side_bar.css("display") === "block") {
     	hideSideBar();
     	// 포커스 상태 해제
-    	$barbtn.blur();
+    	$barbtn.removeClass("active");
     } else {
-    	showSideBar();    	
+		showSideBar();
+		$barbtn.addClass("active");
+		
+		let currentUrl = window.location.href;
+		console.log("currentUrl : " + currentUrl);
+		//
+		if (currentUrl.includes(sideLink1)) {
+			$side_container1.addClass("active");
+		} else if (currentUrl.includes(sideLink2)) {
+			$side_containerEx.css("color","brown");
+			$category1.addClass("active");
+		} else if (currentUrl.includes(sideLink3)) {
+			$side_containerEx.css("color","brown");
+			$category2.addClass("active");
+		} else if (currentUrl.includes(sideLink4)) {
+			$side_container2.addClass("active");
+		}
+		
     }
   });
 

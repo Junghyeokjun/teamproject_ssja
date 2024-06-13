@@ -80,6 +80,7 @@ public class CommunityController {
 	public String modifyTempImg(@PathVariable("bno") long bno, @RequestParam("image") MultipartFile file) {
 		return communityService.updateTempBoardImg(bno, file)+"";
 	}
+	
 	//게시글 업데이트
 	@PostMapping("/content/modify/{bno}")
 	public void modifyContent(@PathVariable("bno") long bno, @RequestBody Map<String, Object> data) {

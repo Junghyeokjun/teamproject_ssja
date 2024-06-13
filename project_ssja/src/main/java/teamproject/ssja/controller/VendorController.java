@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -83,12 +84,12 @@ public class VendorController {
 		return "/vendor/vendor_product_list";
 	}
 
-	@GetMapping("/question/list")
-	public String showQnaList(@AuthenticationPrincipal CustomPrincipal principal, Model model, Criteria criteria) {
+	@GetMapping("/question/{category}")
+	public String showQnaList(@AuthenticationPrincipal CustomPrincipal principal, Model model, Criteria criteria,@PathVariable("category") long bcno) {
 		log.info("showProductList()..");	
 		criteria.setBmno(principal.getMemberNum());
-		model.addAttribute("bc", boardService.showBoardCategory(20));
-		criteria.setBcno(20);
+		model.addAttribute("bc", boardService.showBoardCategory(bcno));
+		criteria.setBcno(bcno);
 		// 일시적으로 목록을 불러오기 위해 사용. 판매자 자신의 문의 내역 리스트는 요구 메서드가 다름 
 		model.addAttribute("boards",  boardService.showListWithPaging(criteria));
 
