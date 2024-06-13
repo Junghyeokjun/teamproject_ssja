@@ -171,14 +171,12 @@ h2, h4, p {
 					<tbody class="table-group-divider">
 					<c:forEach var="coupon" items="${coupons}">
 						<tr>
-							<td>${coupon.c_NO}</td>
-							<td>${coupon.c_NAME}</td>
-							<td>${coupon.c_DCPER}%</td>
+							<td>${coupon.c_no}</td>
+							<td>${coupon.c_name}</td>
+							<td>${coupon.c_dcper}%</td>
 							<td>
-							<fmt:parseDate value="${coupon.c_STARTDATE}" var="dateFmt" pattern="yyyy-MM-dd HH:mm:ss"/>
-							<fmt:formatDate value="${dateFmt}" pattern="yyyy-MM-dd"/>~
-							<fmt:parseDate value="${coupon.c_DUEDATE}" var="dateFmt" pattern="yyyy-MM-dd HH:mm:ss"/>
-							<fmt:formatDate value="${dateFmt}" pattern="yyyy-MM-dd"/>														
+							<fmt:formatDate value="${coupon.c_startdate}" pattern="yyyy-MM-dd"/>~
+							<fmt:formatDate value="${coupon.c_duedate}" pattern="yyyy-MM-dd"/>														
 							 </td>
 						</tr>	
 						</c:forEach>					
@@ -228,19 +226,19 @@ h2, h4, p {
                 <form id="newCouponForm" action="${pageContext.request.contextPath}/adminPage/write"  method="post">
                     <div class="mb-3">
                         <label for="couponName" class="form-label">쿠폰 이름</label>
-                        <input type="text" class="form-control" id="couponName" name="c_NAME">
+                        <input type="text" class="form-control" id="couponName" name="c_name">
                     </div>
                     <div class="mb-3">
                         <label for="discountPercentage" class="form-label">할인율 (%)</label>
-                        <input type="number" class="form-control" id="discountPercentage" name="c_DCPER">
+                        <input type="number" class="form-control" id="discountPercentage" name="c_dcper">
                     </div>
                     <div class="mb-3">
                         <label for="startDate" class="form-label">시작일</label>
-                        <input type="date" class="form-control" id="startDate" name="c_STARTDATE">
+                        <input type="date" class="form-control" id="startDate" name="c_startdate">
                     </div>
                     <div class="mb-3">
                         <label for="dueDate" class="form-label">만료일</label>
-                        <input type="date" class="form-control" id="dueDate" name="c_DUEDATE">
+                        <input type="date" class="form-control" id="dueDate" name="c_duedate">
                     </div>
                     <button type="submit" class="btn btn-dark">쿠폰 발급</button>
                 </form>

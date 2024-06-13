@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import teamproject.ssja.dto.CouponDto;
 import teamproject.ssja.dto.MembersDto;
 import teamproject.ssja.dto.MembersSearchDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ProductsSearchDto;
 import teamproject.ssja.dto.PurchaseDto;
+import teamproject.ssja.dto.userinfo.CouponDTO;
 import teamproject.ssja.page.Criteria;
 
 @Mapper
@@ -33,9 +33,9 @@ public interface AdminPageMapper {
 
 	long getCouponListTotalCount();
 
-	List<CouponDto> getCouponListWithPaging(Criteria cri);
+	List<CouponDTO> getCouponListWithPaging(Criteria cri);
 
-	int insertCoupon(CouponDto couponDto);
+	int insertCoupon(CouponDTO couponDto);
 
 	
 

@@ -1,8 +1,6 @@
 package teamproject.ssja.controller.adminpage;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.extern.slf4j.Slf4j;
-import teamproject.ssja.dto.BoardDto;
-import teamproject.ssja.dto.CouponDto;
 import teamproject.ssja.dto.MembersSearchDto;
 import teamproject.ssja.dto.ProductsSearchDto;
+import teamproject.ssja.dto.userinfo.CouponDTO;
 import teamproject.ssja.page.Criteria;
 import teamproject.ssja.page.Page10VO;
 import teamproject.ssja.service.Admin.CouponListService;
@@ -51,8 +48,6 @@ public class AdminPageController {
 		model.addAttribute("members",memberListService.getMemberListWithPaging(criteria));
 		return  "/adminPage/membersList";
 	}
-		
-
 	
 	@GetMapping("/membersSearchList")
     public ResponseEntity<List<MembersSearchDto>> membersSearchList(@RequestParam("type") String type, @RequestParam("keyword") String keyword) {
@@ -82,8 +77,6 @@ public class AdminPageController {
 	public String purchasesList(Model model, Criteria criteria) {
 		log.info("purchasesList()..");
 
-		
-
 		long Purchasestotal = purchaseListService.getPerchaseListTotalCount();
 		model.addAttribute("purchasepageMaker", new Page10VO(Purchasestotal, criteria));
 		model.addAttribute("purchases", purchaseListService.getPerchaseListWithPaging(criteria));
@@ -103,59 +96,10 @@ public class AdminPageController {
 	}	
 	
 	@PostMapping("/write")
-	public String addCoupon(CouponDto couponDto) {
+	public String addCoupon(CouponDTO couponDto) {
 		log.info("addCoupon()..");
 		couponListService.addCoupon(couponDto);
 		return "redirect:/adminPage/couponsList";
 	}
-	
-	
-	
-//	@RequestMapping("/membersList")
-//	public ModelAndView membersList(ModelAndView model, Criteria criteria) {
-//		log.info("membersList()..");
-//
-//		long Memberstotal = memberListService.getMemberListTotalCount();
-//		model.addObject("memberpageMaker", new Page10VO(Memberstotal, criteria));
-//		model.addObject("members",memberListService.getMemberListWithPaging(criteria));
-//		model.setViewName("/adminPage/membersList");
-//		return  model;
-//	}
-	
-//	@GetMapping("/membersSearchList")
-//	public List<MembersSearchDto> membersSearchList(@RequestParam("type") String type, @RequestParam("keyword") String keyword,Model model) {
-//		log.info("membersSearchList()..");
-//		return memberListService.getMemberSearchList(type,keyword);
-//	}	
 
-//	@RequestMapping("/productsList")
-//	public ModelAndView productsList(ModelAndView model, Criteria criteria) {
-//		log.info("productsList()..");
-//
-//		long Productstotal = productListService.getProductListTotalCount();
-//		model.addObject("productpageMaker", new Page10VO(Productstotal, criteria));
-//		model.addObject("products", productListService.getProductListWithPaging(criteria));
-//		model.setViewName("/adminPage/productsList");
-//		
-//		return model;
-//	}
-//	
-//	@GetMapping("/productsSearchList")
-//	public List<ProductsSearchDto> productsSearchList(@RequestParam("type") String type, @RequestParam("keyword") String keyword,Model model) {
-//		log.info("productsSearchList()..");
-//		return productListService.getProductsSearchList(type,keyword);
-//	}	
-//	
-//	@RequestMapping("/purchasesList")
-//	public ModelAndView purchasesList(ModelAndView model, Criteria criteria) {
-//		log.info("purchasesList()..");
-//
-//		long Purchasestotal = purchaseListService.getPerchaseListTotalCount();
-//		model.addObject("purchasepageMaker", new Page10VO(Purchasestotal, criteria));
-//		model.addObject("purchases", purchaseListService.getPerchaseListWithPaging(criteria));
-//		model.setViewName("/adminPage/purchasesList");
-//		
-//		return model;
-//	}
-	
 }

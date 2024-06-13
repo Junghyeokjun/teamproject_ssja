@@ -4,10 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
-import teamproject.ssja.dto.BoardDto;
-import teamproject.ssja.dto.CouponDto;
-import teamproject.ssja.dto.MembersDto;
-import teamproject.ssja.dto.MembersSearchDto;
+import teamproject.ssja.dto.userinfo.CouponDTO;
 import teamproject.ssja.mapper.AdminPageMapper;
 import teamproject.ssja.page.Criteria;
 
@@ -25,13 +22,13 @@ public class CouponListServiceImpl implements CouponListService {
 	}
 
 	@Override
-	public List<CouponDto> getCouponListWithPaging(Criteria cri) {
+	public List<CouponDTO> getCouponListWithPaging(Criteria cri) {
 		log.info("getCouponListWithPaging()..");
 		return adminPageMapper.getCouponListWithPaging(cri);
 	}
 
 	@Override
-	public int addCoupon(CouponDto couponDto) {
+	public int addCoupon(CouponDTO couponDto) {
 		log.info("addCoupon()..");
 		return adminPageMapper.insertCoupon(couponDto);
 		
