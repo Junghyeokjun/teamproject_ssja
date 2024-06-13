@@ -7,14 +7,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.extern.slf4j.Slf4j;
+import teamproject.ssja.dto.BoardDto;
+import teamproject.ssja.dto.CouponDto;
 import teamproject.ssja.dto.MembersSearchDto;
 import teamproject.ssja.dto.ProductsSearchDto;
 import teamproject.ssja.page.Criteria;
 import teamproject.ssja.page.Page10VO;
+import teamproject.ssja.service.Admin.CouponListService;
 import teamproject.ssja.service.Admin.MemberListService;
 import teamproject.ssja.service.Admin.ProductListService;
 import teamproject.ssja.service.Admin.PurchaseListService;
@@ -32,6 +36,9 @@ public class AdminPageController {
 	
 	@Autowired
 	private PurchaseListService purchaseListService;
+	
+	@Autowired
+	private CouponListService couponListService;
 	
 	@GetMapping("/membersList")
 	public String membersList(Model model, Criteria criteria) {
@@ -77,6 +84,24 @@ public class AdminPageController {
 		
 		return "/adminPage/purchasesList";
 	}	
+	
+	@RequestMapping("/couponsList")
+	public String couponsList(Model model, Criteria criteria) {
+		log.info("couponsList()..");
+		
+		  long Couponstotal = couponListService.getCouponListTotalCount();
+		  model.addAttribute("couponpageMaker", new Page10VO(Couponstotal, criteria)); 
+		  model.addAttribute("coupons", couponListService.getCouponListWithPaging(criteria));
+		 
+		return "/adminPage/couponsList";
+	}	
+	
+	@PostMapping("/write")
+	public String addCoupon(CouponDto couponDto) {
+		log.info("addCoupon()..");
+		couponListService.addCoupon(couponDto);
+		return "redirect:/adminPage/couponsList";
+	}
 	
 	
 //	@RequestMapping("/membersList")

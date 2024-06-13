@@ -177,4 +177,41 @@
 			where rnum > (#{pageNum}-1) * #{amount}
     ]]>
 	</select>
+	<resultMap id="CouponsListMap" type="CouponDto">
+		<id property="C_NO" column="C_NO" />
+		<result property="C_STARTDATE" column="C_STARTDATE" />
+		<result property="C_DUEDATE" column="C_DUEDATE" />
+		<result property="C_NAME" column="C_NAME" />
+		<result property="C_DCPER" column="C_DCPER" />		
+	</resultMap>
+
+	<select id="getCouponListTotalCount" resultType="long">    
+    <![CDATA[
+              	SELECT count(*) FROM coupon 
+        ]]>
+	</select>
+
+	<select id="getCouponListWithPaging" 	resultMap="CouponsListMap">    
+    <![CDATA[
+	select * from 
+        	(
+			    select
+			        rownum rnum , A.*
+			    from 
+			    (SELECT  * FROM coupon order by C_NO desc) A 
+		    	where rownum <= #{pageNum} * #{amount} 
+		    )
+			where rnum > (#{pageNum}-1) * #{amount}
+    ]]>
+	</select>
+	
+	<insert id="insertCoupon">
+    <![CDATA[
+
+        	INSERT INTO coupon (C_NO,C_STARTDATE,C_DUEDATE,C_NAME,C_DCPER)
+        	VALUES (C_SEQ.NEXTVAL, #{C_STARTDATE}, #{C_DUEDATE}, #{C_NAME}, #{C_DCPER})
+]]>        
+
+	</insert>
+	
 	</mapper>
