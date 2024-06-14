@@ -153,6 +153,7 @@
     <!-- 제품 이미지 리스트 매핑 -->
     <collection property="imgList" ofType="productImgMap" resultMap="productImgMap"/>
 </resultMap>
+
 <resultMap id="productImgMap" type="teamproject.ssja.dto.product.ProductImgDTO">
     <id property="pro_img_path" column="pro_img_path"/>
     <result property="pro_no" column="pro_no"/>

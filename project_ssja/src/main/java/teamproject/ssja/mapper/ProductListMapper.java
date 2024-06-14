@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.product.ProductCondition;
 import teamproject.ssja.dto.product.ProductItemDto;
 import teamproject.ssja.dto.userinfo.CartItemsDTO;
