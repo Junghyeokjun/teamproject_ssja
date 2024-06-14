@@ -37,6 +37,10 @@ public interface AdminPageMapper {
 
 	int insertCoupon(CouponDTO couponDto);
 
+	int deleteCoupon(CouponDTO couponDto);
 	
+	 CouponDTO read(int c_no); // read 쿼리 메서드
+
+	  void updateCoupon(CouponDTO couponDto); // updateCoupon 쿼리 메서드
 
 }

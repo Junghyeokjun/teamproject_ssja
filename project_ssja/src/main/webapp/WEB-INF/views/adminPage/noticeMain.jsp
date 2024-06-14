@@ -18,12 +18,8 @@
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="/js/barscript.js">
-
-  </script>
-  <script src="/js/footer.js">
-
-  </script>
+<script src="/js/barscript_admin.js"></script>
+  <script src="/js/footer.js"></script>
    <meta name="_csrf" content="${_csrf.token}"/>
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
   <link href="/css/footerstyle.css?after" rel="stylesheet">
@@ -88,7 +84,7 @@ justify-centent:center;
      	<span style="width:18%;">작성자</span>
      	<span style="width:26%;">날짜</span>
      	<span style="width:8%;">조회 수</span>
-     	<span style="width:10%;">삭제</span>
+     	<span style="width:18%;">삭제</span>
      </div>
      <div id="adimnPage_notic_content"></div>
     
@@ -100,7 +96,8 @@ justify-centent:center;
     <button class="btn bnt-outline-dark m-3" id="search_notice_btn" 
     style="width:100px;height:45px;border:2px solid #aaa;">검색</button>
     
-    <button id="search_enroll_newnotice" class="btn btn-dark my-3" style="width:100px;height:45px;" >등록</button>
+    <button id="search_enroll_newnotice" class="btn btn-dark my-3" style="
+:100px;height:45px;" >등록</button>
     </div>
 </div>
   </main>

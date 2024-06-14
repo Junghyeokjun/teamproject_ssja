@@ -33,6 +33,28 @@ public class CouponListServiceImpl implements CouponListService {
 		return adminPageMapper.insertCoupon(couponDto);
 		
 	}
+
+//	@Override
+//	public int modifyCoupon(CouponDTO couponDto) {
+//		log.info("modifyCoupon()..");
+//		return adminPageMapper.updateCoupon(couponDto);
+//		
+//	}
+    @Override
+	public CouponDTO getCouponById(int couponId) {
+        return adminPageMapper.read(couponId); // read 쿼리 실행
+    }
+
+    @Override
+    public void modifyCoupon(CouponDTO couponDto) {
+    	adminPageMapper.updateCoupon(couponDto); // updateCoupon 쿼리 실행
+    }
+    
+    @Override
+	public int removeCoupon(CouponDTO couponDto) {
+		log.info("removeCoupon()..");
+		return adminPageMapper.deleteCoupon(couponDto);
+	}
 	
 
 }

@@ -214,4 +214,22 @@
 
 	</insert>
 	
+	<select id="read" resultMap="CouponsListMap">
+    	<![CDATA[
+        	select * from coupon where c_no=#{c_no}
+        ]]>
+	</select>
+	
+	<update id="updateCoupon" parameterType="CouponDTO">
+		<![CDATA[
+        	update coupon set c_name=#{c_name}, c_dcper=#{c_dcper},c_startdate=#{c_startdate},c_duedate=#{c_duedate} where c_no=#{c_no}
+        ]]>
+	</update>
+
+	<delete id="deleteCoupon" parameterType="CouponDTO">
+		 <![CDATA[
+        	delete from coupon where c_no = #{c_no}
+        ]]>
+	</delete>
+	
 	</mapper>
