@@ -184,9 +184,8 @@ body {
 						<option value="m_name">회원이름</option>
 						<option value="m_id">아이디</option>
 						<option value="m_grade">등급</option>
-					</select> <input type="text" name="keyword" value=""> <input
-						type="button" onclick="membersSearchList()"
-						class="btn btn-outline-primary mr-2" value="검색">
+					</select> <input type="text" name="keyword" value=""> 
+					<input type="button" onclick="membersSearchList()" class="btn btn-outline-primary mr-2" value="검색">
 				</form>
 				<div id="paging_dv">
 					<nav aria-label="Page navigation example">
@@ -211,7 +210,7 @@ body {
 							<c:if
 								test="${memberpageMaker.next && memberpageMaker.endPage > 0}">
 								<li class="page-item"><a class="page-link ch-col"
-									href="${pageContext.request.contextPath}/adminPage/membersList${memberpageMaker.makeQuery(pageMaker.endPage+1)}">></a></li>
+									href="${pageContext.request.contextPath}/adminPage/membersList${memberpageMaker.makeQuery(memberpageMaker.endPage+1)}">></a></li>
 							</c:if>
 						</ul>
 					</nav>

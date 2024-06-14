@@ -54,39 +54,14 @@ $(document).ready(function () {
   $(document).ajaxSend(function(e, xhr, options) {
       xhr.setRequestHeader(header, token);
   });
-	
-/*  $("#searchIn").on('click', function() {
-      $.ajax({
-          type: "POST",
-          url: "/logout",
-          beforeSend: function(xhr) {
-              xhr.setRequestHeader(header, token);
-          },
-          dataType:'text',
-          success: function(data) {
-        	// window.location.href="/";
-        	  console.log(data);
-        	  console.log('로그아웃 눌림');
-          },
-          error: function(xhr, status, error) {
-              console.error(xhr.responseText);
-          }
-      });
-  });*/
-  
 
-  //======================
-  
   //사이드 관련
   let $side_container1 = $("<button>").addClass("side_containers").text("회원목록");
   let $side_container2 = $("<button>").addClass("side_containers").text("상품목록");
   let $side_container3 = $("<button>").addClass("side_containers").text("주문목록");
   let $side_container4 = $("<button>").addClass("side_containers").text("쿠폰관리");
-  
-  
-  
-  
-  
+  let $side_container5 = $("<button>").addClass("side_containers").text("공지사항관리");
+
   let $side_containerEx = $("<button>").addClass("side_containers").text("카테고리");
 
   // 클릭 이벤트 추가
@@ -104,7 +79,11 @@ $(document).ready(function () {
   });
   $side_container4.on('click', function(e){
       e.stopPropagation();
-      window.location.href = "https://store.ohou.se/exhibitions/12390";
+      window.location.href = "/adminPage/couponsList";
+  });
+  $side_container5.on('click', function(e){
+      e.stopPropagation();
+      window.location.href = "/adminPage/notice";
   });
   
   
@@ -312,7 +291,7 @@ $(document).ready(function () {
   });
 
   $ul.append($li1, $li2, $li3);
-  $side_bar.append($side_container1,$side_container2,$side_container3,$side_container4);
+  $side_bar.append($side_container1,$side_container2,$side_container3,$side_container4,$side_container5);
 
   let browserHeight = window.innerHeight;
 let currentPosition = window.scrollY;
