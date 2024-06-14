@@ -60,19 +60,58 @@
       text-decoration: none;
     }
     .product{
-      background-color: white
+      background-color: white;
     }
-    /* <a href="" id="product_link" style="text-decoration: none;">
-            <div class="product my-2" style="background-color: white; " >
-              <div class="d-flex flex-row align-items-center my-3" style="border: 1px solid #ccc;">
-              <img src="" style="width: 150px; height: 100px;" id="pro_img">
-              <div class="d-flex flex-column justify-content-center" id="orders_product_Info" style="width: 290px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-left: 1em;">
-                <span style="font-weight: bold;" class="fs-5" id="pro_bizname"></span>
-                <span style="color: black; text-decoration: none; font-weight: bold;" class="fs-5" id="pro_name"></span>
-              </div>
-              </div>
-            </div>
-          </a> */
+    .product > div:first-child{
+      border: 1px solid #ccc;
+    }
+    .product img{
+      width: 150px;
+      height: 100px;
+    }
+    #orders_product_Info{
+      width: 290px; 
+      overflow: hidden; 
+      text-overflow: ellipsis; 
+      white-space: nowrap; 
+      margin-left: 1em;
+    }
+    #pro_bizname{
+      font-weight: bold;
+    }
+    #pro_name{
+      color: black; 
+      text-decoration: none; 
+      font-weight: bold;
+    }
+    @media screen and (min-width : 1200px) {
+      #product_link{
+        position: fixed;
+        top: 300px;
+        right: 3vw;
+      }
+      .product > div:first-child{
+        flex-direction: column;
+      }
+      #orders_product_Info{
+        width: 130px;
+        margin-left: 0px;
+      }
+      #pro_bizname{
+        display: none;
+      }
+      #pro_name{
+        height: 60px;
+        white-space: normal ;
+        text-align: center;
+        word-break: keep-all;
+      }
+    }
+    @media screen and (min-width : 1500px){
+      #product_link{
+        right: 7vw;
+      }
+    }
 
   </style>
   <script>
@@ -602,13 +641,13 @@
         </span>
         <input type="hidden" id="prono" value="${content.prono}">
         <c:if test="${content.prono != 0}">
-          <a href="" id="product_link" style="text-decoration: none;">
-            <div class="product my-2" style="background-color: white; " >
-              <div class="d-flex flex-row align-items-center my-3" style="border: 1px solid #ccc;">
-              <img src="" style="width: 150px; height: 100px;" id="pro_img">
-              <div class="d-flex flex-column justify-content-center" id="orders_product_Info" style="width: 290px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-left: 1em;">
-                <span style="font-weight: bold;" class="fs-5" id="pro_bizname"></span>
-                <span style="color: black; text-decoration: none; font-weight: bold;" class="fs-5" id="pro_name"></span>
+          <a href="" id="product_link">
+            <div class="product my-2" >
+              <div class="d-flex flex-row flex-xl-column align-items-center my-3" >
+              <img src="" id="pro_img">
+              <div class="d-flex flex-column justify-content-center" id="orders_product_Info" >
+                <span class="fs-5" id="pro_bizname"></span>
+                <span class="fs-5" id="pro_name"></span>
               </div>
               </div>
             </div>
