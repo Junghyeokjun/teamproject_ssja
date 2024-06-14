@@ -24,8 +24,8 @@
   <script src="/js/footer.js">
 
   </script>
-   <meta name="_csrf" content="${_csrf.token}"/>
-<meta name="_csrf_header" content="${_csrf.headerName}"/>
+  <meta name="_csrf" content="${_csrf.token}"/>
+  <meta name="_csrf_header" content="${_csrf.headerName}"/>
   <link href="/css/footerstyle.css?after" rel="stylesheet">
   <link href="/css/barstyle.css?after" rel="stylesheet">
 
@@ -95,7 +95,7 @@
       <div id="community_content" class="mt-4 mb-2"></div>
 
 
-        <div class="w-100 d-flex justify-content-between ms-4" style="">
+        <div class="w-100 d-flex justify-content-between ms-4">
           <span></span>
           <span class="ms-4">
             <select name="" id="search_opt" style="height: 29px;">
@@ -106,7 +106,7 @@
               <option value="writer">작성자</option>
             </select>
             <input type="text" id="search_keyword" class="ms-2">
-            <button type="button" id="search_btn">검색</button>
+            <button type="button" id="search_btn" class="btn btn-primary btn-sm ms-1" >검색</button>
           </span>
           <span style="width: 70px;height: 40px;">
             <c:if test="${principal != null}">

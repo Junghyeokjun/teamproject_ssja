@@ -1,6 +1,11 @@
 package teamproject.ssja.dto.userinfo;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import lombok.Data;
 
 @Data
@@ -26,5 +31,5 @@ public class UserInfoDTO {
     private int countWish;
     private int countPurchase;
     private Date m_deletedate;
-	
+    private Set<Long> hit= new HashSet<Long>();
 }

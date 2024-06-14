@@ -55,7 +55,63 @@
       width:90%;
     }
     
-
+    /* 연관상품부분 */
+    #product_link{
+      text-decoration: none;
+    }
+    .product{
+      background-color: white;
+    }
+    .product > div:first-child{
+      border: 1px solid #ccc;
+    }
+    .product img{
+      width: 150px;
+      height: 100px;
+    }
+    #orders_product_Info{
+      width: 290px; 
+      overflow: hidden; 
+      text-overflow: ellipsis; 
+      white-space: nowrap; 
+      margin-left: 1em;
+    }
+    #pro_bizname{
+      font-weight: bold;
+    }
+    #pro_name{
+      color: black; 
+      text-decoration: none; 
+      font-weight: bold;
+    }
+    @media screen and (min-width : 1200px) {
+      #product_link{
+        position: fixed;
+        top: 300px;
+        right: 3vw;
+      }
+      .product > div:first-child{
+        flex-direction: column;
+      }
+      #orders_product_Info{
+        width: 130px;
+        margin-left: 0px;
+      }
+      #pro_bizname{
+        display: none;
+      }
+      #pro_name{
+        height: 60px;
+        white-space: normal ;
+        text-align: center;
+        word-break: keep-all;
+      }
+    }
+    @media screen and (min-width : 1500px){
+      #product_link{
+        right: 7vw;
+      }
+    }
 
   </style>
   <script>
@@ -68,6 +124,7 @@
         count : 1,
         amount : 20
       };
+      let pro_no=$("#prono");
       let bno_val=$("#bno").val();
       let insert_reply_content=$("#insert_reply_content");
       let none_reply=$("#none_reply");
@@ -82,6 +139,24 @@
       let m_no=$("#m_no");
       let m_no_val=$("#m_no").val();
       let m_NickName_val=$("#m_NickName").val();
+
+      //게시글의 연관상품을 얻어오는 함수
+      let getProduct= function(pro_no){
+        $.ajax({
+          type : 'GET',
+          url : '/community/product/'+pro_no,
+          async : false,
+          dataType : 'json',  
+          success : function(result) {
+            $("#pro_img").attr("src",result.pro_BANNERIMG);
+            $("#pro_bizname").text(result.pro_BIZNAME);
+            $("#pro_name").text(result.pro_NAME);
+          },    
+          error : function(request, status, error) {
+            alert(error);
+          }
+        })
+      }
 
       //게시물 추천 개수 얻어오는 함수
 
@@ -162,6 +237,22 @@
       let deletePost=function(){
         $.ajax({
           type : 'DELETE',
+          url : '/community/content/img/'+bno_val,
+          async : false,
+          beforeSend: function(xhr) {
+              xhr.setRequestHeader(header, token);
+          },
+          dataType : 'text',
+            
+          success : function(result) {
+          },    
+          error : function(request, status, error) {
+            alert(error);
+          }
+        })
+
+        $.ajax({
+          type : 'DELETE',
           url : '/community/post',
           async : false,
           beforeSend: function(xhr) {
@@ -215,7 +306,11 @@
                   $('<span>'+e.rdate+'</span>').appendTo(reply_wrap2);
                 }
                 reply_wrap2.appendTo(reply_wrap1);
-                $('<div class="p-2 reply">'+e.rcontent+'</div>').appendTo(reply_wrap1);
+                if(e.rmno!=0){
+                  $('<div class="p-2 reply">'+e.rcontent+'</div>').appendTo(reply_wrap1);
+                }else{
+                  $('<div class="p-2 ">'+e.rcontent+'</div>').appendTo(reply_wrap1);
+                }
                 reply.append(reply_wrap1);
               });
               
@@ -355,6 +450,18 @@
               for(var i=0;i<temp;i++){
                 more_reply();
               }
+              console.log(reply_count.total);
+              if(reply_count.total==0){
+                reply.append($('<div id="none_reply" class="my-2" style="margin-left: 16px; margin-right: 16px; box-sizing: content-box; border: 1px solid #BBB;"  >' +
+                                  '<div class="ps-2" style="background-color: #EEE;">'+
+                                    'admin' +
+                                  '</div>' +
+                                  '<div class="p-2">'+
+                                    '댓글이 존재하지 않습니다.'+
+                                  '</div>'+
+                                '</div>'));
+                
+              }
               window.scrollTo({top : temp_scroll , left : 0 , behavior : 'instant',});
             },    
             error : function(request, status, error) {
@@ -460,6 +567,9 @@
         $("#update_re_btn").attr("rno",this.getAttribute("rno"));
 
       })
+      if(pro_no.val()!=0){
+      getProduct(pro_no.val());
+      }
     })
 
   </script>
@@ -529,6 +639,20 @@
           <img src="/images/utilities/like.png" alt="" style="width: 60px;height: 60px;">
           <span class="like">${content.blike}</span>
         </span>
+        <input type="hidden" id="prono" value="${content.prono}">
+        <c:if test="${content.prono != 0}">
+          <a href="" id="product_link">
+            <div class="product my-2" >
+              <div class="d-flex flex-row flex-xl-column align-items-center my-3" >
+              <img src="" id="pro_img">
+              <div class="d-flex flex-column justify-content-center" id="orders_product_Info" >
+                <span class="fs-5" id="pro_bizname"></span>
+                <span class="fs-5" id="pro_name"></span>
+              </div>
+              </div>
+            </div>
+          </a>
+        </c:if>
         <div class="ps-3 py-2 w-100 border-top border-bottom d-flex flex-row justify-content-between">
           <span class="fs-5" style="line-height: 38px;">댓글:[<span class="reply_total">${reply_total}</span>]</span>
           <span>

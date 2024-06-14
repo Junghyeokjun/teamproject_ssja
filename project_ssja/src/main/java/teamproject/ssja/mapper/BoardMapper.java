@@ -21,6 +21,11 @@ public interface BoardMapper {
 	BoardDto read(long bno);
 	int updateBoard(BoardDto boardDto);
 	int updateHit(long bno);
+	//게시글의 상품번호를 삭제
+	int deleteBoardProduct(long bno);
+	
+	//게시글의 상품번호를 업데이트
+	int updateBoardProductImg(long bno, long proNo);
 	
 	// 판매자(작성자) 자신의 QnA 작성글 가져오기
 	List<BoardDto> selectMemberQnaList(Criteria criteria);
@@ -30,10 +35,14 @@ public interface BoardMapper {
 	BoardCategoryDto selectBC(long bcno);
 	
 	long selectTotalCount(long bcno);
+	long selectSearchTotalCount(long bcno,String option, String keyword);
 	List<BoardDto> selectListWithPaging(Criteria criteria);
 
 	//커뮤니티용 게시글들을 가져오는 메서드
 	List<CommunityBoardDto> selectCommunityDto(int pageNum,int amount);
+	
+	//검색조건에 맞는 커뮤니티 게시글들을 가져오는 메서드
+	List<CommunityBoardDto> selectSearchCommunityDto(int pageNum,int amount,String option, String keyword);
 
 	//커뮤니티용 베스트 게시글들을 가져오는 메서드
 	List<CommunityBoardDto> selectBestCommunityDto();
@@ -67,7 +76,7 @@ public interface BoardMapper {
 	int insertBoardImg(BoardImgsDto boardImg);
 
 	//게시글의 이미지를 업데이트하는 메서드
-	void updateBoardImg(BoardImgsDto boardImg);
+	int updateBoardImg(BoardImgsDto boardImg);
 	
 	//게시글의 이미지 경로를 삭제하는 메서드
 	int deleteBoardImg(long bno);

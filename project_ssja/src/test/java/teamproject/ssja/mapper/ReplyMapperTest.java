@@ -153,10 +153,21 @@ class ReplyMapperTest {
 	void testUpdateRLikeDown() {
 		fail("Not yet implemented");
 	}
-	
+	@Disabled
 	@Test
 	void testSelectReply() {
 		System.out.println(replyMapper.selectReply(488));
+	}
+
+	@Disabled
+	@Test
+	void testSelectReReplyCount() {
+		ReplysDto reply= new ReplysDto();
+		reply.setRgroup(542);
+		reply.setRindent(0);
+		reply.setRstep(0);
+		System.out.println(reply);
+		System.out.println(replyMapper.selectReReplyCount(reply));
 	}
 
 }

@@ -82,6 +82,20 @@
         ]]>
 	</update>
 	
+	<!-- 게시글의 이미지를 삭제했을경우 테이블의 product를 null로 업데이트  -->
+	<update id="deleteBoardProduct" parameterType="long">
+		<![CDATA[
+			update board set PRO_NO= null where b_no=#{bno}
+        ]]>
+	</update>
+	
+	<!-- 게시글의 상품번호를 업데이트  -->
+	<update id="updateBoardProductImg" parameterType="long">
+		<![CDATA[
+			update board set PRO_NO = #{proNo} where b_no=#{bno}
+        ]]>
+	</update>
+	
 	<!-- 해당 게시글의 좋아요 개수  -->
 	<select id="selectBoardLikes" parameterType="long" resultType="long">
     	<![CDATA[
@@ -167,6 +181,46 @@
         ]]>
 	</select>
 
+	<!-- 검색조건에 맞는 커뮤니티 페이징 -->
+	<select id="selectSearchCommunityDto" resultMap="CommunityDtoMap">
+	    	<![CDATA[
+	
+        	select * from 
+        	(
+			    select
+			        rownum rnum , A.*
+			    from 
+			    (SELECT b.*, bi.b_img_no,bi.b_img_path 
+			     FROM board b, board_imgs bi 
+			     WHERE b.B_C_NO=40 and b.b_no=bi.b_no and
+			     ]]>
+			     
+			   		<choose>
+	               <when test="#{option} != null and option.equals('all')">
+	                (B_TITLE like '%${keyword}%' or B_CONTENT like '%${keyword}%' or B_WRITER like '%${keyword}%' )
+	               </when>      
+	               <when test="#{option} != null and option.equals('title')">
+	                B_TITLE like '%${keyword}%'
+	               </when> 
+	               <when test="#{option} != null and option.equals('content')">
+	                B_CONTENT like '%${keyword}%'
+	               </when> 
+	               <when test="#{option} != null and option.equals('title_and_content')">
+	                (B_TITLE like '%${keyword}%' or B_CONTENT like '%${keyword}%')
+	               </when> 
+	               <when test="#{option} != null and option.equals('writer')">
+	                B_WRITER like '%${keyword}%'
+	               </when> 
+               		</choose>
+   			<![CDATA[
+               		
+			     ORDER BY b.b_no desc) A 
+		    	where rownum <= #{pageNum} * #{amount}
+		    )
+			where rnum > (#{pageNum}-1) * #{amount}
+	        ]]>
+			
+	</select>
 	<!-- 커뮤니티 베스트글 -->
 	<select id="selectBestCommunityDto" resultMap="CommunityDtoMap">
     	<![CDATA[
@@ -198,6 +252,29 @@
         ]]>
 	</select>
 
+	<!-- 검색조건에 맞는 게시글 총 개수  -->
+	<select id="selectSearchTotalCount" resultType="long">
+    	SELECT  count(*) FROM board where b_c_no= #{bcno} and             
+               <choose>
+               <when test="#{option} != null and option.equals('all')">
+                (B_TITLE like '%${keyword}%' or B_CONTENT like '%${keyword}%' or B_WRITER like '%${keyword}%' )
+               </when>      
+               <when test="#{option} != null and option.equals('title')">
+                B_TITLE like '%${keyword}%'
+               </when> 
+               <when test="#{option} != null and option.equals('content')">
+                B_CONTENT like '%${keyword}%'
+               </when> 
+               <when test="#{option} != null and option.equals('title_and_content')">
+                (B_TITLE like '%${keyword}%' or B_CONTENT like '%${keyword}%')
+               </when> 
+               <when test="#{option} != null and option.equals('writer')">
+                B_WRITER like '%${keyword}%'
+               </when> 
+                        
+               </choose>
+
+	</select>
 	<!-- 게시글 이미지 체크  -->
 	<select id="selectBoardImg" resultType="int">
 		select count(*) from board_imgs WHERE b_no=#{bno}

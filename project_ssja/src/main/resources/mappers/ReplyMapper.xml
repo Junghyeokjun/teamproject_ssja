@@ -49,6 +49,13 @@
         	delete from replys where b_no = #{bno}
         ]]>
 	</delete>
+	
+	<update id="updateDeleteReply" parameterType="ReplysDto">
+		<![CDATA[
+        	update replys set r_content = #{rcontent} , m_no=#{rmno} , r_writer=#{rmnickname} , R_DATE=sysdate where r_no = #{rno}
+        ]]>
+	</update>
+	
 
 	<!-- 해당 게시글의 모든 댓글 수 가져오기 -->
 	<select id="selectReplyCount" parameterType="long" resultType="long">
@@ -57,7 +64,12 @@
         ]]>
 	</select>
 	
-
+	<!-- 해당하는 댓글의 대댓글이 있는지 확인 -->
+	<select id="selectReReplyCount" parameterType="ReplysDto" resultType="long">
+ 	     <![CDATA[
+    		SELECT count(*) FROM replys where R_GROUP = #{rgroup} and r_indent = #{rindent}+1 and r_step=#{rstep}+1 
+         ]]>        
+	</select>
 	
 	<!-- 번호에 해당하는 댓글 조회  -->
 	<select id="selectReply" parameterType="long" resultMap="ReplysDtoMap">

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,9 +16,13 @@ import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.BoardImgsDto;
 import teamproject.ssja.dto.BoardIsLikedDto;
+import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ReplysDto;
 import teamproject.ssja.dto.community.CommunityBoardDto;
+import teamproject.ssja.dto.login.CustomPrincipal;
 import teamproject.ssja.mapper.BoardMapper;
+import teamproject.ssja.mapper.ProductDetailMapper;
+import teamproject.ssja.mapper.ProductListMapper;
 import teamproject.ssja.mapper.ReplyMapper;
 
 @Slf4j
@@ -30,13 +35,24 @@ public class CommunityServiceImpl implements CommunityService {
 	@Autowired
 	ReplyMapper replyMapper;
 
+	@Autowired
+	ProductDetailMapper productMapper;
+	
+	@Autowired
+	ProductListMapper productSearchMapper;
+	
 	//배포시에 경로에 따라 수정
-	final String absolutePath="C:/Users/601-5/git/temaproject_ssja/project_ssja/src/main/resources/static/images/board_content";
+	final String absolutePath="\\\\DESKTOP-RDUHP84\\board_content";
 	final String path = "/images/board_content";
 	
 	@Override
 	public List<CommunityBoardDto> getPost(int pageNum, int amount) {
 		return boardMapper.selectCommunityDto(pageNum, amount);
+	}
+
+	@Override
+	public List<CommunityBoardDto> getSearchPost(int pageNum, int amount, String option, String keyword) {
+		return boardMapper.selectSearchCommunityDto(pageNum, amount, option, keyword);
 	}
 
 	
@@ -50,9 +66,16 @@ public class CommunityServiceImpl implements CommunityService {
 		
 		return boardMapper.selectTotalCount(40);
 	}
+	
+	@Override
+	public long getCommunitySearchTotal(String option, String keyword) {
+		return boardMapper.selectSearchTotalCount(40, option, keyword);
+	}
 
 	@Override
 	public CommunityBoardDto getContent(long bno) {
+
+		
 		return boardMapper.selectCommunityContent(bno);
 	}
 
@@ -143,6 +166,7 @@ public class CommunityServiceImpl implements CommunityService {
 		File targetFile=new File(absolutePath+"/"+fileName);
 		File tempFile= new File(absolutePath+"/"+"Temp_"+bno+".png");
 
+		boardMapper.deleteBoardProduct(bno);
 		//원래 이미지가 존재하지 않을경우 이미지 삽입 
 		if(boardMapper.selectBoardImg(bno)==0) {
 			boardMapper.insertBoardImg(new BoardImgsDto(0,bno,path+"/temp.png"));
@@ -174,7 +198,16 @@ public class CommunityServiceImpl implements CommunityService {
 
 	@Override
 	public int deleteBoardImg(long bno) {
+		String fileName="board_img_"+bno+".png";
+		File file= new File(absolutePath+"/"+fileName);
+		System.out.println(file.exists());
+		if(file.exists()) {
+			file.delete();
+		}
+		boardMapper.deleteBoardProduct(bno);
 		boardMapper.updateBoardImg(new BoardImgsDto(0, bno, "/images/board_content/temp.png"));
+		
+		
 		return 0;
 	}
 
@@ -193,8 +226,16 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public int deleteReply(long rno) {
 		ReplysDto reply=replyMapper.selectReply(rno);
-		int result=replyMapper.deleteReply(reply);		
-		replyMapper.updateRShape(reply);
+		int result=0;
+		if(replyMapper.selectReReplyCount(reply)==0) {
+			result=replyMapper.deleteReply(reply);		
+			replyMapper.updateRShape(reply);
+		}else {
+			reply.setRcontent("삭제된 댓글입니다.");
+			reply.setRmno(0);
+			reply.setRmnickname(" ");
+			replyMapper.updateDeleteReply(reply);
+		}
 		return result;
 	}
 
@@ -204,8 +245,41 @@ public class CommunityServiceImpl implements CommunityService {
 		return replyMapper.updateReply(reply);
 	}
 
+	@Override
+	public int updateHit(CustomPrincipal principal,long bno) {
+	    if (principal != null) {
+	    	Set<Long> hitSet=principal.getUserInfo().getHit();
+	    	if(!hitSet.contains(bno)) {
+	    		hitSet.add(bno);
+	    		return boardMapper.updateHit(bno);
+	    	}
+	    }		
+	    return 0;
+	}
 
+	@Override
+	public List<ProductDto> getProducts(String keyword) {
+		if(keyword==null) {
+			return productSearchMapper.getProducts("%%");
+		}
+		
+		return productSearchMapper.getProducts("%"+keyword+"%");
+	}
 
+	@Override
+	public int updateBoardProductImg(long bno, long proNo, String imgPath) {
+		BoardImgsDto dto= new BoardImgsDto();
+		dto.setB_NO(bno);
+		dto.setB_IMG_PATH(imgPath);
+		boardMapper.updateBoardProductImg(bno, proNo);
+			
+		return boardMapper.updateBoardImg(dto);
+	}
+
+	@Override
+	public ProductDto getRelatedProduct(long proNo) {
+		return productMapper.getProduct(proNo);
+	}
 
 
 

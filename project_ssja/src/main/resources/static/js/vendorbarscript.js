@@ -10,10 +10,8 @@ $(document).ready(function () {
       xhr.setRequestHeader(header, token);
   });*/  
 
-// html 상단에 받은 jstl 데이터 principal을 받는지 확인  
-  if(typeof getPrincipal !== 'undefined'){
-	  console.log(getPrincipal);
-  }
+// html 상단에 받은 jstl 데이터 principal을 받는 변수  
+  let getPrincipal = ${principal}
   
   //상단 카테고리 바 분류
   let $ul = $("<ul>").attr("id", "list_category").appendTo($home_user_bar);

@@ -22,4 +22,6 @@ public interface ProductListMapper {
 	List<ProductItemDto> getCategoryItems(int categoryNum, int pageNum);
 	
 	List<CartItemsDTO> getYourItemCrat(long id);
+	
+	List<ProductDto> getProducts(String keyword);
 }

@@ -1,5 +1,11 @@
 package teamproject.ssja.service.signup;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -83,6 +89,47 @@ public class SignUpServiceImpl implements SignUpService {
 		socialMapper.renewUser(member);
 		socialMapper.renewAuthSocial(member.getM_NO());
 		
+	}
+
+	@Override
+	public List<String> getTerms() {
+		List<String> termsList= new ArrayList<String>();
+		//추후에 파일위치에 따라 경로 수정
+		File file=new File("C:/Users/601-5/git/temaproject_ssja/project_ssja/src/main/resources/static/terms.dat");
+		File file2=new File("C:/Users/601-5/git/temaproject_ssja/project_ssja/src/main/resources/static/terms2.dat");
+
+		FileInputStream stream=null;
+		FileInputStream stream2=null;
+		try {
+			stream = new FileInputStream(file);
+			stream2 = new FileInputStream(file2);
+
+			int bufSize= stream.available();
+			byte[] buf = new byte[bufSize];
+			stream.read(buf);
+			
+			termsList.add(new String(buf));
+			
+			bufSize= stream2.available();
+			buf = new byte[bufSize];
+			stream2.read(buf);
+			
+			termsList.add(new String(buf));
+			
+		}catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				stream.close();
+				stream2.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	
+
+		return termsList;
 	}
 
 
