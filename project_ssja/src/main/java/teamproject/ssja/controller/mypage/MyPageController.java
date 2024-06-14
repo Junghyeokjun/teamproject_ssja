@@ -22,6 +22,7 @@ public class MyPageController {
 //	         return "/adminPage/membersList";
 //	      }
 //		
+		
 		int loginMethod = LoginChecker.check();
 		
 		//로그인 O, 소셜 로그인만 하는 회원

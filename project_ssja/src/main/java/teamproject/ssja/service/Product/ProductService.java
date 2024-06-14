@@ -19,4 +19,6 @@ public interface ProductService {
 	List<CartItemsDTO >getYourItemCrat();
 	
 	SearchResultsWithConditionDTO getSearchItems(SearchForm form);
+	boolean checkUserAddCart(Long id, Long productNum);
+	void addCart(Long id, Long productNum, int quantity, boolean already);
 }

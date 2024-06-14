@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import teamproject.ssja.InfoProvider;
 import teamproject.ssja.dto.login.CustomPrincipal;
 import teamproject.ssja.service.Product.ProductService;
 import teamproject.ssja.service.wishlist.WishListService;
@@ -29,9 +30,10 @@ public class WishListController {
 	
 	
 	@PatchMapping("")
-	public ResponseEntity<Integer> changWishOfItem(@RequestBody Map<String, Object> data, @AuthenticationPrincipal CustomPrincipal user){
+	public ResponseEntity<Integer> changWishOfItem(@RequestBody Map<String, Object> data){
 		log.info("data {}",data);
-		long memberNum = user.getMemberNum();
+		long memberNum = InfoProvider.getM_NO();
+			
 		Long itemNum = ((Integer) data.get("pro_no")).longValue();
 		int wishCount = wishListService.changeWish(memberNum, itemNum);
 		

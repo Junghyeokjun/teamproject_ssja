@@ -15,13 +15,7 @@ public class LoginController {
 	
 	@RequestMapping("/login")
 	public String login(RedirectAttributes attr) {
-		
-			
 		return "temp_login";
 		
 	}
-	
-	
-
-
 }

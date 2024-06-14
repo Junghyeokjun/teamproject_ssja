@@ -196,6 +196,8 @@ $("#myPage_orderInfo_Select").on('click', function() {
 				    						let rv_content = $("#riview_content").val();
 				    						let rv_evalu = $("#review_eval").val()
 				    						apply_review(order.pro_NO, rv_content, rv_evalu);
+				    						modal.hide();
+				    						myPageOrderInfo(pageNum);
 				    					}))
 				    			).appendTo($totalInfoContent);
 				    	
@@ -289,6 +291,7 @@ $("#myPage_orderInfo_Select").on('click', function() {
 		        beforeSend : function(xhr) {
 					xhr.setRequestHeader(header, token);
 				},
+				async:false,
 				data: JSON.stringify({
 					'proNum':proNum,
 					'content':reviewContent,
