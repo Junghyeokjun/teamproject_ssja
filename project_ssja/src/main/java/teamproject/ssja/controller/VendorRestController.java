@@ -54,39 +54,4 @@ public class VendorRestController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ArrayList<ProductCategoryGroupDto>());
 		}
 	}
-	
-//	// 글 좋아요 수정 반영 및 확인
-//	@RequestMapping(value = "/btoggle/{bno}", method = RequestMethod.POST)
-//	// public ResponseEntity<Long> toggleLike(@PathVariable Long bno, @RequestBody
-//	// LikesVO likes) {
-//	public ResponseEntity<LikesVO> toggleLike(@PathVariable Long bno, @RequestParam("bno") String no1,
-//			@RequestParam("mno") String mno) {
-//		try {
-//			LikesVO currentLikes = boardService.modifyGetBoardLikes(no1, mno);
-//			log.info("Current likes: " + currentLikes);
-//			return ResponseEntity.ok(currentLikes);
-//		} catch (Exception e) {
-//			e.printStackTrace(); // 예외 스택 트레이스를 콘솔에 출력
-//			// 예외 발생 시 기본값 0을 반환
-//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new LikesVO());
-//		}
-//	}
-//	
-//	// 댓글도 일반 불어오기와 수정 불러오기로 반영시켜야 함
-//	//
-//	@PostMapping("/rtoggle/{rno}")
-//	// public ResponseEntity<Long> toggleLike(@PathVariable Long bno, @RequestBody
-//	// LikesVO likes) {
-//	public ResponseEntity<LikesVO> toggleLike2(@PathVariable Long rno, @RequestParam("rno") String rno1,
-//			@RequestParam("mno") String mno) {
-//		try {
-//			LikesVO currentLikes = replyService.modifyGetReplyLikes(rno1, mno);
-//			log.info("Current likes: " + currentLikes);
-//			return ResponseEntity.ok(currentLikes);
-//		} catch (Exception e) {
-//			e.printStackTrace(); // 예외 스택 트레이스를 콘솔에 출력
-//			// 예외 발생 시 기본값 0을 반환
-//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new LikesVO());
-//		}
-//	}
 }

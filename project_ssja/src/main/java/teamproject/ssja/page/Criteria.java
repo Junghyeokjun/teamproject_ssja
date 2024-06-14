@@ -15,6 +15,7 @@ public class Criteria {
 	private long PRO_NO;
 	private long bcno;
 	private long bmno;
+	private long vno;
 	
 	public Criteria() {
 		this(1,10); // 기본값 1페이지 10개로 지정

@@ -23,28 +23,44 @@
  	
  <!-- 상품  -->
  	<!-- 페이징은 기본으로 깔고 가기 -->
-	<select id="selectVendorProducts" resultMap="VendorDtoMap">
+	<select id="selectVendorProducts" resultMap="ProductsListMap">
 		 <![CDATA[
 			select * from 
         	(
 			    select
 			        rownum rnum , A.*
 			    from 
-			    (SELECT  * FROM Product where m_no=#{V_NO} order by PRO_NO desc) A 
+			    (SELECT  * FROM Product where v_no=#{vno} order by PRO_NO desc) A 
 		    	where rownum <= #{pageNum} * #{amount} 
 		    )
 			where rnum > (#{pageNum}-1) * #{amount}
    		 ]]>
 	</select>
 
-<!-- 	
-	<insert id="">
+	<!-- 입력한 상품의 상품 번호를 가져오기. 이미지를 넣기 위해 필요한 작업 -->
+	<select id="selectInsertedProNum" resultType="java.lang.Long">
+		SELECT pro_no 
+		FROM product 
+		WHERE pro_bannerimg = #{PRO_BANNERIMG} 
+		  AND pro_quantity = #{PRO_QUANTITY} 
+		  AND pro_price = #{PRO_PRICE} 
+		  AND v_no = #{V_NO} 
+		  AND PRO_NAME = #{PRO_NAME}
+	</select>
+	
+	<insert id="insertProduct" parameterType="ProductDto">
 		<![CDATA[
-			insert into Product values 
+			INSERT INTO product 
+				(PRO_NO, V_NO, P_C_NO, PRO_PRICE, PRO_QUANTITY, PRO_BANNERIMG, PRO_WISH, PRO_SELLCOUNT, PRO_HIT, PRO_BIZNAME, PRO_NAME, PRO_DATE)			
+			VALUES (PRO_SEQ.nextval, #{V_NO}, #{P_C_NO}, #{PRO_PRICE},#{PRO_QUANTITY}, #{PRO_BANNERIMG}, 0, #{PRO_SELLCOUNT}, 0, #{PRO_BIZNAME}, #{PRO_NAME}, sysdate)
 		]]>
 	</insert>
 	
- -->	
+	<insert id="insertProductImgs" parameterType="ProductImgDto">
+		<![CDATA[
+			INSERT INTO product_imgs(pro_img_no,pro_no,pro_img_path) VALUES (PRO_IMG_SEQ.nextval,#{pNo},#{piPath})
+		]]>
+	</insert>
 <!-- 문의 -->	
 	<!-- 페이징은 기본으로 깔고 가기 -->
 	<select id="selectVendorQnas" resultMap="BoardDtoMap">
@@ -86,7 +102,7 @@
 		<result property="v_FAX" column="V_FAX"/>
 	</resultMap>	
 	
-	<resultMap id="ProductsListMap" type="teamproject.ssja.dto.ProductDto">
+	<resultMap type="teamproject.ssja.dto.ProductDto" id="ProductsListMap">
 		<id property="PRO_NO" column="PRO_NO" />
 		<result property="V_NO" column="V_NO" />
 		<result property="P_C_NO" column="P_C_NO" />
@@ -99,5 +115,11 @@
 		<result property="PRO_BIZNAME" column="PRO_BIZNAME" />
 		<result property="PRO_NAME" column="PRO_NAME" />
 		<result property="PRO_DATE" column="PRO_DATE" />
+	</resultMap>
+	
+	<resultMap type="teamproject.ssja.dto.ProductImgDto" id="ProductImgsMap">
+		<result property="piNo" column="PRO_IMG_NO"/>
+		<result property="pNo" column="PRO_NO"/>
+		<result property="piPath" column="PRO_IMG_PATH"/>
 	</resultMap>
 </mapper>

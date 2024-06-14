@@ -9,9 +9,11 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
+<script>
+	let vendorData = "${principal.memberNum}";
+	console.log("vendorData : " + vendorData);
+</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
    
@@ -333,6 +335,8 @@
         <div id="MyPage_content_container" class="border p-5">
         	<form id="productAdd" action="${pageContext.request.contextPath}/vendor/product/add" method="post" autocomplete="off" encType="multipart/form-data">
 				<sec:csrfInput/>
+				<input type="hidden" name="V_NO" readonly="readonly">
+				<input type="hidden" name="PRO_BIZNAME" readonly="readonly">
 				<div id="ProductCategory" class="p-2 input-group w-100">   
 				   <label class="mx-2 m-auto input-group-text" >1차 분류</label>
 				   <!-- 상품 카테고리를 해당 페이지에 뿌려줘야 함 : 한 자리 수 -->
@@ -423,7 +427,21 @@
 </body>
 <script type="text/javascript">
 	$(document).ready(function(){		
-		
+		$.ajax({
+			type : "POST",
+			url : "/api/vendor/vendorInfo",
+			data : { 'vendorData' : vendorData },
+			success : function(response){
+				console.log("판매자 정보 가져오기 성공");
+				$("input[name='V_NO']").val(response.v_no);
+				$("input[name='PRO_BIZNAME']").val(response.v_bizName);
+				console.log( "V_NO VAL : " + response.v_no );
+				console.log( "BIZNAME VAL : " + response.v_bizName);
+			},
+			error : function(xhr, status, error) {
+				console.log("판매자 정보 가져오기 실패");
+			}
+		})
 		// 메인 카테고리 작업 중
 		
 		// 선택된 메인 카테고리 값
@@ -655,13 +673,17 @@
 			// 기존 submit 동작 중지
 			let formData = new FormData(this);
 
+			// 상품명 값 변경
+			formData.delete($('#proName').attr('name'));
+			formData.append($('#proName').attr('name'), "[" + $('#subCategory').val() + "]" + $('#proName').val());
+
 			// 기존 키에 대한 값을 삭제.
 			formData.delete($('#coverFile').attr('name'));
 
 			// 새로운 값을 배열로 추가.
 			// 각 파일을 formData.append를 통해 동일한 키에 추가하면, 서버 측에서 이를 배열 형태로 처리할 수 있다. 
 			// 이는 FormData 객체의 내부 동작이다. 따라서 기본 파일 업로드로 진행할 경우에는 별도의 배열 처리를 개발자가 하지 않아도 됨.
-			selectedCoverFiles.forEach(function(value){
+			selectedCoverFiles.forEach(value => {
 				formData.append($('#coverFile').attr('name'), value);
 			});
 
@@ -669,14 +691,14 @@
 			formData.delete($('#explainFile').attr('name'));
 
 			// 새로운 값을 배열로 추가.
-			selectedExplainFiles.forEach(function(value){
+			selectedExplainFiles.forEach(value => {
 				formData.append($('#explainFile').attr('name'), value);
 			});
 
 			for(let pair of formData.entries()){
 				console.log(pair[0] + ", " + pair[1]);
 				if(pair[0].includes('[]') && Array.isArray(pair[0])){
-					console.log(pair[0] + "의 개수 : " +  pair[0].length);
+					console.log(pair[0] + "의 개수 : " + pair[0].length);
 				}
 			}
 

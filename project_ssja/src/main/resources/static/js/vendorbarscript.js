@@ -422,8 +422,8 @@ $(document).ready(function () {
 
 // 판매자 상호명 가져오기  
   
-  	let $vendorData = $('#vendorData').val();
-	console.log("vendorData : " + $vendorData);
+	let $vendorData = $('#vendorData').val();
+	console.log("$vendorData : " + $vendorData);
 	
 	// value 기본값은 "" 이다. 빈 문자열이 아니라는 의미는, 값이 들어갔다는 의미이다.
 	if($vendorData != ""){

@@ -1,5 +1,7 @@
 package teamproject.ssja.controller;
 
+import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,24 +69,45 @@ public class VendorController {
 
 		return "/vendor/vendor_write_product";
 	}
-	
-	// 경로 - service에 넣을 예정
-	private String bannerFileUploadPath = "src/main/resources/static/images/product_banner";
-	private String coverFilesUploadPath = "src/main/resources/static/images/product_banner";
-	private String explainFilesUploadPath = "src/main/resources/static/images/product_banner";
-	
+		
 	// 파일 업로드
 	@PostMapping("/product/add")
 	public String addOne(MultipartFile bannerFile, 
 						 List<MultipartFile> coverFile, 
 						 List<MultipartFile> explainFile,
-						 ProductDto productDto) {
+						 ProductDto productDto,
+						 Model model) {
 		log.info("addOne()..");	
 		
-		log.info("bannerFile : {} " , bannerFile);
-		log.info("coverFiles : {} " , coverFile);
-		log.info("explainFiles : {} " , explainFile);
+//		// 데이터 넘어오는 것은 확인함
+//		log.info("bannerFile : {} " , bannerFile);
+//		log.info("coverFiles : {} " , coverFile);
+//		log.info("explainFiles : {} " , explainFile);
+//		
+//		log.info("Cover Files:");
+//		for (MultipartFile file : coverFile) {
+//		    log.info("File Name: " + file.getOriginalFilename());
+//		    log.info("Content Type: " + file.getContentType());
+//		    log.info("File Size: " + file.getSize());
+//		}
+//
+//		log.info("Explain Files:");
+//		for (MultipartFile file : explainFile) {
+//		    log.info("File Name: " + file.getOriginalFilename());
+//		    log.info("Content Type: " + file.getContentType());
+//		    log.info("File Size: " + file.getSize());
+//		}
 		
+		if(bannerFile.isEmpty() || coverFile.isEmpty() || explainFile.isEmpty()) {
+			vendorService.isEmpty(bannerFile, coverFile, explainFile, model);
+		}		
+		
+		// 배너 이미지 처리 및 물품 추가
+		vendorService.addProduct(productDto, bannerFile);
+
+		// 물품 이미지들 처리 및 추가
+		vendorService.addProductImgs(coverFile, explainFile, vendorService.getProNum(productDto));
+
 		// 초기화면으로 돌아가기(해당 페이지는 초기 화면 역할을 하며, 이후 변경할 예정)
 		return "/vendor/vendor_view";
 	}
