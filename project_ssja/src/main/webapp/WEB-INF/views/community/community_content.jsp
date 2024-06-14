@@ -148,6 +148,7 @@
           async : false,
           dataType : 'json',  
           success : function(result) {
+            $("#product_link").attr("href","/product_detail?PRO_NO="+result.pro_NO);
             $("#pro_img").attr("src",result.pro_BANNERIMG);
             $("#pro_bizname").text(result.pro_BIZNAME);
             $("#pro_name").text(result.pro_NAME);
