@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.BoardIsLikedDto;
+import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ReplysDto;
 import teamproject.ssja.dto.community.CommunityBoardDto;
 import teamproject.ssja.dto.login.CustomPrincipal;
@@ -48,7 +49,10 @@ public interface CommunityService {
 	boolean updateBoardImg(long bno,MultipartFile file);
 	//게시글 이미지 삭제 메서드
 	int deleteBoardImg(long bno);
-	
+	//게시글의 상품이미지 업데이트 메서드
+	int updateBoardProductImg(long bno,long proNo ,String imgPath );
+	//게시글의 연관 상품을 가져오는 메서드
+	ProductDto getRelatedProduct(long proNo);
 	
 	
 	//댓글 리스트 얻어오는 메서드
@@ -61,6 +65,9 @@ public interface CommunityService {
 	int updateReply(ReplysDto reply);
 	//댓글 삭제 메서드
 	int deleteReply(long rno);
+	
+	//상품을 얻어오는 메서드
+	List<ProductDto> getProducts(String keyword);
 	
 	
 	

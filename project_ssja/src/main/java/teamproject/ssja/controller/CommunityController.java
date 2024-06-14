@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.BoardIsLikedDto;
+import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ReplysDto;
 import teamproject.ssja.dto.community.CommunityBoardDto;
 import teamproject.ssja.dto.community.CommunityPage;
@@ -229,7 +230,28 @@ public class CommunityController {
 
 		return data;
 	}
+	//게시글 연관상품 획득 메서드
+	@GetMapping("/product/{proNo}")
+	public ProductDto product(@PathVariable("proNo") long proNo){
 
+		return communityService.getRelatedProduct(proNo);
+	}
+	
+	//게시글 상품리스트 획득 메서드
+	@GetMapping("/product")
+	public List<ProductDto> products(String keyword){
+		List<ProductDto> products=communityService.getProducts(keyword);
+		return products;
+	}
+	
+	//게시글 상품 입력
+	@PostMapping("/product")
+	public int updateProductImg(@RequestBody Map<String, String> data){
+		System.out.println(data);
+		return communityService.updateBoardProductImg(Long.valueOf(data.get("bno").toString()).longValue(),
+													  Long.valueOf(data.get("proNo").toString()).longValue(),
+													  data.get("imgPath").toString());
+	}
 	
 	
 }

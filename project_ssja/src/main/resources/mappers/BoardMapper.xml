@@ -82,6 +82,20 @@
         ]]>
 	</update>
 	
+	<!-- 게시글의 이미지를 삭제했을경우 테이블의 product를 null로 업데이트  -->
+	<update id="deleteBoardProduct" parameterType="long">
+		<![CDATA[
+			update board set PRO_NO= null where b_no=#{bno}
+        ]]>
+	</update>
+	
+	<!-- 게시글의 상품번호를 업데이트  -->
+	<update id="updateBoardProductImg" parameterType="long">
+		<![CDATA[
+			update board set PRO_NO = #{proNo} where b_no=#{bno}
+        ]]>
+	</update>
+	
 	<!-- 해당 게시글의 좋아요 개수  -->
 	<select id="selectBoardLikes" parameterType="long" resultType="long">
     	<![CDATA[

@@ -52,7 +52,9 @@
       height: 3em;
       width:90%;
     }
-    
+    .product:hover{
+      cursor: pointer;
+    }
 
 
   </style>
@@ -61,20 +63,55 @@
     var token = $("meta[name='_csrf']").attr('content');
     history.replaceState({}, null, location.pathname);
     $(document).ready(function(){
-
+    
       let img_update=$("#img_update");
+      let product_update=$("#product_update");
       let content_box=$("#content");
+      let search_keyword=$("#search_keyword");
+      let productlist=$("#productlist");
+      let product_no=$("#product_no");
 
       let update_btn=$("#update_btn");
       let img_modify_dtn=$("#img_modify_dtn");
+      let search_btn=$("#search_btn");
       let cancel_btn= $("#cancel_btn");
+
 
       let bno_val=$("#bno").val();
       let m_no_val=$("#m_no").val();
       let m_NickName_val=$("#m_NickName").val();
       let img_path="/images/board_content/board_img_"+bno_val+".png";
 
-    
+      //검색조건에 맞는 상품목록을 불러오는 메서드
+      function getProductList(keyword){
+        console.log(keyword);
+        $.ajax({
+            type:'GET', 
+            url: '/community/product',
+            contentType: 'text',
+            data: {keyword: keyword},
+            success: function(data) {
+              
+              if(data.length==0){
+                productlist.append($("<h1>해당 상품은 존재하지 않습니다.</h1>"))
+              };
+              data.forEach(function(e){
+                productlist.append($('<div class="product" class="my-2" style="background-color: white;" imgPath="'+ e.pro_BANNERIMG+'" pro_no="'+e.pro_NO+'" >'+
+                                          '<div class="d-flex flex-row align-items-center my-3">'+
+                                          '<img src="'+e.pro_BANNERIMG+'" style="width: 120px; height: 80px;">'+
+                                          '<div class="d-flex flex-column justify-content-center" id="orders_product_Info" style="width: 290px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-left: 1em;"><span style="font-weight: bold;">'+e.pro_BIZNAME+'</span>'+
+                                            '<span style="color: black; text-decoration: none; font-weight: bold;">'+e.pro_NAME+'</span>'+
+                                          '</div>'+
+                                          '</div>'+
+                                      '</div>'))
+                    
+              });
+            },
+            error: function(e) {
+              alert("error:" + e);
+            }
+          });
+      }
 
       cancel_btn.on('click',function(){
         $.ajax({
@@ -118,10 +155,11 @@
             $("#view_img").attr("src",data+"?"+(new Date().getTime()));
 
             img_update.val("true");
-          },
-          error: function(e) {
-            alert("error:" + e);
-          }
+            product_update.val("false");
+            },
+            error: function(e) {
+              alert("error:" + e);
+            }
           });
       })
       update_btn.on("click",function(){
@@ -164,7 +202,6 @@
           })
           //false 일경우 이미지를 교체하지 않음
         }else if(img_update.val()=="true"){
-
           var form=$("#uploadForm")[0];
           var formData=new FormData(form);
 
@@ -175,16 +212,64 @@
             data: formData,
             processData: false,   // 업로드를 위한 필수 파라미터
             contentType: false,   // 업로드를 위한 필수 파라미터
-            success: function(data) {
-
+            async : false,
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token);
             },
-            error: function(e) {
-              alert("error:" + e);
+            success : function(result) {
+            },    
+            error : function(request, status, error) {
+              alert(error);
             }
           });
+        }else if(product_update.val()=="true"){
+
+          var imgPath=$("#update_img").val();
+          var pro_no=product_no.val();
+
+          $.ajax({
+            type:'post', 
+            url: '/community/product/',
+            beforeSend : function(xhr) {
+					    xhr.setRequestHeader(header, token);
+            },
+            dataType:"json",
+            contentType:"application/json",
+            data: JSON.stringify({
+              'bno':bno_val,
+              'proNo':pro_no,
+              'imgPath':imgPath
+            }),
+
+		        success: function(data) {
+		        	}
+		        });
         }
+
+
+
         location.assign("/community/content/"+bno_val);
-      })  
+      })
+
+      //상품 선택 버튼 
+      $(document).on("click",".product",function(){
+        $("#product_modal_close").click();
+        if($("#view_img").attr("src")==undefined){
+          $("#content").prepend('<img src="" alt="" id="view_img" class="w-75 d-inline-block mb-5 ">')
+        }
+        $("#view_img").attr("src",this.getAttribute("imgPath"));
+        $("#update_img").val(this.getAttribute("imgPath"));
+        img_update.val("false");
+        product_update.val("true");
+        product_no.val(this.getAttribute("pro_no"));
+      })
+
+      search_btn.on("click",function(){
+        productlist.empty();
+        getProductList(search_keyword.val());
+      })
+
+      getProductList(search_keyword.val());
     })
 
   </script>
@@ -242,6 +327,7 @@
         <div class="ps-3 py-2 w-100 border-bottom d-flex flex-row justify-content-end">
           	<span>
               <button type="button" class="btn btn-secondary" id="cancel_btn" >취소</button>
+              <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#productModal" >상품 수정</button>
               <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >이미지 수정</button>
               <button class="btn btn-primary" id="update_btn" >수정하기</button>
             </span>
@@ -281,6 +367,30 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" id="modal_close" data-bs-dismiss="modal">취소</button>
           <button type="button" class="btn btn-primary" id="img_modify_dtn">업로드</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header flex-column">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">관련상품을 선택해주세요</h1>
+          <p class="m-0">(이미지와 동시에 첨부가 불가능합니다.)</p>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" >
+          <input type="hidden" id="product_update" value="false">
+          <input type="hidden" id="product_no" value="null">
+          <div id="productlist" style="min-height: 200px;">
+          </div>
+          <div class="d-flex justify-content-center my-2">
+            <input type="text" id="search_keyword" class="ms-2">
+            <button type="button" id="search_btn" class="btn btn-primary btn-sm ms-1" >검색</button>  
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="product_modal_close" data-bs-dismiss="modal">취소</button>
         </div>
       </div>
     </div>
