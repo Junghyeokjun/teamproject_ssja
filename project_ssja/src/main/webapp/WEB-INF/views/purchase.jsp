@@ -376,7 +376,7 @@
       $(document).on('click','.pcs_minus',function(){
         var pcs=this.parentNode.parentNode.querySelector(".product_pcs");
         var amount=this.parentNode.parentNode.querySelector(".product_price");
-        if(pcs.innerHTML=="0"){
+        if(pcs.innerHTML=="1"){
           return;
         }
         pcs.innerHTML=Number(pcs.innerHTML)-1;
