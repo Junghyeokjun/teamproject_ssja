@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import lombok.Data;
+import teamproject.ssja.dto.ProductImgDto;
 
 @Data
 public class ProductDetailTotalInfoDTO {
@@ -27,7 +28,7 @@ public class ProductDetailTotalInfoDTO {
 	private String m_phone;
 	private int countrv;
 	private String pro_img_path;
-	private List<ProductImgDTO> imgList;
+	private List<ProductImgDto> imgList;
 	private String category1;
 	private String category2;
 	private int pro_hit;
@@ -42,8 +43,8 @@ public class ProductDetailTotalInfoDTO {
 		if(this.imgList == null || this.imgList.size() == 0)return null;
 	
 	    return imgList.stream()
-	                .filter(e -> e.getPro_img_path().startsWith("product_cover/"))
-	                .map(ProductImgDTO::getPro_img_path) 
+	                .filter(e -> e.getPiPath().startsWith("product_cover/"))
+	                .map(ProductImgDto::getPiPath) 
 	                .collect(Collectors.toList());
 	}
 	
@@ -52,8 +53,8 @@ public class ProductDetailTotalInfoDTO {
 		if(this.imgList == null || this.imgList.size() == 0)return null;
 		
 	    return imgList.stream()
-	                .filter(e -> e.getPro_img_path().startsWith("product_details/"))
-	                .map(ProductImgDTO::getPro_img_path) 
+	                .filter(e -> e.getPiPath().startsWith("product_details/"))
+	                .map(ProductImgDto::getPiPath) 
 	                .collect(Collectors.toList());
 	}
 
