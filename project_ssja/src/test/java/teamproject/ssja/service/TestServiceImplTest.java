@@ -67,5 +67,8 @@ class TestServiceImplTest {
 		String pw="12345";
 		signUpService.resetPw(id, pw);
 	}
+	
+
+	
 
 }

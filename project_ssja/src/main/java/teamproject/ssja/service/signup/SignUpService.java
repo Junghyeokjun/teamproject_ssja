@@ -1,5 +1,7 @@
 package teamproject.ssja.service.signup;
 
+import java.util.List;
+
 import teamproject.ssja.dto.MembersDto;
 
 public interface SignUpService {
@@ -12,4 +14,5 @@ public interface SignUpService {
 	void resetPw(String id, String pw);
 	MembersDto getRelatedMember(long memberNum);
 	void registSocialToUser(MembersDto member);
+	List<String> getTerms();
 }

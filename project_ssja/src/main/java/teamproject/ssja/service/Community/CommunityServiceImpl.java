@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import teamproject.ssja.dto.BoardImgsDto;
 import teamproject.ssja.dto.BoardIsLikedDto;
 import teamproject.ssja.dto.ReplysDto;
 import teamproject.ssja.dto.community.CommunityBoardDto;
+import teamproject.ssja.dto.login.CustomPrincipal;
 import teamproject.ssja.mapper.BoardMapper;
 import teamproject.ssja.mapper.ReplyMapper;
 
@@ -63,6 +65,8 @@ public class CommunityServiceImpl implements CommunityService {
 
 	@Override
 	public CommunityBoardDto getContent(long bno) {
+
+		
 		return boardMapper.selectCommunityContent(bno);
 	}
 
@@ -221,6 +225,20 @@ public class CommunityServiceImpl implements CommunityService {
 	public int updateReply(ReplysDto reply) {
 		return replyMapper.updateReply(reply);
 	}
+
+	@Override
+	public int updateHit(CustomPrincipal principal,long bno) {
+	    if (principal != null) {
+	    	Set<Long> hitSet=principal.getUserInfo().getHit();
+	    	if(!hitSet.contains(bno)) {
+	    		hitSet.add(bno);
+	    		return boardMapper.updateHit(bno);
+	    	}
+	    }		
+	    return 0;
+	}
+
+
 
 
 }

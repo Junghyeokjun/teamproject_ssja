@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ import teamproject.ssja.dto.BoardIsLikedDto;
 import teamproject.ssja.dto.ReplysDto;
 import teamproject.ssja.dto.community.CommunityBoardDto;
 import teamproject.ssja.dto.community.CommunityPage;
+import teamproject.ssja.dto.login.CustomPrincipal;
 import teamproject.ssja.service.Community.CommunityService;
 
 @Controller
@@ -52,7 +54,8 @@ public class CommunityController {
 
 	//커뮤니티 게시글 내용화면
 	@GetMapping("/content/{bno}")
-	public ModelAndView content(ModelAndView mv,@PathVariable("bno") long bno) {
+	public ModelAndView content(ModelAndView mv,@PathVariable("bno") long bno,@AuthenticationPrincipal CustomPrincipal principal) {
+		communityService.updateHit(principal, bno);
 		mv.addObject("content", communityService.getContent(bno));
 		mv.addObject("reply_total", communityService.getReplyTotal(bno));
 		mv.setViewName("community/community_content");
@@ -226,5 +229,7 @@ public class CommunityController {
 
 		return data;
 	}
+
+	
 	
 }
