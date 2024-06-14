@@ -38,7 +38,7 @@
   <script src="/js/vendorbarscript.js">
 
   </script>
-  <link href="/css/vendorbarstyle.css?after" rel="stylesheet">
+  <link href="/css/barstyle.css?after" rel="stylesheet">
 </c:when>
 </c:choose>
   <script src="/js/footer.js">
@@ -58,6 +58,7 @@
 </head>
 
 <body>
+<input type="hidden" id="getPrincipal" value="${principal.auth }">
 <c:choose>
 	<c:when test="${principal.auth != 'ROLE_VENDOR'}">
 	  <header>

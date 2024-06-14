@@ -62,4 +62,24 @@ public class ProductServiceImpl implements ProductService{
 		
 		return data;
 	}
+
+	@Override
+	public boolean checkUserAddCart(Long id, Long productNum) {
+		if(productMapper.checkUserAddCart(id, productNum) >= 1) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	@Override
+	public void addCart(Long id, Long productNum, int quantity, boolean already) {
+		if(already) {
+			productMapper.renewCart(id, productNum, quantity);
+		}else {
+			productMapper.addCart(id, productNum, quantity);
+			
+		}
+		
+	}
 }

@@ -81,7 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	    .addFilterBefore(sessionRenewFilter, SessionManagementFilter.class)
 	    .authorizeRequests()
 	    .antMatchers("/logout","/user","/myPage","/myPage/**","/userInfo","/user","/charge","/charge/**",
-	    		"/user/**","/wishlist","/wishlist/**","/sign-up","/sign-up/**","/wishlist").hasAnyRole("USER","SOCIAL")
+	    		"/user/**","/wishlist","/wishlist/**","/sign-up","/sign-up/**","/wishlist","/purchase","/item_cart/**").hasAnyRole("USER","SOCIAL")
 	    .anyRequest().permitAll();
 	    
 	    http.formLogin()

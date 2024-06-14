@@ -476,7 +476,7 @@
 	        		return false;
 	        	}
 	        	data.objectList.forEach(function(item, index){
-	        		let purDate = item.pur_DATE ? item.pur_DATE.split(' ')[0] : 'N/A';
+	        		let purDate = item.pur_DATE ? item.pur_DATE.split(' ')[0]  : 'N/A';
 	        		let $content_orders = $("<div>").addClass("d-flex flex-row justify-content-evenly py-1 px-2")
 	        		.css({'border-top':'1px solid #ccc','border-bottom':'1px solid #ccc'}).append(
 	        				$("<span>").css('width','10%').text(item.pur_NO),		
@@ -566,7 +566,7 @@
 	        		
 	        		$("<div>").addClass("d-flex flex-row justify-content-evenly align-items-center p-2")
 	        		.css({'border-top':'1px solid #ddd',"border-bottom":"1px solid #ddd"}).append(
-	        				$("<span>").text(item.pt_date.split(' ')[0]),
+	        				$("<span>").text(item.pt_date.split(".")[0].split("T")[0] +" " +  item.pt_date.split(".")[0].split("T")[1]),
 	        				$("<span>").text(pm + " " + item.pt_amount),
 	        				$("<span>").text(item.pt_reason)
 	        		).appendTo($totalInfoContent);

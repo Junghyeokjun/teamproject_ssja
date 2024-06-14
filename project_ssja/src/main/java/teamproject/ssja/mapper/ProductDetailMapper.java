@@ -3,11 +3,14 @@ package teamproject.ssja.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Update;
 
 import teamproject.ssja.dto.OrdersDto;
 import teamproject.ssja.dto.ProductDetailDto;
 import teamproject.ssja.dto.ProductDetailReplyDto;
 import teamproject.ssja.dto.ProductDto;
+import teamproject.ssja.dto.product.ProductDetailTotalInfoDTO;
+import teamproject.ssja.dto.product.ProductReviewDTO;
 import teamproject.ssja.page.Criteria;
 
 @Mapper
@@ -27,5 +30,12 @@ public interface ProductDetailMapper {
 
 	//구매한 상품의 갯수를 차감하는 메서드
 	int updateProductQuantity (OrdersDto order);
+	
+	List<ProductReviewDTO> getItemsReview(Long productNum,int pageNum );
+	
+	ProductDetailTotalInfoDTO getProductDetailInfo(Long productNum);
+	
+	@Update("update product set pro_hit = pro_hit + 1 where pro_no = #{productNum}")
+	void addCountViewProduct(Long productNum);
 }
 
