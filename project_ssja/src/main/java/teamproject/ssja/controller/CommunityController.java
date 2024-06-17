@@ -250,9 +250,8 @@ public class CommunityController {
 	@PostMapping("/product")
 	public int updateProductImg(@RequestBody Map<String, String> data){
 		System.out.println(data);
-		return communityService.updateBoardProductImg(Long.valueOf(data.get("bno").toString()).longValue(),
-													  Long.valueOf(data.get("proNo").toString()).longValue(),
-													  data.get("imgPath").toString());
+		return communityService.updateBoardProduct(Long.valueOf(data.get("bno").toString()).longValue(),
+													  Long.valueOf(data.get("proNo").toString()).longValue());
 	}
 	
 	

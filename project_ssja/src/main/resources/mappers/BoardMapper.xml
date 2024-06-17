@@ -90,7 +90,7 @@
 	</update>
 	
 	<!-- 게시글의 상품번호를 업데이트  -->
-	<update id="updateBoardProductImg" parameterType="long">
+	<update id="updateBoardProduct" parameterType="long">
 		<![CDATA[
 			update board set PRO_NO = #{proNo} where b_no=#{bno}
         ]]>
