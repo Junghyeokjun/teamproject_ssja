@@ -206,7 +206,6 @@ body {
 
 </body>
 <sec:authorize access="isAuthenticated()">
-  <script src="/js/login_user_tab.js"> </script>
-  <script src="/js/user_cart_tab.js"> </script>  
+  <script src="/js/login_user_tab.js"> </script>  
 </sec:authorize>
 </html>

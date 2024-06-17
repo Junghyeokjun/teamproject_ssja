@@ -1,10 +1,10 @@
-//  $(window).on('scroll resize', function() {
-//      let userLinkPosition = $('#user_link').offset();
-//      
-//      $('#login_user_div').css({
-//          'left': userLinkPosition.left,
-//      });
-//  });
+	  $(window).on('scroll resize', function() {
+	      let userLinkPosition = $('#user_link').offset();
+	      
+	      $('#login_user_div').css({
+	          'left': userLinkPosition.left,
+	      });
+	  });
   
   
         let $login_user_div = $("<div>").attr("id", "login_user_div")

@@ -340,7 +340,7 @@
 					</tbody>
 				</table>
 				<div class="my-4">
-					<form name="products-search-form" autocomplete="off">
+					<%-- <form name="products-search-form" autocomplete="off">
 						<select name="type">
 							<option selected value="">선택</option>
 							<option value="PRO_NO">상품번호</option>		
@@ -349,7 +349,7 @@
 						 <input type="text" name="keyword" value=""> <input
 							type="button" onclick="productsSearchList()"
 							class="btn btn-outline-primary mr-2" value="검색">
-					</form>
+					</form> --%>
 				</div>
 				<div id="paging_dv">				
 					<nav aria-label="Page navigation example">
@@ -388,7 +388,9 @@
 		<div id="third_footer"></div>
 	</footer>
 </body>
-
+<sec:authorize access="isAuthenticated()">
+  <script src="/js/login_user_tab.js"> </script>
+</sec:authorize>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     // select_content div 내의 모든 버튼을 가져옵니다.

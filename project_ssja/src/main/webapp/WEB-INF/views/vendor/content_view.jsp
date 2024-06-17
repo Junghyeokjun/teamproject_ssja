@@ -357,6 +357,9 @@ body {
 		<div id="second_footer"></div>
 		<div id="third_footer"></div>
 	</footer>
+	<sec:authorize access="isAuthenticated()">
+  <script src="/js/login_user_tab.js"> </script>
+</sec:authorize>
 <script>
 	$(document).ready(function(){
 		let token = $("meta[name='_csrf']").attr("content");
@@ -645,5 +648,6 @@ body {
 		});		
 	});
 </script>	
+
 </body>
 </html>

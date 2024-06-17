@@ -425,6 +425,11 @@
   </footer>
 
 </body>
+
+<sec:authorize access="isAuthenticated()">
+  <script src="/js/login_user_tab.js"> </script>
+</sec:authorize>
+
 <script type="text/javascript">
 	$(document).ready(function(){		
 		$.ajax({
