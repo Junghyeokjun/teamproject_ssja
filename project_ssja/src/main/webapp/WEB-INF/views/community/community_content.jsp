@@ -29,7 +29,7 @@
 
   </script>
    <meta name="_csrf" content="${_csrf.token}"/>
-<meta name="_csrf_header" content="${_csrf.headerName}"/>
+  <meta name="_csrf_header" content="${_csrf.headerName}"/>
   <link href="/css/footerstyle.css?after" rel="stylesheet">
   <link href="/css/barstyle.css?after" rel="stylesheet">
   <sec:authorize access="isAuthenticated()">
@@ -658,10 +658,20 @@
           <span class="fs-5" style="line-height: 38px;">댓글:[<span class="reply_total">${reply_total}</span>]</span>
           <span>
             <button class="btn btn-outline-secondary" id="list_btn" >목록</button>
-            <c:if test="${principal.userInfo.m_No == content.bmno}">
+
+            <sec:authorize access="hasAnyRole('ROLE_ADMIN')">    
+              
+              <c:if test="${principal.userInfo.m_No == content.bmno}">
+                <button class="btn btn-outline-primary" id="update_btn" >수정하기</button>
+              </c:if>
+              <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">삭제하기</button>
+
+            </sec:authorize>
+
+              <c:if test="${principal.userInfo.m_No == content.bmno and !(principal.userInfo.auth.equals('ROLE_ADMIN'))}">
                 <button class="btn btn-outline-primary" id="update_btn" >수정하기</button>
                 <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">삭제하기</button>
-            </c:if>
+              </c:if>
           </span>
         </div>
         
