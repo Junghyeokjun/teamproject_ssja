@@ -290,11 +290,6 @@
 				<button type="toggle-button" class="top_btn"></button>
 				<div class="mx-5 my-2 d-flex ">
 					<h1 class="h1 vendorTitle" >판매자 :&nbsp;</h1>
-					<!-- 
-						땡땡땡땡 : 상호명
-						로그인 시 vendorDto에 담기는 vendor.vbizname 또한 가져오기						
-						그냥 조인을 쓴다면 vendorDto가 아니라 조인한 결과를 담는 다른 Dto가 필요할 것이다.
-					 -->
         			<h1 class="h1 vendorNames"> 
         				&lt;
         				<sec:authorize access="isAuthenticated()">
@@ -361,24 +356,24 @@
 						<ul class="pagination ch-col justify-content-center">
 							<c:if test="${productpageMaker.prev}">
 								<li class="page-item"><a class="page-link ch-col"
-									href="${pageContext.request.contextPath}/vendor/product/list${productpageMaker.makeQuery(productpageMaker.startPage-1)}"><</a></li>
+									href="${pageContext.request.contextPath}/vendor/product/list/${vno}${productpageMaker.makeQuery(productpageMaker.startPage-1)}"><</a></li>
 							</c:if>
 							<c:forEach var="idx" begin="${productpageMaker.startPage}"
 								end="${productpageMaker.endPage}">
 								<c:choose>
 									<c:when test="${productpageMaker.criteria.pageNum == idx}">
 										<li class="page-item active"><a class="page-link"
-											href="${pageContext.request.contextPath}/vendor/product/list${productpageMaker.makeQuery(idx)}">${idx}</a></li>
+											href="${pageContext.request.contextPath}/vendor/product/list/${vno}${productpageMaker.makeQuery(idx)}">${idx}</a></li>
 									</c:when>
 									<c:otherwise>
 										<li class="page-item"><a class="page-link"
-											href="${pageContext.request.contextPath}/vendor/product/list${productpageMaker.makeQuery(idx)}">${idx}</a></li>
+											href="${pageContext.request.contextPath}/vendor/product/list/${vno}${productpageMaker.makeQuery(idx)}">${idx}</a></li>
 									</c:otherwise>
 								</c:choose>
 							</c:forEach>
 							<c:if test="${productpageMaker.next && productpageMaker.endPage > 0}">
 								<li class="page-item"><a class="page-link ch-col"
-									href="${pageContext.request.contextPath}/vendor/product/list${productpageMaker.makeQuery(productpageMaker.endPage+1)}">></a></li>
+									href="${pageContext.request.contextPath}/vendor/product/list/${vno}${productpageMaker.makeQuery(productpageMaker.endPage+1)}">></a></li>
 							</c:if>
 						</ul>
 					</nav>
@@ -461,8 +456,7 @@ function productsSearchList() {
                     str += "<td>" + product.pro_PRICE + "</td>";
                     str += "<td>" + product.pro_QUANTITY + "</td>";
                     str += "<td>" + product.pro_WISH + "</td>";
-                    str += "<td>" + product.pro_SELLCOUNT + "</td>";
-                    str += "<td>" + product.pro_BIZNAME + "</td>";              
+                    str += "<td>" + product.pro_SELLCOUNT + "</td>";             
                     str += "</tr>";
                     $('#productstable > tbody').append(str);
                 });

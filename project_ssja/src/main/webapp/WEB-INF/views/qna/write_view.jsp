@@ -1,46 +1,54 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+   pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="sec"
-	uri="http://www.springframework.org/security/tags"%>
-	<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-	
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+
+<sec:authentication property="principal" var="principal" />
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SSJA</title>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-	crossorigin="anonymous" />
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-	crossorigin="anonymous">
-	
-</script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="/js/barscript.js">
-	
-</script>
-<script src="/js/footer.js">
-	
-</script>
-<script src="/js/board.js">
-	
-</script>
 
-<link href="/css/footerstyle.css?after" rel="stylesheet">
-<link href="/css/barstyle.css?after" rel="stylesheet">
-<link href="/css/board.css?after" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+  <title>SSJA</title>
 
-<link rel="stylesheet"
-	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  
+   <meta name="_csrf" content="${_csrf.token}"/>
+<meta name="_csrf_header" content="${_csrf.headerName}"/>
+
+<c:choose>
+<c:when test="${principal.auth != 'ROLE_VENDOR'}">
+  <script src="/js/barscript.js">
+
+  </script>
+  <link href="/css/barstyle.css?after" rel="stylesheet">
+</c:when>
+<c:when test="${principal.auth == 'ROLE_VENDOR'}">
+  <script src="/js/vendorbarscript.js">
+
+  </script>
+  <link href="/css/vendorbarstyle.css?after" rel="stylesheet">
+</c:when>
+</c:choose>
+  <script src="/js/footer.js">
+
+  </script>
+  <link href="/css/footerstyle.css?after" rel="stylesheet">
+  <link href="/css/board.css?after" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
 
 <style>
 @font-face {
@@ -83,35 +91,68 @@ body {
 #icn_txt {
 	text-align: center;
 }
-
-.main_whitespace{
-	width : 100%;
-	height : 5em;
-}
 </style>
 </head>
+
 <body>
-	<header>
-		<div id="title_bar" class=" fixed-top">
-			<div class="py-2 px-1" id="top-bar">
-
-				<button type="toggle-button" class="top_btn" id="top_btn"></button>
-				<a href=""><img id="logo_img"
-					src="/images/utilities/logoSSJA.png"></a>
-				<form action="http://www.naver.com" id=searchForm method="get">
-
-				</form>
-				<button id="search_icon"></button>
-				<a id="cart_link"><img id="cart_img"></a> <a id="user_link"><img
-					id="login_img"></a>
+	<sec:authorize access="isAnonymous()">
+	    <script type="text/javascript">
+	    	$(document).ready(function(){
+	    		alert("관리자와 작성자 본인만 해당 페이지를 확인하실 수 있습니다. 먼저 로그인을 진행하시기 바랍니다.");
+				window.location.href = "/login";
+	    	});
+		</script>
+  	</sec:authorize>
+<c:choose>	
+	<c:when test="${principal.auth != 'ROLE_VENDOR'}">
+	  <header>
+	    <div id="title_bar" class="fixed-top">
+	      <div class="py-2 px-1" id="top-bar">
+	        <button type="toggle-button" class="top_btn" id="top_btn"></button>
+	        <a id="logo_toHome" href=""><img id="logo_img" src="/images/utilities/logoSSJA.png"></a>
+	        <form action="http://www.naver.com" id=searchForm method="get">
+	
+	        </form>
+	        <button id="search_icon"></button>
+	        <a id="cart_link"><img id="cart_img"></a>
+	        <a id="user_link"><img id="login_img"></a>
+	      </div>
+	
+	    </div>
+	    <nav id="total_bar">
+	      <div id="home_user_bar"> </div>
+	      <div id="sub_bar"></div>
+	    </nav>
+	  </header>
+  </c:when>
+  <c:when test="${principal.auth == 'ROLE_VENDOR'}">
+  	<header class="fixed-top">
+		<div id="title_bar" >
+			<div class="py-2 px-1 d-flex justify-content-between" id="top-bar">
+				<div class="d-flex align-items-center">
+					<button type="toggle-button" class="top_btn"></button>
+					<a id="logo_toHome" href=""><img id="logo_img" src="/images/utilities/logoSSJA.png"></a>
+				</div>
+				<div class="mx-5 my-2 d-flex ">
+					<h1 class="h1 vendorTitle" >판매자 :&nbsp;</h1>
+        			<h1 class="h1 vendorNames"> 
+        				&lt;
+        				<sec:authorize access="isAuthenticated()">
+        					<sec:authentication property="principal.userInfo" var="vendorMember"/>
+        				</sec:authorize>
+        				<input type="hidden" id="vendorData" value="${vendorMember.m_No}">
+        				${vendorMember.m_Name}
+        				&gt;</h1>      			
+        		</div>
+        		<a id="cart_link" hidden="hidden"></a>
+				<a id="user_link"><img id="login_img"></a>
 			</div>
-
 		</div>
 		<nav id="total_bar">
-			<div id="home_user_bar"></div>
-			<div id="sub_bar"></div>
 		</nav>
 	</header>
+  </c:when>
+</c:choose>
 
 	<div id="side_bar">
 		<div id="side_links" class="w-100"></div>
@@ -123,7 +164,16 @@ body {
 			</div>
 			<form action="${pageContext.request.contextPath}/board/write" method="post">
 				<div class="input-group">
-					<input type="hidden" class="form-control" name="bbcno" value="${bcno}">				
+					<input type="hidden" class="form-control" name="bmno" value="${principal.memberNum}">
+					<input type="hidden" class="form-control" name="bbcno" value="${bcno}">
+					<c:choose>
+						<c:when test="${principal.isOAuth2User == false}">
+							<input type="hidden" class="form-control" name="bwriter" value="${principal.userInfo.m_Name}">
+						</c:when>
+						<c:otherwise>
+							<input type="hidden" class="form-control" name="bwriter" value="${principal.oAuth2Response.getNickName()}">
+						</c:otherwise>
+					</c:choose>	
 				</div>
 				<table class="table" >
 					<tr>
@@ -141,10 +191,10 @@ body {
 						</td>		
 					</tr>
 					<tr>
-						<td  colspan="2">
+						<td colspan="2">
 							<div class="d-flex justify-content-between">
-								<input type="submit" class="btn btn-danger customed-ssja" value="입력">
-								<a class="btn btn-primary customed-ssja" href="${pageContext.request.contextPath}/board/list/${bcno}">취소</a>								
+								<input type="submit" class="btn btn-danger customed-ssja" value="입력">																								
+								<a class="btn btn-primary customed-ssja" href="${pageContext.request.contextPath}/board/list/${bcno}">취소</a>																																																																															
 							</div>
 						</td>
 					</tr>
@@ -161,4 +211,9 @@ body {
 		<div id="third_footer"></div>
 	</footer>	
 </body>
+<sec:authorize access="isAuthenticated()">
+  <script src="/js/login_user_tab.js"> </script>
+  <script src="/js/user_cart_tab.js"> </script>
+</sec:authorize>
+
 </html>

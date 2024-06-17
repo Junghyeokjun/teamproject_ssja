@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import lombok.extern.slf4j.Slf4j;
+import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ProductImgDto;
 import teamproject.ssja.page.Criteria;
@@ -40,6 +41,18 @@ class VendorMapperTest {
 	@Test
 	void testInsertProductImgs() {
 		vendorMapper.insertProductImgs(new ProductImgDto(1, 3013, "3"));
+	}
+
+	@Test
+	void testSelectVendorQnas() {
+		Criteria criteria = new Criteria();
+		
+		// 판매자 데이터
+		criteria.setBcno(20);
+		criteria.setBmno(25);
+		for(BoardDto myQnaList : vendorMapper.selectVendorQnas(criteria)) {
+			log.info("myQnaList : " + myQnaList);
+		}
 	}
 
 }

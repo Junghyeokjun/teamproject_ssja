@@ -141,7 +141,7 @@ $(document).ready(function () {
   });
   $side_container3.on('click', function(e){
       e.stopPropagation();
-      window.location.href = "https://www.daum.net";
+      window.location.href = "/board/list/20";
   });
   $side_container4.on('click', function(e){
       e.stopPropagation();

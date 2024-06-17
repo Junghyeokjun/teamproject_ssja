@@ -19,6 +19,10 @@ public interface VendorMapper {
 	// 판매자 자신의 판매 물품 목록 가져오기
 	List<ProductDto> selectVendorProducts(Criteria criteria);
 	
+	// 판매자 자신의 판매 물품 개수
+	long selectVendorProductsCount(Criteria criteria);
+	
+	
 	// 판매자 자신이 입력했던 물품의 번호 가져오기
 	long selectInsertedProNum(ProductDto product);
 	
@@ -27,4 +31,12 @@ public interface VendorMapper {
 	
 	// 상품 이미지 경로 집어넣기
 	int insertProductImgs(ProductImgDto productImg); 
+	
+	//////
+	
+	// 판매자 자신의 문의 목록 가져오기
+	List<BoardDto> selectVendorQnas(Criteria criteria);
+	
+	// 판매자 자신의 총 문의 개수 가져오기
+	long selectVendorQnaCount(Criteria criteria);
 }
