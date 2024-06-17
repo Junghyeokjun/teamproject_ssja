@@ -131,10 +131,6 @@ h2, h4, p {
 	margin-right: 10px;
 }
 
-.table {
-	width: 100%; /* 테이블이 페이지 전체 너비를 차지하도록 설정 */
-	text-align: center; /* 테이블 텍스트 중앙 정렬 */
-}
 </style>
 </head>
 <body>
@@ -152,76 +148,71 @@ h2, h4, p {
 		<div id="side_links" class="w-100"></div>
 	</div>
 	<main>
-		<div id="main_container"
-			class="d-flex flex-row align-items-center justify-content-center">
-			<div id="content_dv_membersInfo">
-				<br>
-				<br>
-				<br>
-				<h2>쿠폰관리</h2>
-				<button type="button" class="btn btn-dark" id="newCouponBtn">신규
-					쿠폰 발급</button>
-				<br> <br> <br>
-				<h4>쿠폰 현황</h4>
-				<p>현재 사용가능한 쿠폰을 조회합니다.</p>
-				<div class="table-responsive">
-
-					<table class="table" style="text-align: center;">
-						<thead>
+		<div id="main_container" style="margin: 0 auto;">
+			<br> 
+			<h2>쿠폰관리</h2>
+			<button type="button" class="btn btn-dark" id="newCouponBtn">신규
+				쿠폰 발급</button>
+			<br> <br> <br>
+			<h4>쿠폰 현황</h4>
+			<p>현재 사용가능한 쿠폰을 조회합니다.</p>
+			<div class="table-responsive">
+				<table class="table" style="text-align: center;">
+					<thead>
+						<tr>
+							<th scope="col">번호</th>
+							<th scope="col">쿠폰 이름</th>
+							<th scope="col">할인율</th>
+							<th scope="col">사용기간</th>
+						</tr>
+					</thead>
+					<tbody class="table-group-divider">
+						<c:forEach var="coupon" items="${coupons}">
 							<tr>
-								<th scope="col">번호</th>
-								<th scope="col">쿠폰 이름</th>
-								<th scope="col">할인율</th>
-								<th scope="col">사용기간</th>
+								<td>${coupon.c_no}</td>
+								<td>${coupon.c_name}</td>
+								<td>${coupon.c_dcper}%</td>
+								<td><fmt:formatDate value="${coupon.c_startdate}"
+										pattern="yyyy-MM-dd" />~<fmt:formatDate
+										value="${coupon.c_duedate}" pattern="yyyy-MM-dd" />
+									<button type="button" class="btn btn-outline-success"
+										id="modifyCouponBtn">수정</button>
+									<button type="button" class="btn btn-outline-danger"
+										id="deleteCouponBtn">삭제</button></td>
 							</tr>
-						</thead>
-						<tbody class="table-group-divider">
-							<c:forEach var="coupon" items="${coupons}">
-								<tr>
-									<td>${coupon.c_no}</td>
-									<td>${coupon.c_name}</td>
-									<td>${coupon.c_dcper}%</td>
-									<td><fmt:formatDate value="${coupon.c_startdate}"
-											pattern="yyyy-MM-dd" />~<fmt:formatDate
-											value="${coupon.c_duedate}" pattern="yyyy-MM-dd" />
-										<button type="button" class="btn btn-outline-success"
-											id="modifyCouponBtn">수정</button>
-										<button type="button" class="btn btn-outline-danger"
-											id="deleteCouponBtn">삭제</button></td>
-								</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+				<div id="paging_dv">
+					<nav aria-label="Page navigation example">
+						<ul class="pagination ch-col justify-content-center">
+							<c:if test="${couponpageMaker.prev}">
+								<li class="page-item"><a class="page-link ch-col"
+									href="${pageContext.request.contextPath}/adminPage/couponsList${couponpageMaker.makeQuery(couponpageMaker.startPage-1)}"><</a></li>
+							</c:if>
+							<c:forEach var="idx" begin="${couponpageMaker.startPage}"
+								end="${couponpageMaker.endPage}">
+								<c:choose>
+									<c:when test="${couponpageMaker.criteria.pageNum == idx}">
+										<li class="page-item active"><a class="page-link"
+											href="${pageContext.request.contextPath}/adminPage/couponsList${couponpageMaker.makeQuery(idx)}">${idx}</a></li>
+									</c:when>
+									<c:otherwise>
+										<li class="page-item"><a class="page-link"
+											href="${pageContext.request.contextPath}/adminPage/couponsList${couponpageMaker.makeQuery(idx)}">${idx}</a></li>
+									</c:otherwise>
+								</c:choose>
 							</c:forEach>
-						</tbody>
-					</table>
-					<div id="paging_dv">
-						<nav aria-label="Page navigation example">
-							<ul class="pagination ch-col justify-content-center">
-								<c:if test="${couponpageMaker.prev}">
-									<li class="page-item"><a class="page-link ch-col"
-										href="${pageContext.request.contextPath}/adminPage/couponsList${couponpageMaker.makeQuery(couponpageMaker.startPage-1)}"><</a></li>
-								</c:if>
-								<c:forEach var="idx" begin="${couponpageMaker.startPage}"
-									end="${couponpageMaker.endPage}">
-									<c:choose>
-										<c:when test="${couponpageMaker.criteria.pageNum == idx}">
-											<li class="page-item active"><a class="page-link"
-												href="${pageContext.request.contextPath}/adminPage/couponsList${couponpageMaker.makeQuery(idx)}">${idx}</a></li>
-										</c:when>
-										<c:otherwise>
-											<li class="page-item"><a class="page-link"
-												href="${pageContext.request.contextPath}/adminPage/couponsList${couponpageMaker.makeQuery(idx)}">${idx}</a></li>
-										</c:otherwise>
-									</c:choose>
-								</c:forEach>
-								<c:if
-									test="${couponpageMaker.next && couponpageMaker.endPage > 0}">
-									<li class="page-item"><a class="page-link ch-col"
-										href="${pageContext.request.contextPath}/adminPage/couponsList${couponpageMaker.makeQuery(couponpageMaker.endPage+1)}">></a></li>
-								</c:if>
-							</ul>
-						</nav>
-					</div>
+							<c:if
+								test="${couponpageMaker.next && couponpageMaker.endPage > 0}">
+								<li class="page-item"><a class="page-link ch-col"
+									href="${pageContext.request.contextPath}/adminPage/couponsList${couponpageMaker.makeQuery(couponpageMaker.endPage+1)}">></a></li>
+							</c:if>
+						</ul>
+					</nav>
 				</div>
 			</div>
+		</div>
 	</main>
 	<!-- Bootstrap 모달 -->
 	<div class="modal fade" id="newCouponModal" tabindex="-1"
@@ -248,12 +239,13 @@ h2, h4, p {
 								id="discountPercentage" name="c_dcper">
 						</div>
 						<div class="mb-3">
-							<label for="startDate" class="form-label">시작일</label>
-							<input type="date" class="form-control" id="startDate" name="c_startdate">
+							<label for="startDate" class="form-label">시작일</label> <input
+								type="date" class="form-control" id="startDate"
+								name="c_startdate">
 						</div>
 						<div class="mb-3">
-							<label for="dueDate" class="form-label">만료일</label>
-						 <input type="date" class="form-control" id="dueDate" name="c_duedate">
+							<label for="dueDate" class="form-label">만료일</label> <input
+								type="date" class="form-control" id="dueDate" name="c_duedate">
 						</div>
 						<button type="submit" class="btn btn-dark">쿠폰 발급</button>
 					</form>

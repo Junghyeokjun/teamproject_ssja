@@ -142,26 +142,35 @@ body {
 		<div id="side_links" class="w-100"></div>
 	</div>
 	<main>
-		<div id="main_container"
-			class="d-flex flex-row align-items-center justify-content-center">
-			<div id="content_dv_membersInfo">
+		<div id="main_container" style="margin: 0 auto;">
+			<br> 
 				<h2>회원목록</h2>
+				<form name="members-search-form" autocomplete="off">
+					<select name="type">
+						<option selected value="">선택</option>
+						<option value="m_name">회원이름</option>
+						<option value="m_id">아이디</option>
+						<option value="m_grade">등급</option>
+					</select> <input type="text" name="keyword" value=""> 
+					<input type="button" onclick="membersSearchList()" class="btn btn-outline-dark mr-2" value="검색">
+				</form>
+				<div class="table-responsive">
 				<table class="table" id="memberstable" style="text-align: center;">
-					<thead class="table-dark">
+					<thead>
 						<tr>
-							<td>회원번호</td>
-							<td>아이디</td>
-							<td>이름</td>
-							<td>주소</td>
-							<td>생일</td>
-							<td>등급</td>
-							<td>이메일</td>
-							<td>휴대폰번호</td>
-							<td>포인트</td>
-							<td>닉네임</td>
+							<td scope="col">회원번호</td>
+							<td scope="col">아이디</td>
+							<td scope="col">이름</td>
+							<td scope="col">주소</td>
+							<td scope="col">생일</td>
+							<td scope="col">등급</td>
+							<td scope="col">이메일</td>
+							<td scope="col">휴대폰번호</td>
+							<td scope="col">포인트</td>
+							<td scope="col">닉네임</td>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody class="table-group-divider">
 						<c:forEach var="member" items="${members}">
 							<tr>
 								<td>${member.m_NO}</td>
@@ -178,15 +187,6 @@ body {
 						</c:forEach>
 					</tbody>
 				</table>
-				<form name="members-search-form" autocomplete="off">
-					<select name="type">
-						<option selected value="">선택</option>
-						<option value="m_name">회원이름</option>
-						<option value="m_id">아이디</option>
-						<option value="m_grade">등급</option>
-					</select> <input type="text" name="keyword" value=""> 
-					<input type="button" onclick="membersSearchList()" class="btn btn-outline-primary mr-2" value="검색">
-				</form>
 				<div id="paging_dv">
 					<nav aria-label="Page navigation example">
 						<ul class="pagination ch-col justify-content-center">
