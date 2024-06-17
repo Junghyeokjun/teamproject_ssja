@@ -13,11 +13,21 @@ $(document).ready(function () {
 
   //상단 카테고리 바 분류
   let $ul = $("<ul>").attr("id", "list_category").appendTo($home_user_bar);
-  let $li1 = $("<li>").css("order", "1").text("가구").addClass("px-3 py-2").attr("id", "nav-links").appendTo($ul);
-  let $li2 = $("<li>").css("order", "2").text("패브릭").addClass("px-3 py-2").attr("id", "nav-links").appendTo($ul);
-  let $li3 = $("<li>").css("order", "3").text("인테리어").addClass("px-3 py-2").attr("id", "nav-links").appendTo($ul);
-  let $li4 = $("<li>").css("order", "4").text("주방용품").addClass("px-3 py-2").attr("id", "nav-links").appendTo($ul);
-  let $li5 = $("<li>").css("order", "5").text("생활용품").addClass("px-3 py-2").attr("id", "nav-links").appendTo($ul);
+  let $li1 = $("<li>").css("order", "1").text("가구").addClass("px-3 py-2").attr("id", "nav-links1").on('click', function(){
+	  window.location.href="/search?keyword=" + $(this).text();
+  }).appendTo($ul);
+  let $li2 = $("<li>").css("order", "2").text("패브릭").addClass("px-3 py-2").attr("id", "nav-links2").on('click', function(){
+	  window.location.href="/search?keyword=" + $(this).text();
+  }).appendTo($ul);
+  let $li3 = $("<li>").css("order", "3").text("인테리어").addClass("px-3 py-2").attr("id", "nav-links3").on('click', function(){
+	  window.location.href="/search?keyword=" + $(this).text();
+  }).appendTo($ul);
+  let $li4 = $("<li>").css("order", "4").text("주방용품").addClass("px-3 py-2").attr("id", "nav-links4").on('click', function(){
+	  window.location.href="/search?keyword=" + $(this).text();
+  }).appendTo($ul);
+  let $li5 = $("<li>").css("order", "5").text("생활용품").addClass("px-3 py-2").attr("id", "nav-links5").on('click', function(){
+	  window.location.href="/search?keyword=" + $(this).text();
+  }).appendTo($ul);
 
 //카테고리 별 링크 변수
   const  link1_1 = "/product/search?category=11";
@@ -133,7 +143,7 @@ $(document).ready(function () {
   // 클릭 이벤트 추가
   $side_container1.on('click', function(e){
       e.stopPropagation();
-      window.location.href = "https://www.google.com";
+      window.location.href = "/product/best-list";
   });
   $side_container2.on('click', function(e){
       e.stopPropagation();
@@ -141,11 +151,11 @@ $(document).ready(function () {
   });
   $side_container3.on('click', function(e){
       e.stopPropagation();
-      window.location.href = "https://www.daum.net";
+      window.location.href = "/board/list/20";
   });
   $side_container4.on('click', function(e){
       e.stopPropagation();
-      window.location.href = "https://store.ohou.se/exhibitions/12390";
+      window.location.href = "/notice";
   });
   
   
@@ -218,6 +228,8 @@ $(document).ready(function () {
 
 
   $li1.mouseenter(function () {
+	  $(this).css('cursor','pointer');
+
     $sub_bar.css("display", "block");
     $("#sub_bar").children().remove();
     let $subUl = $("<ul>").addClass("sub-nav").appendTo($sub_bar);
@@ -230,6 +242,8 @@ $(document).ready(function () {
   });
   
   $li2.mouseenter(function () {
+	  $(this).css('cursor','pointer');
+
     $sub_bar.css("display", "block");
     $("#sub_bar").children().remove();
     let $subUl = $("<ul>").addClass("sub-nav").appendTo($sub_bar);
@@ -242,6 +256,8 @@ $(document).ready(function () {
 
   });
   $li3.mouseenter(function () {
+	  $(this).css('cursor','pointer');
+
     $sub_bar.css("display", "block");
     $("#sub_bar").children().remove();
     let $subUl = $("<ul>").addClass("sub-nav").appendTo($sub_bar);
@@ -254,6 +270,7 @@ $(document).ready(function () {
 
   });
   $li4.mouseenter(function () {
+	  $(this).css('cursor','pointer');
     $sub_bar.css("display", "block");
     $("#sub_bar").children().remove();
     let $subUl = $("<ul>").addClass("sub-nav").appendTo($sub_bar);
@@ -268,6 +285,8 @@ $(document).ready(function () {
 
   });
   $li5.mouseenter(function () {
+	  $(this).css('cursor','pointer');
+
     $sub_bar.css("display", "block");
     $("#sub_bar").children().remove();
     let $subUl = $("<ul>").addClass("sub-nav").appendTo($sub_bar);

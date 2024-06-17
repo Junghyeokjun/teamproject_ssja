@@ -34,6 +34,8 @@
 <script src="/js/board.js">
 	
 </script>
+<meta name="_csrf" content="${_csrf.token}"/>
+<meta name="_csrf_header" content="${_csrf.headerName}"/>
 
 <link href="/css/footerstyle.css?after" rel="stylesheet">
 <link href="/css/barstyle.css?after" rel="stylesheet">
@@ -122,8 +124,8 @@ body {
 				<h1 class="h3 text-center">새로 작성하기</h1>
 			</div>
 			<form action="${pageContext.request.contextPath}/board/write" method="post">
+			            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				<div class="input-group">
-					<input type="hidden" class="form-control" name="bbcno" value="${bcno}">				
 				</div>
 				<table class="table" >
 					<tr>

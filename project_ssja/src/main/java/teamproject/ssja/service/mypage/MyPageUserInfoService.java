@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.InfoProvider;
+import teamproject.ssja.dto.BoardDto;
+import teamproject.ssja.dto.community.CommunityBoardDto;
 import teamproject.ssja.dto.email.MailDTO;
 import teamproject.ssja.dto.product.ProductNumberDTO;
 import teamproject.ssja.dto.userinfo.AddressForm;
@@ -22,7 +24,9 @@ import teamproject.ssja.dto.userinfo.MyPageOrdersDTO;
 import teamproject.ssja.dto.userinfo.OrderInfoDTO;
 import teamproject.ssja.dto.userinfo.UserInfoDTO;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
+import teamproject.ssja.mapper.BoardMapper;
 import teamproject.ssja.mapper.MyPageMapper;
+import teamproject.ssja.page.ListObjectPaging5DTO;
 import teamproject.ssja.page.ListObjectPagingDTO;
 
 @Slf4j
@@ -32,6 +36,7 @@ public class MyPageUserInfoService implements MyPageService{
 
 	private final MyPageMapper myPageMapper;
 	private final PasswordEncoder passwordEncoder;
+	private final BoardMapper boardMapper;
 	
 
 @Override
@@ -177,6 +182,36 @@ public class MyPageUserInfoService implements MyPageService{
 		ProductNumberDTO data = new ProductNumberDTO(id, deleteList);
 		myPageMapper.deleteCartItem(data);
 		
+	}
+
+	@Override
+	public void cancelDelete() {
+		Long id = InfoProvider.getM_NO();
+		
+		myPageMapper.cancelDelete(id);
+	}
+
+	@Override
+	public ListObjectPagingDTO getMyQnA(Integer pageNum) {
+		Long id = InfoProvider.getM_NO();
+		List<BoardDto> list = boardMapper.getMyQnAs(id, pageNum);
+		if(list == null || list.isEmpty()) return null;
+		long total = list.get(0).getTotal();
+		ListObjectPagingDTO data = new ListObjectPagingDTO(total, pageNum);
+		data.setObjectList(list);
+		return data;
+	}
+
+	@Override
+	public ListObjectPaging5DTO getMyCommus(Integer pageNum) {
+		
+		Long id = InfoProvider.getM_NO();
+		List<CommunityBoardDto> list = boardMapper.getMyCommus(id, pageNum);
+		if(list == null || list.isEmpty()) return null;
+		long total = list.get(0).getTotal();
+		ListObjectPaging5DTO data = new ListObjectPaging5DTO(total, pageNum);
+		data.setObjectList(list);
+		return data;
 	}
 
 	

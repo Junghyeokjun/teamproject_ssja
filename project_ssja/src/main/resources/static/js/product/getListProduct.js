@@ -326,7 +326,7 @@ handleClick("#select_review", fontBoldResetDiv3, function() {
 });
 
 handleClick("#select_wish", fontBoldResetDiv3, function() {
-    product_condition.setConditionSelect('RATING_AVG desc');
+    product_condition.setConditionSelect('pro_wish desc');
 });
 
 handleClick("#select_new", fontBoldResetDiv3, function() {

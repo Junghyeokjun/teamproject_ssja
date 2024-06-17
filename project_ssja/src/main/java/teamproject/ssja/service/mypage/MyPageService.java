@@ -9,6 +9,7 @@ import java.util.*;
 import teamproject.ssja.dto.userinfo.AddressForm;
 import teamproject.ssja.dto.userinfo.UserInfoDTO;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
+import teamproject.ssja.page.ListObjectPaging5DTO;
 import teamproject.ssja.page.ListObjectPagingDTO;
 import teamproject.ssja.dto.userinfo.MyPageOrdersDTO;
 public interface MyPageService {
@@ -33,4 +34,9 @@ public interface MyPageService {
 	
 	ListObjectPagingDTO getcartItems(int pageNum);
 	void deleteItemFromCart(List<Integer> deletList);
+	void cancelDelete();
+	
+	ListObjectPagingDTO getMyQnA(Integer PageNum);
+	ListObjectPaging5DTO getMyCommus(Integer PageNum);
+	
 }

@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.extern.slf4j.Slf4j;
+import teamproject.ssja.InfoProvider;
+import teamproject.ssja.LoginChecker;
 import teamproject.ssja.dto.BoardDto;
+import teamproject.ssja.dto.login.CustomPrincipal;
 import teamproject.ssja.page.Criteria;
 import teamproject.ssja.page.PageVO;
 import teamproject.ssja.service.Board.BoardService;
@@ -61,10 +65,19 @@ public class BoardController {
 	}
 
 	@PostMapping("/write")
-	public String addOne(BoardDto boardDto) {
-		log.info("addOne()..");
+	public String addOne(BoardDto boardDto, @AuthenticationPrincipal CustomPrincipal user) {
+		String writer = "";
+		if(LoginChecker.check()==1) {
+			writer = user.getUserInfo().getM_NickName();
+		}else {
+			writer = user.getOAuth2Response().getName();
+		}
+		log.info("writer {} ", writer);
+		boardDto.setBmno(InfoProvider.getM_NO());
+		boardDto.setBwriter(writer);
+		boardDto.setBbcno(20);
 		boardService.addBoard(boardDto);
-		return "redirect:/board/list";
+		return "redirect:/board/list/" + boardDto.getBbcno();
 	}
 
 	@PostMapping("/modify_view")

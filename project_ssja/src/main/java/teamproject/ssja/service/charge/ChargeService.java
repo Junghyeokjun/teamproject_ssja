@@ -22,7 +22,7 @@ public class ChargeService {
 		
 	} catch (Exception e) {
 		
-		throw new RuntimeException("포인트 충전에 문제가 생겼습니다." + e);
+		throw new RuntimeException("포인트 충전에 문제가 생겼습니다.");
 	}
 		
 	}
