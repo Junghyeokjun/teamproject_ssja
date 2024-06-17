@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.PurchaseDto;
+import teamproject.ssja.dto.PurchaseSearchDto;
 import teamproject.ssja.mapper.AdminPageMapper;
 import teamproject.ssja.page.Criteria;
 
@@ -25,5 +26,12 @@ public class PurchaseListServiceImpl implements PurchaseListService {
 	public List<PurchaseDto> getPerchaseListWithPaging(Criteria cri) {
 		log.info("getPerchaseListWithPaging()..");
 		return adminPageMapper.getPerchaseListWithPaging(cri);
+	}
+
+	@Override
+	public List<PurchaseSearchDto> getPurchasesSearchList(String type, String keyword) {
+		log.info("getPurchasesSearchList()..");
+
+		return adminPageMapper.getPurchasesSearchList(type,keyword);
 	}
 }

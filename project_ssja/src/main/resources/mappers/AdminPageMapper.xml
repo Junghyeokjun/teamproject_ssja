@@ -177,6 +177,38 @@
 			where rnum > (#{pageNum}-1) * #{amount}
     ]]>
 	</select>
+	
+	<resultMap id="PurchasesSearchListMap"  type="PurchaseSearchDto">
+		<id property="PUR_NO" column="PUR_NO" />
+		<result property="M_NO" column="M_NO" />
+		<result property="PUR_TOT" column="PUR_TOT" />
+		<result property="PUR_DC" column="PUR_DC" />
+		<result property="PUR_PAY" column="PUR_PAY" />
+		<result property="PUR_PAYMENT" column="PUR_PAYMENT" />
+		<result property="PUR_DATE" column="PUR_DATE" />
+		<result property="PUR_DVADDRESS" column="PUR_DVADDRESS" />
+		<result property="PUR_DV" column="PUR_DV" />
+		<result property="type" column="type" />
+		<result property="keyword" column="keyword" />
+	</resultMap>
+	
+	<select id="getPurchasesSearchList"  parameterType="string"   resultMap="PurchasesSearchListMap">    
+	
+	SELECT  * FROM   purchase            
+                where                
+               <choose>
+               <when test="#{type} != null and type.equals('PUR_NO')">
+                PUR_NO = '${keyword}'
+               </when>      
+               <when test="#{type} != null and type.equals('M_NO')">
+                M_NO = '${keyword}'
+               </when>                         
+               </choose>                          
+	
+	</select>		
+	
+	
+	
 	<resultMap id="CouponsListMap" type="CouponDTO">
 		<id property="c_no" column="c_no" />
 		<result property="c_startdate" column="c_startdate" />
@@ -231,5 +263,50 @@
         	delete from coupon where c_no = #{c_no}
         ]]>
 	</delete>
+	
+	<resultMap id="SalesListMap" type="PurchaseDto">
+		<id property="PUR_NO" column="PUR_NO" />
+		<result property="PUR_PAY" column="PUR_PAY" />
+		<result property="PUR_DATE" column="PUR_DATE" />
+	</resultMap>
+	
+	<select id="getDailySalesList" resultType="MAP">    
+    <![CDATA[
+SELECT TRUNC(PUR_DATE) AS Daily, SUM(PUR_PAY) AS DailyTotalPay
+FROM purchase
+GROUP BY TRUNC(PUR_DATE)
+ORDER BY Daily
+
+        ]]>
+	</select>
+
+<select id="getMonthlySalesList" resultType="MAP">    
+    <![CDATA[
+SELECT
+    TO_CHAR(PUR_DATE, 'YYYY-MM') AS Month,
+    SUM(PUR_PAY) AS MonthlyTotalPay
+FROM
+    purchase
+GROUP BY
+    TO_CHAR(PUR_DATE, 'YYYY-MM')
+ORDER BY
+    Month
+
+        ]]>
+	</select>	
+	<select id="getYearlySalesList" resultType="MAP">    
+    <![CDATA[
+SELECT
+    TO_CHAR(PUR_DATE, 'YYYY') AS Year,
+    SUM(PUR_PAY) AS YearlyTotalPay
+FROM
+    purchase
+GROUP BY
+    TO_CHAR(PUR_DATE, 'YYYY')
+ORDER BY
+    Year
+
+        ]]>
+	</select>
 	
 	</mapper>
