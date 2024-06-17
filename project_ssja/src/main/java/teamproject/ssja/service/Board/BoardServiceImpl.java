@@ -95,7 +95,7 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<BoardDto> showListWithPaging(Criteria criteria) {
 		log.info("showListWithPaging()..");
-		//criteria.setPRO_NO(20);
+		criteria.setPRO_NO(20);
 		return boardMapper.selectListWithPaging(criteria);
 	}
 

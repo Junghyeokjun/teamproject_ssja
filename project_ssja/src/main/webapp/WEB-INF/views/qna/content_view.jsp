@@ -368,19 +368,6 @@ body {
 
 		console.log("inputReplyBno : " + rbno);		
 
-		// 어느 사용자든 확인할 수 있는, 댓글 좋아요
-		let replyLike = function(){
-			/* $.ajax({
-				
-			}); */
-			
-		};
-
-		// 로그인한 사람만 할 수 있는, 댓글 좋아요 눌렀을 때의 좋아요 숫자 증가 or 감소
-		let replyLiked = function(){
-
-		};
-
 		// 댓글 텍스트 상자 높이 조절 함수
 		let replyTextareaHeight = function(){ 
 			$('.rcontent.form-control').each(function() {
@@ -419,8 +406,6 @@ body {
 			// 	html1 += '<div class="d-flex justify-content-between"><div><button class="reply-likes btn mx-1">좋아요 '+ 1 +'</button><button class="reply-modify btn">수정</button><button id="reply-delete" class="btn">X</button><button class="reply-report btn">신고</button></div><div class="btn disabled border-0">' + reply_view.rdate + '</div>';
 			// 	html1 += '</div></div>'
 			// });
-
-
 
 			// 관리자 댓글 외형
 			// 현재 페이지에서는 관리자 댓글 외형을 입히기 위해 ajax에 댓글 헤드를 꾸미는 함수를 집어넣었음.

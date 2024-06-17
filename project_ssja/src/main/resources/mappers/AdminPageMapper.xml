@@ -177,4 +177,59 @@
 			where rnum > (#{pageNum}-1) * #{amount}
     ]]>
 	</select>
+	<resultMap id="CouponsListMap" type="CouponDTO">
+		<id property="c_no" column="c_no" />
+		<result property="c_startdate" column="c_startdate" />
+		<result property="c_duedate" column="c_duedate" />
+		<result property="c_name" column="c_name" />
+		<result property="c_dcper" column="c_dcper" />		
+	</resultMap>
+
+	<select id="getCouponListTotalCount" resultType="long">    
+    <![CDATA[
+              	SELECT count(*) FROM coupon 
+        ]]>
+	</select>
+
+	<select id="getCouponListWithPaging" 	resultMap="CouponsListMap">    
+    <![CDATA[
+	select * from 
+        	(
+			    select
+			        rownum rnum , A.*
+			    from 
+			    (SELECT  * FROM coupon order by c_no desc) A 
+		    	where rownum <= #{pageNum} * #{amount} 
+		    )
+			where rnum > (#{pageNum}-1) * #{amount}
+    ]]>
+	</select>
+	
+	<insert id="insertCoupon">
+    <![CDATA[
+
+        	INSERT INTO coupon (c_no,c_startdate,c_duedate,c_name,c_dcper)
+        	VALUES (C_SEQ.NEXTVAL, #{c_startdate}, #{c_duedate}, #{c_name}, #{c_dcper})
+]]>        
+
+	</insert>
+	
+	<select id="read" resultMap="CouponsListMap">
+    	<![CDATA[
+        	select * from coupon where c_no=#{c_no}
+        ]]>
+	</select>
+	
+	<update id="updateCoupon" parameterType="CouponDTO">
+		<![CDATA[
+        	update coupon set c_name=#{c_name}, c_dcper=#{c_dcper},c_startdate=#{c_startdate},c_duedate=#{c_duedate} where c_no=#{c_no}
+        ]]>
+	</update>
+
+	<delete id="deleteCoupon" parameterType="CouponDTO">
+		 <![CDATA[
+        	delete from coupon where c_no = #{c_no}
+        ]]>
+	</delete>
+	
 	</mapper>

@@ -4,7 +4,8 @@
 
 <mapper namespace="teamproject.ssja.mapper.ProductDetailMapper">
 
-	<resultMap id="ProductDetailMap" type="ProductDetailDto">
+
+<resultMap id="ProductDetailMap" type="ProductDetailDto">
 		<id property="PRO_NO" column="PRO_NO" />
 		<result property="V_NO" column="V_NO" />
 		<result property="PRO_NAME" column="PRO_NAME" />
@@ -86,4 +87,76 @@
 	<update id="updateProductQuantity">
 		UPDATE product SET PRO_QUANTITY = PRO_QUANTITY-#{O_QUANTITY} where pro_no=#{PRO_NO} 
 	</update>
+
+
+<select id="getItemsReview" resultType="teamproject.ssja.dto.product.ProductReviewDTO">
+	select *
+	from (select b.* , 
+		 row_number() over(order by b_date desc) as rnum, COUNT(*) OVER () AS total
+  		 from board b where pro_no = #{productNum}) a
+	where a.rnum between ${pageNum} * 10 - 9 and ${pageNum} * 10
+	</select>
+	
+<select id="getProductDetailInfo" resultMap="productMap">
+    SELECT 
+        z.pro_no, z.v_no, z.p_c_no, z.pro_price, z.pro_quantity, z.pro_bannerimg, 
+        z.pro_wish, z.pro_sellcount, z.pro_bizname, z.pro_name, z.avgeval, z.v_license, z.pro_hit,
+        z.m_name, z.m_address1, z.m_address2, z.m_email, z.m_phone, z.countrv, i.pro_img_path, z.category1, z.category2
+    FROM (
+        SELECT a.pro_no, a.v_no, a.p_c_no, a.pro_price, a.pro_quantity, a.pro_bannerimg, 
+               a.pro_wish, a.pro_sellcount, a.pro_bizname, a.pro_name, a.avgEval, a.countrv,
+               s.v_license, s.m_name, s.m_address1, s.m_address2, s.m_email, s.m_phone,
+               SUBSTR(a.cate,1,INSTR(a.cate,'-') - 1) as category1, 
+               SUBSTR(a.cate,INSTR(a.cate,'-') + 1) as category2, a.pro_hit
+        FROM (
+            SELECT 
+                p.*,  (SELECT AVG(b.b_eval) FROM board b WHERE b.pro_no = p.pro_no) AS avgEval,
+                (SELECT COUNT(b.pro_no) FROM board b WHERE b.pro_no = p.pro_no) AS countrv,
+                (select p_c_name from product_category t where t.p_c_no = p.p_c_no) as cate
+            FROM product p   WHERE p.pro_no = #{productNum}
+        ) a
+        INNER JOIN (
+            SELECT 
+                v.*,  m.m_address1, m.m_address2, m.m_email, m.m_phone, m.m_name
+            FROM vendor v
+            INNER JOIN 
+                members m ON m.m_no = v.m_no  ) s ON s.v_no = a.v_no
+    ) z
+     left JOIN (
+        SELECT  pro_no, pro_img_path 
+        FROM  product_imgs  ORDER BY  pro_img_path 
+        ) i 
+        ON z.pro_no = i.pro_no
+</select>
+<resultMap id="productMap" type="teamproject.ssja.dto.product.ProductDetailTotalInfoDTO">
+    <id property="pro_no" column="pro_no"/>
+    <result property="v_no" column="v_no"/>
+    <result property="p_c_no" column="p_c_no"/>
+    <result property="pro_quantity" column="pro_quantity"/>
+    <result property="pro_price" column="pro_price"/>
+    <result property="pro_bannerimg" column="pro_bannerimg"/>
+    <result property="pro_wish" column="pro_wish"/>
+    <result property="pro_sellcount" column="pro_sellcount"/>
+    <result property="pro_bizname" column="pro_bizname"/>
+    <result property="pro_name" column="pro_name"/>
+    <result property="avgeval" column="avgeval"/>
+    <result property="v_license" column="v_license"/>
+    <result property="m_name" column="m_name"/>
+    <result property="m_address1" column="m_address1"/>
+    <result property="m_address2" column="m_address2"/>
+    <result property="m_email" column="m_email"/>
+    <result property="m_phone" column="m_phone"/>
+    <result property="countrv" column="countrv"/>
+    <result property="category1" column="category1"/>
+    <result property="category2" column="category2"/>
+    <result property="pro_hit" column="pro_hit"/>
+    <!-- 제품 이미지 리스트 매핑 -->
+    <collection property="imgList" ofType="productImgMap" resultMap="productImgMap"/>
+</resultMap>
+<resultMap id="productImgMap" type="ProductImgDTO">
+    <id property="piPath" column="pro_img_path"/>
+    <result property="pNo" column="pro_no"/>
+</resultMap>
+
+	
 </mapper>

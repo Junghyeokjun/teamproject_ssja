@@ -11,7 +11,7 @@ $(document).ready(function () {
   });*/  
 
 // html 상단에 받은 jstl 데이터 principal을 받는 변수  
-  let getPrincipal = ${principal}
+  let getPrincipal = $("#getPrincipal").val();
   
   //상단 카테고리 바 분류
   let $ul = $("<ul>").attr("id", "list_category").appendTo($home_user_bar);
@@ -121,41 +121,27 @@ $(document).ready(function () {
 
   //======================
   
-  // 버튼을 눌렀을 때의 동작을 담는 함수. 
-  // post 방식으로 보내서 링크에 데이터 노출되는 것을 막음
-  function buttonForm(link){
-	let $form = $("<form>").attr({
-	    method: "POST",
-	    action: link
-	});
-
-	$form.append(
-	    $("<input>").attr({
-	        type: "hidden",
-	        name: "memberId", // 서버에서 받을 파라미터 이름
-	        value: memberId // 멤버 번호 변수
-	    })
-	);
-	$form.appendTo("body").submit();
-  }
-  
   //사이드 관련
-  let $side_container1 = $("<button>").addClass("side_containers").text("회원정보");
-  let $side_containerEx = $("<button>").addClass("side_containers").text("상품 관리");
-  let $side_container2 = $("<button>").addClass("side_containers").text("문의 요청 내역");
+  let $side_container1 = $("<button>").addClass("side_containers align-middle").text("회원정보");
+  let $side_containerEx = $("<button>").addClass("side_containers align-middle").text("상품 관리");
+  let $side_container2 = $("<button>").addClass("side_containers align-middle").text("문의 요청 내역");
 
+  const sideLink1 = "/myPage";
+  const sideLink2 = "/vendor/product/write";
+  const sideLink3 = "/vendor/product/list";
+  const sideLink4 = "/vendor/question/20";
   // 확장되는 사이드 영역
   // 사용은 안하지만 해당 부분은 나중을 위해 참조용으로 남겨두기
-  
+
   
   // 클릭 이벤트 추가
   $side_container1.on('click', function(e){
       e.stopPropagation();
-      window.location.href = "/myPage";
+      window.location.href = sideLink1;
   });
   $side_container2.on('click', function(e){
       e.stopPropagation();
-      buttonform("/vendor/question/list");
+      window.location.href = sideLink4;
   });
 //  $side_container3.on('click', function(e){
 //      e.stopPropagation();
@@ -167,16 +153,17 @@ $(document).ready(function () {
 //  });
   
   
+  
   let $cate_dv = $("<div>").attr("id","cate_container");
   
-  let $category1 = $("<button>").addClass("category").text("상품 등록").on('click',function(e){
+  let $category1 = $("<button>").addClass("category align-middle").text("상품 등록").on('click',function(e){
 	    e.stopPropagation();
-	    window.location.href = "/vendor/product/write";
+	    window.location.href = sideLink2;
   });
   
-  let $category2 = $("<button>").addClass("category").text("등록 상품 목록").on('click',function(e){
+  let $category2 = $("<button>").addClass("category align-middle").text("등록 상품 목록").on('click',function(e){
 	    e.stopPropagation();
-	    window.location.href = "/vendor/product/list";
+	    window.location.href = sideLink3;
   });
   
 //  let $category1 = $("<button>").addClass("category").text("가구").on('click',function(e){
@@ -235,7 +222,6 @@ $(document).ready(function () {
 //  $cate_dv.append($category1, $category2, $category3, $category4, $category5);
   $cate_dv.append($category1, $category2);
   $side_containerEx.text("상품 카테고리").append($cate_dv);
-  
   
 
   let remove_ct_detail = function(){
@@ -317,12 +303,14 @@ $(document).ready(function () {
     e.stopPropagation();
     if($cate_dv.css('display') === "none"){
       $cate_dv.css('display','flex');
+      $side_containerEx.css("color","brown");
     }else{
       $cate_dv.css('display','none');
+      $side_containerEx.css("color","black");
     }
   });
 
-  let $barbtn = $(".top_btn").addClass("btn btn-ouyline-dark").attr("id", "barbtn").text("☰");
+  let $barbtn = $(".top_btn").addClass("btn btn-outline-dark").attr("id", "barbtn").text("☰");
   let side_h = $(window).height();
   let $side_bar = $("#side_bar").css("height",side_h);
   
@@ -360,9 +348,28 @@ $(document).ready(function () {
   $barbtn.on("click", function () {
 
     if ($side_bar.css("display") === "block") {
-      hideSideBar();
+    	hideSideBar();
+    	// 포커스 상태 해제
+    	$barbtn.removeClass("active");
     } else {
-      showSideBar();
+		showSideBar();
+		$barbtn.addClass("active");
+		
+		let currentUrl = window.location.href;
+		console.log("currentUrl : " + currentUrl);
+		//
+		if (currentUrl.includes(sideLink1)) {
+			$side_container1.addClass("active");
+		} else if (currentUrl.includes(sideLink2)) {
+			$side_containerEx.css("color","brown");
+			$category1.addClass("active");
+		} else if (currentUrl.includes(sideLink3)) {
+			$side_containerEx.css("color","brown");
+			$category2.addClass("active");
+		} else if (currentUrl.includes(sideLink4)) {
+			$side_container2.addClass("active");
+		}
+		
     }
   });
 
@@ -413,8 +420,8 @@ $(document).ready(function () {
 
 // 판매자 상호명 가져오기  
   
-  	let $vendorData = $('#vendorData').val();
-	console.log("vendorData : " + $vendorData);
+	let $vendorData = $('#vendorData').val();
+	console.log("$vendorData : " + $vendorData);
 	
 	// value 기본값은 "" 이다. 빈 문자열이 아니라는 의미는, 값이 들어갔다는 의미이다.
 	if($vendorData != ""){

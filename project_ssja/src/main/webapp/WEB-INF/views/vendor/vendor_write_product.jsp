@@ -9,9 +9,11 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
+<script>
+	let vendorData = "${principal.memberNum}";
+	console.log("vendorData : " + vendorData);
+</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
    
@@ -173,7 +175,7 @@
 		border: 0;
 	}
 	
-	/* 커스텀 시작1 - label */
+	/* 커스텀 시작 - label */
 	.file-container_ label {
 	  display: inline-block;
 	  padding: .5em .75em;
@@ -311,7 +313,7 @@
 		<nav id="total_bar">
 		</nav>
 	</header>
-		<div id="side_bar">
+	<div id="side_bar">
 		<div id="side_links" class="w-100"></div>
 	</div>
 <!-- 	   
@@ -331,11 +333,15 @@
 	</div>
     <div id="main_container" class="d-flex flex-row align-items-center justify-content-center" >      	
         <div id="MyPage_content_container" class="border p-5">
-        	<form role="form" method="post" action="${pageContext.request.contextPath}/vendor/product/add" autocomplete="off" encType="multipart/form-data">
+        	<form id="productAdd" action="${pageContext.request.contextPath}/vendor/product/add" method="post" autocomplete="off" encType="multipart/form-data">
+				<sec:csrfInput/>
+				<input type="hidden" name="V_NO" readonly="readonly">
+				<input type="hidden" name="PRO_BIZNAME" readonly="readonly">
 				<div id="ProductCategory" class="p-2 input-group w-100">   
 				   <label class="mx-2 m-auto input-group-text" >1차 분류</label>
 				   <!-- 상품 카테고리를 해당 페이지에 뿌려줘야 함 : 한 자리 수 -->
 				   <select id="mainCategory" class="form-select w-25 mx-2" >
+				   	<option value=""></option>
 				   	<c:forEach var="proCate" items="${pcMains}">
 					 	<option value="${proCate.pcNum}">${proCate.pcSubName}</option>				  
 					</c:forEach>	
@@ -368,16 +374,30 @@
  					<div class="file-container_ form-control custom-primary m-2 d-flex align-items-center">
 			            <input id="bannerFileText" class="file-upload-name_" placeholder="파일을 선택하세요" disabled="disabled">			
 			            <label for="bannerFile" >올리기</label> 
-			            <input type="file" id="bannerFile" class="upload-image_" name=""> 
+			            <input type="file" id="bannerFile" class="upload-image_" name="bannerFile"> 
 			         </div>
 				</div>
-						
+				<div class="input-group mt-2 p-2 w-100 border-secondary d-flex align-items-center border-top">					
+				    <label class="mx-2 m-auto input-group-text">커버 이미지</label>
+ 					<div class="file-container_ form-control custom-primary m-2 d-flex align-items-center">
+			            <input id="coverFileText" class="file-upload-name_" placeholder="파일을 선택하세요" disabled="disabled">			
+			            <label for="coverFile" >올리기</label> 
+			            <input type="file" id="coverFile" class="upload-images_" multiple="multiple" name="coverFile" >			        
+			        </div>			        
+				</div>
+				<div class="input-group w-100 p-2">	
+					<label class="mx-2 m-auto input-group-text"></label>
+					<div class="form-control m-2 p-0 " style="height: auto">								
+		        		<ul id="uploadedCoverFiles" class=" w-100 list-group">			        		
+			        	</ul>
+		        	</div>
+		        </div>		
 				<div class="input-group mt-2 p-2 w-100 border-secondary d-flex align-items-center border-top">					
 				    <label class="mx-2 m-auto input-group-text">설명 이미지</label>
  					<div class="file-container_ form-control custom-primary m-2 d-flex align-items-center">
 			            <input id="explainFileText" class="file-upload-name_" placeholder="파일을 선택하세요" disabled="disabled">			
 			            <label for="explainFile" >올리기</label> 
-			            <input type="file" id="explainFile" class="upload-images_" multiple="multiple" name="" >			        
+			            <input type="file" id="explainFile" class="upload-images_" multiple="multiple" name="explainFile" >			        
 			        </div>			        
 				</div>
 				<div class="input-group w-100 p-2">	
@@ -407,7 +427,21 @@
 </body>
 <script type="text/javascript">
 	$(document).ready(function(){		
-		
+		$.ajax({
+			type : "POST",
+			url : "/api/vendor/vendorInfo",
+			data : { 'vendorData' : vendorData },
+			success : function(response){
+				console.log("판매자 정보 가져오기 성공");
+				$("input[name='V_NO']").val(response.v_no);
+				$("input[name='PRO_BIZNAME']").val(response.v_bizName);
+				console.log( "V_NO VAL : " + response.v_no );
+				console.log( "BIZNAME VAL : " + response.v_bizName);
+			},
+			error : function(xhr, status, error) {
+				console.log("판매자 정보 가져오기 실패");
+			}
+		})
 		// 메인 카테고리 작업 중
 		
 		// 선택된 메인 카테고리 값
@@ -435,15 +469,21 @@
 				},
 				error: function(xhr, status, error) {
 					console.log("가져오기 실패");
-					alert("오류가 발생했습니다. 잠시 후에 다시 실행해주세요.");
+					alert("카테고리 1차 분류 목록을 선택하세요.");
 					console.error(xhr.responseText);
 				}
 			});
 		}); 
 		
 		let bannerFile = $('#bannerFile');
+		let coverFile = $('#coverFile');
 		let explainFile = $('#explainFile');
 		let uploadedExplainFiles = $('#uploadedExplainFiles');
+		
+		// 파일 정보를 담는 files 속성을 담기 위한 배열 3가지
+		let selectedBannerFiles = [];
+		let selectedCoverFiles = [];
+		let selectedExplainFiles = [];
 		
 		function fileImageOnly(file){
 			if (!file.type.match("image/.*")) {
@@ -472,12 +512,13 @@
 		        filename = files[0].name;
 		        $(this).siblings('#bannerFileText').val(filename);
 		        $('#bannerFileText').after(bannerDeleteButton);
+		        selectedBannerFiles.push(file);
 		    } else {
 		    	// 이외의 경우에는 취소로 받아들이고 경고창을 띄우겠음.
 		    	alert("배너 이미지 업로드가 취소되었습니다. 다시 올려주세요.");
 		    	$(this).siblings('#bannerFileText').val('파일을 선택하세요');
-				if($(this).children(bannerDeleteButton).length !== 0){
-					$(this).children(bannerDeleteButton).remove();
+				if($(this).children($('#BnDelBtn')).length !== 0){
+					$(this).children($('#BnDelBtn')).remove();
 				}
 		    }		    
 		    
@@ -488,161 +529,189 @@
 		       			// this가 가리키는 요소가 다름.
 		       			$(this).val('');
 		       		});
-		       		$(this).remove();
+		       		$(this).remove();		
+		       		
+		       		let index = $(this).parent().index();
+		       		if(index > -1){
+		       			selectedBannerFiles.splice(index, 1);
+		       		}
 		       	}
 		    });
+
+			for(let i = 0; i < selectedBannerFiles.length ; i++){
+				console.log("bannerFile : " + selectedBannerFiles[i]);
+			}			
 		});
+		
+		function fileCount(files,max,count){
+			if ((count + files.length) > max) {
+				alert("이미지는 최대 " + max +"개까지만 업로드할 수 있습니다.");
+				return;
+			}
+		}
+		
+		function getMultiFiles(files, ul, text, delbtntext, selectFiles){
+			for (let i = 0; i < files.length; i++) {
+					let file = files[i];
+
+					// 이미지 타입에 맞는가, 맞지 않는가를 확인
+					// 정규식을 사용하여 MIME 타입이 image/로 시작하는지 확인
+					if (!fileImageOnly(file)) {				
+						return; // 전체 로직 종료
+					}
+
+					// 파일 리스트를 보여주기 위한 <li>
+					let newItem = $('<li></li>').addClass('list-group-item');				
+
+					// 현재 파일명
+					let fileName = file.name;
+
+					// 삭제 버튼
+					let deleteButton = $('<button></button>').addClass('btn font-weight-bold').text('X').attr('id', delbtntext);
+					
+					// <li>에 삭제 버튼 및 파일이름 추가
+					newItem.text(fileName).append(deleteButton);
+
+					// 새로운 li 요소 생성 및 ul에 추가
+					ul.append(newItem);
+
+					// 삭제 버튼을 클릭할 때 파일을 삭제하는 이벤트를 추가
+					deleteButton.on('click', function() {
+						// 삭제 버튼을 포함한 파일 아이템을 삭제
+						$(this).parent().remove();
+						text.val('');
+						
+						let index = $(this).parent().index();
+			       		if(index > -1){
+							selectFiles.splice(index, 1);
+			       		}
+					});
+				}
+		}
+
+		// 커버 이미지 경로 가져오기
+		coverFile.change(function(e) {
+			let files = e.target.files;
+			let maxFiles = 5;
+			let uploadedFilesCount = $('#uploadedCoverFiles li').length;
+			
+			// 파일을 선택한 경우 첫 번째 파일명 표시
+			if (files.length > 0 && (uploadedFilesCount + files.length) <= maxFiles) {			
+				getMultiFiles(files,$('#uploadedCoverFiles'), $('#coverFileText'), "cvDelBtn", selectedCoverFiles);
+
+				let filename = files[0].name;
+											
+				// explainFile의 형제인 #explainFileText(파일명 출력 공간)의 텍스트 값 입력
+				$(this).siblings('#coverFileText').val(filename);
+				
+				for (let i = 0; i < files.length; i++) {
+					selectedCoverFiles.push(files[i]);
+				}
+			} else {
+				
+				fileCount(files,maxFiles,uploadedFilesCount);
+				console.log(files);
+				if(files.length == 0){
+					alert("업로드가 취소되었습니다.");
+					return;
+				}
+				
+				if($(this).children($('#cvDelBtn')).length !== 0){
+					$(this).children($('#cvDelBtn')).remove();
+				}
+			}
+
+			for(let i = 0; i < selectedCoverFiles.length ; i++){
+				console.log("coverFile : " + selectedCoverFiles[i].name);
+			}
+			console.log("==")
+		});
+		
 		
 		// 설명 이미지 경로 가져오기
 		explainFile.change(function(e) {
 			let files = e.target.files;
-			let maxFiles = 15;
-			let uploadedFilesCount = $('#uploadedExplainFiles li').length;
-
-			// 최대 파일 개수를 초과하는지 확인
-			if ((uploadedFilesCount + files.length) > maxFiles) {
-				alert("이미지는 최대 15개까지만 업로드할 수 있습니다.");
-				return;
-			}
-
-			
-			// files 배열의 각 요소에 대해 반복
-			// $.each가 아니라 for()를 활용하여 파일 배열 전체를 검토
-			for (let i = 0; i < files.length; i++) {
-				let file = files[i];
-
-				// 이미지 타입에 맞는가, 맞지 않는가를 확인
-				// 정규식을 사용하여 MIME 타입이 image/로 시작하는지 확인
-				if (!fileImageOnly(file)) {				
-					return; // 전체 로직 종료
-				}
-
-				// 파일 리스트를 보여주기 위한 <li>
-				let newItem = $('<li></li>').addClass('list-group-item');
-
-				// 삭제 버튼
-				let explainDeleteButton = $('<button></button>').addClass('btn font-weight-bold').text('X').attr('id', 'exDelBtn');
-
-				// 현재 파일명
-				let fileName = file.name;
-
-				// <li>에 삭제 버튼 및 파일이름 추가
-				newItem.text(fileName).append(explainDeleteButton);
-
-				// 새로운 li 요소 생성 및 ul에 추가
-				$('#uploadedExplainFiles').append(newItem);
-
-				// 삭제 버튼을 클릭할 때 파일을 삭제하는 이벤트를 추가
-				explainDeleteButton.on('click', function() {
-					// 삭제 버튼을 포함한 파일 아이템을 삭제
-					$(this).parent().remove();
-					$('#explainFileText').val('');
-				});
-			}
-		
+			let maxFiles = 30;
+			let uploadedFilesCount = $('#uploadedExplainFiles li').length;	
 
 			// 파일을 선택한 경우 첫 번째 파일명 표시
-			if (files.length > 0) {
+			if (files.length > 0 && (uploadedFilesCount + files.length) < maxFiles) {
+				getMultiFiles(files,$('#uploadedExplainFiles'), $('#explainFileText'), "exDelBtn", selectedExplainFiles);
+
+				
 				let filename = files[0].name;
+				
 				// explainFile의 형제인 #explainFileText(파일명 출력 공간)의 텍스트 값 입력
 				$(this).siblings('#explainFileText').val(filename);
+
+				for (let i = 0; i < files.length; i++) {
+					selectedExplainFiles.push(files[i]);
+				}
 			} else {
-				// 파일이 선택되지 않은 경우 경고창을 띄움
-				alert("설명 이미지 업로드가 취소되었습니다. 다시 올려주세요.");
-				if($(this).children(explainDeleteButton).length !== 0){
-					$(this).children(explainDeleteButton).remove();
+				fileCount(files,maxFiles,uploadedFilesCount);
+				
+				console.log(files);
+				if(files.length == 0){
+					alert("업로드가 취소되었습니다.");
+					return;
+				}
+				
+				if($(this).children($('#exDelBtn')).length !== 0){
+					$(this).children($('#exDelBtn')).remove();
+				}
+			}
+			for(let i = 0; i < selectedExplainFiles.length ; i++){
+				console.log("explainFile : " + selectedExplainFiles[i].name);
+			}
+			console.log("==")
+		});
+
+		console.log("proprice val 타입 : " + typeof $("#proPrice").val());
+
+		$('#productAdd').on('submit',function(e){
+			e.preventDefault();
+			// 기존 submit 동작 중지
+			let formData = new FormData(this);
+
+			// 상품명 값 변경
+			formData.delete($('#proName').attr('name'));
+			formData.append($('#proName').attr('name'), "[" + $('#subCategory').val() + "]" + $('#proName').val());
+
+			// 기존 키에 대한 값을 삭제.
+			formData.delete($('#coverFile').attr('name'));
+
+			// 새로운 값을 배열로 추가.
+			// 각 파일을 formData.append를 통해 동일한 키에 추가하면, 서버 측에서 이를 배열 형태로 처리할 수 있다. 
+			// 이는 FormData 객체의 내부 동작이다. 따라서 기본 파일 업로드로 진행할 경우에는 별도의 배열 처리를 개발자가 하지 않아도 됨.
+			selectedCoverFiles.forEach(value => {
+				formData.append($('#coverFile').attr('name'), value);
+			});
+
+			// 기존 키에 대한 값을 삭제.
+			formData.delete($('#explainFile').attr('name'));
+
+			// 새로운 값을 배열로 추가.
+			selectedExplainFiles.forEach(value => {
+				formData.append($('#explainFile').attr('name'), value);
+			});
+
+			for(let pair of formData.entries()){
+				console.log(pair[0] + ", " + pair[1]);
+				if(pair[0].includes('[]') && Array.isArray(pair[0])){
+					console.log(pair[0] + "의 개수 : " + pair[0].length);
 				}
 			}
 
-			console.log("files : " + files);
-		});
-
-
-		// // 설명 이미지 경로 가져오기
-		// explainFile.change(function(e){
-		//     let filename;
-		//     let files = e.target.files;	   
-
-		// 	// files 배열의 각 요소에 대해 반복
-		//     $.each(files, function(index, file){
-		    
-		// 		// 이미지 타입에 맞는가, 맞지 않는가를 확인
-		// 		// 정규식을 사용하여 MIME 타입이 image/로 시작하는지 확인
-	    // 	 	if(!file.type.match("image/.")){
-		// 			alert("이미지 파일만 업로드하셔야 합니다.");
-		// 			return;
-		// 		}
-				
-		// 		// 현재 파일명
-		// 		let fileName = file.name;  			    
-				
-		// 		// <li> 에 삭제 버튼 및 파일이름 추가 
-		// 		newItem.text(fileName).append(explainDeleteButton);    		 	
-				
-		// 		// 새로운 li 요소 생성 및  ul에 추가
-		// 		$('#uploadedExplainFiles').append(newItem);
-		// 	});    	 	
-			
-		// 	if(files.length >= 7){
-		// 		alert("이미지는 최대 6개까지만 업로드할 수 있습니다.");
-		// 		return;
-		// 	}
-
-		//     // 파일을 선택한 경우
-		//     if (files.length > 0) {
-		//         filename = files[0].name;
-		//      // siblings() 메서드는 선택한 요소의 형제 요소들을 선택하여 반환
-		// 	    // -> explainFile의 형제인 #explainFileText(파일명 출력 공간)의 텍스트 값 입력
-		// 	    $(this).siblings('#explainFileText').val(filename);		        
-		//     } else {    			    	
-		//     	// 파일 전체 경로 -> /로 분할 -> 마지막 요소 추출 -> 다시 \\로 분할  -> 마지막 요소 추출	
-		//     	// -> 파일 이름 추출
-		//     	// filename = $(this).val().split('/').pop().split('\\').pop();
-		        
-		//     	// 이외의 경우에는 취소로 받아들이고 경고창을 띄우겠음.
-		//     	alert("설명 이미지 업로드가 취소되었습니다. 다시 올려주세요.");
-		//     }  
-			
-		// 	/*  파일 리스트를 보여주는 <ul> 태그 내 <li> 태그 만들기 작업 	*/		
-			
-		//     // 파일 리스트로 보여주기 위한 <li> 
-		//     let newItem = $('<li></li>').addClass('list-group-item');
-		    
-		// 	// 삭제 버튼
-		//     let explainDeleteButton = $('<button></button>').addClass('btn font-weight-bold').text('X').attr('id','exDelBtn');		
-
-			
-		//  	// 삭제 버튼을 클릭할 때 파일을 삭제하는 이벤트를 추가
-		//     explainDeleteButton.on('click', function() {
-		//     	// 삭제 버튼을 포함한 파일 아이템을 삭제
-		//     	// closest() 메서드는 선택한 요소를 기준으로 가장 근접한 상위 요소를 찾아 반환
-		    	
-		//     	// parents() : 현재 요소의 모든 부모 요소
-		//     	// parent() : 현재 요소의 직계 부모 요소
-		    	
-		//     	// 버튼 직계 부모가 newItem이면
-		//     	if($(this).parent().is(newItem)){
-		//     		// 직계 부모 삭제
-		//        		$(this).parent().remove();
-		//     		$('#explainFileText').val('');
-		//        	}
-		//     });
-		// });
-		console.log("proprice val 타입 : " + typeof $("#proPrice").val());
-
-		$('#register_Btn').on('submit',function(e){
-			e.preventDefault();
-			// 기존 submit 동작 중지
 			if($("#subCategory").val()=="" || $("#subCategory").val()==null){
 				alert("1차 분류를 선택한 후, 2차 분류를 선택하십시오.");
 				return;
 			}else if($("#proName").val()=="" || $("#proName").val()==null){
 				alert("상품명을 입력하셔야 합니다.");
 				return;
-			}else if($("#proName").length() <= 5){
+			}else if($("#proName").val().length < 5){
 				alert("상품명은 다섯 글자 이상 입력하셔야 합니다.");
 				return;
-			}else if($("#proPrice").val()=="" || $("#proPrice").val()==null){
+			}else if($("#proPrice").val()=="" || $("#proPrice").val()==null || isNaN(Number($("#proPrice").val()))){
 				alert("상품 가격을 입력하셔야 합니다.");
 				return;
 			}else if( Number($("#proPrice").val()) < 0){
@@ -651,7 +720,7 @@
 			}else if( !Number.isInteger(Number($("#proPrice").val()))){
 				alert("상품 가격에 소수는 입력하시면 안됩니다.");
 				return;
-			}else if($("#proQuantity").val()=="" || $("#proQuantity").val()==null){
+			}else if($("#proQuantity").val()=="" || $("#proQuantity").val()==null || isNaN(Number($("#proQuantity").val())) ){
 				alert("상품수량을 입력하셔야 합니다.");
 				return;
 			}else if( Number($("#proQuantity").val()) < 0 ){
@@ -662,7 +731,7 @@
 				return;
 			}else{
 				// 위 제약조건에 해당되지 않는 나머지 경우에 한해, 로직을 실행한다.	
-
+				this.submit();
 			}
 		});
 

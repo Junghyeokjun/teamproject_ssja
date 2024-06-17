@@ -6,6 +6,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
 <sec:authentication property="principal" var="principal" />
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,7 +16,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
    
   <title>SSJA</title>
-  
+  <script>
+		let getPrincipal = {
+			'memberNum' : '${principal.memberNum}',
+			'userName' : '${principal.userInfo.m_Name}'
+		}
+		console.log(getPrincipal);
+</script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -38,7 +45,7 @@
   <script src="/js/vendorbarscript.js">
 
   </script>
-  <link href="/css/vendorbarstyle.css?after" rel="stylesheet">
+  <link href="/css/barstyle.css?after" rel="stylesheet">
 </c:when>
 </c:choose>
   <script src="/js/footer.js">
@@ -58,6 +65,7 @@
 </head>
 
 <body>
+<input type="hidden" id="getPrincipal" value="${principal.auth }">
 <c:choose>
 	<c:when test="${principal.auth != 'ROLE_VENDOR'}">
 	  <header>

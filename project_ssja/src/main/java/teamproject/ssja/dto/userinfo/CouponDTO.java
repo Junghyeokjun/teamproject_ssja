@@ -14,6 +14,7 @@ import lombok.Setter;
 public class CouponDTO {
 	
 	private int c_no;
+	private Date c_startdate;
 	private Date c_duedate;
 	private String c_name;
 	private int c_dcper;

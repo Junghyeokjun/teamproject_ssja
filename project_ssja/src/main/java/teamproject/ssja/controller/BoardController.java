@@ -31,11 +31,9 @@ public class BoardController {
 		log.info("boardList()..");
 		model.addAttribute("bc", boardService.showBoardCategory(bcno));
 		criteria.setBcno(bcno);
-		// 해당 함수도 임시로 숫자를 부여하여 처리한 상태.
-		// 수정 필요
+
 		model.addAttribute("boards",  boardService.showListWithPaging(criteria));
-		
-		// 임시로 카테고리 숫자 넣음
+
 		model.addAttribute("pageMaker", new PageVO(boardService.getTotal(criteria.getBcno()), criteria));
 		return "/qna/qna_list";
 	}

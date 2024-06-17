@@ -52,13 +52,13 @@ body {
 	font-family: 'fonts', NanumGothicLight;
 	background-color: #f7f0e8;
 }
-.no-ripple {
-    pointer-events: none; /* 클릭 이벤트를 무시합니다. */
-    user-select: none; /* 사용자 선택을 막습니다. */
-    cursor: default; /* 기본 커서를 사용합니다. */
-    transition: none; /* 전환 효과를 없앱니다. */
-}
 
+.no-ripple {
+	pointer-events: none; /* 클릭 이벤트를 무시합니다. */
+	user-select: none; /* 사용자 선택을 막습니다. */
+	cursor: default; /* 기본 커서를 사용합니다. */
+	transition: none; /* 전환 효과를 없앱니다. */
+}
 
 .yellowStar {
 	color: gold;
@@ -74,63 +74,115 @@ table {
 	border-color: gray;
 }
 
-.nav-link-custom{
-	background-color : #8b789c;
-	border-color : #8b789c;
-	color : white;
+.nav-link-custom:hover {
+	color: yellow;
 }
 
-.nav-link-custom:hover{
-	color : yellow;
+.nav-link.nav-link-custom.active {
+	
 }
 
-.nav-link.nav-link-custom.active{
-	background-color: black;
-	border-color: black;
-}
-
-.page-link.active{
-	background-color: #000000;
-	border-coler : #000000;
-}
-
-.input-group-text{
-	background-color : #8b789c;
-	color : #fff;
-   	width : 7em;
+.input-group-text {
+	width: 7em;
 	text-align: center;
 	justify-content: center;
-}
-  
-.input-group-text, .form-control{
-	border-color: #8b789c;
-	height: 3em;
-    line-height: 3em; /* 높이와 동일하게 설정하여 수직 중앙 정렬 */
-    display: flex;
+	border: none;
+	border-right: 1px solid #ccc;
 }
 
-.form-control{
+.input-group-text, .form-control {
+	height: 3em;
+	line-height: 3em; /* 높이와 동일하게 설정하여 수직 중앙 정렬 */
+	display: flex;
+}
+
+.form-control {
 	align-items: center;
 }
 
-.btn-primary.custom-btn{
-	background-color:  #ca5a0a;
-	border-color:  #ca5a0a;
+.btn-primary.custom-btn {
+	
 }
 
-.btn-primary.custom-btn:hover{
-	background-color:  chocolate;
-	border-color : chocolate;
+.btn-primary.custom-btn:hover {
+	background-color: chocolate;
+	border-color: chocolate;
 }
 
-.btn-danger.custom-btn{
-	background-color:  #c7a820;
-	border-color:  #c7a820;
+.production-selling-table {
+	padding: 30px;
+	padding-bottom: 100px;
 }
 
-.btn-danger.custom-btn:hover{
-	background-color:  #cfb439;
-	border-color:  #cfb439;
+#vendorInfo_tbody>tr>th {
+	margin-right: 2em;
+}
+
+#cart_btn ,#cart_btn2{
+	background: white;
+	border: 1px solid #ccc;
+}
+
+#purchase_btn,#purchaseBtn2 {
+	background: black;
+	color: white;
+}
+
+#purchase_btn, #cart_btn,#purchaseBtn2,#cart_btn2 {
+	border-radius: 3px 3px 3px 3px;
+	width: 8em;
+	height: 3.5em;
+}
+
+#quantity, #itemName, #totalPrice, #itemPrice {
+	border: none;
+}
+
+#order_content span, #order_content label {
+	background-color: white;
+}
+
+#itemName {
+	min-height: 2;
+	max-height: 4;
+	font-size: 1.3em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+#wish_rv_div img{
+widht:1.5em;
+height:1.5em;
+}
+#carouselExampleIndicators{
+overflow: hidden;
+}
+#carouselExampleIndicators img{
+width:100%;
+max-height:500px;
+min-height:500px;
+object-fit: cover;
+}
+
+@media (min-width: 1200px) {
+         
+ }
+#subtract_quantity, #add_quantity{
+width:1.5em;
+height:1.5em;
+background:white;
+border:1px solid #ccc;
+ display: flex;
+align-items: center;
+justify-content: center;
+}
+#review_content_div{
+margin-left:3em;
+margin-right:3em;
+margin-top:1em;
+margin-bottom:1em;
+background:#eee;
+padding:1em;
+border-radius:5px;
 }
 </style>
 
@@ -139,6 +191,10 @@ table {
 
 <body>
 	<header>
+	
+	<input type="hidden" id="product_number_dv" value="sdsad">
+	<input type="hidden" id="product_orgin_price_dv" value="${productdetail.PRO_PRICE}">
+	
 		<div id="title_bar" class=" fixed-top">
 			<div class="py-2 px-1" id="top-bar">
 				<button type="toggle-button" class="top_btn" id="top_btn"></button>
@@ -164,15 +220,23 @@ table {
 		<div id="side_links" class="w-100"></div>
 	</div>	
 	<main>
-		<div class="main_whitespace p-4 my-2">
-			<h1 class="h3 text-center ">${productdetail.PRO_NAME}</h1>
+		<div class="main_whitespace p-4 my-2 mt-5">
+			<h1 class="h3 text-center " style="font-weight:bold;">${productdetail.PRO_NAME}</h1>
 		</div>
 		<div id="main_container">
 			<div class="row goods">
 				<!-- row 클래스를 추가 -->
+				
 				<div class="goodsImg col-12 col-md-6 col-lg-7">
 					<div id="carouselExampleIndicators" class="carousel slide"
 						data-bs-ride="carousel">
+						<c:if test="${productdetail == null}"><!-- 상품메인 이미지가 없을 경우로 추후 변경 -->
+						<div class="carousel-item active">
+								<img src="${productdetail.PRO_BANNERIMG}"
+									class="d-block w-100" alt="...">
+							</div>
+						</c:if> <!-- 상품 메인이미지 존재 여부에 따라 없으면 배너이미지만,ㅡ 있으면 forEach문 돌려서 캐러셀 담당 -->
+				<c:if test="${productdetail != null}">
 						<div class="carousel-indicators">
 							<button type="button" data-bs-target="#carouselExampleIndicators"
 								data-bs-slide-to="0" class="active" aria-current="true"
@@ -184,17 +248,15 @@ table {
 						</div>
 						<div class="carousel-inner">
 							<div class="carousel-item active">
-								<img src="/images/product/${productdetail.PRO_BANNERIMG}"
-									class="d-block w-100" alt="...">
+								<img src="${productdetail.PRO_BANNERIMG}" 
+									class="d-block w-100" alt="..."><!-- 첫 고정은 배너이미지로 -->
 							</div>
-							<div class="carousel-item">
-								<img src="/images/product/${productdetail.PRO_BANNERIMG}"
-									class="d-block w-100" alt="...">
+							<c:forEach var="image" items="상품메인 이미지 db" >
+							<div class="carousel-item ">
+								<img src="${productdetail.PRO_BANNERIMG}"
+									class="d-block w-100" alt="..."> <!-- 추후 상품 메인 이미지 개발 시 넣기 -->
 							</div>
-							<div class="carousel-item">
-								<img src="/images/product/${productdetail.PRO_BANNERIMG}"
-									class="d-block w-100" alt="...">
-							</div>
+							</c:forEach>
 						</div>
 						<button class="carousel-control-prev" type="button"
 							data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -206,49 +268,62 @@ table {
 							<span class="carousel-control-next-icon" aria-hidden="true"></span>
 							<span class="visually-hidden">Next</span>
 						</button>
+				</c:if>
 					</div>
 				</div>
-				<div class="goodsInfo col-12 col-md-6 col-lg-5">
-					<p class="cateName input-group">
-						<span class="input-group-text">상품 이름 </span>
-						<span class="form-control">${productdetail.PRO_NAME}</span>
-					</p>
-					<p class="gdsPrice input-group">
+				
+				<div class="goodsInfo col-12 col-md-6 col-lg-5" id="order_content">
+					<div class="cateName input-group d-flex flex-column" id="itemInfoContainer">
+						<div class="input-group-text" style="font-weight:bold;border:none;">${productdetail.PRO_BIZNAME} </div>
+						<div class="mx-3" id="itemName" >${productdetail.PRO_NAME}</div>
+					</div><br>
+					<div class="gdsPrice input-group">
 						<span class="input-group-text">가격							
 						</span>
-						<span class="form-control "> 
-							<fmt:formatNumber pattern="###,###,###"
-							value="${productdetail.PRO_PRICE}"  /> 원
+						<span class="form-control " id="itemPrice"> 
+							<span id="product_price" ></span> 원
 						</span>
-					</p>
-					<p class="cartStock input-group">
-						<span class="input-group-text">수량</span> <input class="form-control" type="number" id="quantity" min="1"
-							max="10-${productdetail.PRO_QUANTITY}" value="1" />
-					</p>
+					</div>
+					<div id="wish_rv_div" class="d-flex flex-row justify-content-between px-5">
+						<div>
+							<img src="/images/utilities/star_icon.jpg"> 
+							<span>리뷰 개수</span>
+						</div>
+						<div>
+							<img src="/images/utilities/wish_icon.png">
+							 <span>위시 개수</span>
+						</div>
+					</div>
+					<div class="cartStock input-group d-flex flex-row">
+						<span class="input-group-text" >수량</span> 
+						<input class="" type="number" id="quantity" value="1" style="width:20%;" readonly/>
+						<div class="d-flex flex-row justify-content-center align-items-center">
+							<button id="add_quantity">+</button>
+							<button id="subtract_quantity">-</button>
+						</div>
+					</div>
 					<hr>
-					<p class="addToCart">
-						<div class="input-group">
-							<label class="mb-2 input-group-text">총 금액</label><span id="totalPrice" class="form-control mb-2" >								
-								<fmt:formatNumber pattern="###,###,###"
-									value="${productdetail.PRO_PRICE}" /> 원
+						<div class="input-group" >
+							<span class="mb-2 input-group-text">총 금액</span><span id="totalPrice" class="form-control mb-2" >								
+								<span id="totMoney2" style="margin-left:auto;margin-right:2em;"></span> 원
 							</span>
 						</div>
-						<div class="d-flex justify-content-between">
-							<input type="button" class="btn btn-primary custom-btn"
-								onclick="wish_click(${productdetail.getPRO_NO()})" value="Wish List">
-							<input type="button" class="btn btn-danger custom-btn" id="purchaseBtn"  value="바로구매" >
+						<div class="d-flex felx-row justify-content-center">
+					<input type="button" class=" btn-outline-dark m-2" id="cart_btn"
+								onclick="wish_click(${productdetail.getPRO_NO()})" value="장바구니 ">
+							<input type="button" class="m-2" id="purchase_btn"  value="바로구매" >
 						</div>
-					</p>
 				</div>
 			</div>
-			<section class="bg-light border-top py-4">
+			
+			<section class="bg-light border-top py-4" id="product_detail_section">
 				<div class="container">
 					<div class="row gx-4">
 						<div class="col-lg-8 mb-4">
 							<div class="border rounded-2 px-3 py-2 bg-white">
 								<ul class="nav nav-pills nav-justified mb-3" id="ex1"
 									role="tablist">
-									<li class="nav-item d-flex" role="presentation"><a
+									<li class="nav-item d-flex " role="presentation"><a
 										class="nav-link nav-link-custom d-flex align-items-center justify-content-center w-100 active"
 										id="ex1-tab-1" data-mdb-toggle="pill" href="#ex1-pills-1"
 										role="tab" aria-controls="ex1-pills-1" aria-selected="true">상품정보</a>
@@ -267,7 +342,7 @@ table {
 								<!-- Pills content -->
 								<div class="tab-content" id="ex1-content">
 									<div class="tab-pane fade show active" id="ex1-pills-1"
-										role="tabpanel" aria-labelledby="ex1-tab-1">
+										role="tabpanel" aria-labelledby="ex1-tab-1"><!-- 상품 상세 이미지 가져와야함 -->
 										<img src="/images/product_details/Design1.png"
 											class="d-block w-100" alt="..."> <img
 											src="/images/product_details/Design3.png"
@@ -277,7 +352,7 @@ table {
 									</div>
 									<!-- 리뷰 구현 -->
 									<div class="tab-pane fade mb-2" id="ex1-pills-2"
-										role="tabpanel" aria-labelledby="ex1-tab-2">
+										role="tabpanel" aria-labelledby="ex1-tab-2" id="product_review">
 										<div class="comment-body">
 											<c:forEach var="productdetailreply"
 												items="${productdetailreplys}">
@@ -300,7 +375,7 @@ table {
 
 													</div>
 												</div>
-												<div class="user-comment">
+												<div class="user-comment" id="review_content_div">
 													${productdetailreply.getB_CONTENT()}</div>
 												<hr>
 											</c:forEach>
@@ -334,8 +409,8 @@ table {
 									<div class="tab-pane fade mb-2" id="ex1-pills-3"
 										role="tabpanel" aria-labelledby="ex1-tab-3">
 										<section class="production-selling-section">
-											<table class="production-selling-table ">
-												<tbody>
+											<table class="production-selling-table">
+												<tbody id="vendorInfo_tbody">
 													<tr>
 														<th>상호명</th>
 														<td>${productdetail.getV_BIZNAME()}</td>
@@ -374,14 +449,13 @@ table {
 									<p class="addToCart mx-2">
 										<div class="input-group">
 											<label class="mb-2 input-group-text">총 금액</label><span id="totalPrice" class="form-control mb-2" >
-												<fmt:formatNumber pattern="###,###,###"
-													value="${productdetail.PRO_PRICE}" /> 원
+												<span id="totMoney1" > </span> 원
 											</span>
 										</div>
-										<div class="d-flex justify-content-between">
-										<input type="button" class="btn btn-primary custom-btn"
-												onclick="wish_click(${productdetail.getPRO_NO()})" value="Wish List">
-											<input type="button" class="btn btn-danger custom-btn" id="purchaseBtn2" value="바로구매" >
+										<div class="d-flex justify-content-center">
+										<input type="button" class="mx-2" id="cart_btn2"
+												onclick="wish_click(${productdetail.getPRO_NO()})" value="장바구니">
+											<input type="button" class="mx-2" id="purchaseBtn2" value="바로구매" >
 										</div>
 									</p>
 								</div>
@@ -397,6 +471,10 @@ table {
 		<div id="second_footer"></div>
 		<div id="third_footer"></div>
 	</footer>
+	 <sec:authorize access="isAuthenticated()">
+  <script src="/js/login_user_tab.js"> </script>
+  <script src="/js/user_cart_tab.js"> </script>
+</sec:authorize>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
   <script>
@@ -405,7 +483,7 @@ table {
 	var token = $("meta[name='_csrf']").attr('content');	
     //추가부분 끝
 	
-	document.getElementById('purchaseBtn').addEventListener('click', function() {
+	document.getElementById('purchase_btn').addEventListener('click', function() {
         // 페이지 이동
 		purchaseProduct()
         // window.location.href = '/purchase';
@@ -446,11 +524,13 @@ table {
 		mnoInput.setAttribute("name", "mno");
 		mnoInput.setAttribute("value", $("#m_no").val());
 		form.appendChild(mnoInput);
-
+		
+		console.log($("#quantity").val());
+		
 		var quanInput = document.createElement("input");
 		quanInput.setAttribute("type", "hidden");
 		quanInput.setAttribute("name", "quantity");
-		quanInput.setAttribute("value", quantity);
+		quanInput.setAttribute("value", $("#quantity").val());
 		form.appendChild(quanInput);
 
 		// 폼을 body에 추가
@@ -458,8 +538,8 @@ table {
 
 		// 폼을 서버로 제출
 		form.submit();
-
-
+		
+		
         // // AJAX 요청 생성
         // var xhr = new XMLHttpRequest();
         // xhr.open("POST", "/purchase", true);
@@ -487,35 +567,10 @@ table {
 
 </script> 
 	<script>
-	document.addEventListener("DOMContentLoaded", function() {
-	    // 기존 코드 부분
-	    const priceElement = document.querySelector(".gdsPrice .form-control");
-	    const quantityInput = document.getElementById("quantity");
-	    const totalPriceElements = document.querySelectorAll("#totalPrice");
+	
 
-	    // 상품 가격을 가져오기
-	    const productPrice = parseFloat(priceElement.textContent.replace(/[^\d]/g, ''));
-
-	    // 수량이 변경될 때 총 금액을 계산하는 함수
-	    function updateTotalPrice() {
-	        const quantity = parseInt(quantityInput.value);
-	        const totalPrice = productPrice * quantity;
-	        totalPriceElements.forEach(element => {
-	            element.textContent = totalPrice.toLocaleString() + " 원";
-	        });
-	    }
-
-	    // 수량 입력 값이 변경될 때마다 총 금액 업데이트
-	    quantityInput.addEventListener("input", updateTotalPrice);
-
-	    // 페이지 로드 시 초기 총 금액 설정
-	    updateTotalPrice();
-	});
-
-	    // 현재 페이지의 정보
 	    var currentPage = ${pageMaker.criteria.getPageNum()}; 
 
-	    // 각 페이지 링크를 확인하고 활성화/비활성화를 결정하는 함수
 	    function setActivePage() {
 	        var pageLinks = document.querySelectorAll('.page-link');
 	        pageLinks.forEach(function(link) {
@@ -584,7 +639,71 @@ table {
 	        });
 	    });
 	    
-	 
+	    //리뷰 페이징으로 넘어갈 경우 쿼리파라미터 추가 여부에 따라 새 페이지 로딩 시 리뷰로 크롤 이동 및 리뷰칸 즉시 활성화
+	    const currentURL = window.location.href;
+
+	    if (currentURL.includes('&')) {
+	        $("#ex1-tab-2").attr('aria-selected', 'true').addClass('active');
+	        $("#ex1-pills-2").addClass('show active');
+	        
+	        $("#ex1-tab-1").attr('aria-selected', 'false').removeClass('active');
+	        $("#ex1-pills-1").removeClass('show active');
+	        
+	        $("#ex1-tab-3").attr('aria-selected', 'false').removeClass('active');
+	        $("#ex1-pills-3").removeClass('show active');
+	        
+	        //스크롤 리뷰로 이동
+		let productReview = $("#product_detail_section");
+		let topReviewHeight = productReview.offset();
+		let goTop = topReviewHeight.top;
+
+	      	setTimeout(() => {
+	      	    $(window).scrollTop(goTop);
+	      	}, 200);
+	      
+	    }
+	    
+let originPrice = $('#product_orgin_price_dv').val();
+	    
+	    //금액 포맷
+		let formattingTotMoney = function(number){
+			let formattedCurrency = new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' })
+			.format(number);
+			return formattedCurrency;
+		    }
+		$('#product_price').text(formattingTotMoney(originPrice));
+		$('#totMoney1').text(formattingTotMoney(originPrice));
+		$('#totMoney2').text(formattingTotMoney(originPrice));
+		  
+		    //총 금액 최신화 함수
+		    let updateTotal = function(quantity){
+		    	let newTotalMoney = originPrice * quantity;
+		    	console.log(newTotalMoney);
+		    	$('#totMoney1').text(formattingTotMoney(newTotalMoney));
+		    	$('#totMoney2').text(formattingTotMoney(newTotalMoney));
+		    	
+		    }
+	    
+	    
+	    // 수량 증가 버튼
+	    $('#add_quantity').on('click', function(){
+	        let quantity_val = parseInt($("#quantity").val());
+	        if(quantity_val >= 10){
+	            return false;
+	        }
+	        $("#quantity").val(quantity_val + 1);
+	        updateTotal($('#quantity').val()); // 이 부분에서 괄호 사용 수정
+	    });
+
+	    // 수량 감소 버튼
+	    $('#subtract_quantity').on('click', function(){
+	        let quantity_val = parseInt($("#quantity").val());
+	        if(quantity_val <= 1){
+	            return false;
+	        }
+	        $("#quantity").val(quantity_val - 1);
+	        updateTotal($('#quantity').val()); // 이 부분에서 괄호 사용 수정
+	    });
 	</script>
 	
 	<script
