@@ -31,7 +31,7 @@
   .recent_post>span{
     position: absolute;
     font-weight: bold;
-    color: white;
+    color: transparent;
     bottom: 0px;
     left: 5px;
   }
