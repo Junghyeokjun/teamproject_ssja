@@ -78,9 +78,7 @@
       let m_NickName_val=$("#m_NickName").val();
       let randomNum=(new Date().getTime());
 
-      
       function getProductList(keyword){
-        console.log(keyword);
         $.ajax({
             type:'GET', 
             url: '/community/product',
@@ -295,7 +293,16 @@
     	<sec:authentication property="principal" var="principal"/>
     </sec:authorize>
     <input type="hidden" id="m_no" value="${principal.userInfo.m_No}">
-    <input type="hidden" id="m_NickName" value="${principal.userInfo.m_NickName}">
+    
+
+    <c:choose>
+      <c:when test="${principal.userInfo.auth.equals('ROLE_ADMIN')}">
+        <input type="hidden" id="m_NickName" value="관리자">
+      </c:when>
+      <c:otherwise> 
+        <input type="hidden" id="m_NickName" value="${principal.userInfo.m_NickName}">
+      </c:otherwise>
+      </c:choose>
     <!-- <c:if test="${principal == null}">
         <script>
           location.href="/community/main"

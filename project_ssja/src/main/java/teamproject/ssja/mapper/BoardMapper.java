@@ -81,7 +81,7 @@ public interface BoardMapper {
 	//게시글의 이미지 경로를 삭제하는 메서드
 	int deleteBoardImg(long bno);
 	
+	//게시글의 최신공지사항을 얻어오는 메서드
+	BoardDto selectNotice();
 	
-	
-	// 
 } 

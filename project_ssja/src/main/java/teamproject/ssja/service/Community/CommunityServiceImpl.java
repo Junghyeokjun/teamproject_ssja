@@ -281,6 +281,11 @@ public class CommunityServiceImpl implements CommunityService {
 		return productMapper.getProduct(proNo);
 	}
 
+	@Override
+	public BoardDto getNotice() {
+		return boardMapper.selectNotice();
+	}
+
 
 
 

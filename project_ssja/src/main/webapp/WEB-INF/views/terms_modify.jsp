@@ -82,12 +82,8 @@
         <!-- 홈화면링크 -->
          <a id="logo_toHome" href="/"><img src="/images/utilities/big_logo.png" alt=""></a>
 
-        <sec:authorize access="isAuthenticated()">
-            <sec:authentication property="principal" var="principal"/>
-        </sec:authorize>
-        <sec:authorize access="hasAnyRole('ROLE_ADMIN')">    
-            ${principal.userInfo.auth}
-        </sec:authorize>
+
+
          <form action="${pageContext.request.contextPath}/sign/terms_modify" method="post">
             <table>
                 <tr>

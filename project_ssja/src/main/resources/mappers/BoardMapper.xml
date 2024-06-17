@@ -173,7 +173,7 @@
 			    from 
 			    (SELECT b.*, bi.b_img_no,bi.b_img_path 
 			     FROM board b, board_imgs bi 
-			     WHERE b.B_C_NO=40 and b.b_no=bi.b_no  
+			     WHERE b.B_C_NO=40 and b.b_no=bi.b_no and b.b_writer != '관리자' 
 			     ORDER BY b.b_no desc) A 
 		    	where rownum <= #{pageNum} * #{amount} 
 		    )
@@ -192,7 +192,7 @@
 			    from 
 			    (SELECT b.*, bi.b_img_no,bi.b_img_path 
 			     FROM board b, board_imgs bi 
-			     WHERE b.B_C_NO=40 and b.b_no=bi.b_no and
+			     WHERE b.B_C_NO=40 and b.b_no=bi.b_no and b.b_writer != '관리자' and
 			     ]]>
 			     
 			   		<choose>
@@ -230,7 +230,7 @@
 		    from 
 		    (SELECT b.*, bi.b_img_no,bi.b_img_path 
 		     FROM board b, board_imgs bi 
-		     WHERE b.B_C_NO=40 and b.b_no=bi.b_no  
+		     WHERE b.B_C_NO=40 and b.b_no=bi.b_no and b.b_writer != '관리자' 
 		     ORDER BY b.b_like desc) A 
 	    	where rownum <= 4 
 	    
@@ -248,13 +248,13 @@
 	<!-- 게시글 총 개수  -->
 	<select id="selectTotalCount" parameterType="long" resultType="long">
     	<![CDATA[
-        	SELECT count(*) FROM board where B_C_NO = #{bcno}
+        	SELECT count(*) FROM board where B_C_NO = #{bcno} and b_writer != '관리자'
         ]]>
 	</select>
 
 	<!-- 검색조건에 맞는 게시글 총 개수  -->
 	<select id="selectSearchTotalCount" resultType="long">
-    	SELECT  count(*) FROM board where b_c_no= #{bcno} and             
+    	SELECT  count(*) FROM board where b_c_no= #{bcno} and b_writer != '관리자' and             
                <choose>
                <when test="#{option} != null and option.equals('all')">
                 (B_TITLE like '%${keyword}%' or B_CONTENT like '%${keyword}%' or B_WRITER like '%${keyword}%' )
@@ -294,6 +294,13 @@
 	<delete id="deleteBoardImg">
 		DELETE FROM board_imgs WHERE b_no = #{B_NO}
 	</delete>
+	
+	<!-- 게시글 최신 공지사항  -->
+	<select id="selectNotice" resultMap="BoardDtoMap">
+		select * 
+		from(SELECT b.* ,rownum rn FROM (select * from board WHERE b_writer='관리자' and b_c_no='40' ORDER by b_date desc) b)
+		WHERE rn=1	
+	</select>
 	
 	<resultMap type="teamproject.ssja.dto.BoardCategoryDto" id="BoardCategoryDtoMap">
 		<id property="bcno" column="b_c_no"/>
