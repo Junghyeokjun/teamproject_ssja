@@ -18,6 +18,8 @@ $(document).ready(function () {
   let $li3 = $("<li>").css("order", "3").addClass("px-3 py-2").attr("id", "nav-links").appendTo($ul);
   let $li4 = $("<li>").css("order", "4").addClass("px-3 py-2").attr("id", "nav-links").appendTo($ul);
   let $li5 = $("<li>").css("order", "5").addClass("px-3 py-2").attr("id", "nav-links").appendTo($ul);
+  let $li6 = $("<li>").css("order", "5").addClass("px-3 py-2").attr("id", "nav-links").appendTo($ul);
+
 
   let $searchForm = $("#searchForm");
   let $searchIn = $("<input>").attr("placeholder", "search").attr("id", "searchIn").appendTo($searchForm);
@@ -61,6 +63,7 @@ $(document).ready(function () {
   let $side_container3 = $("<button>").addClass("side_containers").text("주문목록");
   let $side_container4 = $("<button>").addClass("side_containers").text("쿠폰관리");
   let $side_container5 = $("<button>").addClass("side_containers").text("공지사항관리");
+  let $side_container6 = $("<button>").addClass("side_containers").text("매출현황");
 
   let $side_containerEx = $("<button>").addClass("side_containers").text("카테고리");
 
@@ -84,6 +87,10 @@ $(document).ready(function () {
   $side_container5.on('click', function(e){
       e.stopPropagation();
       window.location.href = "/adminPage/notice";
+  });
+  $side_container6.on('click', function(e){
+      e.stopPropagation();
+      window.location.href = "/adminPage/salesList";
   });
   
   
@@ -290,8 +297,8 @@ $(document).ready(function () {
     }
   });
 
-  $ul.append($li1, $li2, $li3);
-  $side_bar.append($side_container1,$side_container2,$side_container3,$side_container4,$side_container5);
+  $ul.append($li1, $li2, $li3, $li4, $li5, $li6);
+  $side_bar.append($side_container1,$side_container2,$side_container3,$side_container4,$side_container5,$side_container6);
 
   let browserHeight = window.innerHeight;
 let currentPosition = window.scrollY;
