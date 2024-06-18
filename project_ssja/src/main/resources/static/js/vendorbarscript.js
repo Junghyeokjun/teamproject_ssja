@@ -13,6 +13,9 @@ $(document).ready(function () {
 // html 상단에 받은 jstl 데이터 principal을 받는 변수  
   let getPrincipal = $("#getPrincipal").val();
   
+  let $vendorData = $('#vendorData').val();
+	console.log("$vendorData : " + $vendorData);
+  
   //상단 카테고리 바 분류
   let $ul = $("<ul>").attr("id", "list_category").appendTo($home_user_bar);
   let $li1 = $("<li>").css("order", "1").text("가구").addClass("px-3 py-2").attr("id", "nav-links").appendTo($ul);
@@ -70,7 +73,9 @@ $(document).ready(function () {
   let $searchImg=$("<img>").attr("src", "/images/utilities/search-32.png").attr("id", "searchImg").appendTo($searchBtn);//검색창 돋보기 이미지 경로
   $searchBtn.appendTo($searchForm);
  
-  $("#logo_img").parent().attr('href','/home');
+  // 판매자의 경우 로고 클릭 시 판매자 홈으로 이동.
+  $("#logo_img").parent().attr('href','/vendor');
+  
   let $cartLink = $("#cart_link").attr("href", " http://www.naver.com");//카트 이미지 버튼 링크
   let $cartImgPath = $("#cart_img").attr("src", "/images/utilities/cartShop.png");//카트 이미지 경로
   let $loginImgPath = $("#login_img").attr("src", "/images/utilities/login.png");//로그인 이미지 경로
@@ -128,7 +133,7 @@ $(document).ready(function () {
 
   const sideLink1 = "/myPage";
   const sideLink2 = "/vendor/product/write";
-  const sideLink3 = "/vendor/product/list";
+  const sideLink3 = "/vendor/product/list/" + $vendorData;
   const sideLink4 = "/vendor/question/20";
   // 확장되는 사이드 영역
   // 사용은 안하지만 해당 부분은 나중을 위해 참조용으로 남겨두기
@@ -420,8 +425,9 @@ $(document).ready(function () {
 
 // 판매자 상호명 가져오기  
   
-	let $vendorData = $('#vendorData').val();
-	console.log("$vendorData : " + $vendorData);
+//  상단에 필요해져서 해당 부분은 위에 추가
+//	let $vendorData = $('#vendorData').val();
+//	console.log("$vendorData : " + $vendorData);
 	
 	// value 기본값은 "" 이다. 빈 문자열이 아니라는 의미는, 값이 들어갔다는 의미이다.
 	if($vendorData != ""){

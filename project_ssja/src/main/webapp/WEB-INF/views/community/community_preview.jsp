@@ -296,6 +296,7 @@
                     temp_node.append($('<span>더보기</span>'));
                     recent_post_wrap.append(temp_node);
                     
+                    choiceTextColor();
                   },    
                   error : function(request, status, error) {
                     alert(error);
@@ -321,6 +322,60 @@
                 })
                 $("#prev_btn").attr("hidden","hidden");
               })
+
+              //배경색에 따라 텍스트 컬러를 선택해주는 메서드
+              function choiceTextColor(){
+
+              $(".recent_post").each(function(){
+                  // var canvas=document.getElementById('myCanvas');
+                  var canvas = document.createElement('canvas');
+                  var ctx = canvas.getContext('2d');
+
+                  // Canvas에 이미지를 그림
+                  var img = this.children[0];
+                  canvas.width = img.width;
+                  canvas.height = img.height;
+                  ctx.drawImage(img, 0, 0, img.width, img.height);
+
+                  var text_width=$(this.children[1]).css("width").replace("px","");
+                  var text_height=$(this.children[1]).css("height").replace("px","");
+
+                  // Canvas에서 이미지 데이터를 가져와서 처리
+                  var imageData = ctx.getImageData(0, img.height-text_height, text_width, text_height);
+
+                  var data = imageData.data;
+                  var totalR = 0, totalG = 0, totalB = 0, totalA=0;
+
+                  // 이미지의 평균 색상 계산
+                  for (var i = 0; i < data.length; i += 4) {
+                      totalR += data[i];
+                      totalG += data[i + 1];
+                      totalB += data[i + 2];
+                      totalA += data[i+3];
+                  }
+
+                  var avgR = Math.floor(totalR / (data.length / 4));
+                  var avgG = Math.floor(totalG / (data.length / 4));
+                  var avgB = Math.floor(totalB / (data.length / 4));
+                  var avgA = Math.floor(totalA / (data.length / 4));
+
+                  // 평균 색상 값에 따라 텍스트의 색상을 결정
+                  var textElement = this.children[1];
+                  var textColor = calculateTextColor(avgR, avgG, avgB,avgA); // 평균 색상을 기준으로 텍스트 색상 계산
+                  textElement.style.color = textColor;
+              })       
+              }   
+              // 평균 색상에 따라 텍스트 색상을 결정하는 함수
+              function calculateTextColor(r, g, b,a) {
+
+              console.log(r+" "+g+" "+b+" "+a);
+              if(a==0){
+                  return 'black';
+              }
+              // RGB 색상값을 기준으로 흑백으로 변환할 수 있는 알고리즘을 사용하여 색상 결정
+              var brightness = (r * 0.299 + g * 0.587 + b * 0.114);
+              return brightness > 186  ? 'black' : 'white'; // 임계값에 따라 검정 또는 흰색 선택
+              }
             </script>
           </head>
 
@@ -379,7 +434,7 @@
                   <span style="line-height: 40px;"><a href="${pageContext.request.contextPath}/community/main" style="text-decoration: none; color: black;">더보기</a></span>
                 </div>
                 <div id="recent_post" class="mb-3">
-                  <button id="prev_btn" type="button">
+                  <button id="prev_btn" type="button" tabIndex={-1}>
                     <img src="/images/utilities/arrow1.png" alt="">
                   </button>
                   <div id="recent_post_wrap">
@@ -396,7 +451,7 @@
                     </a> -->
 
                   </div>
-                  <button id="next_btn" type="button">
+                  <button id="next_btn" type="button" tabIndex={-1}>
                     <img src="/images/utilities/arrow1.png" alt="">
                   </button>
                 </div>

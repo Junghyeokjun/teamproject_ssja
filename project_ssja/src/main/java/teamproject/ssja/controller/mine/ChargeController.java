@@ -1,5 +1,6 @@
 package teamproject.ssja.controller.mine;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,15 +36,20 @@ public class ChargeController {
 	public ResponseEntity<?> chargeUserPointP(@RequestParam("amount") Long point){
 		try {
 			
-		log.info("충전 금액 : {}", point);
 		long id = InfoProvider.getM_NO();
-		
-		chargeService.chargePoint(id, point);
+		Long amount = point+ Math.round(point * 2.0 / 100.0);
+		chargeService.chargePoint(id, amount);
 		
 		return ResponseEntity.ok("sueccess");
 		}catch(Exception e) {
-			return ResponseEntity.badRequest().body("failed");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
 		}
+	}
+	
+	@GetMapping("/success")
+	public String successChargeP() {
+		
+		return "/myPage/successCharge";
 	}
 
 }

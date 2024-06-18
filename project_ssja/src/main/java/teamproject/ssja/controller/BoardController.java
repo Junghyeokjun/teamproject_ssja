@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.extern.slf4j.Slf4j;
+import teamproject.ssja.InfoProvider;
+import teamproject.ssja.LoginChecker;
 import teamproject.ssja.dto.BoardDto;
+import teamproject.ssja.dto.login.CustomPrincipal;
 import teamproject.ssja.page.Criteria;
 import teamproject.ssja.page.PageVO;
 import teamproject.ssja.service.Board.BoardService;
@@ -56,19 +60,28 @@ public class BoardController {
 	@GetMapping("/write_view/{category}")
 	public String writeView(Model model, @PathVariable("category") long bcno) {
 		log.info("writeView()..");
-		model.addAttribute("bcNo", bcno);
+		model.addAttribute("bcno", bcno);
 		return "/qna/write_view";
 	}
 
 	@PostMapping("/write")
-	public String addOne(BoardDto boardDto) {
-		log.info("addOne()..");
+	public String addOne(BoardDto boardDto, @AuthenticationPrincipal CustomPrincipal user) {
+		String writer = "";
+		if(LoginChecker.check()==1) {
+			writer = user.getUserInfo().getM_NickName();
+		}else {
+			writer = user.getOAuth2Response().getName();
+		}
+		log.info("writer {} ", writer);
+		boardDto.setBmno(InfoProvider.getM_NO());
+		boardDto.setBwriter(writer);
+		boardDto.setBbcno(20);
 		boardService.addBoard(boardDto);
-		return "redirect:/board/list";
+		return "redirect:/board/list/" + boardDto.getBbcno();
 	}
 
 	@PostMapping("/modify_view")
-	public String modifyView(BoardDto boardDto, Model model) {
+	public String modifyView(@AuthenticationPrincipal CustomPrincipal principal, BoardDto boardDto, Model model) {
 		log.info("modifyView()..");
 		model.addAttribute("modify_view", boardDto);
 		return "/qna/modify_view";
@@ -77,7 +90,7 @@ public class BoardController {
 	@PostMapping("/modify")
 	public String modify(BoardDto boardDto) {
 		boardService.modifyBoard(boardDto);
-		return "redirect:/board/list";
+		return "redirect:/board/list/" + boardDto.getBbcno();
 	}
 
 	@GetMapping("/delete")
@@ -85,7 +98,7 @@ public class BoardController {
 	public String removeOne(BoardDto boardDto) {
 		log.info("removeOne()..");
 		boardService.removeBoard(boardDto);
-		return "redirect:/board/list";
+		return "redirect:/board/list/" + boardDto.getBbcno();
 	}
 
 //	@GetMapping("/reply_view")

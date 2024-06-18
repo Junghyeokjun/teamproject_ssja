@@ -70,12 +70,13 @@
       let search_keyword=$("#search_keyword");
       let productlist=$("#productlist");
       let product_no=$("#product_no");
+      let product_has=$("#product_has");
 
       let update_btn=$("#update_btn");
       let img_modify_dtn=$("#img_modify_dtn");
       let search_btn=$("#search_btn");
       let cancel_btn= $("#cancel_btn");
-
+      let product_remove= $("#product_remove_btn")
 
       let bno_val=$("#bno").val();
       let m_no_val=$("#m_no").val();
@@ -84,7 +85,7 @@
 
       //검색조건에 맞는 상품목록을 불러오는 메서드
       function getProductList(keyword){
-        console.log(keyword);
+        
         $.ajax({
             type:'GET', 
             url: '/community/product',
@@ -96,7 +97,7 @@
                 productlist.append($("<h1>해당 상품은 존재하지 않습니다.</h1>"))
               };
               data.forEach(function(e){
-                productlist.append($('<div class="product" class="my-2" style="background-color: white;" imgPath="'+ e.pro_BANNERIMG+'" pro_no="'+e.pro_NO+'" >'+
+                productlist.append($('<div class="product" class="my-2" style="background-color: white;" imgPath="'+ e.pro_BANNERIMG+'" pro_no="'+e.pro_NO+'" pro_name="'+e.pro_NAME+'" >'+
                                           '<div class="d-flex flex-row align-items-center my-3">'+
                                           '<img src="'+e.pro_BANNERIMG+'" style="width: 120px; height: 80px;">'+
                                           '<div class="d-flex flex-column justify-content-center" id="orders_product_Info" style="width: 290px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-left: 1em;"><span style="font-weight: bold;">'+e.pro_BIZNAME+'</span>'+
@@ -155,7 +156,6 @@
             $("#view_img").attr("src",data+"?"+(new Date().getTime()));
 
             img_update.val("true");
-            product_update.val("false");
             },
             error: function(e) {
               alert("error:" + e);
@@ -165,6 +165,13 @@
       update_btn.on("click",function(){
         var title=$("#title").val();
         var content=$("#update_content").text();
+        if(title==""){
+          alert("제목을 입력해주세요.");
+          return;
+        }else if(content==""){
+          alert("내용을 입력해주세요.");
+          return;
+        }
         $.ajax({
           type : 'POST',
           url : '/community/content/modify/'+bno_val,
@@ -222,9 +229,9 @@
               alert(error);
             }
           });
-        }else if(product_update.val()=="true"){
+        }
+        if(product_update.val()=="true"){
 
-          var imgPath=$("#update_img").val();
           var pro_no=product_no.val();
 
           $.ajax({
@@ -238,7 +245,6 @@
             data: JSON.stringify({
               'bno':bno_val,
               'proNo':pro_no,
-              'imgPath':imgPath
             }),
 
 		        success: function(data) {
@@ -254,19 +260,20 @@
       //상품 선택 버튼 
       $(document).on("click",".product",function(){
         $("#product_modal_close").click();
-        if($("#view_img").attr("src")==undefined){
-          $("#content").prepend('<img src="" alt="" id="view_img" class="w-75 d-inline-block mb-5 ">')
-        }
-        $("#view_img").attr("src",this.getAttribute("imgPath"));
-        $("#update_img").val(this.getAttribute("imgPath"));
-        img_update.val("false");
         product_update.val("true");
         product_no.val(this.getAttribute("pro_no"));
+        product_has.text(this.getAttribute("pro_name")+"상품이 선택된 상태입니다.");
       })
 
       search_btn.on("click",function(){
         productlist.empty();
         getProductList(search_keyword.val());
+      })
+      //상품 삭제 버튼
+      product_remove.on("click",function(){
+        product_update.val("true");
+        product_no.val(0);
+        product_has.text("선택된 상품이 없습니다.");
       })
 
       getProductList(search_keyword.val());
@@ -327,7 +334,7 @@
         <div class="ps-3 py-2 w-100 border-bottom d-flex flex-row justify-content-end">
           	<span>
               <button type="button" class="btn btn-secondary" id="cancel_btn" >취소</button>
-              <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#productModal" >상품 수정</button>
+              <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#productModal" >상품 태그</button>
               <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >이미지 수정</button>
               <button class="btn btn-primary" id="update_btn" >수정하기</button>
             </span>
@@ -377,7 +384,14 @@
       <div class="modal-content">
         <div class="modal-header flex-column">
           <h1 class="modal-title fs-5" id="exampleModalLabel">관련상품을 선택해주세요</h1>
-          <p class="m-0">(이미지와 동시에 첨부가 불가능합니다.)</p>
+          <p class="m-0" id="product_has">
+            <c:if test="${content.prono==0}">
+              선택된 상품이 없습니다
+            </c:if>
+            <c:if test="${content.prono!=0}">
+              상품이 선택된 상태입니다.
+            </c:if>
+          </p>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body" >
@@ -391,6 +405,7 @@
           </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" id="product_modal_close" data-bs-dismiss="modal">취소</button>
+          <button type="button" class="btn btn-secondary" id="product_remove_btn" >삭제</button>
         </div>
       </div>
     </div>

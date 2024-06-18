@@ -161,5 +161,27 @@ public class VendorServiceImpl implements VendorService{
 		}
 	}
 
-	
+	@Override
+	public List<BoardDto> getQnaLists(Criteria criteria, Long bcno, Long bmno) {
+		criteria.setBcno(bcno);
+		criteria.setBmno(bmno);
+		return vendorMapper.selectVendorQnas(criteria);
+	}
+
+	@Override
+	public List<ProductDto> getProductList(Criteria criteria, Long vno) {
+		criteria.setVno(vno);
+		return vendorMapper.selectVendorProducts(criteria);
+	}
+
+	@Override
+	public long getQnaCounts(Criteria criteria) {
+		return vendorMapper.selectVendorQnaCount(criteria);
+	}
+
+	@Override
+	public long getProductCounts(Criteria criteria) {
+		// TODO Auto-generated method stub
+		return vendorMapper.selectVendorProductsCount(criteria);
+	}
 }

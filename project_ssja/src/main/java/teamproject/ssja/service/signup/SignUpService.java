@@ -15,4 +15,5 @@ public interface SignUpService {
 	MembersDto getRelatedMember(long memberNum);
 	void registSocialToUser(MembersDto member);
 	List<String> getTerms();
+	void updateTerms(String term1, String term2);
 }

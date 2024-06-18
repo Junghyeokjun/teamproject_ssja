@@ -48,6 +48,9 @@
       width:90%;
     }
     
+    #notice{
+      text-decoration: none;
+    }
 
 
   </style>
@@ -92,8 +95,20 @@
   <main>
     <div id="main_container" >
 
-      <div id="community_content" class="mt-4 mb-2"></div>
+      <div class="ms-4 mt-2 fs-5 border ps-2">
+        <c:choose>
+        <c:when test="${notice!=null}">
+          <a id="notice" class="text-dark" href="${pageContext.request.contextPath}/community/content/${notice.bno}">
+            [공지] ${notice.btitle}
+          </a>
+        </c:when>
+        <c:otherwise> 
+          공지가 없습니다.
+        </c:otherwise>
+        </c:choose>
 
+      </div>
+      <div id="community_content" class="my-2"></div>
 
         <div class="w-100 d-flex justify-content-between ms-4">
           <span></span>

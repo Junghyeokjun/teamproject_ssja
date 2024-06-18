@@ -267,18 +267,26 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 	@Override
-	public int updateBoardProductImg(long bno, long proNo, String imgPath) {
-		BoardImgsDto dto= new BoardImgsDto();
-		dto.setB_NO(bno);
-		dto.setB_IMG_PATH(imgPath);
-		boardMapper.updateBoardProductImg(bno, proNo);
-			
-		return boardMapper.updateBoardImg(dto);
+	public int updateBoardProduct(long bno, long proNo) {		
+		int result=0;
+		
+		if(proNo==0) {
+			result=boardMapper.deleteBoardProduct(bno);
+		}else {
+			result=boardMapper.updateBoardProduct(bno, proNo);
+		}
+		
+		return result;
 	}
 
 	@Override
 	public ProductDto getRelatedProduct(long proNo) {
 		return productMapper.getProduct(proNo);
+	}
+
+	@Override
+	public BoardDto getNotice() {
+		return boardMapper.selectNotice();
 	}
 
 

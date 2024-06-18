@@ -65,6 +65,48 @@
 						 * return }
 						 */
 
+						if(data.m_deletedate !== null){
+							let deleteDate = new Date(data.m_deletedate);
+							deleteDate.setDate(deleteDate.getDate() - 7);
+							let yy = deleteDate.getFullYear(); 
+							let mm = ('0' + (deleteDate.getMonth() + 1)).slice(-2);
+							let dd = ('0' + deleteDate.getDate()).slice(-2);
+							let deleteDateForm = yy + '-' + mm+'-'+dd;
+							$("<div>").addClass("w-100 p-5 d-flex flex-column justify-content-center align-items-center").css({'height':'400px','background-color':'#ccc'}).append(
+									
+									$("<h3>").addClass('text-center my-4')
+									.html('탈퇴 신청 일 : ' + deleteDateForm +"<br> 탈퇴 유보 종료일 : " + data.m_deletedate),
+									
+							$("<h4>").addClass('text-center')
+							.html('현재 회원님께서는 탈퇴 유보 기간입니다. <br> 현재는 유보 기간으로서 탈퇴 취소가가능합니다.')	,
+							
+							$("<div>").append(
+							$("<button>").addClass('my-5 btn btn-dark')
+							.css({'width':'250px','height':'5em','border-radius':'3px'})
+							.on('click', function(){
+								$.ajax({
+									type : "patch",
+									beforeSend : function(xhr) {
+										xhr.setRequestHeader(header, token);
+									},
+									url : "/user/delete/cancel", 
+									success : function(data) {
+										console.log(data);
+										alert('회원 탈퇴를 취소하셨습니다. \n 앞으로 정상회원으로 저희 서비스를 재이용 가능합니다.');
+										location.reload();
+									},
+									error : function(xhr ,status, e){
+										console.log("error!! : "+e + " status : " + status);
+									}
+								})
+								
+							}).text('탈퇴 취소')
+							)
+							).appendTo($myPageContent);
+							return 
+						}
+						
+						
 						let $userInfo_dv1 = $("<div>").attr("id",
 								"userInfo_dv1").addClass("w-100 my-3 mx-3");
 						let $userInfo_name = $("<h2>").css("font-weight",
@@ -286,6 +328,7 @@
 											url : "/user",
 											success : function(data){
 												alert('삭제 되었습니다.');
+												location.reload();
 											},
 											error : function(data){
 												alert('에러 발생');
@@ -318,6 +361,7 @@
 								$userInfo_dv3, $userInfo_dv4, $userInfo_dv5,
 								$userInfo_dv6,$userInfo_dv7);
 
+						
 					}
 				});
 	};

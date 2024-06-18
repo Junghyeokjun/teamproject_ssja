@@ -26,9 +26,11 @@ public class CommunityBoardDto {
 	private long blike;
 	private long bhit;
 	private long beval;
-	private long prono;
+	private Long prono;
 	private long img_no;
 	private String img_path;
+	private long total;
+	private int countrv;
 
 	
 	// 자바 스크립트 버전으로 할지, 자바로 할지 선택하는 '날짜 형태 변환'

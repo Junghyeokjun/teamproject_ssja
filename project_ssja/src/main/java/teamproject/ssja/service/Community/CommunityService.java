@@ -49,10 +49,12 @@ public interface CommunityService {
 	boolean updateBoardImg(long bno,MultipartFile file);
 	//게시글 이미지 삭제 메서드
 	int deleteBoardImg(long bno);
-	//게시글의 상품이미지 업데이트 메서드
-	int updateBoardProductImg(long bno,long proNo ,String imgPath );
+	//게시글의 상품 업데이트 메서드
+	int updateBoardProduct(long bno,long proNo);
 	//게시글의 연관 상품을 가져오는 메서드
 	ProductDto getRelatedProduct(long proNo);
+	//게시글의 최신 공지사항을 얻어오는 메서드
+	BoardDto getNotice();
 	
 	
 	//댓글 리스트 얻어오는 메서드

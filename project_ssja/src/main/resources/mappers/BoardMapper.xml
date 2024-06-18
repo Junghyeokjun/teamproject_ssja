@@ -90,7 +90,7 @@
 	</update>
 	
 	<!-- 게시글의 상품번호를 업데이트  -->
-	<update id="updateBoardProductImg" parameterType="long">
+	<update id="updateBoardProduct" parameterType="long">
 		<![CDATA[
 			update board set PRO_NO = #{proNo} where b_no=#{bno}
         ]]>
@@ -173,7 +173,7 @@
 			    from 
 			    (SELECT b.*, bi.b_img_no,bi.b_img_path 
 			     FROM board b, board_imgs bi 
-			     WHERE b.B_C_NO=40 and b.b_no=bi.b_no  
+			     WHERE b.B_C_NO=40 and b.b_no=bi.b_no and b.b_writer != '관리자' 
 			     ORDER BY b.b_no desc) A 
 		    	where rownum <= #{pageNum} * #{amount} 
 		    )
@@ -192,7 +192,7 @@
 			    from 
 			    (SELECT b.*, bi.b_img_no,bi.b_img_path 
 			     FROM board b, board_imgs bi 
-			     WHERE b.B_C_NO=40 and b.b_no=bi.b_no and
+			     WHERE b.B_C_NO=40 and b.b_no=bi.b_no and b.b_writer != '관리자' and
 			     ]]>
 			     
 			   		<choose>
@@ -230,7 +230,7 @@
 		    from 
 		    (SELECT b.*, bi.b_img_no,bi.b_img_path 
 		     FROM board b, board_imgs bi 
-		     WHERE b.B_C_NO=40 and b.b_no=bi.b_no  
+		     WHERE b.B_C_NO=40 and b.b_no=bi.b_no and b.b_writer != '관리자' 
 		     ORDER BY b.b_like desc) A 
 	    	where rownum <= 4 
 	    
@@ -248,13 +248,13 @@
 	<!-- 게시글 총 개수  -->
 	<select id="selectTotalCount" parameterType="long" resultType="long">
     	<![CDATA[
-        	SELECT count(*) FROM board where B_C_NO = #{bcno}
+        	SELECT count(*) FROM board where B_C_NO = #{bcno} and b_writer != '관리자'
         ]]>
 	</select>
 
 	<!-- 검색조건에 맞는 게시글 총 개수  -->
 	<select id="selectSearchTotalCount" resultType="long">
-    	SELECT  count(*) FROM board where b_c_no= #{bcno} and             
+    	SELECT  count(*) FROM board where b_c_no= #{bcno} and b_writer != '관리자' and             
                <choose>
                <when test="#{option} != null and option.equals('all')">
                 (B_TITLE like '%${keyword}%' or B_CONTENT like '%${keyword}%' or B_WRITER like '%${keyword}%' )
@@ -295,6 +295,38 @@
 		DELETE FROM board_imgs WHERE b_no = #{B_NO}
 	</delete>
 	
+	<!-- 마이페이지 내가 쓴글  -->
+	<select id="getMyCommus" resultMap="CommunityDtoMap">
+		select m.* ,i.b_img_no, i.b_img_path, (SELECT COUNT(*) FROM replys r WHERE r.b_no = m.b_no) AS countrv from 
+		(select a.*, rownum as rnum 
+			from 
+				(select b.*, COUNT(*) OVER() AS total 
+				from board b where b_c_no = 40 and m_no = #{id} order by b_date desc) a 
+		)m
+		inner join 
+			board_imgs i
+		on i.b_no = m.b_no
+		where rnum between #{pageNum} * 5 - 4  and #{pageNum} * 5
+	</select>
+	
+	<select id="getMyQnAs" resultMap="BoardDtoAndTotMap">
+	SELECT 
+		m.*, (SELECT COUNT(*) FROM replys r WHERE r.b_no = m.b_no and r.m_no  <![CDATA[  <>   ]]> m.m_no) AS answer
+	FROM (
+    	SELECT a.*, rownum AS rnum 
+    	FROM ( SELECT b.*, COUNT(*) OVER() AS total 
+        	FROM board b   WHERE b_c_no = 20 and m_no= #{id}  ORDER BY b_date DESC ) a
+    	) m
+	WHERE m.rnum between #{pageNum} * 10 - 9 and #{pageNum} * 10
+	
+	</select>
+	<!-- 게시글 최신 공지사항  -->
+	<select id="selectNotice" resultMap="BoardDtoMap">
+		select * 
+		from(SELECT b.* ,rownum rn FROM (select * from board WHERE b_writer='관리자' and b_c_no='40' ORDER by b_date desc) b)
+		WHERE rn=1	
+	</select>
+	
 	<resultMap type="teamproject.ssja.dto.BoardCategoryDto" id="BoardCategoryDtoMap">
 		<id property="bcno" column="b_c_no"/>
 		<result property="bcname" column="b_c_name"/>
@@ -314,6 +346,19 @@
 		<result property="bhit" column="b_hit"/>
 		<result property="beval" column="b_eval"/>
 		<result property="prono" column="pro_no"/>
+	</resultMap>
+		<resultMap type="teamproject.ssja.dto.BoardDto" id="BoardDtoAndTotMap">
+		<id property="bno" column="b_no"/>
+		<result property="bmno" column="m_no"/>
+		<result property="bbcno" column="b_c_no"/>
+		<result property="bwriter" column="b_writer"/>
+		<result property="btitle" column="b_title"/>
+		<result property="bcontent" column="b_content"/>
+		<result property="bdate" column="b_date"/>
+		<result property="blike" column="b_like"/>
+		<result property="bhit" column="b_hit"/>
+		<result property="total" column="total"/>
+		<result property="existAns" column="answer"/>
 	</resultMap>
 	
 	<!-- 해당 게시글 좋아요 여부 맵 -->
@@ -338,5 +383,7 @@
 		<result property="prono" column="pro_no"/>
 		<result property="img_no" column="B_IMG_NO"/>
 		<result property="img_path" column="B_IMG_PATH"/>
+		<result property="total" column="total"/>
+		<result property="countrv" column="countrv"/>
 	</resultMap>
 </mapper>

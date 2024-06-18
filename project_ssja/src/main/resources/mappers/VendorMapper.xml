@@ -30,11 +30,17 @@
 			    select
 			        rownum rnum , A.*
 			    from 
-			    (SELECT  * FROM Product where v_no=#{vno} order by PRO_NO desc) A 
+			    (SELECT * FROM Product where v_no=#{vno} order by PRO_NO desc) A 
 		    	where rownum <= #{pageNum} * #{amount} 
 		    )
 			where rnum > (#{pageNum}-1) * #{amount}
    		 ]]>
+	</select>
+
+	<select id="selectVendorProductsCount" resultType="java.lang.Long">
+		<![CDATA[
+			select count(*) from Product where v_no=#{vno}
+		]]>
 	</select>
 
 	<!-- 입력한 상품의 상품 번호를 가져오기. 이미지를 넣기 위해 필요한 작업 -->
@@ -61,6 +67,7 @@
 			INSERT INTO product_imgs(pro_img_no,pro_no,pro_img_path) VALUES (PRO_IMG_SEQ.nextval,#{pNo},#{piPath})
 		]]>
 	</insert>
+	
 <!-- 문의 -->	
 	<!-- 페이징은 기본으로 깔고 가기 -->
 	<select id="selectVendorQnas" resultMap="BoardDtoMap">
@@ -70,12 +77,18 @@
 			    select
 			        rownum rnum , A.*
 			    from 
-			    (SELECT  * FROM board where b_c_no=#{bcno} and m_no=#{bmno} order by PRO_NO desc) A 
+			    (SELECT  * FROM board where b_c_no=#{bcno} and m_no=#{bmno} order by B_NO desc) A 
 		    	where rownum <= #{pageNum} * #{amount} 
 		    )
 			where rnum > (#{pageNum}-1) * #{amount}
    		 ]]>
 	</select>
+	
+	<select id="selectVendorQnaCount" resultType="java.lang.Long">
+		<![CDATA[
+			select count(*) from board where b_c_no=#{bcno} and m_no=#{bmno}
+		]]>
+	</select>	
 	
 	<!-- 게시글 맵 -->
 	<resultMap type="teamproject.ssja.dto.BoardDto" id="BoardDtoMap">

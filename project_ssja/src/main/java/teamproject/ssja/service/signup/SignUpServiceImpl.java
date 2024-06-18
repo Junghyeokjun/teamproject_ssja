@@ -2,6 +2,7 @@ package teamproject.ssja.service.signup;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -131,7 +132,41 @@ public class SignUpServiceImpl implements SignUpService {
 
 		return termsList;
 	}
+	@Override
+	public void updateTerms(String term1, String term2) {
+		List<String> termsList= new ArrayList<String>();
+		//추후에 파일위치에 따라 경로 수정
+		File file=new File("C:/Users/601-5/git/temaproject_ssja/project_ssja/src/main/resources/static/terms.dat");
+		File file2=new File("C:/Users/601-5/git/temaproject_ssja/project_ssja/src/main/resources/static/terms2.dat");
 
+		FileOutputStream stream=null;
+		FileOutputStream stream2=null;
+		try {
+			stream = new FileOutputStream(file);
+			stream2 = new FileOutputStream(file2);
+			
+			byte[] buf= term1.getBytes();
+			stream.write(buf);
+			
+			buf=term2.getBytes();
+			stream2.write(buf);		
+			
+		}catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				stream.close();
+				stream2.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	
+
+		return ;
+	}
+	
 
 
 	

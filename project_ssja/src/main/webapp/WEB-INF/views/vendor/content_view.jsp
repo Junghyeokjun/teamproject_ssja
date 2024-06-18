@@ -35,10 +35,10 @@
 <script src="/js/footer.js">
 	
 </script>
-<script src="/js/board.js">
+<script src="/js/vendor/question.js">
 	
 </script>
-<script src="/js/boardLike.js">
+<script src="/js/vendor/questionLike.js">
 	
 </script>
 <link href="/css/footerstyle.css?after" rel="stylesheet">
@@ -117,7 +117,7 @@ body {
 			// QnA 게시판이고, 로그인 유저의 권한이 관리자가 아니며, 해당 작성자 번호와 로그인 번호가 다른 경우
 			if(principal.auth != 'ROLE_ADMIN' && bcNum == 20 && contentViewBmo != principal.memberNum){
 				alert("작성자의 문의 내용이 아니므로 확인하실 수 없습니다.");				
-				window.location.href = "${pageContext.request.contextPath}/board/list/20";
+				window.location.href = "${pageContext.request.contextPath}/vendor/question/list/20";
 			}
 
 	        $(document).ready(function() {
@@ -135,7 +135,7 @@ body {
 			<script type="text/javascript">
 				function role(){
 					alert("관리자와 본인만 해당 페이지를 확인하실 수 있습니다. 목록으로 돌아갑니다.");
-					window.location.href = "${pageContext.request.contextPath}/board/list/20";
+					window.location.href = "${pageContext.request.contextPath}/vendor/question/list/20";
 				};				
 				role();
 			</script>
@@ -171,11 +171,11 @@ body {
 			<div class="main_whitespace p-5 my-2">
 				
 			</div>
-			<form action="${pageContext.request.contextPath}/board/modify_view" method="post">
+			<form action="${pageContext.request.contextPath}/vendor/question/modify_view" method="post">
 				<div class="input-group">
 					<input type="hidden" class="form-control" name="bno" value="${content_view.bno}">
 					<input type="hidden" class="form-control" name="bbcno" value="${content_view.bbcno}">
-					<input type="hidden" class="form-control" name="bmno" value="${content_view.bmno}">				
+					<input type="hidden" class="form-control" name="bmno" value="${content_view.bmno}">
 					<sec:csrfInput />
 				</div>
 				<table class="table" >
@@ -246,7 +246,7 @@ body {
 									<c:when test="${principal.memberNum == content_view.bmno || principal.auth == 'ROLE_ADMIN'}">
 										<div>
 											<input type="submit" class="btn btn-danger customed-ssja" value="수정">
-											<a id="deleteBoard" href="${pageContext.request.contextPath}/board/delete?bno=${content_view.bno}" class="btn btn-danger">삭제</a>
+											<a id="deleteBoard" href="${pageContext.request.contextPath}/vendor/question/delete?bno=${content_view.bno}" class="btn btn-danger">삭제</a>
 										</div>
 									</c:when>
 									<c:otherwise>
@@ -256,12 +256,12 @@ body {
 								</c:choose>
 							</sec:authorize>
 							<sec:authorize access="isAuthenticated()">								
-								<a class="btn btn-primary customed-ssja" href="${pageContext.request.contextPath}/board/list/${content_view.bbcno}">되돌아가기</a>																															
+								<a class="btn btn-primary customed-ssja" href="${pageContext.request.contextPath}/vendor/question/${content_view.bbcno}">되돌아가기</a>																															
 							</sec:authorize>								
-								<%-- &nbsp;&nbsp;<a href="${pageContext.request.contextPath}/board/delete?bno=${content_view.bno}">삭제</a> --%>
+								<%-- &nbsp;&nbsp;<a href="${pageContext.request.contextPath}/vendor/question/delete?bno=${content_view.bno}">삭제</a> --%>
 							<%-- <sec:authorize access="hasRole('ROLE_ADMIN')">
 								&nbsp;&nbsp;<a
-									href="${pageContext.request.contextPath}/board/${content_view.bno}">답변</a>
+									href="${pageContext.request.contextPath}/vendor/question/${content_view.bno}">답변</a>
 							</sec:authorize> <sec:authorize access="!hasRole('ROLE_ADMIN')">
 
 							</sec:authorize> --%>
@@ -357,6 +357,9 @@ body {
 		<div id="second_footer"></div>
 		<div id="third_footer"></div>
 	</footer>
+	<sec:authorize access="isAuthenticated()">
+  <script src="/js/login_user_tab.js"> </script>
+</sec:authorize>
 <script>
 	$(document).ready(function(){
 		let token = $("meta[name='_csrf']").attr("content");
@@ -645,5 +648,6 @@ body {
 		});		
 	});
 </script>	
+
 </body>
 </html>

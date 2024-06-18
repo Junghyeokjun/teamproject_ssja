@@ -25,7 +25,7 @@ public interface BoardMapper {
 	int deleteBoardProduct(long bno);
 	
 	//게시글의 상품번호를 업데이트
-	int updateBoardProductImg(long bno, long proNo);
+	int updateBoardProduct(long bno, long proNo);
 	
 	// 판매자(작성자) 자신의 QnA 작성글 가져오기
 	List<BoardDto> selectMemberQnaList(Criteria criteria);
@@ -81,7 +81,11 @@ public interface BoardMapper {
 	//게시글의 이미지 경로를 삭제하는 메서드
 	int deleteBoardImg(long bno);
 	
-	
-	
+	//마이페이지 내가 쓴글 메서드
+	List<CommunityBoardDto> getMyCommus(Long id, Integer pageNum);
+	List<BoardDto> getMyQnAs(Long id, Integer pageNum);
 	// 
+	//게시글의 최신공지사항을 얻어오는 메서드
+	BoardDto selectNotice();
+	
 } 

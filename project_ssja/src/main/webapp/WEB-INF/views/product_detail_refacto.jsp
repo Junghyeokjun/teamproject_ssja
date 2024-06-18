@@ -275,45 +275,49 @@ table {
 				<div class="goodsImg col-12 col-md-6 col-lg-7">
 					<div id="carouselExampleIndicators" class="carousel slide"
 						data-bs-ride="carousel">
-						 <c:if test="${productData.findCoverImg() == null || productData.findCoverImg().size() == 0}"><!-- 상품메인 이미지가 없을 경우로 추후 변경 -->
-						<div class="carousel-item active">
-								<img src="${productData.pro_bannerimg }" class="d-block w-100" alt="...">
-							</div>
-						</c:if> <!-- 상품 메인이미지 존재 여부에 따라 없으면 배너이미지만,ㅡ 있으면 forEach문 돌려서 캐러셀 담당 -->
- 					<c:if test="${productData.findCoverImg() != null && productData.findCoverImg().size() > 0}">						
- 						<div class="carousel-indicators">
-							<button type="button" data-bs-target="#carouselExampleIndicators"
-								data-bs-slide-to="0" class="active" aria-current="true"
-								aria-label="Slide 1"></button>
- 						<c:forEach var="cover" items="${productData.findCoverImg() }"  varStatus="index">
-							<button type="button" data-bs-target="#carouselExampleIndicators"
-								data-bs-slide-to="${index.index+1 }" aria-label="Slide ${index.index+2 }"></button>
-					
-								</c:forEach>
-						</div>
-						<div class="carousel-inner">
-							<div class="carousel-item active">
-								<img src="${productData.pro_bannerimg }" 
-									class="d-block w-100" alt="..."><!-- 첫 고정은 배너이미지로 -->
-							</div>
-							<c:forEach var="image" items="${productData.findCoverImg() }" >
-							<div class="carousel-item ">
-								<img src="/images/${image }"
-									class="d-block w-100" alt="..."> <!-- 추후 상품 메인 이미지 개발 시 넣기 -->
-							</div>
-							</c:forEach>
-						</div>
-						<button class="carousel-control-prev" type="button"
-							data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-							<span class="visually-hidden">Previous</span>
-						</button>
-						<button class="carousel-control-next" type="button"
-							data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-							<span class="carousel-control-next-icon" aria-hidden="true"></span>
-							<span class="visually-hidden">Next</span>
-						</button>
-				</c:if>
+						<c:choose>
+							<c:when test="${productData.findCoverImg().size() > 0}">
+								<div class="carousel-indicators">
+									<button type="button"	data-bs-target="#carouselExampleIndicators"
+										data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+									<c:forEach var="cover"
+										items="${productData.findCoverImg()}" varStatus="index">
+										<button type="button"data-bs-target="#carouselExampleIndicators"
+											data-bs-slide-to="${index.index + 1}"aria-label="Slide ${index.index + 2}"></button>
+									</c:forEach>
+								</div>
+								<div class="carousel-inner">
+									<div class="carousel-item active">
+										<img src="${productData.pro_bannerimg}" class="d-block w-100"alt="...">
+										<!-- 첫 고정은 배너이미지로 -->
+									</div>
+									<c:forEach var="image"	items="${productData.findCoverImg()}">
+										<div class="carousel-item">
+											<img src="/images/${image}" class="d-block w-100" alt="...">
+											<!-- 추후 상품 메인 이미지 개발 시 넣기 -->
+										</div>
+									</c:forEach>
+								</div>
+								<button class="carousel-control-prev" type="button"data-bs-target="#carouselExampleIndicators"data-bs-slide="prev">
+									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+									<span class="visually-hidden">Previous</span>
+								</button>
+								<button class="carousel-control-next" type="button"data-bs-target="#carouselExampleIndicators"data-bs-slide="next">
+									<span class="carousel-control-next-icon" aria-hidden="true"></span>
+									<span class="visually-hidden">Next</span>
+								</button>
+							</c:when>
+							<c:otherwise>
+								<div class="carousel-inner">
+									<div class="carousel-item active">
+										<img src="${productData.pro_bannerimg}" class="d-block w-100"
+											alt="...">
+										<!-- 상품 메인 이미지 존재하지 않을 경우 배너 이미지만 표시 -->
+									</div>
+								</div>
+							</c:otherwise>
+						</c:choose>
+
 					</div>
 				</div>
 				

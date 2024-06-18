@@ -187,10 +187,9 @@ width:88%;
                          "amount" : money
                      },
                      success:function(data){
-                    	 document.location.href="/myPage";
+                    	 document.location.href="/charge/success";
                      },
                      error:function(data){
-                    	 alert("포인트 충전에 문제가 생겼습니다.")
                      }
                  });
              } else {
@@ -238,10 +237,9 @@ width:88%;
                          "amount" : money
                      },
                      success:function(data){
-                    	 document.location.href="/myPage";
+                    	 document.location.href="/charge/success";
                      },
                      error:function(data){
-                    	 alert("포인트 충전에 문제가 생겼습니다.")
                      }
                  });
              } else {
@@ -287,10 +285,9 @@ width:88%;
                          "amount" : money
                      },
                      success:function(data){
-                    	 document.location.href="/myPage";
+                    	 document.location.href="/charge/success";
                      },
                      error:function(data){
-                    	 alert("포인트 충전에 문제가 생겼습니다.")
                      }
                  });
              } else {
