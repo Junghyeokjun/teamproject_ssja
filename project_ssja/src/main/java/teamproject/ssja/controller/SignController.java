@@ -2,11 +2,13 @@ package teamproject.ssja.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -147,6 +149,29 @@ public class SignController {
 		mv.setViewName("password_reset");
 		return mv;
 	}
+	
+	
+	
+	//임시 링크 추후에 마이페이지로 이동예정
+	@GetMapping("terms_modify")
+	public ModelAndView modifyView(ModelAndView mv) {
+		
+		List<String> terms=signUpService.getTerms();
+		mv.addObject("term1", terms.get(0));
+		mv.addObject("term2", terms.get(1));
+		mv.setViewName("terms_modify");
+		
+		return mv;
+	}
+	@PostMapping("terms_modify")
+	public String modify(@RequestBody Map<String, String> data) {
+		
+		signUpService.updateTerms(data.get("term1"), data.get("term2"));
+		
+		return "success";
+		
+	}
+	
 	
 	
 	

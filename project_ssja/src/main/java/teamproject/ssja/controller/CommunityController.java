@@ -47,8 +47,8 @@ public class CommunityController {
 	//커뮤니티 게시글 목록화면
 	@GetMapping("/main")
 	public ModelAndView main(ModelAndView mv) {
-//		mv.addObject("pageNum",1);
-//		mv.addObject("amount",20);
+
+		mv.addObject("notice",communityService.getNotice());
 		mv.setViewName("community/community_main");
 		return mv;
 	}
@@ -193,7 +193,8 @@ public class CommunityController {
 	public long insertPost(@RequestBody Map<String, Object> data){
 		System.out.println(data);
 		return communityService.insertPost(new BoardDto(0, Long.valueOf(data.get("mno").toString()).longValue(), 
-														40, data.get("writer").toString(), 
+														Long.valueOf(data.get("category").toString()).longValue(), 
+														data.get("writer").toString(), 
 														data.get("title").toString(), 
 														data.get("content").toString(), "SYSDATE", 0, 0, 0, 0, 0,0));
 	}	
@@ -249,9 +250,8 @@ public class CommunityController {
 	@PostMapping("/product")
 	public int updateProductImg(@RequestBody Map<String, String> data){
 		System.out.println(data);
-		return communityService.updateBoardProductImg(Long.valueOf(data.get("bno").toString()).longValue(),
-													  Long.valueOf(data.get("proNo").toString()).longValue(),
-													  data.get("imgPath").toString());
+		return communityService.updateBoardProduct(Long.valueOf(data.get("bno").toString()).longValue(),
+													  Long.valueOf(data.get("proNo").toString()).longValue());
 	}
 	
 	

@@ -29,7 +29,7 @@
 
   </script>
    <meta name="_csrf" content="${_csrf.token}"/>
-<meta name="_csrf_header" content="${_csrf.headerName}"/>
+  <meta name="_csrf_header" content="${_csrf.headerName}"/>
   <link href="/css/footerstyle.css?after" rel="stylesheet">
   <link href="/css/barstyle.css?after" rel="stylesheet">
   <sec:authorize access="isAuthenticated()">
@@ -57,6 +57,9 @@
     
     /* 연관상품부분 */
     #product_link{
+      width: 250px;
+      height: 100px;
+      display:inline-block;
       text-decoration: none;
     }
     .product{
@@ -70,11 +73,12 @@
       height: 100px;
     }
     #orders_product_Info{
-      width: 290px; 
+      width: 200px; 
+      height: 100px;
       overflow: hidden; 
       text-overflow: ellipsis; 
       white-space: nowrap; 
-      margin-left: 1em;
+      margin: 0 0 0 5px;
     }
     #pro_bizname{
       font-weight: bold;
@@ -83,35 +87,14 @@
       color: black; 
       text-decoration: none; 
       font-weight: bold;
+      word-break: keep-all;
+      width: 138px;
+      height: 60px;
+      margin-top: 5px;
+      white-space:normal;
+
     }
-    @media screen and (min-width : 1200px) {
-      #product_link{
-        position: fixed;
-        top: 300px;
-        right: 3vw;
-      }
-      .product > div:first-child{
-        flex-direction: column;
-      }
-      #orders_product_Info{
-        width: 130px;
-        margin-left: 0px;
-      }
-      #pro_bizname{
-        display: none;
-      }
-      #pro_name{
-        height: 60px;
-        white-space: normal ;
-        text-align: center;
-        word-break: keep-all;
-      }
-    }
-    @media screen and (min-width : 1500px){
-      #product_link{
-        right: 7vw;
-      }
-    }
+
 
   </style>
   <script>
@@ -636,32 +619,54 @@
         <div class="w-75 mb-3">
           ${content.bcontent}
         </div>
-        <span class="border d-flex flex-column align-items-center mb-3" id="like_btn" style="border-radius: 10px ;">
-          <img src="/images/utilities/like.png" alt="" style="width: 60px;height: 60px;">
-          <span class="like">${content.blike}</span>
-        </span>
+          <div class="w-75 d-flex justify-content-between align-items-end mt-4 mb-2 ">
+            <span style="width: 250px;">
+              <c:if test="${content.prono != 0}">
+                <a href="" id="product_link">
+                  <div class="product" >
+                    <div class="d-flex flex-row align-items-center" >
+                      <img src="" id="pro_img"> 
+                      <div class="d-flex flex-column justify-content-between" id="orders_product_Info" >
+                        <span class="fs-5" id="pro_name"></span>
+                        <span class="fs-6 ps-2" id="pro_bizname"></span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </c:if>
+            </span>
+            <span class="border d-inline-flex flex-column align-items-center mb-3" id="like_btn" style="border-radius: 10px ; height: 86px;">
+              <img src="/images/utilities/like.png" alt="" style="width: 60px;height: 60px;">
+              <span class="like">${content.blike}</span>
+            </span>
+
+            <span style="width: 250px;"></span>
+          </div>
+          
+
+
+
+        
         <input type="hidden" id="prono" value="${content.prono}">
-        <c:if test="${content.prono != 0}">
-          <a href="" id="product_link">
-            <div class="product my-2" >
-              <div class="d-flex flex-row flex-xl-column align-items-center my-3" >
-              <img src="" id="pro_img">
-              <div class="d-flex flex-column justify-content-center" id="orders_product_Info" >
-                <span class="fs-5" id="pro_bizname"></span>
-                <span class="fs-5" id="pro_name"></span>
-              </div>
-              </div>
-            </div>
-          </a>
-        </c:if>
+        
         <div class="ps-3 py-2 w-100 border-top border-bottom d-flex flex-row justify-content-between">
           <span class="fs-5" style="line-height: 38px;">댓글:[<span class="reply_total">${reply_total}</span>]</span>
           <span>
             <button class="btn btn-outline-secondary" id="list_btn" >목록</button>
-            <c:if test="${principal.userInfo.m_No == content.bmno}">
+
+            <sec:authorize access="hasAnyRole('ROLE_ADMIN')">    
+              
+              <c:if test="${principal.userInfo.m_No == content.bmno}">
+                <button class="btn btn-outline-primary" id="update_btn" >수정하기</button>
+              </c:if>
+              <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">삭제하기</button>
+
+            </sec:authorize>
+
+              <c:if test="${principal.userInfo.m_No == content.bmno and !(principal.userInfo.auth.equals('ROLE_ADMIN'))}">
                 <button class="btn btn-outline-primary" id="update_btn" >수정하기</button>
                 <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">삭제하기</button>
-            </c:if>
+              </c:if>
           </span>
         </div>
         
