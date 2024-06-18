@@ -73,11 +73,41 @@
                 color: orange;
                 opacity: 1;
               }
+              .review_content{
+                width: 450px; 
+                height: 27px; 
+                overflow: hidden;
+                margin-left: 100px;
 
+              }
 
 
             </style>
+            <script>
+              function getProduct(pro_no,element){
 
+                $.ajax({
+                  type : 'GET',
+                  url : '/community/product/'+pro_no,
+                  async : false,
+                  dataType : 'json',  
+                  success : function(result) {
+                    $(element.children[0]).text(result.pro_BIZNAME);
+                    $(element.children[1]).text(result.pro_NAME);
+                  },    
+                  error : function(request, status, error) {
+                    alert(error);
+                  }
+                })
+              }
+              $(document).ready(function(){
+                $(".product").each(function(){
+                  getProduct($(this).attr("prono"),this);
+                })
+                $(".user_review").first().addClass("border-bottom");
+
+              })
+            </script>
           </head>
 
           <body>
@@ -121,16 +151,30 @@
                   </span>
                 </div>   
                 <div class="mt-3 mx-5"> 
-                  <p class="fs-5">리뷰</p>
+                  <p class="fs-2 mb-0 fw-bold">리뷰</p>
                   <div class="border" style="border-radius: 10px;">
-                    <span id="user_review" class="pt-2 ps-2" style="min-height: 42px; display: block;"> 
+                    <span id="user_review" class=" px-2" style="min-height: 42px; display: block;"> 
                       
                       <c:choose>
                         <c:when test="${reviews.size()!=0}">
                           
                           <c:forEach var="review" items="${reviews}">
-                            <div class="user_review mb-2 d-flex justify-content-between">
-                              <span>
+                            <div class="product mt-3 ms-2" prono="${review.prono}">
+                                <a href="${pageContext.request.contextPath}/product_detail?PRO_NO=${review.prono}" class="fs-5 fw-bold text-dark" style=" text-decoration: none;">
+                                    상호명
+                                </a>
+                                <a href="${pageContext.request.contextPath}/product_detail?PRO_NO=${review.prono}" class="fs-5 fw-bold pro_name ps-4 text-dark d-inline-block" style=" width: 620px; text-decoration: none;">
+                                    상품이름
+                                </a>  
+                            </div>
+                            <div class="user_review pb-3 d-flex justify-content-between">
+                              <span class="d-flex align-items-center" style="height: 27px;">
+                                 
+                                  <span class="fs-5 text-dark d-inline-block review_content">${review.bcontent}</span>
+                                </a>
+                              </span>
+                              <span class="pe-4">
+                                <span>${review.bwriter}</span>
                                 <c:forEach var="i"
                                 begin="1" end="5">
                                 <c:choose>
@@ -141,13 +185,10 @@
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                   </c:otherwise>
                                 </c:choose>
-                                </c:forEach> 
-                                <a href="${pageContext.request.contextPath}/product_detail?PRO_NO=${review.prono}" style="text-decoration: none;">
-                                  <span class="ms-2 fs-5 text-dark review_content">${review.bcontent}</span>
-                                </a>
+                                </c:forEach>
                               </span>
-                              <span class="pe-4">${review.bdate}</span>
                             </div>
+                            <!-- <div class="border"></div> -->
                           </c:forEach>   
                         </c:when>
                         <c:otherwise>
@@ -156,8 +197,8 @@
                       </c:choose>               
                   </div>
                 </div>           
-                <div class="mt-3 mx-5"> 
-                  <p class="fs-5">커뮤니티</p>
+                <div class="my-3 mx-5"> 
+                  <p class="fs-2 mb-0 fw-bold">커뮤니티</p>
                   <div class="border" style="border-radius: 10px;">
                     <span id="community" class="pt-2 ps-2" style="min-height: 90px; display: block;"> 
                       <c:choose>

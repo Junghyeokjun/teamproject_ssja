@@ -450,7 +450,7 @@
               if(reply_count.total==0){
                 reply.append($('<div id="none_reply" class="my-2" style="margin-left: 16px; margin-right: 16px; box-sizing: content-box; border: 1px solid #BBB;"  >' +
                                   '<div class="ps-2" style="background-color: #EEE;">'+
-                                    'admin' +
+                                    '관리자' +
                                   '</div>' +
                                   '<div class="p-2">'+
                                     '댓글이 존재하지 않습니다.'+
@@ -701,7 +701,7 @@
         <div id="reply" class="w-100">
           <div id="none_reply" class="my-2" style="margin-left: 16px; margin-right: 16px; box-sizing: content-box; border: 1px solid #BBB;" hidden >
             <div class="ps-2" style="background-color: #EEE;">
-              admin
+              관리자
             </div>
             <div class="p-2">
               댓글이 존재하지 않습니다.

@@ -257,7 +257,7 @@ public class CommunityController {
 
 	@GetMapping("/userinfo/{mno}")
 	public ModelAndView userinfo(ModelAndView mv ,@PathVariable("mno") long mno ){
-		
+				
 		mv.addObject("user", communityService.getUser(mno));
 		mv.addObject("reviews", communityService.getReviews(mno));
 		mv.addObject("communitys", communityService.getSearchPost(1, 5, "mno", mno+""));
