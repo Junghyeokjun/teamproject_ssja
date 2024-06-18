@@ -40,4 +40,17 @@ public interface VendorService {
 	
 	// 이미지 파일명 변경하기(DB 연동 아님)
 	public String ssjaFileNameFormat(String originalFileName, int num);
+	
+	
+	
+	
+	// 판매자의 문의 데이터 가져오기
+	public List<BoardDto> getQnaLists(Criteria criteria, Long bcno, Long bmno);
+	
+	public long getQnaCounts(Criteria criteria);
+	
+	
+	public List<ProductDto> getProductList(Criteria criteria, Long vno);
+	
+	public long getProductCounts(Criteria criteria);
 }

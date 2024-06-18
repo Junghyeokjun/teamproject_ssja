@@ -298,60 +298,71 @@
 			<h1 class="h3 text-center">${bc.bcname} 게시판</h1>
 		</div>
 		<div id="main_container" style="margin: 0 auto;">
-			<div class="d-flex justify-content-end p-1">
-				<a href="${pageContext.request.contextPath}/board/write_view/${bc.bcno}" class="btn btn-primary btn-tuning">글 작성</a>
-			</div>
-			<table class="table table-hover" style="text-align: center;">
-				<thead class="table-dark">
-					<tr>
-						<td>번호</td>
-						<td>제목</td>
-						<td>날짜</td>
-					</tr>
-				</thead>
-				<tbody>
-					<c:forEach var="board" items="${boards}">
-						<tr>
-							<td>${board.bno}</td>
-							<td><a id="board_title" class=""
-								href="${pageContext.request.contextPath}/board/content_view/${bc.bcno}?bno=${board.bno}">${board.btitle}</a>	
-							</td>
-							<td class="date_str">${board.bdate}</td>
-							<%-- <td><button type="button" onclick="location.href='/dept/remove?deptno=${dept.deptno}';">삭제</button></td> --%>
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
-			<div>
-				<nav aria-label="Page navigation example">
-					<ul class="pagination ch-col justify-content-center">
-						<c:if test="${pageMaker.prev}">
-							<li class="page-item"><a class="page-link ch-col"
-								href="${pageContext.request.contextPath}${category}${pageMaker.makeQuery(pageMaker.startPage-1)}"><</a></li>
-						</c:if>
-						<c:forEach var="idx" begin="${pageMaker.startPage}"
-							end="${pageMaker.endPage}">
-							<c:choose>
-								<c:when test="${pageMaker.criteria.pageNum == idx}">
-									<li class="page-item active"><a class="page-link"
-										href="${pageContext.request.contextPath}${category}${pageMaker.makeQuery(idx)}">${idx}</a>
-									</li>
-								</c:when>
-								<c:when test="${pageMaker.criteria.pageNum != idx}">
-									<li class="page-item"><a class="page-link"
-										href="${pageContext.request.contextPath}${category}${pageMaker.makeQuery(idx)}">${idx}</a></li>
-								</c:when>
-								<c:otherwise>
-								</c:otherwise>
-							</c:choose>
-						</c:forEach>
-						<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-							<li class="page-item"><a class="page-link ch-col"
-								href="${pageContext.request.contextPath}${category}${pageMaker.makeQuery(pageMaker.endPage+1)}">></a></li>
-						</c:if>
-					</ul>
-				</nav>
-			</div>			
+			<c:choose>
+				<c:when test="${empty boards}">
+					<h1 class="h1">당신이 작성한 게시글이 없습니다. 작성하시겠습니까? </h1>
+					<div class="d-flex justify-content-end p-1">
+						<a href="${pageContext.request.contextPath}/vendor/question/write_view/${bc.bcno}" class="btn btn-primary btn-tuning">글 작성</a>
+					</div> 
+				</c:when>
+				<c:otherwise>
+					<div class="d-flex justify-content-end p-1">
+						<a href="${pageContext.request.contextPath}/vendor/question/write_view/${bc.bcno}" class="btn btn-primary btn-tuning">글 작성</a>
+					</div>
+					<table class="table table-hover" style="text-align: center;">
+						<thead class="table-dark">
+							<tr>
+								<td>번호</td>
+								<td>제목</td>
+								<td>날짜</td>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach var="board" items="${boards}">
+								<tr>
+									<td>${board.bno}</td>
+									<td><a id="board_title" class=""
+										href="${pageContext.request.contextPath}/vendor/question/content_view/${bc.bcno}?bno=${board.bno}">${board.btitle}</a>	
+									</td>
+									<td class="date_str">${board.bdate}</td>
+									<%-- <td><button type="button" onclick="location.href='/dept/remove?deptno=${dept.deptno}';">삭제</button></td> --%>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+					<div>
+						<nav aria-label="Page navigation example">
+							<ul class="pagination ch-col justify-content-center">
+								<c:if test="${pageMaker.prev}">
+									<li class="page-item"><a class="page-link ch-col"
+										href="${pageContext.request.contextPath}${category}${pageMaker.makeQuery(pageMaker.startPage-1)}"><</a></li>
+								</c:if>
+								<c:forEach var="idx" begin="${pageMaker.startPage}"
+									end="${pageMaker.endPage}">
+									<c:choose>
+										<c:when test="${pageMaker.criteria.pageNum == idx}">
+											<li class="page-item active"><a class="page-link"
+												href="${pageContext.request.contextPath}${category}${pageMaker.makeQuery(idx)}">${idx}</a>
+											</li>
+										</c:when>
+										<c:when test="${pageMaker.criteria.pageNum != idx}">
+											<li class="page-item"><a class="page-link"
+												href="${pageContext.request.contextPath}${category}${pageMaker.makeQuery(idx)}">${idx}</a></li>
+										</c:when>
+										<c:otherwise>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+								<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+									<li class="page-item"><a class="page-link ch-col"
+										href="${pageContext.request.contextPath}${category}${pageMaker.makeQuery(pageMaker.endPage+1)}">></a></li>
+								</c:if>
+							</ul>
+						</nav>
+					</div>
+				</c:otherwise>
+			</c:choose>
+						
 		</div>
 		<div class="main_whitespace p-5 my-2">
 			
@@ -365,7 +376,9 @@
   </footer>
 
 </body>
-
+<sec:authorize access="isAuthenticated()">
+  <script src="/js/login_user_tab.js"> </script>
+</sec:authorize>
 <script>
 					 
   let select_dv = $("#select_content");

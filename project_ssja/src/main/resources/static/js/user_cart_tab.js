@@ -14,13 +14,17 @@ function formatterPrice(num) {
    $("<div>").attr('id',"cart_content").css({"padding":"5px"}).appendTo($user_itemcart_div);
    
    $(document).ready(function() {
-	    let cartLinkPosition = $('#cart_link').offset();
-	    let cartItemCartDivWidth = $('#user_itemcart_div').outerWidth();
-	    let leftPosition = cartLinkPosition.left - (cartItemCartDivWidth / 2);
-	    $('#user_itemcart_div').css({ 'left': leftPosition });
+	   if($('#cart_link').length > 0){
+		   let cartLinkPosition = $('#cart_link').offset();
+		    let cartItemCartDivWidth = $('#user_itemcart_div').outerWidth();
+		    
+		    let leftPosition = cartLinkPosition.left - (cartItemCartDivWidth / 2);
+		    $('#user_itemcart_div').css({ 'left': leftPosition });   
+	   } 
 	});
    
    $(window).on('scroll resize', function() {
+	   if($('#cart_link').length > 0){
 	    cartLinkPosition = $('#cart_link').offset();
 	    cartItemCartDivWidth = $('#user_itemcart_div').outerWidth();
 	    leftPosition = cartLinkPosition.left - (cartItemCartDivWidth / 2);
@@ -28,6 +32,7 @@ function formatterPrice(num) {
 	      $('#user_itemcart_div').css({
 	          'left': leftPosition
 	      });
+	   }
 	  });
    
    let getItemCart = function(){

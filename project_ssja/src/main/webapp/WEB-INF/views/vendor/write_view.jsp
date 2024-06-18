@@ -5,6 +5,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
+<sec:authentication property="principal" var="principal" />
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,17 +16,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
    
   <title>SSJA</title>
-  <sec:authorize access="isAuthenticated()">
-  	<sec:authentication property="principal" var="principal" />
-	<script>  		
-		let getPrincipal = {
-			'memberNum' : '${principal.memberNum}',
-			'userName' : '${principal.userInfo.m_Name}'
-		}
-		console.log(getPrincipal);
-	</script>
-  </sec:authorize>
-    
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -103,7 +95,15 @@ body {
 </head>
 
 <body>
-<c:choose>
+	<sec:authorize access="isAnonymous()">
+	    <script type="text/javascript">
+	    	$(document).ready(function(){
+	    		alert("관리자와 작성자 본인만 해당 페이지를 확인하실 수 있습니다. 먼저 로그인을 진행하시기 바랍니다.");
+				window.location.href = "/login";
+	    	});
+		</script>
+  	</sec:authorize>
+<c:choose>	
 	<c:when test="${principal.auth != 'ROLE_VENDOR'}">
 	  <header>
 	    <div id="title_bar" class="fixed-top">
@@ -153,101 +153,66 @@ body {
 	</header>
   </c:when>
 </c:choose>
+
 	<div id="side_bar">
 		<div id="side_links" class="w-100"></div>
 	</div>
 	<main>
-		<div class="main_whitespace p-5 my-2">
-			<h1 class="h3 text-center">${bc.bcname} 게시판</h1>
-		</div>
-		<div id="main_container" style="margin: 0 auto;">
-			<sec:authorize access="isAuthenticated()">
-				<c:choose>
-					<c:when test="${principal.auth == 'ROLE_USER' || principal.auth == 'ROLE_ADMIN'}">
-						<div class="d-flex justify-content-end p-1">
-							<a href="${pageContext.request.contextPath}/board/write_view/${bc.bcno}" class="btn btn-primary btn-tuning">글 작성</a>				
-						</div>
-					</c:when>
-				</c:choose>
-			</sec:authorize>
-			<table class="table table-hover" style="text-align: center;">
-				<thead class="table-dark">
+		<div id="main_container">
+			<div class="main_whitespace p-5">
+				<h1 class="h3 text-center">새로 작성하기</h1>
+			</div>
+			<form class="form" action="${pageContext.request.contextPath}/vendor/question/write" method="post">
+				<sec:csrfInput />
+				<div class="input-group">
+					<input type="hidden" class="form-control" name="bmno" value="${principal.memberNum}">
+					<input type="hidden" class="form-control" name="bbcno" value="${bcno}">							
+					<c:choose>
+						<c:when test="${principal.isOAuth2User() == false}">
+							<input type="hidden" class="form-control" name="bwriter" value="${principal.userInfo.m_Name}">
+						</c:when>
+						<c:otherwise>
+							<input type="hidden" class="form-control" name="bwriter" value="${principal.oAuth2Response.getNickName()}">
+						</c:otherwise>
+					</c:choose>	
+				</div>
+				<table class="table" >
 					<tr>
-						<td>번호</td>
-						<td>제목</td>
-						<td>이름</td>
-						<td>날짜</td>
+						<td colspan="2">
+							<div class="input-group no-border">
+	    						<input type="text" class="form-control" name="btitle" placeholder="제목을 입력하세요.">
+	    					</div>
+						</td>
 					</tr>
-				</thead>
-				<tbody>
-					<c:forEach var="board" items="${boards}">
-						<tr>
-							<td>${board.bno}</td>					
-							<td>
-							
-								<a id="board_title"	href="${pageContext.request.contextPath}/board/content_view/${bc.bcno}?bno=${board.bno}">${board.btitle}</a>
-							</td>
-							<td>${board.bwriter}</td>
-							<td class="date_str">${board.bdate}</td>
-							<%-- <td><button type="button" onclick="location.href='/dept/remove?deptno=${dept.deptno}';">삭제</button></td> --%>
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
-			<div>
-				<nav aria-label="Page navigation example">
-					<ul class="pagination ch-col justify-content-center">
-						<c:if test="${pageMaker.prev}">
-							<li class="page-item"><a class="page-link ch-col"
-								href="${pageContext.request.contextPath}/board/list/${category}${pageMaker.makeQuery(pageMaker.startPage-1)}"><</a></li>
-						</c:if>
-						<c:forEach var="idx" begin="${pageMaker.startPage}"
-							end="${pageMaker.endPage}">
-							<c:choose>
-								<c:when test="${pageMaker.criteria.pageNum == idx}">
-									<li class="page-item active"><a class="page-link"
-										href="${pageContext.request.contextPath}/board/list/${category}${pageMaker.makeQuery(idx)}">${idx}</a>
-									</li>
-								</c:when>
-								<c:when test="${pageMaker.criteria.pageNum != idx}">
-									<li class="page-item"><a class="page-link"
-										href="${pageContext.request.contextPath}/board/list/${category}${pageMaker.makeQuery(idx)}">${idx}</a></li>
-								</c:when>
-								<c:otherwise>
-								</c:otherwise>
-							</c:choose>
-						</c:forEach>
-						<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-							<li class="page-item"><a class="page-link ch-col"
-								href="${pageContext.request.contextPath}/board/list/${category}${pageMaker.makeQuery(pageMaker.endPage+1)}">></a></li>
-						</c:if>
-					</ul>
-				</nav>
-			</div>			
-		</div>
-		<div class="main_whitespace p-5 my-2">
-			
+					<tr>
+						<td colspan="2">
+							<div class="input-group">
+								<textarea id="board_textarea" name="bcontent" class="form-control" rows="10" placeholder="내용을 입력하세요."></textarea>	    				
+	    					</div>
+						</td>		
+					</tr>
+					<tr>
+						<td colspan="2">
+							<div class="d-flex justify-content-between">
+								<input type="submit" class="btn btn-danger customed-ssja" value="입력">						
+								<a class="btn btn-primary customed-ssja" href="${pageContext.request.contextPath}/vendor/question/${bcno}">취소</a>																																																						
+							</div>
+						</td>
+					</tr>
+				</table>
+			</form>
+			<div class="main_whitespace p-5">
+				
+			</div>
 		</div>
 	</main>
-	<script type="text/javascript">
-
-	</script>
-
 	<footer>
 		<div id="first_footer" class="p-3"></div>
 		<div id="second_footer"></div>
 		<div id="third_footer"></div>
-	</footer>
-
+	</footer>	
 </body>
 <sec:authorize access="isAuthenticated()">
   <script src="/js/login_user_tab.js"> </script>
-  <script src="/js/user_cart_tab.js"> </script>  
 </sec:authorize>
-<script type="text/javascript">
-	$(document).ready(function(){
-		
-	});
-</script>
-
 </html>

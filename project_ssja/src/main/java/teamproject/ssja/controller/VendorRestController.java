@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,7 +32,8 @@ public class VendorRestController {
 	private ProductCategoryService productCategoryService;
 	
 	// 판매자 정보 가져오기
-	@RequestMapping(value = "/vendorInfo", method = RequestMethod.POST)
+	//@RequestMapping(value = "/vendorInfo", method = RequestMethod.POST)
+	@PostMapping("/vendorInfo")
 	public ResponseEntity<VendorInfoDTO> getInfo(@RequestParam("vendorData") long vendorNo) {
 		try {
 			VendorInfoDTO vendorInfo = vendorService.getVendor(vendorNo);
@@ -43,7 +46,8 @@ public class VendorRestController {
 	}
 
 	// 판매자 정보 가져오기
-	@RequestMapping(value = "/category", method = RequestMethod.GET)
+	//@RequestMapping(value = "/category", method = RequestMethod.GET)
+	@GetMapping("/category")
 	public ResponseEntity<List<ProductCategoryGroupDto>> getPCSub(@RequestParam("categoryNo") long categoryNo) {
 		try {
 			List<ProductCategoryGroupDto> thePCSubs = productCategoryService.getPCSub(categoryNo);
