@@ -122,6 +122,7 @@
       let m_no=$("#m_no");
       let m_no_val=$("#m_no").val();
       let m_NickName_val=$("#m_NickName").val();
+      let m_auth_val=$("#m_auth").val();
 
       //게시글의 연관상품을 얻어오는 함수
       let getProduct= function(pro_no){
@@ -282,7 +283,14 @@
                   reply_wrap1=$('<div class="my-2" style="margin-left: 106px; margin-right: 16px; box-sizing: content-box; border: 1px solid #BBB;" group="'+e.rgroup+'" indent="'+e.rindent+'" step="'+e.rstep+'"></div>')
                 }
                 var reply_wrap2=$('<div class="px-2 d-flex justify-content-between" style="background-color: #EEE;">');
-                $('<span>'+e.rwriter+' </span>').appendTo(reply_wrap2);
+                
+                  if(e.rwriter=='관리자'){
+                    $('<span>'+e.rwriter+' </span>').appendTo(reply_wrap2);
+                  }else{
+                    console.log("관리자가 아님");
+                    $('<span><a href="${pageContext.request.contextPath}/community/userinfo/${content.bmno}"class="text-dark" style="text-decoration: none;">'+ e.rwriter+'</a> </span>').appendTo(reply_wrap2);
+
+                  }
                   //삭제버튼 이벤트 추가예정
                 if(m_no_val== e.rmno){
                   $('<span>'+e.rdate+' |<button class="delete_reply_btn"  style="border-color: transparent; background-color :transparent" rno="'+e.rno+'">삭제</button> |<button class="update_reply_btn"  style="border-color: transparent; background-color :transparent" rno="'+e.rno+'">수정</button></span>').appendTo(reply_wrap2);
@@ -338,6 +346,9 @@
           if(group==undefined){
             group=0;
 
+          }
+          if(m_auth_val=='ROLE_ADMIN'){
+            m_NickName_val='관리자';
           }
           $.ajax({
             type : 'POST',
@@ -589,6 +600,8 @@
     </sec:authorize>
     <input type="hidden" id="m_no" value="${principal.userInfo.m_No}">
     <input type="hidden" id="m_NickName" value="${principal.userInfo.m_NickName}">
+    <input type="hidden" id="m_auth" value="${principal.userInfo.auth}">
+    
   </header>
 
   <div id="side_bar"> 
@@ -603,7 +616,14 @@
         <h3 class="w-100 ps-3 py-2 mb-0 border-top border-bottom" style="background-color: #EEE;"> ${content.btitle} </h3>
         <div class="w-100 mb-3 border-bottom d-flex justify-content-between">
           <div class="ms-4">
-            ${content.bwriter}
+            <c:choose>
+              <c:when test="${not(content.bwriter eq '관리자')}">
+                <a href="${pageContext.request.contextPath}/community/userinfo/${content.bmno}"class="text-dark" style="text-decoration: none;">${content.bwriter}</a>                            
+              </c:when>
+              <c:otherwise>
+                ${content.bwriter}
+              </c:otherwise>
+            </c:choose>
           </div> 
           <div>
             댓글수 : <span class="reply_total">${reply_total}</span> &nbsp;
