@@ -81,7 +81,8 @@ public interface BoardMapper {
 	//게시글의 이미지 경로를 삭제하는 메서드
 	int deleteBoardImg(long bno);
 	
-	
-	
+	//마이페이지 내가 쓴글 메서드
+	List<CommunityBoardDto> getMyCommus(Long id, Integer pageNum);
+	List<BoardDto> getMyQnAs(Long id, Integer pageNum);
 	// 
 } 

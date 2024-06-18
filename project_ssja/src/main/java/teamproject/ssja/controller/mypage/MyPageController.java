@@ -58,5 +58,9 @@ public class MyPageController {
 	public String myCartP() {
 		return "/product/myCart";
 	}
-
+	
+	@GetMapping("/apply/vendor")
+	public String pageToApplyV() {
+		return "/myPage/MyPage";
+	}
 }

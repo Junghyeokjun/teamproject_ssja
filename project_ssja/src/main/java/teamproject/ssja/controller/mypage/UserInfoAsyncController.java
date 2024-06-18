@@ -34,6 +34,7 @@ import teamproject.ssja.dto.userinfo.ChangePasswordForm;
 import teamproject.ssja.dto.userinfo.MyPageOrdersDTO;
 import teamproject.ssja.dto.userinfo.UserInfoDTO;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
+import teamproject.ssja.page.ListObjectPaging5DTO;
 import teamproject.ssja.page.ListObjectPagingDTO;
 import teamproject.ssja.service.mypage.MailService;
 import teamproject.ssja.service.mypage.MyPageService;
@@ -225,6 +226,30 @@ public class UserInfoAsyncController {
 		} catch (Exception e) {
 			  return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");
 		}
+	 }
+	 
+	 @PatchMapping("/delete/cancel")
+	 public ResponseEntity<String> cancelDelete(){
+		 try {
+			 myPageService.cancelDelete();
+			 return ResponseEntity.status(HttpStatus.ACCEPTED).body("success");
+		} catch (Exception e) {
+			
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("failed");
+		}
+		 
+	 }
+	 @GetMapping("/info/community")
+	 public ResponseEntity<ListObjectPaging5DTO> getInfoCommus(@RequestParam("pageNum")Integer PageNum){
+		 
+		 ListObjectPaging5DTO data = myPageService.getMyCommus(PageNum);
+		 return ResponseEntity.ok(data);
+	 }
+	 @GetMapping("/info/qna")
+	 public ResponseEntity<ListObjectPagingDTO> getInfoQnAs(@RequestParam("pageNum")Integer PageNum){
+		 ListObjectPagingDTO data = myPageService.getMyQnA(PageNum);
+		 
+		 return ResponseEntity.ok(data);
 	 }
  
 }

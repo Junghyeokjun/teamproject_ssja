@@ -60,4 +60,7 @@ public interface MyPageMapper {
 	List<CartItemsDTO> getMyCartItems(Map<String, Long> params);
 	
 	void deleteCartItem(ProductNumberDTO data);
+	
+	@Update("update members set m_deletedate = null where m_no=#{id}")
+	void cancelDelete(Long id);
 }

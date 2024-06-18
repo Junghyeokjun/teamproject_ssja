@@ -295,6 +295,32 @@
 		DELETE FROM board_imgs WHERE b_no = #{B_NO}
 	</delete>
 	
+	<!-- 마이페이지 내가 쓴글  -->
+	<select id="getMyCommus" resultMap="CommunityDtoMap">
+		select m.* ,i.b_img_no, i.b_img_path, (SELECT COUNT(*) FROM replys r WHERE r.b_no = m.b_no) AS countrv from 
+		(select a.*, rownum as rnum 
+			from 
+				(select b.*, COUNT(*) OVER() AS total 
+				from board b where b_c_no = 40 and m_no = #{id} order by b_date desc) a 
+		)m
+		inner join 
+			board_imgs i
+		on i.b_no = m.b_no
+		where rnum between #{pageNum} * 5 - 4  and #{pageNum} * 5
+	</select>
+	
+	<select id="getMyQnAs" resultMap="BoardDtoAndTotMap">
+	SELECT 
+		m.*, (SELECT COUNT(*) FROM replys r WHERE r.b_no = m.b_no and r.m_no  <![CDATA[  <>   ]]> m.m_no) AS answer
+	FROM (
+    	SELECT a.*, rownum AS rnum 
+    	FROM ( SELECT b.*, COUNT(*) OVER() AS total 
+        	FROM board b   WHERE b_c_no = 20 and m_no= #{id}  ORDER BY b_date DESC ) a
+    	) m
+	WHERE m.rnum between #{pageNum} * 10 - 9 and #{pageNum} * 10
+	
+	</select>
+	
 	<resultMap type="teamproject.ssja.dto.BoardCategoryDto" id="BoardCategoryDtoMap">
 		<id property="bcno" column="b_c_no"/>
 		<result property="bcname" column="b_c_name"/>
@@ -314,6 +340,19 @@
 		<result property="bhit" column="b_hit"/>
 		<result property="beval" column="b_eval"/>
 		<result property="prono" column="pro_no"/>
+	</resultMap>
+		<resultMap type="teamproject.ssja.dto.BoardDto" id="BoardDtoAndTotMap">
+		<id property="bno" column="b_no"/>
+		<result property="bmno" column="m_no"/>
+		<result property="bbcno" column="b_c_no"/>
+		<result property="bwriter" column="b_writer"/>
+		<result property="btitle" column="b_title"/>
+		<result property="bcontent" column="b_content"/>
+		<result property="bdate" column="b_date"/>
+		<result property="blike" column="b_like"/>
+		<result property="bhit" column="b_hit"/>
+		<result property="total" column="total"/>
+		<result property="existAns" column="answer"/>
 	</resultMap>
 	
 	<!-- 해당 게시글 좋아요 여부 맵 -->
@@ -338,5 +377,7 @@
 		<result property="prono" column="pro_no"/>
 		<result property="img_no" column="B_IMG_NO"/>
 		<result property="img_path" column="B_IMG_PATH"/>
+		<result property="total" column="total"/>
+		<result property="countrv" column="countrv"/>
 	</resultMap>
 </mapper>

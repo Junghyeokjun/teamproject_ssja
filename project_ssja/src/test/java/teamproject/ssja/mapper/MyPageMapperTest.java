@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import lombok.extern.slf4j.Slf4j;
+import teamproject.ssja.dto.BoardDto;
+import teamproject.ssja.dto.community.CommunityBoardDto;
 import teamproject.ssja.dto.product.ProductNumberDTO;
 import teamproject.ssja.dto.userinfo.CartItemsDTO;
 @Slf4j
@@ -21,6 +23,8 @@ class MyPageMapperTest {
 	
 	@Autowired
 	MyPageMapper myPageMapper;
+	@Autowired
+	BoardMapper boardMapper;
 	
 	@Disabled
 	@Test
@@ -42,6 +46,7 @@ class MyPageMapperTest {
 			log.info("item {}", c);
 		}
 	}
+	@Disabled
 	@Test
 	@DisplayName("장바구니 사유품 삭제 테스트")
 	void testDeleteItemFromCart() {
@@ -50,5 +55,18 @@ class MyPageMapperTest {
 		ProductNumberDTO data = new ProductNumberDTO(id,list);
 		myPageMapper.deleteCartItem(data);
 		}
+	
+	@Test
+	void 내가쓴글공지테스트() {
+		List<BoardDto> list = boardMapper.getMyQnAs(1L, 1);
+		
+		log.info("1 {}",list.get(0));
+	}
+	
+	@Test
+	void 내가쓴글코뮤테스트() {
+		List<CommunityBoardDto> list = boardMapper.getMyCommus(1L, 1);
+		log.info("1 {}",list.get(0));
+	}
 
 }

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.extern.slf4j.Slf4j;
+import teamproject.ssja.InfoProvider;
+import teamproject.ssja.LoginChecker;
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.login.CustomPrincipal;
 import teamproject.ssja.page.Criteria;
@@ -63,9 +65,18 @@ public class BoardController {
 	}
 
 	@PostMapping("/write")
-	public String addOne(@AuthenticationPrincipal CustomPrincipal principal, BoardDto boardDto) {
-		log.info("addOne()..");		
-		// 관리자 영역. 추후 수정이 필요하거나, 수정하지 않아도 됨.
+	public String addOne(BoardDto boardDto, @AuthenticationPrincipal CustomPrincipal user) {
+		String writer = "";
+		if(LoginChecker.check()==1) {
+			writer = user.getUserInfo().getM_NickName();
+		}else {
+			writer = user.getOAuth2Response().getName();
+		}
+		log.info("writer {} ", writer);
+		boardDto.setBmno(InfoProvider.getM_NO());
+		boardDto.setBwriter(writer);
+		boardDto.setBbcno(20);
+		boardService.addBoard(boardDto);
 		return "redirect:/board/list/" + boardDto.getBbcno();
 	}
 
