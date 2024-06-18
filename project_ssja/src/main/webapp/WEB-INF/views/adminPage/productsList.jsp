@@ -76,35 +76,43 @@ body {
 	<header>
 		<div id="title_bar" class=" fixed-top">
 			<div class="py-2 px-1" id="top-bar">
-				 <button type="toggle-button" class="top_btn" id="top_btn"></button>
+				<button type="toggle-button" class="top_btn" id="top_btn"></button>
 				<a id="logo_toHome" href=""><img id="logo_img"
 					src="/images/utilities/logoSSJA.png"></a>
 			</div>
 		</div>
-		<nav id="total_bar">
-		</nav>
+		<nav id="total_bar"></nav>
 	</header>
 	<div id="side_bar">
 		<div id="side_links" class="w-100"></div>
 	</div>
 	<main>
-		<div id="main_container"
-			class="d-flex flex-row align-items-center justify-content-center">
-			 <div id="content_dv_productsInfo" >
-				<h2>상품목록</h2>
-				<table class="table" id="productstable"  style="text-align: center;">
-					<thead class="table-dark">
+		<div id="main_container" style="margin: 0 auto;">
+			<br>
+			<h2>상품목록</h2>
+			<form name="products-search-form" autocomplete="off">
+					<select name="type">
+						<option selected value="">선택</option>
+						<option value="PRO_NO">상품번호</option>
+						<option value="PRO_BIZNAME">사업자이름</option>
+					</select> <input type="text" name="keyword" value=""> <input
+						type="button" onclick="productsSearchList()"
+						class="btn btn-outline-dark mr-2" value="검색">
+				</form>
+			<div class="table-responsive">
+				<table class="table" id="productstable"style="text-align: center;">
+					<thead class="table">
 						<tr>
-							<td>상품번호</td>
-							<td>상품이름</td>
-							<td>가격</td>
-							<td>수량</td>
-							<td>위시 수</td>
-							<td>판매 수</td>
-							<td>사업자이름</td>
+							<td scope="col">상품번호</td>
+							<td scope="col">상품이름</td>
+							<td scope="col">가격</td>
+							<td scope="col">수량</td>
+							<td scope="col">위시 수</td>
+							<td scope="col">판매 수</td>
+							<td scope="col">사업자이름</td>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody class="table-group-divider" >
 						<c:forEach var="product" items="${products}">
 							<tr>
 								<td>${product.getPRO_NO()}</td>
@@ -118,17 +126,7 @@ body {
 						</c:forEach>
 					</tbody>
 				</table>
-				<form name="products-search-form" autocomplete="off">
-					<select name="type">
-						<option selected value="">선택</option>
-						<option value="PRO_NO">상품번호</option>		
-						<option value="PRO_BIZNAME">사업자이름</option>														
-					</select>
-					 <input type="text" name="keyword" value=""> <input
-						type="button" onclick="productsSearchList()"
-						class="btn btn-outline-primary mr-2" value="검색">
-				</form>
-				<div id="paging_dv">				
+				<div id="paging_dv">
 					<nav aria-label="Page navigation example">
 						<ul class="pagination ch-col justify-content-center">
 							<c:if test="${productpageMaker.prev}">
@@ -148,14 +146,15 @@ body {
 									</c:otherwise>
 								</c:choose>
 							</c:forEach>
-							<c:if test="${productpageMaker.next && productpageMaker.endPage > 0}">
+							<c:if
+								test="${productpageMaker.next && productpageMaker.endPage > 0}">
 								<li class="page-item"><a class="page-link ch-col"
 									href="${pageContext.request.contextPath}/adminPage/productsList${productpageMaker.makeQuery(productpageMaker.endPage+1)}">></a></li>
 							</c:if>
 						</ul>
 					</nav>
 				</div>
-			</div> 
+			</div>
 		</div>
 	</main>
 	<footer>

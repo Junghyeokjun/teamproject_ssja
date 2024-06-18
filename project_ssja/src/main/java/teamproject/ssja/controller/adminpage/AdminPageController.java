@@ -1,16 +1,14 @@
 package teamproject.ssja.controller.adminpage;
 
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.MembersSearchDto;
 import teamproject.ssja.dto.ProductsSearchDto;
+import teamproject.ssja.dto.PurchaseSearchDto;
 import teamproject.ssja.dto.userinfo.CouponDTO;
 import teamproject.ssja.page.Criteria;
 import teamproject.ssja.page.Page10VO;
@@ -27,6 +26,8 @@ import teamproject.ssja.service.Admin.CouponListService;
 import teamproject.ssja.service.Admin.MemberListService;
 import teamproject.ssja.service.Admin.ProductListService;
 import teamproject.ssja.service.Admin.PurchaseListService;
+import teamproject.ssja.service.Admin.SalesListService;
+
 import java.text.ParseException;
 
 
@@ -46,6 +47,9 @@ public class AdminPageController {
 	
 	@Autowired
 	private CouponListService couponListService;
+	
+	@Autowired
+	private SalesListService salesListService;
 	
 	@GetMapping("/membersList")
 	public String membersList(Model model, Criteria criteria) {
@@ -92,6 +96,13 @@ public class AdminPageController {
 		return "/adminPage/purchasesList";
 	}	
 	
+	@GetMapping("/purchasesSearchList")
+	public ResponseEntity<List<PurchaseSearchDto>> purchasesSearchList(@RequestParam("type") String type, @RequestParam("keyword") String keyword) {
+		log.info("purchasesSearchList()..");
+        List<PurchaseSearchDto> searchResults = purchaseListService.getPurchasesSearchList(type,keyword);
+        return ResponseEntity.ok(searchResults);
+	}
+		
 	@RequestMapping("/couponsList")
 	public String couponsList(Model model, Criteria criteria) {
 		log.info("couponsList()..");
@@ -199,6 +210,18 @@ public class AdminPageController {
 	        log.info("removeCoupon()..");
 	        couponListService.removeCoupon(couponDto);
 	        return "redirect:/adminPage/couponsList";
+	    }
+	 
+	    @GetMapping("/salesList")
+	    public String getDailySales(Model model) {
+	        log.info("salesList()..");
+	        List<Map<String, Object>> dailySales = salesListService.getDailySales();
+	        model.addAttribute("dailySales", dailySales);
+	        List<Map<String, Object>> monthlySales = salesListService.getMonthlySales();
+	        model.addAttribute("monthlySales", monthlySales);
+	        List<Map<String, Object>> yearlySales = salesListService.getYearlySales();
+	        model.addAttribute("yearlySales", yearlySales);
+	        return "/adminPage/salesList";
 	    }
 
 }

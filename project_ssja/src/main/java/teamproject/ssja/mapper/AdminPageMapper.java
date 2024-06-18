@@ -1,6 +1,7 @@
 package teamproject.ssja.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -9,6 +10,7 @@ import teamproject.ssja.dto.MembersSearchDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ProductsSearchDto;
 import teamproject.ssja.dto.PurchaseDto;
+import teamproject.ssja.dto.PurchaseSearchDto;
 import teamproject.ssja.dto.userinfo.CouponDTO;
 import teamproject.ssja.page.Criteria;
 
@@ -31,6 +33,9 @@ public interface AdminPageMapper {
 
 	List<PurchaseDto> getPerchaseListWithPaging(Criteria criteria);
 
+	//검색
+	List<PurchaseSearchDto> getPurchasesSearchList(String type, String keyword);
+
 	long getCouponListTotalCount();
 
 	List<CouponDTO> getCouponListWithPaging(Criteria cri);
@@ -42,5 +47,13 @@ public interface AdminPageMapper {
 	 CouponDTO read(int c_no); // read 쿼리 메서드
 
 	  void updateCoupon(CouponDTO couponDto); // updateCoupon 쿼리 메서드
+
+		List<Map<String, Object>> getDailySalesList();
+
+		List<Map<String, Object>> getMonthlySalesList();
+		
+		List<Map<String, Object>> getYearlySalesList();
+
+
 
 }
