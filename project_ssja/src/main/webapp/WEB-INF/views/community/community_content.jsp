@@ -140,7 +140,7 @@
             alert(error);
           }
         })
-      }
+      };
 
       //게시물 추천 개수 얻어오는 함수
 
@@ -164,7 +164,7 @@
           }
         })
       
-      }
+      };
 
       //회원이 게시글을 추천한적이 있는지를 체크하는 함수
       let liked_check= function(){
@@ -621,7 +621,7 @@
         </div>
           <div class="w-75 d-flex justify-content-between align-items-end mt-4 mb-2 ">
             <span style="width: 250px;">
-              <c:if test="${content.prono != 0}">
+              <c:if test="${content.prono != null}">
                 <a href="" id="product_link">
                   <div class="product" >
                     <div class="d-flex flex-row align-items-center" >
@@ -663,7 +663,7 @@
 
             </sec:authorize>
 
-              <c:if test="${principal.userInfo.m_No == content.bmno and !(principal.userInfo.auth.equals('ROLE_ADMIN'))}">
+              <c:if test="${principal.userInfo.m_No == content.bmno and not (principal.userInfo.auth eq 'ROLE_ADMIN')}">
                 <button class="btn btn-outline-primary" id="update_btn" >수정하기</button>
                 <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">삭제하기</button>
               </c:if>
