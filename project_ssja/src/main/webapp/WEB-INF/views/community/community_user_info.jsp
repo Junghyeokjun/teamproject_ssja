@@ -82,6 +82,11 @@
 
           <body>
             <header>
+              <c:if test="${user==null}">
+                <script>
+                  location.href="/"
+                </script>
+              </c:if>
               <div id="title_bar" class=" fixed-top">
                 <div class="py-2 px-1" id="top-bar">
 
