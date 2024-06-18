@@ -92,6 +92,7 @@
       height: 60px;
       margin-top: 5px;
       white-space:normal;
+      overflow: hidden;
 
     }
 

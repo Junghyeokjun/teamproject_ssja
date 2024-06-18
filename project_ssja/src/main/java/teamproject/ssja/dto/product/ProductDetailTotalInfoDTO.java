@@ -35,6 +35,9 @@ public class ProductDetailTotalInfoDTO {
 	private int pro_hit;
 
 	public Double formattingAvgEval() {
+		if(avgeval==null) {
+			return 0d;
+		}
 		return Math.ceil(avgeval * 100) / 100;
 	}
 
