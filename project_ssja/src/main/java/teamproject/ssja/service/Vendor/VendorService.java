@@ -15,6 +15,7 @@ import teamproject.ssja.dto.LikesVO;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ProductImgDto;
 import teamproject.ssja.dto.ReplysDto;
+import teamproject.ssja.dto.VendorSalesDto;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
 import teamproject.ssja.page.Criteria;
 
@@ -53,4 +54,8 @@ public interface VendorService {
 	public List<ProductDto> getProductList(Criteria criteria, Long vno);
 	
 	public long getProductCounts(Criteria criteria);
+	
+	// 판매자 홈에 쓰일, 최근 일주일 동안의 매출 내역 가져오기
+	public List<VendorSalesDto> getWeeklySalesData();
 }
+

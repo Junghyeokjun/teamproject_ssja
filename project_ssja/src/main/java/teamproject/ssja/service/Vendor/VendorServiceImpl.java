@@ -20,6 +20,7 @@ import teamproject.ssja.dto.LikesVO;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ProductImgDto;
 import teamproject.ssja.dto.ReplysDto;
+import teamproject.ssja.dto.VendorSalesDto;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
 import teamproject.ssja.mapper.VendorMapper;
 import teamproject.ssja.page.Criteria;
@@ -183,5 +184,11 @@ public class VendorServiceImpl implements VendorService{
 	public long getProductCounts(Criteria criteria) {
 		// TODO Auto-generated method stub
 		return vendorMapper.selectVendorProductsCount(criteria);
+	}
+
+	@Override
+	public List<VendorSalesDto> getWeeklySalesData() {
+		// TODO Auto-generated method stub
+		return vendorMapper.selectVendorSalesInWeek();
 	}
 }

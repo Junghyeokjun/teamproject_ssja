@@ -22,6 +22,22 @@
  -->
  	
  <!-- 상품  -->
+ 
+ 	<!-- 최근 일주일 간 팔린 상품 매출 내역 -->
+ 	<select id="selectVendorSalesInWeek" resultMap="VendorSalesDtoMap">
+	 	<![CDATA[
+	 		SELECT TRUNC(P.PUR_DATE) AS ORDER_DATE,
+			       SUM(O.O_PRICE) AS TOTAL_SALES
+			FROM PURCHASE P
+			JOIN ORDERS O ON P.PUR_NO = O.PUR_NO
+			JOIN PRODUCT PR ON O.PRO_NO = PR.PRO_NO
+			JOIN VENDOR V ON PR.V_NO = V.V_NO
+			WHERE P.PUR_DATE >= TRUNC(SYSDATE) - 7
+			  AND P.PUR_DATE < TRUNC(SYSDATE)
+			GROUP BY TRUNC(P.PUR_DATE)
+			ORDER BY TRUNC(P.PUR_DATE)
+	 	]]>
+ 	</select>
  	<!-- 페이징은 기본으로 깔고 가기 -->
 	<select id="selectVendorProducts" resultMap="ProductsListMap">
 		 <![CDATA[
@@ -90,7 +106,12 @@
 		]]>
 	</select>	
 	
-	<!-- 게시글 맵 -->
+<!-- 맵 -->
+	<resultMap type="teamproject.ssja.dto.VendorSalesDto" id="VendorSalesDtoMap">
+		<result property="orderDate" column="ORDER_DATE"/>
+		<result property="totalSales" column="TOTAL_SALES"/>
+	</resultMap>
+	
 	<resultMap type="teamproject.ssja.dto.BoardDto" id="BoardDtoMap">
 		<id property="bno" column="b_no"/>
 		<result property="bmno" column="m_no"/>
