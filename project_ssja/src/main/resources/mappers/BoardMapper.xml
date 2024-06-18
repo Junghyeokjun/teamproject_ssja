@@ -319,6 +319,7 @@
     	) m
 	WHERE m.rnum between #{pageNum} * 10 - 9 and #{pageNum} * 10
 	
+	</select>
 	<!-- 게시글 최신 공지사항  -->
 	<select id="selectNotice" resultMap="BoardDtoMap">
 		select * 
