@@ -12,6 +12,7 @@ public interface MembersMapper {
 	String getMNickName(String mNickName);
 	String getMEmail(String mEmail);
 	String selectEmail(String mid);
+	MembersDto getMember(long mno);
 	int getProQuantity(long proNo);
 	int insertMember(MembersDto member);
 	int insertUserAuth(String mid);

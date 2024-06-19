@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -14,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ProductImgDto;
+import teamproject.ssja.dto.VendorSalesDto;
 import teamproject.ssja.dto.vendor.TotalVendorInfoDto;
 import teamproject.ssja.dto.vendor.VendorEtcInfoDTO;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
@@ -200,4 +200,9 @@ public class VendorServiceImpl implements VendorService{
 	}
 
 
+	@Override
+	public List<VendorSalesDto> getWeeklySalesData() {
+		// TODO Auto-generated method stub
+		return vendorMapper.selectVendorSalesInWeek();
+	}
 }

@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ProductImgDto;
+import teamproject.ssja.dto.VendorSalesDto;
 import teamproject.ssja.page.Criteria;
 
 @SpringBootTest
@@ -43,6 +44,13 @@ class VendorMapperTest {
 		vendorMapper.insertProductImgs(new ProductImgDto(1, 3013, "3"));
 	}
 
+	@Test
+	void testSelectVendorSalesInWeek() {
+		for(VendorSalesDto dto : vendorMapper.selectVendorSalesInWeek()) {
+			log.info("dto : " + dto);
+		}
+	}
+	
 	@Test
 	void testSelectVendorQnas() {
 		Criteria criteria = new Criteria();

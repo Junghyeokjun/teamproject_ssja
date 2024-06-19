@@ -45,7 +45,7 @@
   <script src="/js/vendorbarscript.js">
 
   </script>
-  <link href="/css/barstyle.css?after" rel="stylesheet">
+  <link href="/css/vendorbarstyle.css?after" rel="stylesheet">
 </c:when>
 </c:choose>
   <script src="/js/footer.js">
@@ -237,10 +237,16 @@ margin-bottom:150px;
     <div id="third_footer"></div>
   </footer>
   
-   <sec:authorize access="isAuthenticated()">
-  <script src="/js/login_user_tab.js"> </script>
+<sec:authorize access="isAuthenticated()">
+	<c:choose>
+  		<c:when test="${principal.auth eq 'ROLE_VENDOR'}">
+			<script src="/js/vendor_login_user_tab.js"> </script>	
+		</c:when>
+		<c:otherwise>
+			<script src="/js/login_user_tab.js"> </script>	
+		</c:otherwise>
+	</c:choose>  	
     <script src="/js/user_cart_tab.js"> </script>
-  
 </sec:authorize>
 
    <div class="modal fade" id="totalInfoModal" tabindex="-1" aria-labelledby="totalInfoModalLabel" aria-hidden="true">
