@@ -557,16 +557,16 @@
       })
       //수정 버튼
       $(document).on("click",".update_reply_btn",function(){
-        var content = this.parentNode.parentNode.nextSibling;
-        content.click();
-        $("#insert_re_btn").attr("id","update_re_btn")
-        $("#update_re_btn").attr("rno",this.getAttribute("rno"));
+          var content = this.parentNode.parentNode.nextSibling;
+          content.click();
+          $("#insert_re_btn").attr("id","update_re_btn")
+          $("#update_re_btn").attr("rno",this.getAttribute("rno"));
 
+        })
+        if(pro_no.val()!=0){
+        getProduct(pro_no.val());
+        }
       })
-      if(pro_no.val()!=0){
-      getProduct(pro_no.val());
-      }
-    })
 
   </script>
 </head>

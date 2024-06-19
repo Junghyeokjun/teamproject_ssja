@@ -2,11 +2,8 @@ package teamproject.ssja.service.Vendor;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,12 +12,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.BoardDto;
-import teamproject.ssja.dto.BoardIsLikedDto;
-import teamproject.ssja.dto.LikesVO;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ProductImgDto;
-import teamproject.ssja.dto.ReplysDto;
+import teamproject.ssja.dto.vendor.TotalVendorInfoDto;
+import teamproject.ssja.dto.vendor.VendorEtcInfoDTO;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
+import teamproject.ssja.dto.vendor.VendorItemCondition;
 import teamproject.ssja.mapper.VendorMapper;
 import teamproject.ssja.page.Criteria;
 
@@ -184,4 +181,23 @@ public class VendorServiceImpl implements VendorService{
 		// TODO Auto-generated method stub
 		return vendorMapper.selectVendorProductsCount(criteria);
 	}
+
+	//회원의 판매자 조회
+	@Override
+	public TotalVendorInfoDto getVendorTotalInfo(String bizname, int pageNum) {
+		TotalVendorInfoDto data = new TotalVendorInfoDto();
+		data.setCommuList(vendorMapper.getVendorInfoCommu(bizname));
+		VendorEtcInfoDTO info =vendorMapper.getVendorInfoEtc(bizname);
+		data.setInfo(info);
+		
+		return data;
+		
+	}
+
+	@Override
+	public List<ProductDto> getVendorItemList(VendorItemCondition condition) {
+		return vendorMapper.getVendorItemList(condition);
+	}
+
+
 }

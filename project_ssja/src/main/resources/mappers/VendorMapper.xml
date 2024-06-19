@@ -90,6 +90,59 @@
 		]]>
 	</select>	
 	
+	<select id="getVendorInfoEtc" resultType="teamproject.ssja.dto.vendor.VendorEtcInfoDTO">
+	select nvl((select count(*) from product where pro_bizname = #{bizname} ),0) as countItems,
+	nvl(round((select avg(b_eval) from board
+	 where pro_no in((select pro_no from product where pro_bizname = #{bizname} ))),2),0) as avgVendorEval 
+	 from dual
+	</select>
+	
+	<select id="getVendorItemList" resultType="ProductDto">
+	SELECT a.pro_no, a.p_c_no, a.pro_price, a.pro_bannerimg, a.pro_wish,
+			a.pro_bizname, a.pro_name, a.avgeval, a.countrv
+	FROM (
+		SELECT p.*, rownum as rnum,
+				NVL(avg_eval.avg_eval,0) AS avgeval,
+				NVL(rv_count.rv_count, 0) AS countrv
+		FROM product p
+		LEFT JOIN (
+			SELECT pro_no, AVG(b_eval) AS avg_eval
+			FROM board GROUP BY pro_no
+			) avg_eval ON p.pro_no = avg_eval.pro_no
+		LEFT JOIN (
+			SELECT pro_no, COUNT(*) AS rv_count
+			FROM board GROUP BY pro_no
+			) rv_count ON p.pro_no = rv_count.pro_no
+		WHERE p.v_no = (SELECT v_no FROM vendor WHERE v_bizname = #{bizname})
+		  <if test="start != 0 and end != 0">
+            and p.pro_price between #{start} AND #{end} 
+        </if>
+		order by
+		<choose>
+                <when test='order != null || order != ""'>
+                    ${order}
+                </when>
+                
+                <otherwise>
+                    p.pro_sellcount DESC
+                </otherwise>
+            </choose>
+	) a
+	WHERE a.rnum BETWEEN #{pageNum} * 16 - 15 AND #{pageNum} * 16
+	</select>
+	
+	<select id="getVendorInfoCommu" resultType="teamproject.ssja.dto.vendor.CommunityViewDTO">
+		select
+		b.b_no, b.b_writer, b.b_title, i.b_img_path 
+		from board b
+		inner join board_imgs i 
+			on b.b_no = i.b_no
+		where b.b_c_no = 40 and 
+			b.pro_no in (select p.pro_no from product p where p.pro_bizname = #{bizname}) and 
+			rownum &lt;= 5
+	</select>
+	
+	
 	<!-- 게시글 맵 -->
 	<resultMap type="teamproject.ssja.dto.BoardDto" id="BoardDtoMap">
 		<id property="bno" column="b_no"/>
@@ -135,4 +188,6 @@
 		<result property="pNo" column="PRO_NO"/>
 		<result property="piPath" column="PRO_IMG_PATH"/>
 	</resultMap>
+	
+	
 </mapper>
