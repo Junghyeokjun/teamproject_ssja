@@ -20,12 +20,12 @@ $("<p>").text("채용정보").appendTo($sec_ft_dv1);
 $("<p>").text("이용약관").appendTo($sec_ft_dv1);
 $("<p>").text("개인정보 처리방침").css("font-weight", "bold").appendTo($sec_ft_dv1);
 $("<p>").text("안전거래센터").appendTo($sec_ft_dv1);
-$("<a>").attr("href", "www.naver.com").text("공지사항").appendTo($sec_ft_dv1);
+$("<a>").attr("href", "/notice").text("공지사항").appendTo($sec_ft_dv1);
 
 
-$("<a>").attr("href", "www.naver.com").text("판매자 신청").appendTo($sec_ft_dv2);
+$("<a>").attr("href", "/myPage/apply/vendor").text("판매자 신청").appendTo($sec_ft_dv2);
 $("<a>").attr("href", "www.naver.com").text("신고센터").appendTo($sec_ft_dv2);
-$("<a>").attr("href", "www.naver.com").text("고객센터").appendTo($sec_ft_dv2);
+$("<a>").attr("href", "/board/list/20").text("고객센터").appendTo($sec_ft_dv2);
 $("<p>").text("배송파트너 안내").appendTo($sec_ft_dv2);
 $("<p>").text("상품 광고 소개").appendTo($sec_ft_dv2);
 $("<a>").attr("href", "/link_source").text("이벤트 이미지 출처").appendTo($sec_ft_dv2);
@@ -35,7 +35,7 @@ $sec_ft.append($sec_ft_dv1, $sec_ft_dv2);
 let footerHeight = $("footer").outerHeight();
 let $thd_dv = $("<div>").appendTo($thd_ft);
 
-$("<a>").attr("href", "www.naver.com").text("고객 문의 >").attr("id", "customer_QnA").appendTo($thd_dv);
+$("<a>").attr("href", "/board/list/20").text("고객 문의 >").attr("id", "customer_QnA").appendTo($thd_dv);
  let span1= $("<span>").text("1234-5678").css("font-weight","bold").css("font-size","1.5em");
   let span2=$("<span>").text("09:00 ~ 18:00").css("font-weight","bold").css("margin-left","10px");
   $("<p>").append(span1, span2).appendTo($thd_dv);

@@ -27,7 +27,7 @@
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <meta name="_csrf" content="${_csrf.token}" />
 <meta name="_csrf_header" content="${_csrf.headerName}" />
-<script src="/js/barscript.js"></script>
+<script src="/js/barscript_admin.js"></script>
 <script src="/js/footer.js"></script>
 <link href="/css/footerstyle.css?after" rel="stylesheet">
 <link href="/css/barstyle.css?after" rel="stylesheet">
@@ -73,55 +73,46 @@ body {
 </style>
 </head>
 <body>
-<header>
+	<header>
 		<div id="title_bar" class=" fixed-top">
 			<div class="py-2 px-1" id="top-bar">
+				<button type="toggle-button" class="top_btn" id="top_btn"></button>
 				<a id="logo_toHome" href=""><img id="logo_img"
 					src="/images/utilities/logoSSJA.png"></a>
-				<form action="http://www.naver.com" id=searchForm method="get">
-				</form>
-				<button id="search_icon"></button>
-				<a id="user_link"><img id="login_img"></a>
 			</div>
 		</div>
-		<nav id="total_bar">
-			<div id="home_user_bar"></div>
-			<div id="sub_bar"></div>
-		</nav>
+		<nav id="total_bar"></nav>
 	</header>
-	<div id="select_MyPage" class="d-flex flex-column">
-		<div id="select_mp_top" class="text-center">관리자 메뉴</div>
-		<div id="select_content">
-			<button class="MyPage_btn w-100" id="adminPage_membersInfo_Select"
-				style="border: 1px solid #cccccc">회원목록</button>
-			<button class="MyPage_btn w-100" id="adminPage_productsInfo_Select"
-				style="border: 1px solid #cccccc">상품목록</button>
-			<button class="MyPage_btn w-100" style="border: 1px solid #cccccc">주문목록</button>
-			<button class="MyPage_btn w-100" style="border: 1px solid #cccccc">쿠폰관리</button>
-			<button class="MyPage_btn w-100" style="border: 1px solid #cccccc">게시판관리</button>
-			<button class="MyPage_btn w-100" style="border: 1px solid #cccccc">이벤트관리</button>
-			<button class="MyPage_btn w-100" style="border: 1px solid #cccccc">매출</button>
-		</div>
+	<div id="side_bar">
+		<div id="side_links" class="w-100"></div>
 	</div>
-
 	<main>
-		<div id="main_container"
-			class="d-flex flex-row align-items-center justify-content-center">
-			 <div id="content_dv_productsInfo" >
-				<h2>상품목록</h2>
-				<table class="table" style="text-align: center;">
-					<thead class="table-dark">
+		<div id="main_container" style="margin: 0 auto;">
+			<br>
+			<h2>상품목록</h2>
+			<form name="products-search-form" autocomplete="off">
+					<select name="type">
+						<option selected value="">선택</option>
+						<option value="PRO_NO">상품번호</option>
+						<option value="PRO_BIZNAME">사업자이름</option>
+					</select> <input type="text" name="keyword" value=""> <input
+						type="button" onclick="productsSearchList()"
+						class="btn btn-outline-dark mr-2" value="검색">
+				</form>
+			<div class="table-responsive">
+				<table class="table" id="productstable"style="text-align: center;">
+					<thead class="table">
 						<tr>
-							<td>상품번호</td>
-							<td>상품이름</td>
-							<td>가격</td>
-							<td>수량</td>
-							<td>위시 수</td>
-							<td>판매 수</td>
-							<td>사업자이름</td>
+							<td scope="col">상품번호</td>
+							<td scope="col">상품이름</td>
+							<td scope="col">가격</td>
+							<td scope="col">수량</td>
+							<td scope="col">위시 수</td>
+							<td scope="col">판매 수</td>
+							<td scope="col">사업자이름</td>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody class="table-group-divider" >
 						<c:forEach var="product" items="${products}">
 							<tr>
 								<td>${product.getPRO_NO()}</td>
@@ -135,7 +126,7 @@ body {
 						</c:forEach>
 					</tbody>
 				</table>
-				<div>
+				<div id="paging_dv">
 					<nav aria-label="Page navigation example">
 						<ul class="pagination ch-col justify-content-center">
 							<c:if test="${productpageMaker.prev}">
@@ -155,69 +146,50 @@ body {
 									</c:otherwise>
 								</c:choose>
 							</c:forEach>
-							<c:if test="${productpageMaker.next && productpageMaker.endPage > 0}">
+							<c:if
+								test="${productpageMaker.next && productpageMaker.endPage > 0}">
 								<li class="page-item"><a class="page-link ch-col"
 									href="${pageContext.request.contextPath}/adminPage/productsList${productpageMaker.makeQuery(productpageMaker.endPage+1)}">></a></li>
 							</c:if>
 						</ul>
 					</nav>
 				</div>
-			</div> 
+			</div>
 		</div>
-
-
-
 	</main>
-
 	<footer>
 		<div id="first_footer" class="p-3"></div>
 		<div id="second_footer"></div>
 		<div id="third_footer"></div>
 	</footer>
-
 </body>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    // select_content div 내의 모든 버튼을 가져옵니다.
-    var buttons = document.querySelectorAll('#select_content button');
-    
-    // 각 버튼에 클릭 이벤트를 추가합니다.
-    buttons.forEach(function(button) {
-        button.addEventListener('click', function() {
-            // 클릭한 버튼의 ID를 가져옵니다.
-            var buttonId = button.getAttribute('id');
-
-            // 모든 콘텐츠 div를 숨깁니다.
-            var contentDivs = document.querySelectorAll('#main_container > div');
-            contentDivs.forEach(function(div) {
-                div.style.display = 'none';
-            });
-
-            // 클릭한 버튼에 대응하는 콘텐츠 div를 표시합니다.
-            if (buttonId === 'adminPage_membersInfo_Select') {
-                // 회원목록 버튼이 클릭되면 membersList() 메서드를 호출합니다.
-                membersList();
-            } else if (buttonId === 'adminPage_productsInfo_Select') {
-                // 상품목록 버튼이 클릭되면 productsList() 메서드를 호출합니다.
-                productsList();
+function productsSearchList() {
+    $.ajax({
+        type: 'GET',
+        url: "/adminPage/productsSearchList",
+        data: $("form[name=products-search-form]").serialize(),
+        success: function(result) {
+			console.log(result);
+            $('#productstable > tbody').empty();
+            if (result.length >= 1) {
+            	$("#paging_dv").empty();
+                result.forEach(function(product) {
+                    var str = '<tr>';
+                    str += "<td>" + product.pro_NO + "</td>";
+                    str += "<td>" + product.pro_NAME + "</td>";
+                    str += "<td>" + product.pro_PRICE + "</td>";
+                    str += "<td>" + product.pro_QUANTITY + "</td>";
+                    str += "<td>" + product.pro_WISH + "</td>";
+                    str += "<td>" + product.pro_SELLCOUNT + "</td>";
+                    str += "<td>" + product.pro_BIZNAME + "</td>";              
+                    str += "</tr>";
+                    $('#productstable > tbody').append(str);
+                });
             }
-            // 필요한 경우 다른 버튼에 대한 조건을 추가합니다.
-        });
+        }
     });
-
-    // membersList() 메서드
-    function membersList() {
-        // membersList 페이지로 이동합니다.
-        window.location.href = '${pageContext.request.contextPath}/adminPage/membersList';
-    }
-
-    // productsList() 메서드
-    function productsList() {
-        // productsList 페이지로 이동합니다.
-        window.location.href = '${pageContext.request.contextPath}/adminPage/productsList';
-    }
-});
-
+}
 </script>
 
 </html>

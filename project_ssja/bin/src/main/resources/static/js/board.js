@@ -54,4 +54,24 @@ $(document).ready(function() {
 		let formattedDate = getBdateStr(bdateStr);
 		$(this).text(formattedDate);
 	});
+
+	$('.form').on('submit', function(e){
+		e.preventDefault();
+
+		if($('input[name="btitle"]').val().trim() == ""){
+			alert("제목을 작성해 주십시오.");
+			return;
+		}else if($('input[name="btitle"]').val().length < 5){
+			alert("제목은 최소 5글자 이상 작성하시기 바랍니다.");
+			return;
+		}else if($('input[name="bcontent"]').val().trim() == ""){
+			alert("내용을 작성해 주십시오.");
+			return;
+		}else if($('input[name="bcontent"]').val().length < 20){
+			alert("내용이 너무 짧습니다. 좀 더 길게 작성하십시오.");
+			return;
+		}else{
+			this.submit();
+		}
+	});
 });

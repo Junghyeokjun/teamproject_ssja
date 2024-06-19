@@ -4,7 +4,9 @@
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 	<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-	
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<sec:authentication property="principal" var="principal"/>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -91,6 +93,54 @@ body {
 </head>
 
 <body>
+	<sec:authorize access="isAnonymous()">
+	    <script type="text/javascript">
+	    	$(document).ready(function(){
+	    		alert("관리자와 작성자 본인만 해당 페이지를 확인하실 수 있습니다. 먼저 로그인을 진행하시기 바랍니다.");
+				window.location.href = "/login";
+	    	});
+		</script>
+  	</sec:authorize>
+	<fmt:parseNumber var="bcNum" value="${bcNo}" type="number" />
+	<sec:authorize access="isAuthenticated()">
+		<sec:authentication property="principal" var="principal"/>
+	    <script type="text/javascript">
+			var bcNum = '${bcNum}';
+			// content_view를 그대로 넣으면 안됨. 모두 문자열로 변환된 상태로 넘어오니까.
+			// 객체로 받고 싶다면 json 객체로 받기. 물론 담당자는 필요 데이터만 뽑아서 처리함.
+			var contentViewBmo = '${content_view.bmno}';
+	        var principal = {
+	            memberNum: "${principal.memberNum}",
+	            auth: "${principal.auth}"
+	        };
+
+			// QnA 게시판이고, 로그인 유저의 권한이 관리자가 아니며, 해당 작성자 번호와 로그인 번호가 다른 경우
+			if(principal.auth != 'ROLE_ADMIN' && bcNum == 20 && contentViewBmo != principal.memberNum){
+				alert("작성자의 문의 내용이 아니므로 확인하실 수 없습니다.");				
+				window.location.href = "${pageContext.request.contextPath}/board/list/20";
+			}
+
+	        $(document).ready(function() {
+				// console.log("bcNum: " + bcNum);
+				// console.log("contentViewBmo: " + contentViewBmo);
+	            // console.log("Member Number: " + principal.memberNum);
+	            // console.log("Auth: " + principal.auth);
+	            // 여기서 principal 값을 사용하여 추가 작업 수행 가능
+				
+	        });
+	    </script>
+			
+		
+		<c:if test="${bcNo == 20 && principal.auth == 'ROLE_USER' && content_view.bmno != principal.memberNum}">
+			<script type="text/javascript">
+				function role(){
+					alert("관리자와 본인만 해당 페이지를 확인하실 수 있습니다. 목록으로 돌아갑니다.");
+					window.location.href = "${pageContext.request.contextPath}/board/list/20";
+				};				
+				role();
+			</script>
+		</c:if>
+	</sec:authorize>								
 	<header>
 		<div id="title_bar" class=" fixed-top">
 			<div class="py-2 px-1" id="top-bar">
@@ -125,6 +175,7 @@ body {
 				<div class="input-group">
 					<input type="hidden" class="form-control" name="bno" value="${content_view.bno}">
 					<input type="hidden" class="form-control" name="bbcno" value="${content_view.bbcno}">
+					<input type="hidden" class="form-control" name="bmno" value="${content_view.bmno}">				
 					<sec:csrfInput />
 				</div>
 				<table class="table" >
@@ -166,33 +217,47 @@ body {
 	    					</div>
 						</td>		
 					</tr>
-					<tr>
-						<td  colspan="2">
-							<div class="d-flex justify-content-center">
-								<!-- data-likebmno 값 변경 필요 -->
-								<button id="like-button" class="btn" data-likebno="${content_view.bno}" data-likebmno="${content_view.bmno}">
-									<img class="board-like" >
-								</button>
-							</div>
-					</tr>
-					<tr>
-						<td  colspan="2" style="border: none;">
-							<div class="text-center">
-								<p>
-									좋아요 수 : <span id="like-count">${content_view.blike}</span>
-								</p>
-							</div>
-						</td>
-					</tr>
+					
+					<c:if test="${bcNum >= 30}">
+						<tr>
+							<td  colspan="2">
+								<div class="d-flex justify-content-center">
+									<!-- data-likebmno 값 변경 필요 -->
+									<button id="like-button" class="btn" data-likebno="${content_view.bno}" data-likebmno="${principal.memberNum}">
+										<img class="board-like" >
+									</button>
+								</div>
+						</tr>					
+						<tr>
+							<td colspan="2" style="border: none;">
+								<div class="text-center">
+									<p>
+										좋아요 수 : <span id="like-count">${content_view.blike}</span>
+									</p>
+								</div>
+							</td>
+						</tr>
+					</c:if>
 					<tr>
 						<td  colspan="2">
 							<div class="d-flex justify-content-between">
-								<div>
-									<input type="submit" class="btn btn-danger customed-ssja" value="수정">
-									<a id="deleteBoard" href="${pageContext.request.contextPath}/board/delete?bno=${content_view.bno}" class="btn btn-danger">삭제</a>
-								</div>
-								
-								<a class="btn btn-primary customed-ssja" href="${pageContext.request.contextPath}/board/list/${content_view.bbcno}">되돌아가기</a>								
+							<sec:authorize access="isAuthenticated()">
+								<c:choose>								
+									<c:when test="${principal.memberNum == content_view.bmno || principal.auth == 'ROLE_ADMIN'}">
+										<div>
+											<input type="submit" class="btn btn-danger customed-ssja" value="수정">
+											<a id="deleteBoard" href="${pageContext.request.contextPath}/board/delete?bno=${content_view.bno}" class="btn btn-danger">삭제</a>
+										</div>
+									</c:when>
+									<c:otherwise>
+										<div>
+										</div>									
+									</c:otherwise>
+								</c:choose>
+							</sec:authorize>
+							<sec:authorize access="isAuthenticated()">								
+								<a class="btn btn-primary customed-ssja" href="${pageContext.request.contextPath}/board/list/${content_view.bbcno}">되돌아가기</a>																															
+							</sec:authorize>								
 								<%-- &nbsp;&nbsp;<a href="${pageContext.request.contextPath}/board/delete?bno=${content_view.bno}">삭제</a> --%>
 							<%-- <sec:authorize access="hasRole('ROLE_ADMIN')">
 								&nbsp;&nbsp;<a
@@ -209,13 +274,27 @@ body {
 						</td>
 					</tr>
 					<tr>
-						<td colspan="2">
-							<h5 class="h5 m-1 p-1">댓글</h5>		
-							<div class="input-group border">								
-	    						<input id="inputReplyCon" type="text" class="form-control" name="rcontent" data-rbno="${content_view.bno}" data-rmno="" placeholder="댓글을 입력하세요.">
-	    						<span class="input-group-text"><button id="inputReply" class="btn btn-primary">입력</button></span>
-	    					</div>	   						    					
-						</td>					
+						<c:choose>
+							<c:when test="${(bcNum == 20 && principal.auth != 'ROLE_ADMIN') 
+											|| (bcNum == 10 && principal.auth == 'ROLE_USER')
+											|| (bcNum == 30 && principal.auth == 'ROLE_USER') }">
+								<td colspan="2">
+									<h5 class="h5 m-1 p-1 text-center">댓글 </h5>
+									<div class="input-group border visually-hidden">								
+			    						<input id="inputReplyCon" type="text" class="form-control" name="rcontent" data-rbno="${content_view.bno}" data-rmno="" placeholder="관리자만 달 수 있는 댓글입니다.">
+			    					</div>	
+								</td>
+							</c:when>
+							<c:otherwise>
+								<td colspan="2">
+									<h5 class="h5 m-1 p-1">댓글 </h5>		
+									<div class="input-group border">								
+			    						<input id="inputReplyCon" type="text" class="form-control" name="rcontent" data-rbno="${content_view.bno}" data-rmno="" placeholder="댓글을 입력하세요.">
+			    						<span class="input-group-text"><button id="inputReply" class="btn btn-primary btn-format">입력</button></span>
+			    					</div>	   						    					
+								</td>
+							</c:otherwise>
+						</c:choose>					
 					</tr>
 					<tr>
 						<td colspan="2">
@@ -280,6 +359,17 @@ body {
 	</footer>
 <script>
 	$(document).ready(function(){
+		let token = $("meta[name='_csrf']").attr("content");
+		let header = $("meta[name='_csrf_header']").attr("content");
+		
+		console.log("document.referrer : " + document.refererr);
+		// 해당 jsp 파일에서만 텍스트 영역의 스크롤바를 없애고 내용에 따라 높이를 조정해 줄 예정
+		// srollHeight : 컨텐츠가 차지하는 공간 높이. 제이쿼리로는 접근을 못해서, DOM 객체로 변환 후 접근해야 함.
+		// $('#board_textarea')[0] : 해당 제이쿼리 객체에서 첫 번째 DOM 요소로 접근한다는 것을 의미.
+		if($('#board_textarea')[0].scrollHeight > $('#board_textarea').height()){
+			$('#board_textarea').css('height', 'auto');
+		}
+
 		// 댓글 url
 		let replysUrl = '/api/replys';
 
@@ -288,19 +378,13 @@ body {
 
 		console.log("inputReplyBno : " + rbno);		
 
-		// 어느 사용자든 확인할 수 있는, 댓글 좋아요
-		let replyLike = function(){
-			/* $.ajax({
-				
-			}); */
-			
-		};
-
-		// 로그인한 사람만 할 수 있는, 댓글 좋아요 눌렀을 때의 좋아요 숫자 증가 or 감소
-		let replyLiked = function(){
-
-		};
-
+		// 댓글 텍스트 상자 높이 조절 함수
+		let replyTextareaHeight = function(){ 
+			$('.rcontent.form-control').each(function() {
+	            $(this).css('height', 'auto').css('height', this.scrollHeight + 'px');
+        	})
+        };
+		
 		/* let html1 = ''; 
 		html1+= '<c:forEach var="reply_view" items="${replys}">';
 		html1+=	'<c:forEach var="re" begin="1" end="${reply_view.rindent}">';
@@ -314,59 +398,141 @@ body {
 		let getReplyLists = function(response){
 			$('#replys').empty(); // 기존 내용 비우기
 			let html1 = '';
+
+			// 커뮤니티 댓글 외형
+			// $.each(response.replys, function(index, reply_view) {
+			// 	html1 += '<div class="rounded border m-1">';
+			// 	html1 += '<div class="input-group">'; 
+			// 	// 댓글 만들기
+			// 	for (let i = 1; i <= reply_view.rindent; i++) {
+			// 		html1 += '<img src="">';
+			// 	}
+			// 	html1 += '<span class="input-group-text bg-replywriter border">' + reply_view.rwriter + '</span>';
+			// 	//html1 += '<input type="text" class="rcontent form-control" data-rno="' + reply_view.rno + '" value="' + reply_view.rcontent + '" readonly="readonly">';				
+			// 	html1 += '<textarea class="rcontent form-control" data-rno="' + reply_view.rno + '" rows="1" readonly="readonly">' + reply_view.rcontent + '</textarea>';				
+			// 	html1 += '</div>';
+				
+			// 	// 좋아요 부분의 숫자는 추후 없애고 따로 처리해야 한다.
+			// 	html1 += '<div class="d-flex justify-content-between"><div><button class="reply-likes btn mx-1">좋아요 '+ 1 +'</button><button class="reply-modify btn">수정</button><button id="reply-delete" class="btn">X</button><button class="reply-report btn">신고</button></div><div class="btn disabled border-0">' + reply_view.rdate + '</div>';
+			// 	html1 += '</div></div>'
+			// });
+
+			// 관리자 댓글 외형
+			// 현재 페이지에서는 관리자 댓글 외형을 입히기 위해 ajax에 댓글 헤드를 꾸미는 함수를 집어넣었음.
 			$.each(response.replys, function(index, reply_view) {
-				html1 += '<div class=" rounded border"><div class="input-group">'; 
+				html1 += '<div class="rounded border m-2">';
+				html1 += '<div class="replyhead1 text-center"><h2 class="h2 disabled border-0 m-0 pt-2">관리자 답변</h2></div><div class="d-flex flex-row-reverse replyhead2">'	
+				if(principal.auth == "ROLE_ADMIN"){
+					html1 += '<div><button class="reply-modify btn">수정</button><button id="reply-delete" class="btn">X</button></div>';
+				}
+				html1 += '<div class="btn disabled border-0">' + reply_view.rdate + '</div></div><div class="input-group">'; 
 				// 댓글 만들기
 				for (let i = 1; i <= reply_view.rindent; i++) {
-					html1 += '<img src="">';
+					html1 += '<span class=""></span>';
 				}
-				html1 += '<span class="input-group-text bg-replywriter">' + reply_view.rwriter + '</span>';
-				html1 += '<input id="rcontent" type="text" class="form-control" data-rno="' + reply_view.rno + '" value="' + reply_view.rcontent + '" readonly="readonly">';				
+
+				//html1 += '<input type="text" class="rcontent form-control" data-rno="' + reply_view.rno + '" value="' + reply_view.rcontent + '" readonly="readonly">';				
+				html1 += '<textarea class="rcontent form-control" data-rno="' + reply_view.rno + '" rows="1" readonly="readonly">' + reply_view.rcontent + '</textarea>';				
 				html1 += '</div>';
-				html1 += '<div class="d-flex justify-content-between"><div><button id="reply-likes" class="btn mx-1">좋아요 '+ 1 +'</button><button id="reply-modify" class="btn">수정</button><button id="reply-delete" class="btn">X</button></div><div class="btn disabled border-0">' + reply_view.rdate + '</div>';
-				html1 += '</div>'
+				
+				html1 += '</div></div>'
 			});
 
-			$('#replys').html(html1);
-			
+			if(html1 == ''){
+				html1 += '<div class="m-2"><h2 class="h2 text-center no-data-font">현재 댓글이 없습니다.</h2></div>'
+				$('#replys').before(html1);				
+			}else{
+				$('#replys').html(html1);
+			}
 
 			// 페이지네이션 부분
-    		$('#pagination').empty(); // 기존 내용을 비우기.
-			// 서버로부터 받은 데이터를 HTML로 바꿔서 특정 요소에 추가
-			let html2 = '';
+			// qna에서는 댓글에 해당 부분이 필요하지 않다. 주석으로 처리하면 된다.
 
-			// 이전 페이지 링크 추가
-			if (response.pageMaker.prev) {
-				html2 += '<li class="page-item">';
-				html2 += '<a class="page-link" href="${pageContext.request.contextPath}/api/replys/list' + (response.pageMaker.startPage - 1) + '">&lt;</a>';
-				html2 += '</li>';
-			}
-			
-			// 페이지 번호 링크 추가
-			for (let idx = response.pageMaker.startPage; idx <= response.pageMaker.endPage; idx++) {
-				if (response.pageMaker.criteria.pageNum == idx) {
-					html2 += '<li class="page-item active">';
-					// 문자로 전달된 데이터이므로, 매개변수가 숫자라면 숫자형으로 바꾸기
-					html2 += '<a class="page-link" href="${pageContext.request.contextPath}/api/replys/list/' + idx +  '/' + response.pageMaker.criteria.amount +'}">' + idx + '</a>'
-				} else {
-					html2 += '<li class="page-item">';
-					// 문자로 전달된 데이터이므로, 매개변수가 숫자라면 숫자형으로 바꾸기
-					html2 += '<a class="page-link" href="${pageContext.request.contextPath}/api/replys/list/' + idx +  '/' + response.pageMaker.criteria.amount +'}">' + idx + '</a>';							
-				}					
-				html2 += '</li>';
-			}
-			
-			// 다음 페이지 링크 추가
-			if (response.pageMaker.next && response.pageMaker.endPage > 0) {
-				html2 += '<li class="page-item">';
-				html2 += '<a class="page-link" href="${pageContext.request.contextPath}/api/replys/list' + (response.pageMaker.endPage + 1) + '">&gt;</a>';
-				html2 += '</li>';
-			}
+    		// $('#pagination').empty(); // 기존 내용을 비우기.
+			// // 서버로부터 받은 데이터를 HTML로 바꿔서 특정 요소에 추가
+			// let html2 = '';
 
-			// 요소에 HTML 추가
-			$('#pagination').html(html2);
+			// // 이전 페이지 링크 추가
+			// if (response.pageMaker.prev) {
+			// 	html2 += '<li class="page-item">';
+			// 	html2 += '<a class="page-link" href="${pageContext.request.contextPath}/api/replys/list/' + (response.pageMaker.startPage - 1) + '">&lt;</a>';
+			// 	html2 += '</li>';
+			// }
+			
+			// // 페이지 번호 링크 추가
+			// for (let idx = response.pageMaker.startPage; idx <= response.pageMaker.endPage; idx++) {
+			// 	if (response.pageMaker.criteria.pageNum == idx) {
+			// 		html2 += '<li class="page-item active">';
+			// 		// 문자로 전달된 데이터이므로, 매개변수가 숫자라면 숫자형으로 바꾸기
+			// 		html2 += '<a class="page-link" href="${pageContext.request.contextPath}/api/replys/list/' + idx +  '/' + response.pageMaker.criteria.amount +'">' + idx + '</a>'					
+			// 	} else {
+			// 		html2 += '<li class="page-item">';
+			// 		// 문자로 전달된 데이터이므로, 매개변수가 숫자라면 숫자형으로 바꾸기
+			// 		html2 += '<a class="page-link" href="${pageContext.request.contextPath}/api/replys/list/' + idx +  '/' + response.pageMaker.criteria.amount +'">' + idx + '</a>';							
+			// 	}					
+			// 	html2 += '</li>';
+			// }
+			
+			// // 다음 페이지 링크 추가
+			// if (response.pageMaker.next && response.pageMaker.endPage > 0) {
+			// 	html2 += '<li class="page-item">';
+			// 	html2 += '<a class="page-link" href="${pageContext.request.contextPath}/api/replys/list' + (response.pageMaker.endPage + 1) + '">&gt;</a>';
+			// 	html2 += '</li>';
+			// }
+
+			// // 요소에 HTML 추가
+			// $('#pagination').html(html2);
+
+			$('.h5.m-1.p-1').text('댓글 ' + response.pageMaker.total);
 		};
 		
+		// $('.reply-modify').on('click',function(){
+		// 	let replyParent = $(this).parents('div').eq(2);
+		// 	let textarea = replyParent.find('textarea')
+		// 	if($(this).text == '수정'){
+		// 		textarea.prop('readonly', false);
+		// 		textarea.focus();
+		// 		$(this).text = '완료';
+		// 	}else if($(this).text == '완료'){
+		// 		$.ajax({
+		// 			url: replysUrl + '/modify',
+		// 			type : 'POST',
+		// 			beforeSend : function(xhr) {
+		// 				xhr.setRequestHeader(header, token);
+		// 			},
+		// 			data : {
+		// 				'bno' : rbno
+		// 			},					
+		// 			success :  function(response){
+		// 				console.log("replys : " + response.replys);
+		// 				console.log("pageMaker : " + response.pageMaker);
+		// 				console.log("replyTotal : " + response.pageMaker.total);
+		// 				console.log("===============================");
+		// 				getReplyLists(response);	
+		// 				replyTextareaHeight();
+		// 				adminReplyHead();
+		// 			},
+		// 			error : function(xhr, status, error){
+		// 				console.log("error : " + error);
+		// 				console.log("response : " + xhr.responseText);
+		// 			}
+		// 		});
+		// 	}			
+		// });
+
+		// 관리자 댓글 헤드 꾸미기 함수
+		let adminReplyHead = function(){
+			$('.replyhead1').css({
+				'border-radius' : '0.375em 0.375em 0 0',
+				'background-color' : '#d7d8da'
+			});
+
+			$('.replyhead2').css({
+				'background-color' : '#d7d8da'
+			});
+		};
+
+		console.log(replysUrl);
 		// 기본적인 댓글 리스트 가져오기
 		$.ajax({
 			url: replysUrl + '/list',
@@ -377,31 +543,39 @@ body {
 			success :  function(response){
 				console.log("replys : " + response.replys);
 				console.log("pageMaker : " + response.pageMaker);
-				getReplyLists(response);
+				console.log("replyTotal : " + response.pageMaker.total);
+				console.log("===============================");
+				getReplyLists(response);	
+				replyTextareaHeight();
+				adminReplyHead();
 			},
 			error : function(xhr, status, error){
 				console.log("error : " + error);
 				console.log("response : " + xhr.responseText);
 			}
 		});
-
+		
 		// 페이지네이션 처리된 부분 클릭 시 
-		$('.page-link').click(function(e){
+		// 동적으로 생성된 요소에 대해서도 이벤트를 처리할 수 있음
+		$(document).on('click', '.page-link', function(e){
 			// 이벤트 비활성화(기본 동작 방지하기)
 			e.preventDefault();
 
 			let url = $('.page-link').attr('href');
-			let parts = url.split('/');
-			let pageNum = parts[parts.length - 2]; // 마지막에서 두 번째 요소가 페이지 번호
-			let amount = parts[parts.length - 1]; // 마지막 요소가 개수
-
+			
 			$.ajax({
 				url: url,
 				type : 'GET',
+				data : {
+					'bno' : rbno
+				},
 				success :  function(response){
 					console.log("replys : " + response.replys);
 					console.log("pageMaker : " + response.pageMaker);
+					console.log("replyTotal : " + response.pageMaker.total);
 					getReplyLists(response);
+					replyTextareaHeight();
+					adminReplyHead();
 				},
 				error : function(xhr, status, error){
 					console.log("error : " + error);
@@ -409,7 +583,6 @@ body {
 				}
 			});
 		});
-
 
 		// memberNum 변수 값 유무에 따라 로그인 여부를 체크하는 함수(소셜 로그인도 해당 변수에 값이 들어간 상태라고 함)
 		function isLoggedIn(){
@@ -419,19 +592,22 @@ body {
 		// 댓글 입력 관련
 
 
-		// 제약 1 : 댓글 내용 칸 클릭 시, 로그인이 되어 있지 않다면 로그인 상태를 
-		$('#inputReplyCon').click(function(){
-			if(!isLoggedIn()){
-				alert('댓글을 달 수 없습니다. 로그인 페이지로 이동합니다.');
-				$(location).attr('href', '/login');
+		// 제약 1 : 댓글 내용 칸 클릭 시, 로그인이 되어 있지 않다면 로그인 상태를 방지
+		$(document).on('click', '#inputReplyCon', function(){
+			if(principal.auth != "ROLE_ADMIN"){
+				alert('관리자만 댓글을 달 수 있습니다');
 				return;
 			}
 		});
 
-		
+	 	$('.rcontent.form-control').each(function() {
+	        // 현재 textarea 요소의 높이를 자동으로 조절
+	        $(this).css('height', 'auto').css('height', this.scrollHeight + 'px');
+	    });
 
 		//  댓글 제한
-		$('#inputReply').click(function(e){
+		//$('#inputReply').click(function(e){
+		$(document).on('click', '#inputReply', function(){
 			// 기본 동작을 막음.
 			// 이후 폼 제출이나 링크 이동은 따로 선언해서 이벤트를 진행
 			e.preventDefault();
@@ -455,9 +631,9 @@ body {
 		});
 
 		// 댓글 좋아요 버튼 클릭 시 관련 처리
-		$('#reply-likes').click(function(e){
+		//$('.reply-likes').click(function(e){
+		$(document).on('click', '.reply-likes', function(){	
 			e.preventDefault();
-
 
 			if(!isLoggedIn()){
 				alert('좋아요를 할 수 없습니다.');

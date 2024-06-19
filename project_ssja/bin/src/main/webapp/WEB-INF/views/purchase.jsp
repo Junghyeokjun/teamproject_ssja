@@ -74,10 +74,22 @@
     #discount{
       float: right;
     }
+    #discount_per{
+      color: #ccc;
+      text-align: end;
+      
+    }
     #won{
       display: inline;
     }
-
+    #buy_btn{
+      width: 150px;
+      height: 55px;
+    }
+    #buy_btn_wrap{
+      display: flex;
+      justify-content: end;
+    }
 
     @media screen and (min-width: 861px) {
       #payment_title{
@@ -88,18 +100,26 @@
         left: 70%;
         top: 220px; 
         text-align:center;
-        width: 240px;
-        height: 300px;
-        padding-right: 50px;
+        width: 190px;
+        height: 280px;
+        margin-right: 50px;
+        padding: 15px 5px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
       }
       #full_amount,#discount{
         padding-right: 50px;
       }
+
       #result_price_wrap{
         padding-right: 25px;
       }
-
-
+      #buy_btn_wrap{
+        justify-content: center;
+      }
+      #discount_per{
+        padding-right: 26px;
+      }
     }
 
   </style>
@@ -190,6 +210,7 @@
       let discount_val=0;
       let result_price=$("#result_price");
       let result_price_val=full_amount_val-discount_val;
+      let discount_per=$("#discount_per");
       let payment='discount';
       let address=$("#address");
       let detail_address=$("#detail_address");
@@ -321,6 +342,7 @@
         full_amount.text(full_amount_val);
         discount.text(discount_val);
         result_price.text(result_price_val);
+        discount_per.text(coupon_discount+"%");
       }
 
       //결제 관련 가격들을 세팅하는 부분
@@ -345,7 +367,7 @@
         var amount=this.parentNode.parentNode.querySelector(".product_price");
         pcs.innerHTML=Number(pcs.innerHTML)+1;
         full_amount_val=Number(full_amount_val)+Number(amount.innerHTML);
-        discount_val=full_amount_val/100*coupon_discount;
+        discount_val=Math.ceil(full_amount_val/100*coupon_discount);
         result_price_val=full_amount_val-discount_val;
         amountSet();
       })
@@ -354,12 +376,12 @@
       $(document).on('click','.pcs_minus',function(){
         var pcs=this.parentNode.parentNode.querySelector(".product_pcs");
         var amount=this.parentNode.parentNode.querySelector(".product_price");
-        if(pcs.innerHTML=="0"){
+        if(pcs.innerHTML=="1"){
           return;
         }
         pcs.innerHTML=Number(pcs.innerHTML)-1;
         full_amount_val=Number(full_amount_val)-Number(amount.innerHTML);
-        discount_val=full_amount_val/100*coupon_discount;
+        discount_val=Math.ceil(full_amount_val/100*coupon_discount);
         result_price_val=full_amount_val-discount_val;
         amountSet();
       })
@@ -370,7 +392,7 @@
         var pcs=this.parentNode.parentNode.querySelector(".product_pcs");
         var amount=this.parentNode.parentNode.querySelector(".product_price");
         full_amount_val-=Number(amount.innerHTML)*Number(pcs.innerHTML);
-        discount_val=full_amount_val/100*coupon_discount;
+        discount_val=Math.ceil(full_amount_val/100*coupon_discount);
         result_price_val=full_amount_val-discount_val;
         point.val(0);
         use_point=0;
@@ -385,7 +407,7 @@
         point.val(use_point);
         //할인액 계산
         coupon_discount=$('#coupon option:selected').attr("discount")
-        discount_val=full_amount_val/100*coupon_discount;
+        discount_val=Math.ceil(full_amount_val/100*coupon_discount);
         result_price_val=full_amount_val-discount_val;
         amountSet();
       })
@@ -395,7 +417,7 @@
         //포인트의 기존값이 0이 아닐경우의 처리
         if(use_point!="0"){
           use_point=0;
-          discount_val=full_amount_val/100*coupon_discount;
+          discount_val=Math.ceil(full_amount_val/100*coupon_discount);
           result_price_val=full_amount_val-discount_val;
         }
         //포인트 최대값 제한
@@ -410,7 +432,7 @@
         }
         use_point=point.val();
         //할인액 수정
-        discount_val=full_amount_val/100*coupon_discount+Number(use_point);
+        discount_val=Math.ceil(full_amount_val/100*coupon_discount)+Number(use_point);
         //결제액 수정
         result_price_val=full_amount_val-discount_val;
         amountSet();
@@ -420,7 +442,7 @@
         //포인트의 기존값이 0이 아닐경우의 처리
         if(use_point!=0){
           point.val(0);
-          discount_val=full_amount_val/100*coupon_discount;
+          discount_val=Math.ceil(full_amount_val/100*coupon_discount);
           result_price_val=full_amount_val-discount_val;
         }
         //포인트 전액사용시 값에 따른 처리
@@ -431,7 +453,7 @@
         }
         use_point=point.val();
         //할인액 수정
-        discount_val=full_amount_val/100*coupon_discount+Number(use_point);
+        discount_val=Math.ceil(full_amount_val/100*coupon_discount)+Number(use_point);
         discount.text(discount_val);
         //결제액 수정
         result_price_val=full_amount_val-discount_val;
@@ -502,14 +524,13 @@
   </header>
 
   <div id="side_bar"></div>
-  <main style="background-color: #f7f0e8;">
+  <main>
     <!--결제 페이지부 -->
-    
     <div id="main_container" class="d-flex flex-column " style="min-height:800px;">
       
-      <h2 class="mt-3 fw-bold">주문/결제</h2>
+      <h2 class="mt-3 py-2 fw-bold">주문/결제</h2>
       <div class="ms-3" style="margin-right: 30%;">
-        <h3 class="mt-5 border-bottom ">배송지</h3>
+        <h3 class="mt-5 border-bottom py-2">배송지</h3>
         <table class="ms-3">
           <tr>
             <td>
@@ -534,11 +555,11 @@
         </table>
       </div>
       <div class="ms-3" style="margin-right: 30%;">
-        <h3 class="my-3 border-bottom">주문상품</h3>
+        <h3 class="my-3 border-bottom py-2">주문상품</h3>
         <!-- 아래부터 c:foreach로 반복 -->
         <!-- 해당 데이터는 서버에서 제공받음 -->
         <c:forEach var="product" items="${products}">
-        	<div class="product" style="height:150px;">
+        	<div class="product my-3" style="height:150px;">
             <input class="product_no" type="hidden" value="${product.PRO_NO}">
 	          <img src="${product.PRO_BANNERIMG}" alt="" class="me-2" style="width: 150px;height: 150px; float: left;">
 	          <div class="m-2 pt-3 fs-4"><span class="product_name">${product.PRO_NAME}</span></div>
@@ -554,18 +575,21 @@
         
       </div>
       <div class="ms-3" style="margin-right: 30%;">
-        <h3 class="my-3 border-bottom">쿠폰</h3>
+        <h3 class="my-3 border-bottom py-2">쿠폰</h3>
         <select class="ms-3 form-control w-50" name="coupon" id="coupon">
           <option value="0" discount="0">선택안함</option>
           <!--데이터를 받아오는 곳에 따라 추후 서버측에서 직접적으로 받을경우 c:foreach-->
           <!--현재 페이지에서 ajax를 통해 받을경우 javascrip append  -->
-          <option value="1" discount="10">쿠폰1</option>
+          <c:forEach var="coupon" items="${coupons}">
+            <option value="${coupon.c_no}" discount="${coupon.c_dcper}">${coupon.c_name}</option>
+					</c:forEach>
+          <!-- <option value="1" discount="10">쿠폰1</option>
           <option value="2" discount="20">쿠폰2</option>
-          <option value="3" discount="30">쿠폰3</option>
+          <option value="3" discount="30">쿠폰3</option> -->
         </select>
       </div>
       <div class="ms-3 mb-3" style="margin-right: 30%;">
-        <h3 class="my-3 border-bottom">포인트</h3>
+        <h3 class="my-3 border-bottom py-2">포인트</h3>
         <input type="number" class="ms-3 me-0 form-control w-25 d-inline" id="point" value="0" min="0" max="0">
         <button class="ms-0 btn btn-primary" id="full_use_btn">전액사용</button>
       </div>
@@ -575,14 +599,16 @@
         <h3 id="full_amount">
           0
         </h3>
+        <h3 id="discount_per">0%</h3>
         <h3>
           <span>-</span>
           <span id="discount">0</span>
           <hr>
         </h3>
         <h3 id="result_price_wrap"><SPan id="result_price">0</SPan>원</h3>
-        <button type="button" class="btn btn-primary ms-3" id="buy_btn">결제하기</button>
-
+        <div id="buy_btn_wrap">
+          <button type="button" class="btn btn-primary" id="buy_btn">결제하기</button>
+        </div>
       </div>
     </div>
   </main>

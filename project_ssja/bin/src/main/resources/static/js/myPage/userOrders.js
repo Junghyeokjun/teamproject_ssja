@@ -4,6 +4,9 @@ function formatNumber(num) {
 	return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원';
 };
 
+
+
+
 let payAccount = function(order){
 	if(order.o_PAY === 0){
 		return '전액 포인트사용';
@@ -29,6 +32,8 @@ $("#myPage_orderInfo_Select").on('click', function() {
 			url : "/user/info/orders", 
 			data: {'pageNum':pageNum},
 			success : function(data) {
+				$("#totalInfoModalLabel").text('리뷰 작성')
+		    	.css({'font-size':'1.5em','font-weight':"bold",'margin-left':'2em'});
 				const orderInfo = data;
 				console.log(orderInfo);
 				let $h2title = $("<h2>").attr('id','h2title').text("주문 사항");
@@ -149,7 +154,69 @@ $("#myPage_orderInfo_Select").on('click', function() {
 	
 				if (order.isWiriteReview == 0) {
 				    $go_write_review.text('리뷰 작성 하기').on('click', function() {
-				        window.location.href = "/";
+				    	
+				    	
+				    	let $totalInfoContent = $("#totalInfoContent").empty();
+				    	$("<div>").addClass("p-3").addClass('d-flex flex-column justify-content-between').append(
+				    			$("<div>").addClass("m-3 d-flex flex-row align-items-center").append(
+				    					
+				    					$("<img>").attr('src',order.pro_BANNERIMG).css({'width':'20%','height':'auto','margin':'1em'}),
+				    					
+				    					$('<div>').addClass('d-flex flex-column ml-3').append(
+				    							
+				    							$('<span>').text(order.pro_BIZNAME),
+				    							$('<span>').attr('id','longpronamespan').text(order.pro_NAME),
+				    							$('<span>').text('상품 번호 : ' + order.pro_NO)),
+				    					$('<span>').text(formatNumber(order.o_PRICE))
+				    			),
+				    					
+				    			$("<div>").addClass('d-flex flex-column').append(
+				    					$("<h5>").css({'font-weight':'bold','margin-left':'3em'}).css('margin-left','100px').text('별점'),
+				    					$("<div>").attr('id','star_rating').addClass('d-flex flex-row mt-4')
+				    					.css({'margin-left':'100px'}).append(
+				    							$("<span>").addClass("star on").attr("value", "1"),
+				    						    $("<span>").addClass("star").attr("value", "2"),
+				    						    $("<span>").addClass("star").attr("value", "3"),
+				    						    $("<span>").addClass("star").attr("value", "4"),
+				    						    $("<span>").addClass("star").attr("value", "5")	
+				    					),
+				    					$("<p>").text('별을 눌러주세요.').css({'color':'#ccc','margin-left':'120px'}).addClass("my-3"),
+				    					$("<input>").attr({'type':'hidden','id':'review_eval','value':'1'}),
+				    				$('<textarea>').attr('id','riview_content').attr('placeholder','리뷰를 적어주세요.')
+				    				.css({ 'width': '80%',  'height': '150px', 'overflow': 'auto', 'resize':'none',	'margin': 'auto' })		
+				    					),
+				    			
+				    			$("<div>").addClass('w-100 d-flex flex-row justify-content-center my-3').append(
+				    					$("<button>").text('등록').addClass('btn btn-dark')
+				    					.css({'width':'100px','height':'60px'}).on('click',function(){
+				    						if($("#riview_content").val().length >= 1000){
+				    							alert('리뷰가 너무 길어요.');
+				    							return false;
+				    						}
+				    						let rv_content = $("#riview_content").val();
+				    						let rv_evalu = $("#review_eval").val()
+				    						apply_review(order.pro_NO, rv_content, rv_evalu);
+				    						modal.hide();
+				    						myPageOrderInfo(pageNum);
+				    					}))
+				    			).appendTo($totalInfoContent);
+				    	
+				       	$('#star_rating > .star').on('click', function(){
+				       	  let eval_value = $(this).attr('value');
+				          $('#review_eval').val(eval_value);
+				          
+				       		
+				    		 $(this).parent().children('span').removeClass('on');
+				    		  $(this).addClass('on').prevAll('span').addClass('on');
+				    		  
+				       	}).hover(function(){
+				    	    $(this).css("cursor", "pointer");
+						},
+						function(){
+						    $(this).css("cursor", "auto");
+						})
+				    	
+				    	modal.show();
 				    });
 				} else {
 				    $go_write_review.text('리뷰 작성 불가').hover(
@@ -217,3 +284,26 @@ $("#myPage_orderInfo_Select").on('click', function() {
 			}
 		});
 	} 
+ 
+ let apply_review = function(proNum,reviewContent, reviewEval){
+		 $.ajax({
+		        type: "post",
+		        beforeSend : function(xhr) {
+					xhr.setRequestHeader(header, token);
+				},
+				async:false,
+				data: JSON.stringify({
+					'proNum':proNum,
+					'content':reviewContent,
+					'eval':reviewEval
+				}),
+				dataType:"json",
+				contentType:"application/json",
+		        url: "/api/replys/apply",
+		        success: function(data) {
+		        	}
+		        })
+	 
+ }
+ 
+ 
