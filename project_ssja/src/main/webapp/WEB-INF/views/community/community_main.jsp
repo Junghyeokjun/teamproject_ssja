@@ -119,7 +119,7 @@
             <button type="button" id="search_btn" class="btn btn-primary btn-sm ms-1" >검색</button>
           </span>
           <span style="width: 70px;height: 40px;">
-            <c:if test='${principal != null and principal!=""} '>
+            <c:if test='${principal != null and principal.userInfo!=""}'>
               <button id="insert_btn" type="button" class="btn btn-primary">글쓰기</button>
             </c:if>
           </span>
