@@ -39,7 +39,7 @@
 <meta name="_csrf" content="${_csrf.token}" />
 <meta name="_csrf_header" content="${_csrf.headerName}" />
 
-<script src="/js/vendorbarscript.js">
+<script type="module" src="/js/vendorbarscript.js">
 
   </script>
 
@@ -284,6 +284,7 @@ header, main, footer {
 									</sec:authorize>
 									<input type="hidden" id="vendorData"
 										value="${vendorMember.m_No}"> ${vendorMember.m_Name}
+									<input type="hidden" id="vendorNo">
 									&gt;
 								</h1>
 							</div>
@@ -297,25 +298,25 @@ header, main, footer {
 				</div>
 				<main>
 					<div class="main_whitespace p-5 my-2"></div>
-					<div id="main_container"
-						class="d-flex flex-row align-items-center justify-content-center">
-
-						<div id="MyPage_content_container" class="p-5">
-							<div class="text-center col-16">
-								<h5 class="h5">최근 일주일 간 매출 데이터</h5>
-								<h5 class="h5 years"></h5>
-							</div>
-							<div class="d-flex">
-								<div class="border">
-									<div class="p-5">
-										<table id="sales" class="table table-striped text-center ">
-
-										</table>
-									</div>
+					<div id="main_container">
+						<div class="d-flex flex-row align-items-center justify-content-center container">
+							<div id="MyPage_content_container" class="p-5">
+								<div class="text-center mb-3">
+									<h5 class="h5">최근 일주일 간 매출 데이터</h5>
+									<h5 class="h5 years"></h5>
 								</div>
-								<div class="border p-3">
-									<div>
-										<canvas id="salesChart" width="400px" height="300px"></canvas>
+								<div class="d-flex show-chart">
+									<div id="chart-table" class="border">
+										<div class="p-5">
+											<table id="sales" class="table table-striped text-center ">
+
+											</table>
+										</div>
+									</div>
+									<div id="chart-area" class="border p-3">
+										<div>
+											<canvas id="salesChart" width="400px" height="300px"></canvas>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -342,148 +343,7 @@ header, main, footer {
 </body>
 <script src="/js/vendor_login_user_tab.js"> </script>
 <script type="text/javascript">
-	$(document).ready(function(){
-		$.ajax({
-			type: "GET",
-			url: "/api/vendor/salesdata",     
-			success: function(response) {
-				// 기존에 있는 자식 요소들을 제거하기. 
-				$('#sales').empty();
-				
-				// console.log(response);
-				
-				// table thead 추가
-				let thead = $('<thead>').append($('<tr>').append($('<th>').text('매출일')).append($('<th>').text('매출')));
-				$('#sales').append(thead);
-				let tbody = $('<tbody>');
-				
-				let sum = 0;
-
-
-				for(let i=0; i< response.length; i++){
-					// trTag 추가
-					let trTag = $('<tr>');
-					trTag.append($('<td>').text(response[i].orderDate.substring(5,10)));
-					trTag.append($('<td>').text(response[i].totalSales.toLocaleString() + ' 원'));
-					// table에 추가
-					tbody.append(trTag);					
-					sum += response[i].totalSales;
-				}	
-
-				let avg = sum / 7 ;
-
-				// 평균은 소수 첫번째 자리까지 보여주기. 해당 처리를 하지 않으면 소수 세번째 자리까지 보여주는 상황임.(toLocalString()이 처리해줌.)
-				let tfooter = $('<tfoot>').append($('<tr>').append($('<th>').text('합계')).append($('<td>').text(sum.toLocaleString() + ' 원')))
-											.append($('<tr>').append($('<th>').text('평균')).append($('<td>').text(avg.toFixed(1).toLocaleString() + ' 원')));
-				$('#sales').append(tfooter);
-
-				// 차트를 만들기 위한 변수들 선언
-				let labels = [];
-				let datasets = [{
-					label: '일별 매출',
-					backgroundColor: 'rgb(85, 160, 50)',
-					borderColor: 'rgb(85, 160, 50)',
-					data : []
-				}];
-
-				let data = {
-					labels: labels,
-					datasets: datasets
-				};
-
-				// 데이터가 7개 미만일 때 sysdate - 7 부터 sysdate까지의 날짜와 매출 데이터 채우기
-				let currentDate = new Date();
-				let pastDate = new Date(currentDate);
-				pastDate.setDate(currentDate.getDate() - 7);				
-
-				// label에 넣기 전, 본래 값을 비교하기 위해 사용하는 배열 선언 및 사용.
-				// label에 사용될 문자열은 고칠 예정
-				let labelsOrigin = [];
-
-				// 데이터가 7개가 될 때까지 데이터 추가
-				while (data.labels.length < 7) {
-					
-
-					let dateToFill = new Date(pastDate);
-					dateToFill.setDate(dateToFill.getDate() + data.labels.length); // 7일 이전 날짜에 더해주기
-					
-					// labels 배열의 앞쪽에 추가
-					// data.labels.push(dateToFill.toISOString().slice(0, 10)); 
-
-					let originDate = dateToFill.toISOString().slice(0, 10);
-
-					labelsOrigin.push(originDate);
-
-					// response에 해당 날짜의 데이터가 있으면 데이터 추가, 아니면 0 추가
-					// let foundData = response.find(item => item.orderDate.substring(0, 10) === data.labels[data.labels.length - 1]);
-
-					let foundData = response.find(item => item.orderDate.substring(0, 10) === labelsOrigin[labelsOrigin.length - 1]);
-					// let foundData = response.find(function(item) {
-					// 	return item.orderDate.substring(0, 10) === data.labels[data.labels.length - 1];
-					// });
-
-					if (foundData) {
-						data.datasets[0].data.push(foundData.totalSales);
-					} else {
-						data.datasets[0].data.push(0);
-					}
-
-					// 날짜 문자열을 원하는 형식으로 보이도록 변경
-					// 월과 일을 추출하여 변수에 저장
-					let year = originDate.slice(0, 4);
-
-					let month = parseInt(originDate.slice(5, 7), 10); // '06'을 숫자로 변환
-					let formattedDate = month + '월' + parseInt(originDate.slice(8, 10), 10) + '일';
-
-					data.labels.push(formattedDate);
-				}
-
-				console.log(labels);
-				console.log(data.datasets[0].data);
-				$('#sales').append(tbody);
-
-				console.log("label : " + labels);
-				console.log(data);
-				// 차트 데이터 준비
-				// const labels = ['1일', '2일', '3일', '4일', '5일', '6일', '7일'];
-				// const data = {
-				// 	labels: labels,
-				// 	datasets: [{
-				// 		label: '일별 매출',
-				// 		backgroundColor: 'rgb(54, 162, 235)',
-				// 		borderColor: 'rgb(54, 162, 235)',
-				// 		data: [100, 150, 200, 180, 250, 300, 280],
-				// 	}]
-				// };
-
-				// 차트 옵션 설정
-				let options = {
-					responsive: true,
-					scales: {
-						y: {
-							beginAtZero: true
-						}
-					}
-				};
-
-				// 차트 생성
-				let ctx = document.getElementById('salesChart').getContext('2d');
-				let myChart = new Chart(ctx, {
-					type: 'line',
-					data: data,
-					options: options
-				});
-				
-				$('.h5.years').text('[' + labelsOrigin[0] + ' ~ ' + labelsOrigin[6] + ']');
-			},
-			error: function(xhr, status, error) {
-				console.log("가져오기 실패");
-				alert("매출 내역을 가져오는데 실패했습니다.");
-				console.error(xhr.responseText);
-			}
-		});
-	}); 
-
+	
 </script>
 
 <script>

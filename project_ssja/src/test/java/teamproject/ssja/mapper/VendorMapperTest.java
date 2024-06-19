@@ -46,7 +46,18 @@ class VendorMapperTest {
 
 	@Test
 	void testSelectVendorSalesInWeek() {
-		for(VendorSalesDto dto : vendorMapper.selectVendorSalesInWeek()) {
+		
+		// 메서드 수정 전, 전체 판매자의 최근 일주일 매출
+//		for(VendorSalesDto dto : vendorMapper.selectVendorSalesInWeek()) {
+//			log.info("dto : " + dto);
+//		}
+//		// 판매자 1번의 목록
+//		for(VendorSalesDto dto : vendorMapper.selectVendorSalesInWeek(1)) {
+//			log.info("dto : " + dto);
+//		}
+		
+		// 판매자 25번의 목록
+		for(VendorSalesDto dto : vendorMapper.selectVendorSalesInWeek(25)) {
 			log.info("dto : " + dto);
 		}
 	}
