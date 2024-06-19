@@ -152,7 +152,7 @@ body {
 
 				</form>
 				<button id="search_icon"></button>
-				<a id="cart_link"><img id="cart_img"></a> <a id="user_link"><img
+				<a id="cart_link"><img id="cart_img"></a> <a id="user_link" href="/login"><img
 					id="login_img"></a>
 			</div>
 

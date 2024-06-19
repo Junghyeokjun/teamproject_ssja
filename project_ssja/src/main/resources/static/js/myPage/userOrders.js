@@ -157,17 +157,18 @@ $("#myPage_orderInfo_Select").on('click', function() {
 				    	
 				    	
 				    	let $totalInfoContent = $("#totalInfoContent").empty();
+				    	$("#totlaInfoTooter").empty();
 				    	$("<div>").addClass("p-3").addClass('d-flex flex-column justify-content-between').append(
 				    			$("<div>").addClass("m-3 d-flex flex-row align-items-center").append(
 				    					
 				    					$("<img>").attr('src',order.pro_BANNERIMG).css({'width':'20%','height':'auto','margin':'1em'}),
 				    					
-				    					$('<div>').addClass('d-flex flex-column ml-3').append(
+				    					$('<div>').addClass('d-flex flex-column ml-3').css('max-width','55%').append(
 				    							
 				    							$('<span>').text(order.pro_BIZNAME),
 				    							$('<span>').attr('id','longpronamespan').text(order.pro_NAME),
 				    							$('<span>').text('상품 번호 : ' + order.pro_NO)),
-				    					$('<span>').text(formatNumber(order.o_PRICE))
+				    					$('<span>').text(formatNumber(order.o_PRICE)).css('width','15%')
 				    			),
 				    					
 				    			$("<div>").addClass('d-flex flex-column').append(

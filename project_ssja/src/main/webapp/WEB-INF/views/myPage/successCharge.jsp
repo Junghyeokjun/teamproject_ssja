@@ -76,7 +76,7 @@ margin-top:35px;
 margin-bottom:50px;
 
 }
-#main_btn_container > button{
+#main_btn_container > a > button{
 width:10em;
 height:5em;
 border-radius:2px;
@@ -99,7 +99,7 @@ margin-right:1em;
         </form>
         <button id="search_icon"></button>
         <a id="cart_link"><img id="cart_img"></a>
-        <a id="user_link"><img id="login_img"></a>
+        <a id="user_link" href="/login"><img id="login_img"></a>
       </div>
 
     </div>
@@ -133,8 +133,8 @@ margin-right:1em;
     	</div>
     	</div>
     	<div id="main_btn_container" class="d-flex flex-row justify-content-center">
-    	<button class="btn btn-dark">홈으로</button>
-    	<button class="btn btn-dark">마이페이지</button>
+    	<a href="/home"><button class="btn btn-dark">홈으로</button></a>
+    	<a href="/myPage"><button class="btn btn-dark">마이페이지</button></a>
     	</div>
     	
 	</div>  

@@ -126,6 +126,14 @@ min-height:350px;
 #qnaDV{
 margin-bottom:150px;
 }
+.modal-content{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+transform: translate(-50%, -50%);
+  }
+
+
 </style>
 </head>
 
@@ -143,7 +151,7 @@ margin-bottom:150px;
 	        </form>
 	        <button id="search_icon"></button>
 	        <a id="cart_link"><img id="cart_img"></a>
-	        <a id="user_link"><img id="login_img"></a>
+        <a id="user_link" href="/login"><img id="login_img"></a>
 	      </div>
 	
 	    </div>
@@ -173,7 +181,7 @@ margin-bottom:150px;
         				&gt;</h1>      			
         		</div>
         		<a id="cart_link" hidden="hidden"></a>
-				<a id="user_link"><img id="login_img"></a>
+				<a id="user_link" href="/login"><img id="login_img"></a>
 			</div>
 		</div>
 		<nav id="total_bar">
@@ -249,7 +257,7 @@ margin-bottom:150px;
     <script src="/js/user_cart_tab.js"> </script>
 </sec:authorize>
 
-   <div class="modal fade" id="totalInfoModal" tabindex="-1" aria-labelledby="totalInfoModalLabel" aria-hidden="true">
+   <div class="modal" id="totalInfoModal" tabindex="-1" aria-labelledby="totalInfoModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content" style="width:800px; height:700px; background-color:white;">
                 <div class="modal-header">
@@ -257,7 +265,6 @@ margin-bottom:150px;
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                   <div class="modal-body" id="totalInfoContent">
-					<p>Modal body text goes here.</p>
 						</div>
                 <div class="modal-footer d-flex flex-row justify-content-center" id="totlaInfoTooter">
          
