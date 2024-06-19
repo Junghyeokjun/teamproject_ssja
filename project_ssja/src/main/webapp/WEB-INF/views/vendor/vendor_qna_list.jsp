@@ -254,6 +254,9 @@
 		            });
 				</script>
 			</c:when>
+			<c:otherwise>
+			
+			</c:otherwise>
 		</c:choose>
     </sec:authorize>
 	<sec:authorize access="isAnonymous()">
