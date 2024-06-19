@@ -8,7 +8,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.ProductDto;
-import teamproject.ssja.dto.vendor.TotalVendorInfoDto;
+import teamproject.ssja.dto.ProductImgDto;
+import teamproject.ssja.dto.ReplysDto;
+import teamproject.ssja.dto.VendorSalesDto;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
 import teamproject.ssja.dto.vendor.VendorItemCondition;
 import teamproject.ssja.page.Criteria;
@@ -52,4 +54,7 @@ public interface VendorService {
 	//회원의 판매자 조회
 	TotalVendorInfoDto getVendorTotalInfo(String bizname, int pageNum);
 	List<ProductDto> getVendorItemList(VendorItemCondition condition);
+	// 판매자 홈에 쓰일, 최근 일주일 동안의 매출 내역 가져오기
+	public List<VendorSalesDto> getWeeklySalesData();
 }
+

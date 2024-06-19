@@ -108,8 +108,10 @@ body {
 	  <header>
 	    <div id="title_bar" class="fixed-top">
 	      <div class="py-2 px-1" id="top-bar">
-	        <button type="toggle-button" class="top_btn" id="top_btn"></button>
-	        <a id="logo_toHome" href=""><img id="logo_img" src="/images/utilities/logoSSJA.png"></a>
+	        <div class="d-flex align-items-center">
+				<button type="toggle-button" class="top_btn"></button>
+				<a id="logo_toHome" href=""><img id="logo_img" src="/images/utilities/logoSSJA.png"></a>
+			</div>
 	        <form action="http://www.naver.com" id=searchForm method="get">
 	
 	        </form>
@@ -206,6 +208,6 @@ body {
 
 </body>
 <sec:authorize access="isAuthenticated()">
-  <script src="/js/login_user_tab.js"> </script>  
+	<script src="/js/vendor_login_user_tab.js"> </script>
 </sec:authorize>
 </html>

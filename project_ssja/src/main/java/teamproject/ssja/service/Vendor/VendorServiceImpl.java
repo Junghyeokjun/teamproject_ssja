@@ -14,8 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ProductImgDto;
-import teamproject.ssja.dto.vendor.TotalVendorInfoDto;
-import teamproject.ssja.dto.vendor.VendorEtcInfoDTO;
+import teamproject.ssja.dto.ReplysDto;
+import teamproject.ssja.dto.VendorSalesDto;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
 import teamproject.ssja.dto.vendor.VendorItemCondition;
 import teamproject.ssja.mapper.VendorMapper;
@@ -200,4 +200,9 @@ public class VendorServiceImpl implements VendorService{
 	}
 
 
+	@Override
+	public List<VendorSalesDto> getWeeklySalesData() {
+		// TODO Auto-generated method stub
+		return vendorMapper.selectVendorSalesInWeek();
+	}
 }

@@ -213,6 +213,6 @@ body {
 	</footer>	
 </body>
 <sec:authorize access="isAuthenticated()">
-  <script src="/js/login_user_tab.js"> </script>
+	<script src="/js/vendor_login_user_tab.js"> </script>
 </sec:authorize>
 </html>

@@ -103,6 +103,12 @@ body {
 </head>
 
 <body>
+	<sec:authorize access="isAuthenticated()">
+		<c:set var="isAuthenticated" value="true"/>
+	</sec:authorize>
+	<sec:authorize access="isAnonymous()">
+		<c:set var="isAuthenticated" value="false"/>
+	</sec:authorize>
 <c:choose>
 	<c:when test="${principal.auth != 'ROLE_VENDOR'}">
 	  <header>
@@ -183,9 +189,8 @@ body {
 					<c:forEach var="board" items="${boards}">
 						<tr>
 							<td>${board.bno}</td>					
-							<td>
-							
-								<a id="board_title"	href="${pageContext.request.contextPath}/board/content_view/${bc.bcno}?bno=${board.bno}">${board.btitle}</a>
+							<td>							
+								<a class="board_title" href="${pageContext.request.contextPath}/board/content_view/${bc.bcno}?bno=${board.bno}">${board.btitle}</a>
 							</td>
 							<td>${board.bwriter}</td>
 							<td class="date_str">${board.bdate}</td>
@@ -243,11 +248,21 @@ body {
 <sec:authorize access="isAuthenticated()">
   <script src="/js/login_user_tab.js"> </script>
   <script src="/js/user_cart_tab.js"> </script>  
-</sec:authorize>
-<script type="text/javascript">
+</sec:authorize><script type="text/javascript">
 	$(document).ready(function(){
-		
+		let isAuthenticated = '${isAuthenticated}';
+		console.log(typeof isAuthenticated);
+		console.log(isAuthenticated);
+		$('.board_title').on('click',function(e){
+			e.preventDefault();
+			if(isAuthenticated == 'false'){
+				if (confirm('문의글을 보기 위해서는, 로그인이 필요합니다. 로그인하시겠습니까?')) {
+					window.location.href = '/login';
+				}
+			}else{
+				window.location.href = $(this).attr('href');
+			}			
+		})
 	});
 </script>
-
 </html>

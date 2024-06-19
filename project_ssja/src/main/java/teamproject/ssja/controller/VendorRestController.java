@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,10 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.ProductCategoryGroupDto;
-import teamproject.ssja.dto.ProductDto;
-import teamproject.ssja.dto.vendor.TotalVendorInfoDto;
+import teamproject.ssja.dto.VendorSalesDto;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
-import teamproject.ssja.dto.vendor.VendorItemCondition;
+import teamproject.ssja.page.Criteria;
 import teamproject.ssja.service.Product.ProductCategoryService;
 import teamproject.ssja.service.Vendor.VendorService;
 
@@ -94,6 +94,27 @@ public class VendorRestController {
 
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
+
+	@GetMapping("/productcount")
+	public long getProductCount(@ModelAttribute Criteria criteria){
+		return vendorService.getProductCounts(criteria);
+	}
+
+	@GetMapping("/qnascount")
+	public long getQnaCount(@ModelAttribute Criteria criteria){
+		return vendorService.getProductCounts(criteria);
+	}
+	
+	@GetMapping("/salesdata")
+	public ResponseEntity<List<VendorSalesDto>> getWeeklyData(){
+		try {
+			List<VendorSalesDto> recentWeeklyData = vendorService.getWeeklySalesData();
+			return ResponseEntity.ok(recentWeeklyData);
+		} catch (Exception e) {
+			e.printStackTrace(); // 예외 스택 트레이스를 콘솔에 출력
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ArrayList<VendorSalesDto>());
 		}
 	}
 }
