@@ -253,7 +253,13 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public int updateHit(CustomPrincipal principal,long bno) {
 	    if (principal != null) {
-	    	Set<Long> hitSet=principal.getUserInfo().getHit();
+	    	Set<Long> hitSet= null;
+	    	try {
+	    		hitSet=principal.getUserInfo().getHit();
+			} catch (Exception e) {
+				return 0;
+			}
+	    	
 	    	if(!hitSet.contains(bno)) {
 	    		hitSet.add(bno);
 	    		return boardMapper.updateHit(bno);
