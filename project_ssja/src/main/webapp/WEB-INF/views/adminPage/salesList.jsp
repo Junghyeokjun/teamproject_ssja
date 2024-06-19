@@ -22,6 +22,7 @@
 	crossorigin="anonymous"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 <script src='https://code.jquery.com/jquery-3.3.1.min.js'></script>
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -136,7 +137,8 @@ h2, h4, p {
 	text-align: center; /* 테이블 텍스트 중앙 정렬 */
 }
 </style>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 </head>
 <body>
 	<header>
@@ -154,31 +156,69 @@ h2, h4, p {
 	</div>
 	<main>
 	<br>
-		<div class="row row-cols-1 row-cols-md-3 g-4">	
-		 <div class="col">	
-			<h1>일일매출</h1>
-			<canvas id="dailySalesChart" width="400" height="200"></canvas>
-			</div>
-			 <div class="col">
-			<h1>월매출</h1>
-			<canvas id="monthlySalesChart" width="400" height="200"></canvas>
-			</div>
-			 <div class="col">
-			<h1>년매출</h1>
-			<canvas id="yearlySalesChart" width="400" height="200"></canvas>
-			</div>			
+    <div class="row">
+    <div class="col-sm-4 mb-3">
+        <div class="card text-center" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">오늘 총 매출액</h5>
+                <p class="card-text"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-4 mb-3">
+        <div class="card text-center" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">오늘 주문 건수</h5>
+                <p class="card-text"></p>
+            </div>
+        </div>
+    </div>
+
+     <div class="col-sm-4 mb-3">
+        <div class="card text-center" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">오늘 가입자 수</h5>
+                <p class="card-text"></p>
+            </div>
+        </div>
+    </div>
+</div>
+    
+
+		<br> <input type="date" id="salesDateInput">
+		<button id="fetchSalesData">조회</button>
+		<div id="salesDataResult">
+			<h2>매출 데이터</h2>
+			<p id="totalSales"></p>
+			<p id="transactionCount"></p>
 		</div>
-			<br>
-	<script>
+		<div class="row row-cols-1 row-cols-md-3 g-4">
+			<div class="col">
+				<h1>일일매출(최근 일주일)</h1>
+				<canvas id="dailySalesChart" width="400" height="200"></canvas>
+			</div>
+			<div class="col">
+				<h1>월매출</h1>
+				<canvas id="monthlySalesChart" width="400" height="200"></canvas>
+			</div>
+			<div class="col">
+				<h1>년매출</h1>
+				<canvas id="yearlySalesChart" width="400" height="200"></canvas>
+			</div>
+		</div>
+		<br>
+		<script>
         document.addEventListener('DOMContentLoaded', function() {
             var dailySalesString = '${dailySales}';
+            console.log(dailySalesString); 
 
             // 1. 문자열에서 =를 :로 대체합니다.
             dailySalesString = dailySalesString.replace(/=/g, ':');
 
             // 2. DAYSALES 키와 값을 적절히 변경합니다.
-            dailySalesString = dailySalesString.replace(/DAILY:/g, '"DAILY":"');
-            dailySalesString = dailySalesString.replace(/, DAILYTOTALPAY:/g, '", "DAILYTOTALPAY":');
+            dailySalesString = dailySalesString.replace(/P_DATE:/g, '"P_DATE":"');
+            dailySalesString = dailySalesString.replace(/, P_PRICE:/g, '", "P_PRICE":');
             
             // 3. 최종적으로 문자열을 JSON 형식으로 변환합니다.
             console.log(dailySalesString); 
@@ -188,13 +228,13 @@ h2, h4, p {
                 var dailySales = JSON.parse(dailySalesString);
 
                 // 날짜와 매출 데이터 추출
-                var dates = dailySales.map(item => item.DAILY.split(' ')[0]); // 날짜만 추출
-                var totalPays = dailySales.map(item => item.DAILYTOTALPAY);
+                var dates = dailySales.map(item => item.P_DATE.split(' ')[0]); // 날짜만 추출
+                var totalPays = dailySales.map(item => item.P_PRICE);
 
                 // Chart.js를 사용한 그래프 설정
                 var ctx = document.getElementById('dailySalesChart').getContext('2d');
                 var myChart = new Chart(ctx, {
-                    type: 'bar',
+                    type: 'line',
                     data: {
                         labels: dates,
                         datasets: [{
@@ -209,7 +249,7 @@ h2, h4, p {
             }
         });
     </script>
-    <script>
+		<script>
         document.addEventListener('DOMContentLoaded', function() {
             var monthlySalesString = '${monthlySales}';
 
@@ -229,12 +269,12 @@ h2, h4, p {
 
                 // 날짜와 매출 데이터 추출
                 var months = monthlySales.map(item => item.MONTH.split(' ')[0]); // 날짜만 추출
-                var totalmonthsPays = monthlySales.map(item => item.MONTHLYTOTALPAY);
+                var totalmonthsPays = monthlySales.map(item => item.P_PRICE);
 
                 // Chart.js를 사용한 그래프 설정
                 var ctx = document.getElementById('monthlySalesChart').getContext('2d');
                 var myChart = new Chart(ctx, {
-                    type: 'bar',
+                    type: 'line',
                     data: {
                         labels: months,
                         datasets: [{
@@ -249,14 +289,13 @@ h2, h4, p {
             }
         });
     </script>
-     <script>
+		<script>
      document.addEventListener('DOMContentLoaded', function() {
          var yearlySalesString = '${yearlySales}';
          console.log(yearlySalesString); 
- 
+
          // 1. 문자열에서 =를 :로 대체합니다.
          yearlySalesString = yearlySalesString.replace(/=/g, ':');
-         console.log(yearlySalesString); 
 
 
          // 2. DAYSALES 키와 값을 적절히 변경합니다.
@@ -277,7 +316,7 @@ h2, h4, p {
              // Chart.js를 사용한 그래프 설정
              var ctx = document.getElementById('yearlySalesChart').getContext('2d');
              var myChart = new Chart(ctx, {
-                 type: 'bar',
+                 type: 'line',
                  data: {
                      labels: years,
                      datasets: [{
@@ -291,7 +330,30 @@ h2, h4, p {
              console.error('Error parsing JSON:', error);
          } 
      });
-    </script> 
+    </script>
+		<script>
+	        // 조회 버튼 클릭 시
+	        $('#fetchSalesData').click(function() {
+	            // 선택한 날짜 가져오기
+	            const selectedDate = $('#salesDateInput').val();
+	            console.log('Selected Date:', selectedDate);
+
+	            // AJAX 요청 보내기
+	            $.ajax({
+	                url: "/adminPage/salesData/"+selectedDate,
+	                method: 'GET',
+	                success: function(data) {
+	                    console.log('Success:', data);
+	                    // 서버로부터 받은 데이터를 처리하는 로직을 여기에 작성하세요
+	                     $('#totalSales').text(data.DAYSALES);
+	                     $('#transactionCount').text(data.DAYSTOTALPAY);
+	                },
+	                error: function(xhr, status, error) {
+	                    console.error('Error:', error);
+	                }
+	            });
+	        });
+	    </script>
 
 	</main>
 	<footer>

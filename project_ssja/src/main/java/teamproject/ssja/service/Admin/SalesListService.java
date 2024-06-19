@@ -25,5 +25,9 @@ public class SalesListService {
 	public List<Map<String, Object>> getYearlySales() {
 		return adminPageMapper.getYearlySalesList();
 	}
+	
+	public Map<String, Object> getSalesDataByDate(String date) {
+        return adminPageMapper.getSalesDataByDate(date);
+    }
 
 }

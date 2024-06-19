@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import teamproject.ssja.dto.MembersDto;
 import teamproject.ssja.dto.MembersSearchDto;
@@ -54,6 +55,7 @@ public interface AdminPageMapper {
 		
 		List<Map<String, Object>> getYearlySalesList();
 
+		Map<String, Object> getSalesDataByDate(@Param("date") String date);
 
 
 }
