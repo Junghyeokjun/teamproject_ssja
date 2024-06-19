@@ -8,6 +8,8 @@ import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ProductImgDto;
 import teamproject.ssja.dto.VendorSalesDto;
+import teamproject.ssja.dto.community.CommunityBoardDto;
+import teamproject.ssja.dto.vendor.VendorEtcInfoDTO;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
 import teamproject.ssja.dto.vendor.VendorItemCondition;
 import teamproject.ssja.page.Criteria;

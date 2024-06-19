@@ -2,15 +2,13 @@ package teamproject.ssja.service.Vendor;
 
 import java.util.List;
 
-
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.ProductDto;
-import teamproject.ssja.dto.ProductImgDto;
-import teamproject.ssja.dto.ReplysDto;
 import teamproject.ssja.dto.VendorSalesDto;
+import teamproject.ssja.dto.vendor.TotalVendorInfoDto;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
 import teamproject.ssja.dto.vendor.VendorItemCondition;
 import teamproject.ssja.page.Criteria;

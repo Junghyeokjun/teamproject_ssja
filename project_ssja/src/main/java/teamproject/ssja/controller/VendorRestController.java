@@ -10,14 +10,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.ProductCategoryGroupDto;
+import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.VendorSalesDto;
+import teamproject.ssja.dto.vendor.TotalVendorInfoDto;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
+import teamproject.ssja.dto.vendor.VendorItemCondition;
 import teamproject.ssja.page.Criteria;
 import teamproject.ssja.service.Product.ProductCategoryService;
 import teamproject.ssja.service.Vendor.VendorService;
