@@ -360,7 +360,7 @@
 					// trTag 추가
 					let trTag = $('<tr>');
 					trTag.append($('<td>').text(response[i].orderDate.substring(5,10)));
-					trTag.append($('<td>').text(response[i].totalSales + ' 원'));
+					trTag.append($('<td>').text(response[i].totalSales.toLocaleString() + ' 원'));
 					// table에 추가
 					tbody.append(trTag);					
 					sum += response[i].totalSales;
@@ -368,8 +368,9 @@
 
 				let avg = sum / 7 ;
 
-				let tfooter = $('<tfoot>').append($('<tr>').append($('<th>').text('합계')).append($('<td>').text(sum + ' 원')))
-											.append($('<tr>').append($('<th>').text('평균')).append($('<td>').text(avg + ' 원')));
+				// 평균은 소수 첫번째 자리까지 보여주기. 해당 처리를 하지 않으면 소수 세번째 자리까지 보여주는 상황임.(toLocalString()이 처리해줌.)
+				let tfooter = $('<tfoot>').append($('<tr>').append($('<th>').text('합계')).append($('<td>').text(sum.toLocaleString() + ' 원')))
+											.append($('<tr>').append($('<th>').text('평균')).append($('<td>').text(avg.toFixed(1).toLocaleString() + ' 원')));
 				$('#sales').append(tfooter);
 
 				// 차트를 만들기 위한 변수들 선언

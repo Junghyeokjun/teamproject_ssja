@@ -172,7 +172,7 @@ body {
 							<input type="hidden" class="form-control" name="bwriter" value="${principal.userInfo.m_Name}">
 						</c:when>
 						<c:otherwise>
-							<input type="hidden" class="form-control" name="bwriter" value="${principal.oAuth2Response.getNickName()}">
+							<input type="hidden" class="form-control" name="bwriter" value="${principal.getOAuth2Response().getNickName()}">
 						</c:otherwise>
 					</c:choose>	
 				</div>

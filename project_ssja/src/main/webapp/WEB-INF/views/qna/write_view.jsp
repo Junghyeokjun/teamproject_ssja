@@ -27,9 +27,9 @@
 </script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="/js/barscript.js">
+<!-- <script src="/js/barscript.js">
 	
-</script>
+</script> -->
 <script src="/js/footer.js">
 	
 </script>
@@ -192,19 +192,16 @@ body {
 			<form action="${pageContext.request.contextPath}/board/write" method="post">
 			            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				<div class="input-group">
-<<<<<<< HEAD
 					<input type="hidden" class="form-control" name="bmno" value="${principal.memberNum}">
 					<input type="hidden" class="form-control" name="bbcno" value="${bcno}">
 					<c:choose>
-						<c:when test="${principal.isOAuth2User == false}">
+						<c:when test="${principal.isOAuth2User() == false}">
 							<input type="hidden" class="form-control" name="bwriter" value="${principal.userInfo.m_Name}">
 						</c:when>
 						<c:otherwise>
-							<input type="hidden" class="form-control" name="bwriter" value="${principal.oAuth2Response.getNickName()}">
+							<input type="hidden" class="form-control" name="bwriter" value="${principal.getOAuth2Response().getNickName()}">
 						</c:otherwise>
 					</c:choose>	
-=======
->>>>>>> origin/dev_ajs
 				</div>
 				<table class="table" >
 					<tr>
