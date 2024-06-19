@@ -153,14 +153,22 @@ h2, h4, p {
 		<div id="side_links" class="w-100"></div>
 	</div>
 	<main>
-		<div>		
+	<br>
+		<div class="row row-cols-1 row-cols-md-3 g-4">	
+		 <div class="col">	
 			<h1>일일매출</h1>
 			<canvas id="dailySalesChart" width="400" height="200"></canvas>
+			</div>
+			 <div class="col">
 			<h1>월매출</h1>
 			<canvas id="monthlySalesChart" width="400" height="200"></canvas>
+			</div>
+			 <div class="col">
 			<h1>년매출</h1>
-			<canvas id="yearlySalesChart" width="400" height="200"></canvas>			
+			<canvas id="yearlySalesChart" width="400" height="200"></canvas>
+			</div>			
 		</div>
+			<br>
 	<script>
         document.addEventListener('DOMContentLoaded', function() {
             var dailySalesString = '${dailySales}';
