@@ -35,6 +35,9 @@
   <script src="/js/footer.js">
 
   </script>
+  <script src="/js/board.js">
+  
+  </script>
   <link href="/css/footerstyle.css?after" rel="stylesheet">
   <link href="/css/vendorbarstyle.css?after" rel="stylesheet">
   <link href="/css/board.css?after" rel="stylesheet">
@@ -51,9 +54,14 @@
       background-color: #f7f0e8;
     }
 
-	header, main, footer{
+	header{
 		height: auto;
-		overflow : hidden;
+	}
+	
+	
+	main, footer {
+		height: auto;
+		overflow: hidden;
 	}
 	
     #logo_img {
@@ -365,6 +373,20 @@
 								</c:if>
 							</ul>
 						</nav>
+					</div>
+					<!-- 모양내기 -->
+					<div class="d-flex justify-content-center">
+						<form class="w-50 input-group" name="members-search-form" autocomplete="off">
+							<select class="form-select border" name="type">
+								<option selected value="">선택</option>
+								<option value="bTitle">제목</option>
+								<option value="bContent">내용</option>
+								<option value="m_name">제목 + 내용</option>
+								<option value="m_id">작성일</option>
+							</select> 
+							<input type="text" class="form-control border w-50" name="keyword" > 
+							<input type="submit" class="btn btn-outline-dark mr-2" value="검색">
+						</form>
 					</div>
 				</c:otherwise>
 			</c:choose>

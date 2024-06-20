@@ -77,14 +77,14 @@ justify-centent:center;
     
      <div id="adimnPage_notic_title" class=" my-5 py-5" style="background:#ccc;">
      <h2 style="margin-left:2em;font-weight:bold;">관리자 - 공지사항 관리</h2></div>
-     <div id="adimnPage_notic_classify" class="py-3 d-flex flex-row justify-content-evenly" 
-     style="border-bottom:1px solid balck;border-top:1px solid balck;text-align:center;">
+     <div id="adimnPage_notic_classify" class="p-2 d-flex flex-row align-items-center justify-content-evenly" 
+     style="border-bottom:1px solid black;border-top:1px solid black;text-align:center;">
      	<span style="width:8%;">NO</span>
      	<span style="width:30%;">제목</span>
      	<span style="width:18%;">작성자</span>
      	<span style="width:26%;">날짜</span>
      	<span style="width:8%;">조회 수</span>
-     	<span style="width:18%;">삭제</span>
+     	<span style="width:8%;">삭제</span>
      </div>
      <div id="adimnPage_notic_content"></div>
     

@@ -52,6 +52,10 @@ header {
   padding:15px;
 }
 
+#user_link{
+	position : relative;
+}
+
 main {
   width: 100%;
   padding: 0;

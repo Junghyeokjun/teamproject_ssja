@@ -191,7 +191,7 @@ cursor:pointer;
 	</footer>
 
 	<sec:authorize access="isAuthenticated()">
-		<script src="/js/login_user_tab.js">
+		<script src="/js/vendor_login_user_tab.js">
 			
 		</script>
 		<script src="/js/user_cart_tab.js">

@@ -50,9 +50,14 @@
       background-color: #f7f0e8;
     }
 
-	header, main, footer{
+	header{
 		height: auto;
-		overflow : hidden;
+	}
+	
+	
+	main, footer {
+		height: auto;
+		overflow: hidden;
 	}
 	
     #logo_img {

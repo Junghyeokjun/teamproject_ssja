@@ -64,7 +64,12 @@ body {
 	background-color: #f7f0e8;
 }
 
-header, main, footer {
+header{
+	height: auto;
+}
+
+
+main, footer {
 	height: auto;
 	overflow: hidden;
 }

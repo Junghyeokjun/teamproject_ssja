@@ -127,11 +127,11 @@ $(document).ready(function () {
   //======================
   
   //사이드 관련
-  let $side_container1 = $("<button>").addClass("side_containers align-middle").text("회원정보");
+  let $side_container1 = $("<button>").addClass("side_containers align-middle").text("판매자 정보");
   let $side_containerEx = $("<button>").addClass("side_containers align-middle").text("상품 관리");
   let $side_container2 = $("<button>").addClass("side_containers align-middle").text("문의 요청 내역");
 
-  const sideLink1 = "/myPage";
+  const sideLink1 = "/vendor";
   const sideLink2 = "/vendor/product/write";
   const sideLink3 = "/vendor/product/list/" + $vendorData;
   const sideLink4 = "/vendor/question/20";
