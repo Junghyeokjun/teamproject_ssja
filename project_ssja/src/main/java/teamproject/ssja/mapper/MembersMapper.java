@@ -18,4 +18,5 @@ public interface MembersMapper {
 	int insertUserAuth(String mid);
 	int subPoint(long mNo,long point);
 	void updatePw(String id, String pw);
+	int insertSignUpCoupon(long mno);
 }

@@ -71,6 +71,11 @@
 			UPDATE members SET M_POINT=M_POINT-#{point} WHERE M_NO = #{mNo}
 		]]>
 	</update>
+	<insert id="insertSignUpCoupon">
+		<![CDATA[
+			INSERT INTO ownedcoupon VALUES(1,6)
+		]]>
+	</insert>
 	
 
 	

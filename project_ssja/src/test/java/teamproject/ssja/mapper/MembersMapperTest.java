@@ -88,4 +88,8 @@ class MembersMapperTest {
 		System.out.println(membersMapper.subPoint(21,1000));
 	}
 	
+	@Test
+	void insertSignUpcouponTest() {
+		System.out.println(membersMapper.insertSignUpCoupon(1));
+	}
 }
