@@ -103,20 +103,31 @@
             }
           });
       }
-
+      function readURL(input) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            document.getElementById('view_img').src = e.target.result;
+          };
+          reader.readAsDataURL(input.files[0]);
+        } else {
+          document.getElementById('view_img').src = "";
+        }
+      }
 
       cancel_btn.on('click',function(){
-        $.ajax({
-          type:'DELETE', 
-          url: '/community/tempImg/'+randomNum,
-          dataType: 'text',
-          success: function(data) {
+        // 파일 미리보기 방식으로 변경해 필요가 없어짐
+        // $.ajax({
+        //   type:'DELETE', 
+        //   url: '/community/tempImg/'+randomNum,
+        //   dataType: 'text',
+        //   success: function(data) {
 
-          },
-          error: function(e) {
-            alert("error:" + e);
-          }          
-        });
+        //   },
+        //   error: function(e) {
+        //     alert("error:" + e);
+        //   }          
+        // });
         location.href="/community/main";
 
       })
@@ -126,39 +137,23 @@
 
       img_insert_dtn.on('click',function(){
         
-        var form=$("#uploadForm")[0];
-        var formData=new FormData(form);
+        var file=document.getElementById("image_file");        
+       console.log(file.value);
+        $("#modal_close").click();
+
+        if(file.value==""){
+          return;
+        }
+        if($("#view_img").attr("src")==undefined){
+          $("#content").prepend('<img src="" alt="" id="view_img" class="w-75 d-inline-block mb-5 ">')
+          $("#update_content").css("min-height","30px");
+
+        }
+        readURL(file)
         
-        $.ajax({
-          type:'post', 
-          enctype:"multipart/form-data", // 업로드를 위한 필수 파라미터
-          url: '/community/content/tempImg/'+randomNum,
-          data: formData,
-          processData: false,   // 업로드를 위한 필수 파라미터
-          contentType: false,   // 업로드를 위한 필수 파라미터
-          success: function(data) {
-            $("#modal_close").click();
 
-            if(data=="null"){
-              return;
-            }
-            if($("#view_img").attr("src")==undefined){
-              $("#content").prepend('<img src="'+data+'?'+(new Date().getTime())+'" alt="" id="view_img" class="w-75 d-inline-block mb-5 ">')
-              $("#update_content").css("min-height","30px");
-              img_update.val("true");
-              return;
-            }
-
-            $("#view_img").attr("src","");
-
-            $("#view_img").attr("src",data+"?"+(new Date().getTime()));
-
-            img_update.val("true");
-          },
-          error: function(e) {
-            alert("error:" + e);
-          }
-          });
+        img_update.val("true");
+   
       })
       insert_btn.on("click",function(){
         var title=$("#title").val();
@@ -357,7 +352,7 @@
         </div>
         <div class="modal-body">
           <form id="uploadForm" >
-            <input type="file" name="image" multiple="multiple" accept=".png, .jpg, .jpeg"/>
+            <input id="image_file" type="file" name="image" multiple="multiple" accept=".png, .jpg, .jpeg"/>
           </form>
           <input type="hidden" id="img_update" value="false">
         </div>

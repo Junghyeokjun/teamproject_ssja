@@ -263,7 +263,7 @@ color:black;
 		<sec:authorize access="isAuthenticated()">
 			<sec:authentication property="principal" var="principal"/>
 		</sec:authorize>
-		<input type="hidden" id="m_no" value="${productData.pro_no }"><!-- 상품번호 히든 -->
+		<input type="hidden" id="m_no" value="${principal.userInfo.m_No}"><!-- 유저 번호 히든 -->
 	</header>
 	<div id="side_bar">
 		<div id="side_links" class="w-100"></div>
