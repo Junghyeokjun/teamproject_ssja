@@ -85,7 +85,7 @@
 	</select>
 
 	<update id="updateProductQuantity">
-		UPDATE product SET PRO_QUANTITY = PRO_QUANTITY-#{O_QUANTITY} where pro_no=#{PRO_NO} 
+		UPDATE product SET PRO_QUANTITY = PRO_QUANTITY-#{O_QUANTITY}, PRO_SELLCOUNT=PRO_SELLCOUNT+#{O_QUANTITY} where pro_no=#{PRO_NO} 
 	</update>
 
 
@@ -110,7 +110,7 @@
                SUBSTR(a.cate,INSTR(a.cate,'-') + 1) as category2, a.pro_hit
         FROM (
             SELECT 
-                p.*,  (SELECT AVG(b.b_eval) FROM board b WHERE b.pro_no = p.pro_no) AS avgEval,
+                p.*,  nvl((SELECT AVG(b.b_eval) FROM board b WHERE b.pro_no = p.pro_no),0) AS avgEval,
                 (SELECT COUNT(b.pro_no) FROM board b WHERE b.pro_no = p.pro_no) AS countrv,
                 (select p_c_name from product_category t where t.p_c_no = p.p_c_no) as cate
             FROM product p   WHERE p.pro_no = #{productNum}

@@ -92,6 +92,7 @@
       height: 60px;
       margin-top: 5px;
       white-space:normal;
+      overflow: hidden;
 
     }
 
@@ -122,6 +123,7 @@
       let m_no=$("#m_no");
       let m_no_val=$("#m_no").val();
       let m_NickName_val=$("#m_NickName").val();
+      let m_auth_val=$("#m_auth").val();
 
       //게시글의 연관상품을 얻어오는 함수
       let getProduct= function(pro_no){
@@ -140,7 +142,7 @@
             alert(error);
           }
         })
-      }
+      };
 
       //게시물 추천 개수 얻어오는 함수
 
@@ -164,7 +166,7 @@
           }
         })
       
-      }
+      };
 
       //회원이 게시글을 추천한적이 있는지를 체크하는 함수
       let liked_check= function(){
@@ -282,7 +284,14 @@
                   reply_wrap1=$('<div class="my-2" style="margin-left: 106px; margin-right: 16px; box-sizing: content-box; border: 1px solid #BBB;" group="'+e.rgroup+'" indent="'+e.rindent+'" step="'+e.rstep+'"></div>')
                 }
                 var reply_wrap2=$('<div class="px-2 d-flex justify-content-between" style="background-color: #EEE;">');
-                $('<span>'+e.rwriter+' </span>').appendTo(reply_wrap2);
+                
+                  if(e.rwriter=='관리자'){
+                    $('<span>'+e.rwriter+' </span>').appendTo(reply_wrap2);
+                  }else{
+                    console.log("관리자가 아님");
+                    $('<span><a href="${pageContext.request.contextPath}/community/userinfo/${content.bmno}"class="text-dark" style="text-decoration: none;">'+ e.rwriter+'</a> </span>').appendTo(reply_wrap2);
+
+                  }
                   //삭제버튼 이벤트 추가예정
                 if(m_no_val== e.rmno){
                   $('<span>'+e.rdate+' |<button class="delete_reply_btn"  style="border-color: transparent; background-color :transparent" rno="'+e.rno+'">삭제</button> |<button class="update_reply_btn"  style="border-color: transparent; background-color :transparent" rno="'+e.rno+'">수정</button></span>').appendTo(reply_wrap2);
@@ -338,6 +347,9 @@
           if(group==undefined){
             group=0;
 
+          }
+          if(m_auth_val=='ROLE_ADMIN'){
+            m_NickName_val='관리자';
           }
           $.ajax({
             type : 'POST',
@@ -438,7 +450,7 @@
               if(reply_count.total==0){
                 reply.append($('<div id="none_reply" class="my-2" style="margin-left: 16px; margin-right: 16px; box-sizing: content-box; border: 1px solid #BBB;"  >' +
                                   '<div class="ps-2" style="background-color: #EEE;">'+
-                                    'admin' +
+                                    '관리자' +
                                   '</div>' +
                                   '<div class="p-2">'+
                                     '댓글이 존재하지 않습니다.'+
@@ -545,16 +557,16 @@
       })
       //수정 버튼
       $(document).on("click",".update_reply_btn",function(){
-        var content = this.parentNode.parentNode.nextSibling;
-        content.click();
-        $("#insert_re_btn").attr("id","update_re_btn")
-        $("#update_re_btn").attr("rno",this.getAttribute("rno"));
+          var content = this.parentNode.parentNode.nextSibling;
+          content.click();
+          $("#insert_re_btn").attr("id","update_re_btn")
+          $("#update_re_btn").attr("rno",this.getAttribute("rno"));
 
+        })
+        if(pro_no.val()!=0){
+        getProduct(pro_no.val());
+        }
       })
-      if(pro_no.val()!=0){
-      getProduct(pro_no.val());
-      }
-    })
 
   </script>
 </head>
@@ -589,6 +601,8 @@
     </sec:authorize>
     <input type="hidden" id="m_no" value="${principal.userInfo.m_No}">
     <input type="hidden" id="m_NickName" value="${principal.userInfo.m_NickName}">
+    <input type="hidden" id="m_auth" value="${principal.userInfo.auth}">
+    
   </header>
 
   <div id="side_bar"> 
@@ -603,7 +617,14 @@
         <h3 class="w-100 ps-3 py-2 mb-0 border-top border-bottom" style="background-color: #EEE;"> ${content.btitle} </h3>
         <div class="w-100 mb-3 border-bottom d-flex justify-content-between">
           <div class="ms-4">
-            ${content.bwriter}
+            <c:choose>
+              <c:when test="${not(content.bwriter eq '관리자')}">
+                <a href="${pageContext.request.contextPath}/community/userinfo/${content.bmno}"class="text-dark" style="text-decoration: none;">${content.bwriter}</a>                            
+              </c:when>
+              <c:otherwise>
+                ${content.bwriter}
+              </c:otherwise>
+            </c:choose>
           </div> 
           <div>
             댓글수 : <span class="reply_total">${reply_total}</span> &nbsp;
@@ -621,7 +642,7 @@
         </div>
           <div class="w-75 d-flex justify-content-between align-items-end mt-4 mb-2 ">
             <span style="width: 250px;">
-              <c:if test="${content.prono != 0}">
+              <c:if test="${content.prono != null}">
                 <a href="" id="product_link">
                   <div class="product" >
                     <div class="d-flex flex-row align-items-center" >
@@ -663,7 +684,11 @@
 
             </sec:authorize>
 
+<<<<<<< HEAD
               <c:if test="${principal.userInfo.m_No == content.bmno and !(principal.userInfo.auth eq 'ROLE_ADMIN')}">
+=======
+              <c:if test="${principal.userInfo.m_No == content.bmno and not (principal.userInfo.auth eq 'ROLE_ADMIN')}">
+>>>>>>> 075ec34f245f69d95103536eec6cb3d532fc084c
                 <button class="btn btn-outline-primary" id="update_btn" >수정하기</button>
                 <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">삭제하기</button>
               </c:if> 
@@ -680,7 +705,7 @@
         <div id="reply" class="w-100">
           <div id="none_reply" class="my-2" style="margin-left: 16px; margin-right: 16px; box-sizing: content-box; border: 1px solid #BBB;" hidden >
             <div class="ps-2" style="background-color: #EEE;">
-              admin
+              관리자
             </div>
             <div class="p-2">
               댓글이 존재하지 않습니다.

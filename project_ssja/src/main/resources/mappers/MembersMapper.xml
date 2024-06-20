@@ -22,6 +22,12 @@
 		]]>
 	</select>
 	
+	<select id="getMember" resultType="MembersDto">
+		<![CDATA[
+			select * from members where M_NO=#{mno}
+		]]>
+	</select>
+	
 	<select id="selectEmail" resultType="String">
 		<![CDATA[
 			select M_EMAIL from members where M_ID=#{mid}

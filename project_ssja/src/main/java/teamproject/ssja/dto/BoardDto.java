@@ -1,6 +1,5 @@
 package teamproject.ssja.dto;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 

@@ -62,6 +62,18 @@
     
   </style>
   <style>
+  	.btn.btn-outline-success{
+  		border-color: #26ac26;
+		font-weight: bold;
+		border-width: 2px 2px 2px 2px;
+  	}
+
+	.btn.btn-outline-success:hover, .btn.btn-outline-success:active, .btn.btn-outline-success:focus{
+  		border-color: #26ac26;
+		background-color: #26ac26;
+		font-weight: bold;
+  	}
+  
     .MyPage_btn {
       background-color: white;
       padding: 20px;
@@ -287,7 +299,10 @@
 	<header class="fixed-top">
 		<div id="title_bar" >
 			<div class="py-2 px-1 d-flex justify-content-between" id="top-bar">
-				<button type="toggle-button" class="top_btn"></button>
+				<div class="d-flex align-items-center">
+					<button type="toggle-button" class="top_btn"></button>
+					<a id="logo_toHome" href=""><img id="logo_img" src="/images/utilities/logoSSJA.png"></a>
+				</div>
 				<div class="mx-5 my-2 d-flex ">
 					<h1 class="h1 vendorTitle" >판매자 :&nbsp;</h1>
         			<h1 class="h1 vendorNames"> 
@@ -309,78 +324,108 @@
 		<div id="side_links" class="w-100"></div>
 	</div>
 	<main>
-		<div class="main_whitespace p-5 my-2">
-			<h1 class="h3 text-center ">상품 목록</h1>
-		</div>
-		<div id="main_container"
-			class="d-flex flex-row align-items-center justify-content-center">
-			 <div id="content_dv_productsInfo" >
-				<table class="table" id="productstable" style="text-align: center;">
-					<thead class="table-dark">
-						<tr>
-							<td>상품번호</td>
-							<td>상품이름</td>
-							<td>가격</td>
-							<td>수량</td>
-							<td>위시 수</td>
-							<td>판매 수</td>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach var="product" items="${products}">
-							<tr>
-								<td>${product.getPRO_NO()}</td>
-								<td>${product.getPRO_NAME()}</td>
-								<td>${product.getPRO_PRICE()}</td>
-								<td>${product.getPRO_QUANTITY()}</td>
-								<td>${product.getPRO_WISH()}</td>
-								<td>${product.getPRO_SELLCOUNT()}</td>
-							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
-				<div class="my-4">
-					<%-- <form name="products-search-form" autocomplete="off">
-						<select name="type">
-							<option selected value="">선택</option>
-							<option value="PRO_NO">상품번호</option>		
-							<option value="PRO_BIZNAME">사업자이름</option>														
-						</select>
-						 <input type="text" name="keyword" value=""> <input
-							type="button" onclick="productsSearchList()"
-							class="btn btn-outline-primary mr-2" value="검색">
-					</form> --%>
+		<c:choose>
+			<c:when test="${empty product}">
+				<div class="main_whitespace p-5 my-2">
+					<h1 class="h3 text-center ">상품 목록</h1>
 				</div>
-				<div id="paging_dv">				
-					<nav aria-label="Page navigation example">
-						<ul class="pagination ch-col justify-content-center">
-							<c:if test="${productpageMaker.prev}">
-								<li class="page-item"><a class="page-link ch-col"
-									href="${pageContext.request.contextPath}/vendor/product/list/${vno}${productpageMaker.makeQuery(productpageMaker.startPage-1)}"><</a></li>
-							</c:if>
-							<c:forEach var="idx" begin="${productpageMaker.startPage}"
-								end="${productpageMaker.endPage}">
-								<c:choose>
-									<c:when test="${productpageMaker.criteria.pageNum == idx}">
-										<li class="page-item active"><a class="page-link"
-											href="${pageContext.request.contextPath}/vendor/product/list/${vno}${productpageMaker.makeQuery(idx)}">${idx}</a></li>
-									</c:when>
-									<c:otherwise>
-										<li class="page-item"><a class="page-link"
-											href="${pageContext.request.contextPath}/vendor/product/list/${vno}${productpageMaker.makeQuery(idx)}">${idx}</a></li>
-									</c:otherwise>
-								</c:choose>
-							</c:forEach>
-							<c:if test="${productpageMaker.next && productpageMaker.endPage > 0}">
-								<li class="page-item"><a class="page-link ch-col"
-									href="${pageContext.request.contextPath}/vendor/product/list/${vno}${productpageMaker.makeQuery(productpageMaker.endPage+1)}">></a></li>
-							</c:if>
-						</ul>
-					</nav>
+				<div id="main_container">
+					<div>
+						<hr class="border border-2 opacity-75">
+					</div>
+					<div class="text-center">
+						<h1 class="h1 text-center">상품 목록이 현재 비어있는 상태입니다. </h1>
+					</div>
+					<div class="mt-4">
+						<h1 class="h1 text-center">상품을 등록하시겠습니까?</h1>
+					</div>
+					<div class="text-center mt-3">
+						<br>
+						<a class="btn btn-outline-success" href="${pageContext.request.contextPath}/vendor/product/write">상품 등록 창으로 가기</a>
+					</div>
+					<div>
+						<hr class="border border-2 opacity-75">
+					</div>
 				</div>
-				<div class="main_whitespace p-5 my-2"></div>				
-			</div> 
-		</div>
+				<div class="main_whitespace p-5 my-2">
+					
+				</div>
+			</c:when>
+			<c:otherwise>
+				<div class="main_whitespace p-5 my-2">
+					<h1 class="h3 text-center ">상품 목록</h1>
+				</div>
+				<div id="main_container"
+					class="d-flex flex-row align-items-center justify-content-center">
+					 <div id="content_dv_productsInfo" >
+						<table class="table table-hover" id="productstable" style="text-align: center;">
+							<thead>
+								<tr>
+									<td>상품번호</td>
+									<td>상품이름</td>
+									<td>가격</td>
+									<td>수량</td>
+									<td>위시 수</td>
+									<td>판매 수</td>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="product" items="${products}">
+									<tr>
+										<td>${product.getPRO_NO()}</td>
+										<td>${product.getPRO_NAME()}</td>
+										<td>${product.getPRO_PRICE()}</td>
+										<td>${product.getPRO_QUANTITY()}</td>
+										<td>${product.getPRO_WISH()}</td>
+										<td>${product.getPRO_SELLCOUNT()}</td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+						<div class="my-4">
+							<%-- <form name="products-search-form" autocomplete="off">
+								<select name="type">
+									<option selected value="">선택</option>
+									<option value="PRO_NO">상품번호</option>		
+									<option value="PRO_BIZNAME">사업자이름</option>														
+								</select>
+								 <input type="text" name="keyword" value=""> <input
+									type="button" onclick="productsSearchList()"
+									class="btn btn-outline-primary mr-2" value="검색">
+							</form> --%>
+						</div>
+						<div id="paging_dv">				
+							<nav aria-label="Page navigation example">
+								<ul class="pagination ch-col justify-content-center">
+									<c:if test="${productpageMaker.prev}">
+										<li class="page-item"><a class="page-link ch-col"
+											href="${pageContext.request.contextPath}/vendor/product/list/${vno}${productpageMaker.makeQuery(productpageMaker.startPage-1)}"><</a></li>
+									</c:if>
+									<c:forEach var="idx" begin="${productpageMaker.startPage}"
+										end="${productpageMaker.endPage}">
+										<c:choose>
+											<c:when test="${productpageMaker.criteria.pageNum == idx}">
+												<li class="page-item active"><a class="page-link"
+													href="${pageContext.request.contextPath}/vendor/product/list/${vno}${productpageMaker.makeQuery(idx)}">${idx}</a></li>
+											</c:when>
+											<c:otherwise>
+												<li class="page-item"><a class="page-link"
+													href="${pageContext.request.contextPath}/vendor/product/list/${vno}${productpageMaker.makeQuery(idx)}">${idx}</a></li>
+											</c:otherwise>
+										</c:choose>
+									</c:forEach>
+									<c:if test="${productpageMaker.next && productpageMaker.endPage > 0}">
+										<li class="page-item"><a class="page-link ch-col"
+											href="${pageContext.request.contextPath}/vendor/product/list/${vno}${productpageMaker.makeQuery(productpageMaker.endPage+1)}">></a></li>
+									</c:if>
+								</ul>
+							</nav>
+						</div>
+						<div class="main_whitespace p-5 my-2"></div>				
+					</div> 
+				</div>
+			</c:otherwise>
+		</c:choose>
 	</main>
 	<footer>
 		<div id="first_footer" class="p-3"></div>
@@ -389,7 +434,7 @@
 	</footer>
 </body>
 <sec:authorize access="isAuthenticated()">
-  <script src="/js/login_user_tab.js"> </script>
+	<script src="/js/vendor_login_user_tab.js"> </script>
 </sec:authorize>
 <script>
 document.addEventListener("DOMContentLoaded", function() {

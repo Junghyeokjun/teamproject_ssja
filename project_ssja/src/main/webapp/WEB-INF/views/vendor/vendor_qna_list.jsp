@@ -267,7 +267,10 @@
 	<header class="fixed-top">
 		<div id="title_bar" >
 			<div class="py-2 px-1 d-flex justify-content-between" id="top-bar">
-				<button type="toggle-button" class="top_btn"></button>
+				<div class="d-flex align-items-center">
+					<button type="toggle-button" class="top_btn"></button>
+					<a id="logo_toHome" href=""><img id="logo_img" src="/images/utilities/logoSSJA.png"></a>
+				</div>
 				<div class="mx-5 my-2 d-flex ">
 					<h1 class="h1 vendorTitle" >판매자 :&nbsp;</h1>
 					<!-- 
@@ -377,7 +380,7 @@
 
 </body>
 <sec:authorize access="isAuthenticated()">
-  <script src="/js/login_user_tab.js"> </script>
+	<script src="/js/vendor_login_user_tab.js"> </script>
 </sec:authorize>
 <script>
 					 

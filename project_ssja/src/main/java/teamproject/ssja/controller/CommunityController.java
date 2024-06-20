@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.BoardIsLikedDto;
+import teamproject.ssja.dto.MembersDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ReplysDto;
 import teamproject.ssja.dto.community.CommunityBoardDto;
@@ -253,6 +254,15 @@ public class CommunityController {
 		return communityService.updateBoardProduct(Long.valueOf(data.get("bno").toString()).longValue(),
 													  Long.valueOf(data.get("proNo").toString()).longValue());
 	}
-	
+
+	@GetMapping("/userinfo/{mno}")
+	public ModelAndView userinfo(ModelAndView mv ,@PathVariable("mno") long mno ){
+				
+		mv.addObject("user", communityService.getUser(mno));
+		mv.addObject("reviews", communityService.getReviews(mno));
+		mv.addObject("communitys", communityService.getSearchPost(1, 5, "mno", mno+""));
+		mv.setViewName("community/community_user_info");
+		return mv;
+	}
 	
 }

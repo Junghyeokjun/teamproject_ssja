@@ -7,7 +7,11 @@ import org.apache.ibatis.annotations.Mapper;
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ProductImgDto;
+import teamproject.ssja.dto.VendorSalesDto;
+import teamproject.ssja.dto.community.CommunityBoardDto;
+import teamproject.ssja.dto.vendor.VendorEtcInfoDTO;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
+import teamproject.ssja.dto.vendor.VendorItemCondition;
 import teamproject.ssja.page.Criteria;
 
 @Mapper
@@ -15,6 +19,8 @@ public interface VendorMapper {
 	
 	// 판매자 자신의 판매자 데이터 가져오기
 	VendorInfoDTO selectVendor(long mNo);
+	
+
 
 	// 판매자 자신의 판매 물품 목록 가져오기
 	List<ProductDto> selectVendorProducts(Criteria criteria);
@@ -22,6 +28,8 @@ public interface VendorMapper {
 	// 판매자 자신의 판매 물품 개수
 	long selectVendorProductsCount(Criteria criteria);
 	
+	// 최근 일주일 동안의 매출 내액(sysdate - 7). 매개변수가 필요없음.
+	List<VendorSalesDto> selectVendorSalesInWeek();
 	
 	// 판매자 자신이 입력했던 물품의 번호 가져오기
 	long selectInsertedProNum(ProductDto product);
@@ -39,4 +47,12 @@ public interface VendorMapper {
 	
 	// 판매자 자신의 총 문의 개수 가져오기
 	long selectVendorQnaCount(Criteria criteria);
+	
+	
+	// 판매자를 회원이 조회 하는 부분
+	List<ProductDto> getVendorItemList(VendorItemCondition condition);
+	VendorEtcInfoDTO getVendorInfoEtc(String bizname);
+	List<CommunityBoardDto> getVendorInfoCommu(String bizname);
+	
+	
 }
