@@ -108,54 +108,49 @@
             }
           });
       }
-
+      function readURL(input) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            document.getElementById('view_img').src = e.target.result;
+          };
+          reader.readAsDataURL(input.files[0]);
+        } else {
+          document.getElementById('view_img').src = "";
+        }
+      }
       cancel_btn.on('click',function(){
-        $.ajax({
-            type:'DELETE', 
-            url: '/community/tempImg/'+bno_val,
-            contentType: 'text',
-            success: function(data) {
-            },
-            error: function(e) {
-              alert("error:" + e);
-            }
-          });
+        //파일 미리보기로 방식을 바꿔 필요가 없어진 전송
+        // $.ajax({
+        //     type:'DELETE', 
+        //     url: '/community/tempImg/'+bno_val,
+        //     contentType: 'text',
+        //     success: function(data) {
+        //     },
+        //     error: function(e) {
+        //       alert("error:" + e);
+        //     }
+        //   });
         location.href="/community/content/"+bno_val;
       })
 
       img_modify_dtn.on('click',function(){
-        var form=$("#uploadForm")[0];
-        var formData=new FormData(form);
-        
-        $.ajax({
-          type:'post', 
-          enctype:"multipart/form-data", // 업로드를 위한 필수 파라미터
-          url: '/community/content/tempImg/'+bno_val,
-          data: formData,
-          processData: false,   // 업로드를 위한 필수 파라미터
-          contentType: false,   // 업로드를 위한 필수 파라미터
-          success: function(data) {
-            $("#modal_close").click();
+        var file=document.getElementById("image_file");        
+        console.log(file.value);
+          $("#modal_close").click();
 
-            if(data=="null"){
-              return;
-            }
-            if($("#view_img").attr("src")==undefined){
-              $("#content").prepend('<img src="'+data+'?'+(new Date().getTime())+'" alt="" id="view_img" class="w-75 d-inline-block mb-5 ">')
-              img_update.val("true");
-              return;
-            }
+          if(file.value==""){
+            return;
+          }
+          if($("#view_img").attr("src")==undefined){
+            $("#content").prepend('<img src="" alt="" id="view_img" class="w-75 d-inline-block mb-5 ">')
+            $("#update_content").css("min-height","30px");
 
-            $("#view_img").attr("src","");
+          }
+          readURL(file)
+          
 
-            $("#view_img").attr("src",data+"?"+(new Date().getTime()));
-
-            img_update.val("true");
-            },
-            error: function(e) {
-              alert("error:" + e);
-            }
-          });
+          img_update.val("true");
       })
       update_btn.on("click",function(){
         var title=$("#title").val();
@@ -362,7 +357,7 @@
         </div>
         <div class="modal-body">
           <form id="uploadForm" >
-            <input type="file" name="image" multiple="multiple" accept=".png, .jpg, .jpeg"/>
+            <input id="image_file" type="file" name="image" multiple="multiple" accept=".png, .jpg, .jpeg"/>
           </form>
           <input type="hidden" id="img_update" value="false">
         </div>

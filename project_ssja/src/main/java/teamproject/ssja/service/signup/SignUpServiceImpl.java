@@ -62,7 +62,9 @@ public class SignUpServiceImpl implements SignUpService {
 		member.setM_PW(passwordEncoder.encode(member.getM_PW()));
 		int result=membersMapper.insertMember(member);
 		if(result==1) {
+			membersMapper.insertSignUpCoupon(member.getM_NO());
 			membersMapper.insertUserAuth(member.getM_ID());
+			
 			return true;
 		}else {
 			return false;
@@ -96,8 +98,9 @@ public class SignUpServiceImpl implements SignUpService {
 	public List<String> getTerms() {
 		List<String> termsList= new ArrayList<String>();
 		//추후에 파일위치에 따라 경로 수정
-		File file=new File("/src/main/resources/static/terms.dat");
-		File file2=new File("/src/main/resources/static/terms2.dat");
+		//현재는 상대경로로 프로젝트 디렉터리를 루트로 하여 참조
+		File file=new File("src/main/resources/static/terms.dat");
+		File file2=new File("src/main/resources/static/terms2.dat");
 
 		FileInputStream stream=null;
 		FileInputStream stream2=null;
@@ -136,8 +139,8 @@ public class SignUpServiceImpl implements SignUpService {
 	public void updateTerms(String term1, String term2) {
 		List<String> termsList= new ArrayList<String>();
 		//추후에 파일위치에 따라 경로 수정
-		File file=new File("C:/Users/601-5/git/temaproject_ssja/project_ssja/src/main/resources/static/terms.dat");
-		File file2=new File("C:/Users/601-5/git/temaproject_ssja/project_ssja/src/main/resources/static/terms2.dat");
+		File file=new File("src/main/resources/static/terms.dat");
+		File file2=new File("src/main/resources/static/terms2.dat");
 
 		FileOutputStream stream=null;
 		FileOutputStream stream2=null;
