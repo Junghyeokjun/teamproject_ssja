@@ -48,10 +48,7 @@
       background-color: #f7f0e8;
     }
 
-    #logo_img {
-      width: 3.5em;
-      height: 3em;
-    }
+
     /* number타입의 input 화살표제거 */
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
@@ -618,7 +615,10 @@
     <div id="second_footer"></div>
     <div id="third_footer"></div>
   </footer>
-
+<sec:authorize access="isAuthenticated()">
+  <script src="/js/login_user_tab.js"> </script>
+  <script src="/js/user_cart_tab.js"> </script>
+</sec:authorize>
 </body>
 
 </html>
