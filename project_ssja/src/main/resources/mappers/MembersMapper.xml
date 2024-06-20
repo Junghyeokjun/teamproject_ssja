@@ -52,6 +52,11 @@
 			INSERT INTO members(M_NO,M_ID,M_PW,M_NAME,M_ADDRESS1,M_ADDRESS2,M_ZIPCODE,M_BIRTH,M_EMAIL,M_PHONE,M_DATE,M_NICKNAME) 
 			VALUES(M_SEQ.nextval,#{M_ID},#{M_PW},#{M_NAME},#{M_ADDRESS1},#{M_ADDRESS2},#{M_ZIPCODE},#{M_BIRTH},#{M_EMAIL},#{M_PHONE},SYSDATE,#{M_NICKNAME})
 		]]>
+		<selectKey keyProperty="M_NO" resultType="long" order="AFTER">
+			SELECT M_NO
+			FROM members
+			WHERE M_ID=#{M_ID}
+		</selectKey>
 	</insert>
 	
 	<insert id="insertUserAuth">
@@ -73,7 +78,7 @@
 	</update>
 	<insert id="insertSignUpCoupon">
 		<![CDATA[
-			INSERT INTO ownedcoupon VALUES(1,6)
+			INSERT INTO ownedcoupon VALUES(#{mno},6)
 		]]>
 	</insert>
 	
