@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.MembersDto;
@@ -55,12 +56,14 @@ public class SignUpServiceImpl implements SignUpService {
 		return membersMapper.selectEmail(mid);
 	}
 	
+	@Transactional
 	@Override
 	public boolean signUp(MembersDto member) {
 		//가입에 성공했을시 권한테이블에 추가후 true반환
 		System.out.println(member.getM_PW()); //나중에 처리
 		member.setM_PW(passwordEncoder.encode(member.getM_PW()));
 		int result=membersMapper.insertMember(member);
+		System.out.println(member);
 		if(result==1) {
 			membersMapper.insertSignUpCoupon(member.getM_NO());
 			membersMapper.insertUserAuth(member.getM_ID());
