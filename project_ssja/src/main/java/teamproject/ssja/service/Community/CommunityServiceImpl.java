@@ -16,11 +16,13 @@ import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.BoardImgsDto;
 import teamproject.ssja.dto.BoardIsLikedDto;
+import teamproject.ssja.dto.MembersDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ReplysDto;
 import teamproject.ssja.dto.community.CommunityBoardDto;
 import teamproject.ssja.dto.login.CustomPrincipal;
 import teamproject.ssja.mapper.BoardMapper;
+import teamproject.ssja.mapper.MembersMapper;
 import teamproject.ssja.mapper.ProductDetailMapper;
 import teamproject.ssja.mapper.ProductListMapper;
 import teamproject.ssja.mapper.ReplyMapper;
@@ -40,6 +42,9 @@ public class CommunityServiceImpl implements CommunityService {
 	
 	@Autowired
 	ProductListMapper productSearchMapper;
+	
+	@Autowired
+	MembersMapper membersMapper;
 	
 	//배포시에 경로에 따라 수정
 	final String absolutePath="\\\\DESKTOP-RDUHP84\\board_content";
@@ -248,7 +253,13 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public int updateHit(CustomPrincipal principal,long bno) {
 	    if (principal != null) {
-	    	Set<Long> hitSet=principal.getUserInfo().getHit();
+	    	Set<Long> hitSet= null;
+	    	try {
+	    		hitSet=principal.getUserInfo().getHit();
+			} catch (Exception e) {
+				return 0;
+			}
+	    	
 	    	if(!hitSet.contains(bno)) {
 	    		hitSet.add(bno);
 	    		return boardMapper.updateHit(bno);
@@ -287,6 +298,17 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public BoardDto getNotice() {
 		return boardMapper.selectNotice();
+	}
+
+	@Override
+	public MembersDto getUser(long mno) {
+		
+		return membersMapper.getMember(mno);
+	}
+
+	@Override
+	public List<BoardDto> getReviews(long mno) {
+		return boardMapper.selectReview(mno);
 	}
 
 

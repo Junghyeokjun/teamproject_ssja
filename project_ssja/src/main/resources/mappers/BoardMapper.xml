@@ -195,7 +195,7 @@
 			     WHERE b.B_C_NO=40 and b.b_no=bi.b_no and b.b_writer != '관리자' and
 			     ]]>
 			     
-			   		<choose>
+			   	<choose>
 	               <when test="#{option} != null and option.equals('all')">
 	                (B_TITLE like '%${keyword}%' or B_CONTENT like '%${keyword}%' or B_WRITER like '%${keyword}%' )
 	               </when>      
@@ -211,7 +211,10 @@
 	               <when test="#{option} != null and option.equals('writer')">
 	                B_WRITER like '%${keyword}%'
 	               </when> 
-               		</choose>
+	               <when test="#{option} != null and option.equals('mno')">
+	                M_NO like '${keyword}'
+	               </when>   
+               	</choose>
    			<![CDATA[
                		
 			     ORDER BY b.b_no desc) A 
@@ -245,6 +248,20 @@
         ]]>
 	</select>
 
+	<select id="selectReview" resultMap="BoardDtoMap">
+    	<![CDATA[
+
+		    select
+		        A.*
+		    from 
+		    (SELECT b.* FROM board b 
+		     WHERE b.B_C_NO=30 and b.m_no=#{mno}
+		     ORDER BY b.B_DATE desc) A 
+	    	where rownum <= 2 
+	    
+        ]]>
+	</select>
+
 	<!-- 게시글 총 개수  -->
 	<select id="selectTotalCount" parameterType="long" resultType="long">
     	<![CDATA[
@@ -271,7 +288,7 @@
                <when test="#{option} != null and option.equals('writer')">
                 B_WRITER like '%${keyword}%'
                </when> 
-                        
+
                </choose>
 
 	</select>

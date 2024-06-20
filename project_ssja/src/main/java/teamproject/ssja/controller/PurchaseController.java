@@ -61,9 +61,9 @@ public class PurchaseController {
 	@RequestMapping("/test")
 	public ModelAndView testPurchase(ModelAndView mv) {
 		List<ProductDto> dtos=new ArrayList<>();
-		dtos.add(new ProductDto(3899, 1, 11, 11000, 2, "/images/product_banner/product_banner_2.jpg", 4, 2323, 222, "SSJA", "침대","1111-11-11"));
-		dtos.add(new ProductDto(3900, 1, 12, 12000, 2, "/images/product_banner/product_banner_2.jpg", 4, 2323, 222, "SSJA", "수납","1111-11-11"));
-		dtos.add(new ProductDto(3901, 1, 13, 21000, 2, "/images/product_banner/product_banner_3.jpg", 4, 2323, 222, "SSJA", "침구","1111-11-11"));
+		dtos.add(new ProductDto(3899, 1, 11, 11000, 2, "/images/product_banner/product_banner_2.jpg", 4, 2323, 222, "SSJA", "침대","1111-11-11",0L,0));
+		dtos.add(new ProductDto(3900, 1, 12, 12000, 2, "/images/product_banner/product_banner_2.jpg", 4, 2323, 222, "SSJA", "수납","1111-11-11",0L,0));
+		dtos.add(new ProductDto(3901, 1, 13, 21000, 2, "/images/product_banner/product_banner_3.jpg", 4, 2323, 222, "SSJA", "침구","1111-11-11",0L,0));
 		mv.addObject("products", dtos);
 		mv.setViewName("purchase");
 		return mv;

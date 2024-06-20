@@ -229,6 +229,10 @@ table {
 #wish_img:hover {
 	cursor: pointer;
 }
+.input-group-text > a{
+text-decoration:none;
+color:black;
+}
 </style>
 
 
@@ -330,7 +334,9 @@ table {
 						</span>
 
 						<div class="input-group-text">
-    							<div style="font-weight: bold; border: none;">${productData.pro_bizname}</div>
+    							<a style="font-weight: bold; border: none;"
+    							href="/vendor/info/${productData.pro_bizname }">
+    							${productData.pro_bizname}</a>
     							
 								</div>
 

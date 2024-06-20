@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.BoardIsLikedDto;
+import teamproject.ssja.dto.MembersDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ReplysDto;
 import teamproject.ssja.dto.community.CommunityBoardDto;
@@ -70,6 +71,12 @@ public interface CommunityService {
 	
 	//상품을 얻어오는 메서드
 	List<ProductDto> getProducts(String keyword);
+	
+	//특정유저를 얻어오는 메서드
+	MembersDto getUser(long mno);
+	
+	//특정유저의 리뷰를 얻어오는 메서드
+	List<BoardDto> getReviews(long mno);
 	
 	
 	

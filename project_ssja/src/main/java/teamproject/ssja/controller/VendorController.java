@@ -194,4 +194,10 @@ public class VendorController {
 		boardService.removeBoard(boardDto);
 		return "redirect:/vendor/question/" + boardDto.getBbcno();
 	}
+	
+	@GetMapping("/info/{bizname}")
+	public String vendorInfo(@PathVariable("bizname") String bizname, Model model) {
+		model.addAttribute("vendor", bizname);
+		return "/vendor/vendorInfo";
+	}
 }
