@@ -143,7 +143,7 @@ $("#myPage_orderInfo_Select").on('click', function() {
 				   $orders_product_Info.append($("<span>").text('수량 : '+order.o_QUANTITY+" 개"));
 				   
 				   let $additionalInfo = $("<div>").css({'min-width':'20%','max-width':'20%','margin-left':'1em'}).addClass('d-flex flex-column').append(
-					        $("<span>").text('쿠폰 :' + order.o_USECOUPON),
+					        $("<span>").text('쿠폰 :' + order.usecoupon),
 					        $("<span>").text(payAccount(order)),
 					        $("<span>").text(order.o_STATE));
 				   $orderInfo.append($additionalInfo);
