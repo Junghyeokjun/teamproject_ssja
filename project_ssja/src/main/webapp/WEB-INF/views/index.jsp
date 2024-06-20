@@ -108,7 +108,7 @@ cursor:pointer;
         </form>
         <button id="search_icon"></button>
         <a id="cart_link"><img id="cart_img"></a>
-        <a id="user_link" href="login"><img id="login_img"></a>
+        <a id="user_link" href="/login"><img id="login_img"></a>
       </div>
 
     </div>
@@ -131,7 +131,7 @@ cursor:pointer;
 				</div>
 				<div class="carousel-inner" id="event_banner_content">
 					<div class="carousel-item active">
-					<a href="/event/page?event=0"><img src="/images/event/banner/event_banner_img_default.jpg" id="event_banners" class="d-block w-100" alt="Event1..."></a>
+					<a href="/event/page?event=0" id="event_default_link"><img src="/images/event/banner/event_banner_img_default.jpg" id="event_banners" class="d-block w-100" alt="Event1..."></a>
 					</div>
 				</div>
 				<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
