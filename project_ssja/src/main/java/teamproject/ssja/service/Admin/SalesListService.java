@@ -30,6 +30,10 @@ public class SalesListService {
 	public ProfitDto getSalesDataByDate() {
 		return adminPageMapper.getSalesDataByDate();
 	}
+
+	public List<Map<String, Object>> dailyMCounts() {
+		return adminPageMapper.dailyMCountsList();
+	}
 	
 	
 
