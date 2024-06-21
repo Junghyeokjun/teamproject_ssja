@@ -330,7 +330,7 @@
 	</div>
 	<main>
 		<c:choose>
-			<c:when test="${empty product}">
+			<c:when test="${empty products}">
 				<div class="main_whitespace p-5 my-2">
 					<h1 class="h3 text-center ">상품 목록</h1>
 				</div>
@@ -362,10 +362,10 @@
 				</div>
 				<div id="main_container"
 					class="d-flex flex-row align-items-center justify-content-center">
-					 <div id="content_dv_productsInfo" >
+					 <div id="content_dv_productsInfo" class="flex-grow-1" >
 						<table class="table table-hover" id="productstable" style="text-align: center;">
 							<thead>
-								<tr>
+								<tr class="table-secondary">
 									<td>상품번호</td>
 									<td>상품이름</td>
 									<td>가격</td>

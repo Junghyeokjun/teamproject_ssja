@@ -324,7 +324,7 @@
 						<a href="${pageContext.request.contextPath}/vendor/question/write_view/${bc.bcno}" class="btn btn-primary btn-tuning">글 작성</a>
 					</div>
 					<table class="table table-hover" style="text-align: center;">
-						<thead class="table-dark">
+						<thead class="table-secondary">
 							<tr>
 								<td>번호</td>
 								<td>제목</td>

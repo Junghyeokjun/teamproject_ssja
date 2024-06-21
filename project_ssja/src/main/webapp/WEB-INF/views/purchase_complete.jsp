@@ -43,12 +43,7 @@
       background-color: #f7f0e8;
     }
 
-    #logo_img {
-      width: 3.5em;
-      height: 3em;
-    }
-
-  </style>
+  </style> 	
   <script>
 
   </script>
