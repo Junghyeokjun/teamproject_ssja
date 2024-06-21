@@ -542,11 +542,12 @@ $(document).ready(function () {
           sum += response[i].totalSales;
         }	
 
+        // 일주일 평균
         let avg = sum / 7 ;
 
         // 평균은 소수 첫번째 자리까지 보여주기. 해당 처리를 하지 않으면 소수 세번째 자리까지 보여주는 상황임.(toLocalString()이 처리해줌.)
         let tfooter = $('<tfoot>').append($('<tr>').append($('<th>').text('합계')).append($('<td>').text(sum.toLocaleString() + ' 원')))
-              .append($('<tr>').append($('<th>').text('평균')).append($('<td>').text(avg.toFixed(1).toLocaleString() + ' 원')));
+              .append($('<tr>').append($('<th>').text('평균')).append($('<td>').text(Number(avg.toFixed(0)).toLocaleString() + ' 원')));
         $('#sales').append(tfooter);
 
 

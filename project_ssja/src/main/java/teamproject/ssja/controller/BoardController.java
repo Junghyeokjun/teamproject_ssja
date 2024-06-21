@@ -39,7 +39,15 @@ public class BoardController {
 		model.addAttribute("boards",  boardService.showListWithPaging(criteria));
 
 		model.addAttribute("pageMaker", new PageVO(boardService.getTotal(criteria.getBcno()), criteria));
-		return "/qna/qna_list";
+		
+		// 페이지 이동 설정
+		// bcno에 따른 페이지 이동
+		// 현재는 기본적으로 문의 게시판을 향해 이동하도록 설정된 상태
+		if(bcno == 20) {
+			return "/qna/qna_list";
+		}else {
+			return "/qna/qna_list";
+		}
 	}
 	
 //	@GetMapping("/content_view")

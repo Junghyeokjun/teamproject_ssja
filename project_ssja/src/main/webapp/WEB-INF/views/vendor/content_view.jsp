@@ -36,10 +36,7 @@
 <script src="/js/footer.js">
 	
 </script>
-<script src="/js/vendor/question.js">
-	
-</script>
-<script src="/js/vendor/questionLike.js">
+<script src="/js/board.js">
 	
 </script>
 <link href="/css/footerstyle.css?after" rel="stylesheet">
@@ -457,10 +454,7 @@ body {
 												response.replys,
 												function(index, reply_view) {
 													html1 += '<div class="rounded border m-2">';
-													html1 += '<div class="replyhead1 text-center"><h2 class="h2 disabled border-0 m-0 pt-2">관리자 답변</h2></div><div class="d-flex flex-row-reverse replyhead2">'
-													if (principal.auth == "ROLE_ADMIN") {
-														html1 += '<div><button class="reply-modify btn">수정</button><button id="reply-delete" class="btn">X</button></div>';
-													}
+													html1 += '<div class="replyhead1 text-center"><h2 class="h2 disabled border-0 m-0 pt-2">관리자 답변</h2></div><div class="d-flex flex-row-reverse replyhead2">'												
 													html1 += '<div class="btn disabled border-0">'
 															+ reply_view.rdate
 															+ '</div></div><div class="input-group">';
@@ -470,7 +464,7 @@ body {
 													}
 
 													//html1 += '<input type="text" class="rcontent form-control" data-rno="' + reply_view.rno + '" value="' + reply_view.rcontent + '" readonly="readonly">';				
-													html1 += '<textarea class="rcontent form-control" data-rno="' + reply_view.rno + '" rows="1" readonly="readonly">'
+													html1 += '<textarea class="board-textarea form-control border-0" data-rno="' + reply_view.rno + '" rows="1" readonly="readonly">'
 															+ reply_view.rcontent
 															+ '</textarea>';
 													html1 += '</div>';

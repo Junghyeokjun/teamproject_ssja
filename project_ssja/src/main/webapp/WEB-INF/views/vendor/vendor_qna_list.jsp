@@ -338,8 +338,7 @@
 									<td><a id="board_title" class=""
 										href="${pageContext.request.contextPath}/vendor/question/content_view/${bc.bcno}?bno=${board.bno}">${board.btitle}</a>	
 									</td>
-									<td class="date_str">${board.bdate}</td>
-									<%-- <td><button type="button" onclick="location.href='/dept/remove?deptno=${dept.deptno}';">삭제</button></td> --%>
+									<td class="date_str">${board.bdate}</td>								
 								</tr>
 							</c:forEach>
 						</tbody>
