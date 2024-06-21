@@ -145,6 +145,51 @@ public class SignUpServiceImpl implements SignUpService {
 	 
 
 	@Override
+	public List<String> getTerms() {
+		List<String> termsList= new ArrayList<String>();
+		
+		termsList.add("해당 약관은 필수 약관입니다.");
+		termsList.add("해당 약관은 선택 약관입니다.");
+		
+		//추후에 파일위치에 따라 경로 수정
+		//현재는 상대경로로 프로젝트 디렉터리를 루트로 하여 참조
+//		File file=new File("src/main/resources/static/terms.dat");
+//		File file2=new File("src/main/resources/static/terms2.dat");
+//
+//		FileInputStream stream=null;
+//		FileInputStream stream2=null;
+//		try {
+//			stream = new FileInputStream(file);
+//			stream2 = new FileInputStream(file2);
+//
+//			int bufSize= stream.available();
+//			byte[] buf = new byte[bufSize];
+//			stream.read(buf);
+//			
+//			termsList.add(new String(buf));
+//			
+//			bufSize= stream2.available();
+//			buf = new byte[bufSize];
+//			stream2.read(buf);
+//			
+//			termsList.add(new String(buf));
+//			
+//		}catch (Exception e) {
+//			System.out.println(e);
+//		} finally {
+//			try {
+//				stream.close();
+//				stream2.close();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//	
+
+		return termsList;
+	}
+	@Override
 	public void updateTerms(String term1, String term2) {
 		List<String> termsList= new ArrayList<String>();
 		//추후에 파일위치에 따라 경로 수정
