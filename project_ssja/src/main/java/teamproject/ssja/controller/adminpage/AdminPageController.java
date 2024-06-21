@@ -28,10 +28,12 @@ import teamproject.ssja.dto.PurchaseSearchDto;
 import teamproject.ssja.dto.userinfo.CouponDTO;
 import teamproject.ssja.page.Criteria;
 import teamproject.ssja.page.Page10VO;
+import teamproject.ssja.service.Admin.AdminInfoListService;
 import teamproject.ssja.service.Admin.CouponListService;
 import teamproject.ssja.service.Admin.MemberListService;
 import teamproject.ssja.service.Admin.ProductListService;
 import teamproject.ssja.service.Admin.PurchaseListService;
+import teamproject.ssja.service.Admin.QnaListService;
 import teamproject.ssja.service.Admin.SalesListService;
 
 import java.text.ParseException;
@@ -40,6 +42,9 @@ import java.text.ParseException;
 @Controller
 @RequestMapping("/adminPage")
 public class AdminPageController {
+	
+	@Autowired
+	private AdminInfoListService adminInfoListService;
 
 	@Autowired
 	private MemberListService memberListService;
@@ -55,18 +60,21 @@ public class AdminPageController {
 
 	@Autowired
 	private SalesListService salesListService;
+	
+	@Autowired
+	private QnaListService qnaListService;
 
 	@GetMapping("")
 	public String AdminPage(Model model) {
+		
+		model.addAttribute("dailyPrice", adminInfoListService.getDailyPrice());
+		model.addAttribute("dailyPurcount", adminInfoListService.getDailyPurcount());
+		model.addAttribute("dailyMCount", adminInfoListService.getDailyMcount());
+		model.addAttribute("dailyQnaCount", adminInfoListService.getDailyQnaCount());
 		List<Map<String, Object>> dailySales = salesListService.getDailySales();
 		model.addAttribute("dailySales", dailySales);
-		List<Map<String, Object>> monthlySales = salesListService.getMonthlySales();
-		model.addAttribute("monthlySales", monthlySales);
-		List<Map<String, Object>> yearlySales = salesListService.getYearlySales();
-		model.addAttribute("yearlySales", yearlySales);
-	
-		model.addAttribute("salesData", salesListService.getSalesDataByDate());
-
+		List<Map<String, Object>> dailyMCounts = salesListService.dailyMCounts();
+		model.addAttribute("dailyMCounts", dailyMCounts);
 		
 		return "/adminPage/AdminPage";
 	}
@@ -242,40 +250,15 @@ public class AdminPageController {
 		return "/adminPage/salesList";
 	}
 
-//	@RequestMapping(value = "/adminPage/allSales", method = RequestMethod.GET)
-//	@ResponseBody
-//	public Map<String, Object> getAllSales() {
-//		Map<String, Object> allSales = new HashMap<>();
-//		allSales.put("dailySales", salesListService.getDailySales());
-//		allSales.put("monthlySales", salesListService.getMonthlySales());
-//		allSales.put("yearlySales", salesListService.getYearlySales());
-//		return allSales;
-//	}
+	@GetMapping("/qnasList")
+	public String qnasList(Model model, Criteria criteria) {
+		log.info("qnasList()..");
 
-	/*
-	 * @GetMapping("/salesData") public ResponseEntity<Map<String, Object>>
-	 * getSalesDataByDate(@RequestParam String date) {
-	 * log.info("getSalesDataByDate() - date: {}", date); Map<String, Object>
-	 * salesData = salesListService.getSalesDataByDate(date);
-	 * 
-	 * if (salesData != null) { return new ResponseEntity<>(salesData,
-	 * HttpStatus.OK); } else { return new ResponseEntity<>(HttpStatus.NOT_FOUND); }
-	 * }
-	 */
-	
-//	 @GetMapping("/salesData") 
-//	 public ResponseEntity<Map<String, Object>>  getSalesDataByDate() {
-//	 log.info("getSalesDataByDate()..");
-//	 
-//	 // 날짜를 이용해서 매출 데이터를 가져오는 서비스 호출 
-//	 Map<String, Object> salesData = salesListService.getSalesDataByDate();
-//	 
-//	 if (salesData == null) { // 데이터를 찾지 못한 경우 404 에러 반환 return
-//	 ResponseEntity.notFound().build(); }
-//	 
-//	 // 데이터를 성공적으로 가져온 경우 200 OK와 함께 반환 
-//	 return ResponseEntity.ok(salesData); 
-//	 }
+		long Qnastotal = qnaListService.getQnaListTotalCount();
+		model.addAttribute("qnapageMaker", new Page10VO(Qnastotal, criteria));
+		model.addAttribute("qnas", qnaListService.getQnaListWithPaging(criteria));
+		return "/adminPage/qnasList";
+	}
 	
 
 }

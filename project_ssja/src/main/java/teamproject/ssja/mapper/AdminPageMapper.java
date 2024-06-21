@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.MembersDto;
 import teamproject.ssja.dto.MembersSearchDto;
 import teamproject.ssja.dto.ProductDto;
@@ -13,11 +14,12 @@ import teamproject.ssja.dto.ProductsSearchDto;
 import teamproject.ssja.dto.ProfitDto;
 import teamproject.ssja.dto.PurchaseDto;
 import teamproject.ssja.dto.PurchaseSearchDto;
+import teamproject.ssja.dto.QnaBoardDto;
 import teamproject.ssja.dto.userinfo.CouponDTO;
 import teamproject.ssja.page.Criteria;
 
 @Mapper
-public interface AdminPageMapper {
+public interface AdminPageMapper {	
 
 	long getMemberListTotalCount();
 
@@ -57,7 +59,19 @@ public interface AdminPageMapper {
 		List<Map<String, Object>> getYearlySalesList();
 
 		ProfitDto getSalesDataByDate();
+		
+		int getDailyPrice();
 
+		int getDailyPurcount();
 
+		int getDailyMcount();
+
+		int getDailyQnaCount();
+
+		List<Map<String, Object>> dailyMCountsList();
+
+		long getQnaListTotalCount();
+
+		List<QnaBoardDto> getQnaListWithPaging(Criteria cri);
 
 }
