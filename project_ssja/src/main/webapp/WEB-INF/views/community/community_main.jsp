@@ -42,12 +42,7 @@
       background-color: #f7f0e8;
     }
 
-    #logo_img {
-      width: 3.5em;
-      height: 3em;
-      width:90%;
-    }
-    
+  
     #notice{
       text-decoration: none;
     }
@@ -75,7 +70,7 @@
         </form>
         <button id="search_icon"></button>
         <a id="cart_link"><img id="cart_img"></a>
-        <a id="user_link"><img id="login_img"></a>
+        <a id="user_link" href="/login"><img id="login_img"></a>
       </div>
 
     </div>
@@ -124,7 +119,7 @@
             <button type="button" id="search_btn" class="btn btn-primary btn-sm ms-1" >검색</button>
           </span>
           <span style="width: 70px;height: 40px;">
-            <c:if test='${principal != null and principal!=""} '>
+            <c:if test='${principal != null and principal.userInfo!=""}'>
               <button id="insert_btn" type="button" class="btn btn-primary">글쓰기</button>
             </c:if>
           </span>
@@ -139,6 +134,11 @@
     <div id="second_footer"></div>
     <div id="third_footer"></div>
   </footer>
+ 
+    <sec:authorize access="isAuthenticated()">
+  <script src="/js/login_user_tab.js"> </script>
+  <script src="/js/user_cart_tab.js"> </script>
+</sec:authorize>
  
 
 </body>

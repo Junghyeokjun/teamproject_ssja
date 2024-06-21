@@ -16,7 +16,7 @@ public class OrderItemInfoDTO {
 	private long O_DISCOUNT;
 	private long O_PRICE;
 	private long O_PAY;
-	private long O_USECOUPON;
+	private String USECOUPON;
 	private String O_STATE;
 	private int isWiriteReview;
 	private String PRO_NAME;

@@ -1,42 +1,62 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+   pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SSJA</title>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-	crossorigin="anonymous" />
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-	crossorigin="anonymous">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+  <title>SSJA</title>
+  <sec:authorize access="isAuthenticated()">
+  	<sec:authentication property="principal" var="principal" />
+	<script>  		
+		let getPrincipal = {
+			'memberNum' : '${principal.memberNum}',
+			'userName' : '${principal.userInfo.m_Name}'
+		}
+		console.log(getPrincipal);
+	</script>
+  </sec:authorize>
+    
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="/js/barscript.js">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  
+   <meta name="_csrf" content="${_csrf.token}"/>
+<meta name="_csrf_header" content="${_csrf.headerName}"/>
+
+<c:choose>
+<c:when test="${principal.auth != 'ROLE_VENDOR'}">
+  <script src="/js/barscript.js">
 
   </script>
-<script src="/js/footer.js">
+  <link href="/css/barstyle.css?after" rel="stylesheet">
+</c:when>
+<c:when test="${principal.auth == 'ROLE_VENDOR'}">
+  <script src="/js/vendorbarscript.js">
 
   </script>
-<script src="/js/board.js">
+  <link href="/css/vendorbarstyle.css?after" rel="stylesheet">
+</c:when>
+</c:choose>
+  <script src="/js/footer.js">
 
   </script>
-<link href="/css/footerstyle.css?after" rel="stylesheet">
-<link href="/css/barstyle.css?after" rel="stylesheet">
-<link href="/css/board.css?after" rel="stylesheet">
+  <link href="/css/footerstyle.css?after" rel="stylesheet">
+  <link href="/css/board.css?after" rel="stylesheet">
 
-<link rel="stylesheet"
-	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
+  <link rel="stylesheet" href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
 
 <style>
 @font-face {
@@ -83,38 +103,79 @@ body {
 </head>
 
 <body>
-	<header>
-		<div id="title_bar" class=" fixed-top">
-			<div class="py-2 px-1" id="top-bar">
-				<button type="toggle-button" class="top_btn" id="top_btn"></button>
-				<a href=""><img id="logo_img"
-					src="/images/utilities/logoSSJA.png"></a>
-				<form action="http://www.naver.com" id=searchForm method="get">
-
-				</form>
-				<button id="search_icon"></button>
-				<a id="cart_link"><img id="cart_img"></a> <a id="user_link"><img
-					id="login_img"></a>
+	<sec:authorize access="isAuthenticated()">
+		<c:set var="isAuthenticated" value="true"/>
+	</sec:authorize>
+	<sec:authorize access="isAnonymous()">
+		<c:set var="isAuthenticated" value="false"/>
+	</sec:authorize>
+<c:choose>
+	<c:when test="${principal.auth != 'ROLE_VENDOR'}">
+	  <header>
+	    <div id="title_bar" class="fixed-top">
+	      <div class="py-2 px-1" id="top-bar">
+	        <button type="toggle-button" class="top_btn" id="top_btn"></button>
+	        <a id="logo_toHome" href=""><img id="logo_img" src="/images/utilities/logoSSJA.png"></a>
+	        <form action="http://www.naver.com" id=searchForm method="get">
+	
+	        </form>
+	        <button id="search_icon"></button>
+	        <a id="cart_link"><img id="cart_img"></a>
+	        <a id="user_link"><img id="login_img"></a>
+	      </div>
+	
+	    </div>
+	    <nav id="total_bar">
+	      <div id="home_user_bar"> </div>
+	      <div id="sub_bar"></div>
+	    </nav>
+	  </header>
+  </c:when>
+  <c:when test="${principal.auth == 'ROLE_VENDOR'}">
+  	<header class="fixed-top">
+		<div id="title_bar" >
+			<div class="py-2 px-1 d-flex justify-content-between" id="top-bar">
+				<div class="d-flex align-items-center">
+					<button type="toggle-button" class="top_btn"></button>
+					<a id="logo_toHome" href=""><img id="logo_img" src="/images/utilities/logoSSJA.png"></a>
+				</div>
+				<div class="mx-5 my-2 d-flex ">
+					<h1 class="h1 vendorTitle" >판매자 :&nbsp;</h1>
+        			<h1 class="h1 vendorNames"> 
+        				&lt;
+        				<sec:authorize access="isAuthenticated()">
+        					<sec:authentication property="principal.userInfo" var="vendorMember"/>
+        				</sec:authorize>
+        				<input type="hidden" id="vendorData" value="${vendorMember.m_No}">
+        				${vendorMember.m_Name}
+        				&gt;</h1>      			
+        		</div>
+        		<a id="cart_link" hidden="hidden"></a>
+				<a id="user_link"><img id="login_img"></a>
 			</div>
-
 		</div>
 		<nav id="total_bar">
-			<div id="home_user_bar"></div>
-			<div id="sub_bar"></div>
 		</nav>
 	</header>
-
+  </c:when>
+</c:choose>
 	<div id="side_bar">
 		<div id="side_links" class="w-100"></div>
 	</div>
-	<main style="margin: 0 auto;">
+	<main>
 		<div class="main_whitespace p-5 my-2">
 			<h1 class="h3 text-center">${bc.bcname} 게시판</h1>
 		</div>
 		<div id="main_container" style="margin: 0 auto;">
-			<div class="d-flex justify-content-end p-1">
-				<a href="${pageContext.request.contextPath}/board/write_view/${bc.bcno}" class="btn btn-primary btn-tuning">글 작성</a>
-			</div>
+			<sec:authorize access="isAuthenticated()">
+				<c:choose>
+					<c:when test="${principal.auth == 'ROLE_USER' || principal.auth == 'ROLE_ADMIN'}">
+						<div class="d-flex justify-content-end p-1">
+							<a href="${pageContext.request.contextPath}/board/write_view/${bc.bcno}" class="btn btn-primary btn-tuning">글 작성</a>				
+						</div>
+					</c:when>
+				</c:choose>
+			</sec:authorize>
 			<table class="table table-hover" style="text-align: center;">
 				<thead class="table-dark">
 					<tr>
@@ -127,9 +188,9 @@ body {
 				<tbody>
 					<c:forEach var="board" items="${boards}">
 						<tr>
-							<td>${board.bno}</td>
-							<td><a id="board_title" class=""
-								href="${pageContext.request.contextPath}/board/content_view?bno=${board.bno}">${board.btitle}</a>
+							<td>${board.bno}</td>					
+							<td>							
+								<a class="board_title" href="${pageContext.request.contextPath}/board/content_view/${bc.bcno}?bno=${board.bno}">${board.btitle}</a>
 							</td>
 							<td>${board.bwriter}</td>
 							<td class="date_str">${board.bdate}</td>
@@ -143,19 +204,19 @@ body {
 					<ul class="pagination ch-col justify-content-center">
 						<c:if test="${pageMaker.prev}">
 							<li class="page-item"><a class="page-link ch-col"
-								href="${pageContext.request.contextPath}/board/list/${category}/${pageMaker.makeQuery(pageMaker.startPage-1)}"><</a></li>
+								href="${pageContext.request.contextPath}/board/list/${category}${pageMaker.makeQuery(pageMaker.startPage-1)}"><</a></li>
 						</c:if>
 						<c:forEach var="idx" begin="${pageMaker.startPage}"
 							end="${pageMaker.endPage}">
 							<c:choose>
 								<c:when test="${pageMaker.criteria.pageNum == idx}">
 									<li class="page-item active"><a class="page-link"
-										href="${pageContext.request.contextPath}/board/list/${category}/${pageMaker.makeQuery(idx)}">${idx}</a>
+										href="${pageContext.request.contextPath}/board/list/${category}${pageMaker.makeQuery(idx)}">${idx}</a>
 									</li>
 								</c:when>
 								<c:when test="${pageMaker.criteria.pageNum != idx}">
 									<li class="page-item"><a class="page-link"
-										href="${pageContext.request.contextPath}/board/list/${category}/${pageMaker.makeQuery(idx)}">${idx}</a></li>
+										href="${pageContext.request.contextPath}/board/list/${category}${pageMaker.makeQuery(idx)}">${idx}</a></li>
 								</c:when>
 								<c:otherwise>
 								</c:otherwise>
@@ -163,7 +224,7 @@ body {
 						</c:forEach>
 						<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
 							<li class="page-item"><a class="page-link ch-col"
-								href="${pageContext.request.contextPath}/board/list/${category}/${pageMaker.makeQuery(pageMaker.endPage+1)}">></a></li>
+								href="${pageContext.request.contextPath}/board/list/${category}${pageMaker.makeQuery(pageMaker.endPage+1)}">></a></li>
 						</c:if>
 					</ul>
 				</nav>
@@ -184,4 +245,24 @@ body {
 	</footer>
 
 </body>
+<sec:authorize access="isAuthenticated()">
+  <script src="/js/login_user_tab.js"> </script>
+  <script src="/js/user_cart_tab.js"> </script>  
+</sec:authorize><script type="text/javascript">
+	$(document).ready(function(){
+		let isAuthenticated = '${isAuthenticated}';
+		console.log(typeof isAuthenticated);
+		console.log(isAuthenticated);
+		$('.board_title').on('click',function(e){
+			e.preventDefault();
+			if(isAuthenticated == 'false'){
+				if (confirm('문의글을 보기 위해서는, 로그인이 필요합니다. 로그인하시겠습니까?')) {
+					window.location.href = '/login';
+				}
+			}else{
+				window.location.href = $(this).attr('href');
+			}			
+		})
+	});
+</script>
 </html>

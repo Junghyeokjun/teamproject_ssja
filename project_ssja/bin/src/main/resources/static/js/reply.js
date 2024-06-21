@@ -18,24 +18,24 @@
 
 
 $(document).ready(function() {
-	// 글 좋아요 처리
+	// 댓글 좋아요 처리
 	$('#like-button').click(function(event) {
     	// 기본 제출 동작 방지
     	event.preventDefault();
     	
-        let bno = $(this).data('likebno');
-        console.log(bno);
+        let rno = $(this).data('likerno');
+        console.log(rno);
         let likebmno = $(this).data('likebmno'); // 현재 상태 확인
 		console.log(likebmno);
 	        // console.log(JSON.stringify({ no : bno, liked : liked })); 
 	        // console.log(liked);
         $.ajax({
-            url: '/api/likes/toggle/' + bno,
+            url: '/api/likes/rtoggle/' + rno,
             type: 'POST',
             //contentType: 'application/json', // JSON 형식으로 요청을 보낼 것임을 명시
             //data: JSON.stringify({ no : bno, liked : liked }), // JSON 형식으로 데이터 전달
             data: {
-            	'bno' : bno, 'mno' : likebmno	            	
+            	'rno' : rno, 'mno' : likebmno	            	
             },
             success: function(response) {
             	console.log("successed");

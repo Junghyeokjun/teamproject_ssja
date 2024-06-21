@@ -24,8 +24,8 @@
   <script src="/js/footer.js">
 
   </script>
-   <meta name="_csrf" content="${_csrf.token}"/>
-<meta name="_csrf_header" content="${_csrf.headerName}"/>
+  <meta name="_csrf" content="${_csrf.token}"/>
+  <meta name="_csrf_header" content="${_csrf.headerName}"/>
   <link href="/css/footerstyle.css?after" rel="stylesheet">
   <link href="/css/barstyle.css?after" rel="stylesheet">
 
@@ -48,9 +48,19 @@
       width:90%;
     }
     
+    #notice{
+      text-decoration: none;
+    }
 
 
   </style>
+  <script>
+    $(document).ready(function(){
+      $("#insert_btn").on("click",function(){
+        location.href="/community/content/insert"
+      })
+    })
+  </script>
 </head>
 
 <body>
@@ -73,6 +83,9 @@
       <div id="home_user_bar"> </div>
       <div id="sub_bar"></div>
     </nav>
+    <sec:authorize access="isAuthenticated()">
+    	<sec:authentication property="principal" var="principal"/>
+    </sec:authorize>
   </header>
 
   <div id="side_bar"> 
@@ -81,12 +94,44 @@
 
   <main>
     <div id="main_container" >
+
+      <div class="ms-4 mt-2 fs-5 border ps-2">
+        <c:choose>
+        <c:when test="${notice!=null}">
+          <a id="notice" class="text-dark" href="${pageContext.request.contextPath}/community/content/${notice.bno}">
+            [공지] ${notice.btitle}
+          </a>
+        </c:when>
+        <c:otherwise> 
+          공지가 없습니다.
+        </c:otherwise>
+        </c:choose>
+
+      </div>
+      <div id="community_content" class="my-2"></div>
+
+        <div class="w-100 d-flex justify-content-between ms-4">
+          <span></span>
+          <span class="ms-4">
+            <select name="" id="search_opt" style="height: 29px;">
+              <option value="all" selected>전체</option>
+              <option value="title">제목</option>
+              <option value="content">내용</option>
+              <option value="title_and_content">제목+내용</option>
+              <option value="writer">작성자</option>
+            </select>
+            <input type="text" id="search_keyword" class="ms-2">
+            <button type="button" id="search_btn" class="btn btn-primary btn-sm ms-1" >검색</button>
+          </span>
+          <span style="width: 70px;height: 40px;">
+            <c:if test='${principal != null and principal!=""} '>
+              <button id="insert_btn" type="button" class="btn btn-primary">글쓰기</button>
+            </c:if>
+          </span>
+        </div>
+      <div id="paging_dv" class="d-flex flex-row justify-content-center align-items-center mb-4"> </div>
     
-    <div id="community_content" class="my-5"></div>
-    
-    <div id="paging_dv" class="d-flex flex-row justify-content-center align-items-center mb-4"> </div>
- 	 
-</div>
+    </div>
   </main>
 
   <footer>

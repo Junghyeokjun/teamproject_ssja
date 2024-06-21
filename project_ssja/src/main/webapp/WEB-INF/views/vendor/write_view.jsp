@@ -115,7 +115,7 @@ body {
 	        </form>
 	        <button id="search_icon"></button>
 	        <a id="cart_link"><img id="cart_img"></a>
-	        <a id="user_link"><img id="login_img"></a>
+        <a id="user_link" href="/login"><img id="login_img"></a>
 	      </div>
 	
 	    </div>
@@ -145,7 +145,7 @@ body {
         				&gt;</h1>      			
         		</div>
         		<a id="cart_link" hidden="hidden"></a>
-				<a id="user_link"><img id="login_img"></a>
+				<a id="user_link" href="<sec:authorize access="isAuthenticated()">/mypage</sec:authorize><sec:authorize access="!isAuthenticated()">/login</sec:authorize>"><img id="login_img"></a>
 			</div>
 		</div>
 		<nav id="total_bar">

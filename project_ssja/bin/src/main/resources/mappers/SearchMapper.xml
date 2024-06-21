@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="teamproject.ssja.mapper.SearchMapper">
+
+  <sql id="conditionSearch">
+        <choose>
+	<when test='keyword == "가구"'> AND p_c_no in (11,12,13) </when>
+	<when test='keyword == "패브릭"'> AND p_c_no in (21,22,23) </when>
+	<when test='keyword == "인테리어"'> AND p_c_no in (31,32,33) </when>
+	<when test='keyword == "주방" or keyword == "주방용품"'> AND p_c_no in (41,42,43,44) </when>
+	<when test='keyword == "생활" or keyword == "생활"'> AND p_c_no in (51,52,53,54) </when>
+
+	<when test='keyword == "침대"'>
+		AND p_c_no = 11
+	</when>
+	<when test='keyword == "수납"'>
+		AND p_c_no = 12
+	</when>
+	<when test='keyword == "침구"'>
+		AND p_c_no = 21
+	</when>
+	<when test='keyword == "홈"'>
+		AND p_c_no = 23
+	</when>
+	<when test='keyword == "데코"'>
+		AND p_c_no = 31
+	</when>
+	<when test='keyword == "장식" or keyword == "장식품"'>
+		AND p_c_no = 32
+	</when>
+	<when test='keyword == "조명" or keyword == "스탠드"'>
+		AND p_c_no = 33
+	</when>
+	<when test='keyword == "식기" or keyword == "그릇" or keyword == "접시"'>
+		AND p_c_no = 41
+	</when>
+	<when test='keyword == "조리" or keyword == "조리도구"'>
+		AND p_c_no = 42
+	</when>
+	<when test='keyword == "욕실"'>
+		AND p_c_no = 51
+	</when>
+	<when test='keyword == "청소"'>
+		AND p_c_no = 52
+	</when>
+	<when test='keyword == "세탁"'>
+		AND p_c_no = 53
+	</when>
+	<when test='keyword == "잡화"'>
+		AND p_c_no = 54
+	</when>
+            <otherwise>
+              AND (pro_name like '%${keyword}%' or pro_bizname like '%${keyword}%')
+            </otherwise>
+        </choose>
+    </sql>
+    
+    <select id="searchItemList" parameterType="teamproject.ssja.dto.product.SearchForm" 
+    resultType="teamproject.ssja.dto.product.ProductItemDto">
+   SELECT a.*
+    FROM (
+     SELECT p.*, ROW_NUMBER() OVER (ORDER BY 
+     <choose>
+           <when test="selectedCondition == null or selectedCondition == ''">
+               pro_sellcount desc
+           </when>
+           <otherwise>
+               ${selectedCondition}
+           </otherwise>
+       </choose>
+       ) AS rnum
+        FROM product p
+         WHERE 1=1   <include refid="conditionSearch"/>
+         <if test='start != null and end != null'>
+            AND pro_price BETWEEN #{start} AND #{end}
+         </if>
+         <if test='selectedCondition == null '>
+            order by pro_sellcount desc
+         </if>
+        ) a
+    WHERe rnum between #{pageNum} * 40 -39 and #{pageNum} * 40
+   
+    </select>
+    
+    
+    <select id="countSearchItemList" parameterType="teamproject.ssja.dto.product.SearchForm" resultType="int">
+   SELECT COUNT(*)
+   FROM product p
+   WHERE 1=1 
+     <include refid="conditionSearch"/>
+     <if test='start != null and end != null'>
+        AND pro_price BETWEEN #{start} AND #{end}
+     </if>
+	</select>
+    
+</mapper>

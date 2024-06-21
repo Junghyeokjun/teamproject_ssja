@@ -98,7 +98,7 @@ public class BoardController {
 	public String removeOne(BoardDto boardDto) {
 		log.info("removeOne()..");
 		boardService.removeBoard(boardDto);
-		return "redirect:/board/list/" + boardDto.getBbcno();
+		return "redirect:/board/list/20" ;
 	}
 
 //	@GetMapping("/reply_view")
