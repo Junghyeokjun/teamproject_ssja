@@ -18,10 +18,10 @@ public class MyPageController {
 	@GetMapping("")
 	public String myPageP(Model model ) {
 		
-//		if(InfoProvider.userAuth().equals("ROLE_ADMIN")) {
-//	         return "/adminPage/AdminPage";
-//	      }
-//		
+		if(InfoProvider.userAuth().equals("ROLE_ADMIN")) {
+	         return "redirect:/adminPage";
+	      }
+		
 		
 		int loginMethod = LoginChecker.check();
 		
