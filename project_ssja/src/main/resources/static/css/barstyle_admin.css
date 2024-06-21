@@ -591,6 +591,9 @@ background-color: #eee;
 	min-height: 8rem;
 	font-size: 1.2em;
 }
+#userInfo_wishs{
+	border-left:1px solid #ccc;
+}
 
 #Input_info_apply>div {
 	padding: 2rem;
