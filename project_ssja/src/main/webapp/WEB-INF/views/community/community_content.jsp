@@ -289,8 +289,8 @@
 
                   }
                   //삭제버튼 이벤트 추가예정
-                if(m_no_val== e.rmno){
-                  $('<span>'+e.rdate+' |<button class="delete_reply_btn"  style="border-color: transparent; background-color :transparent" rno="'+e.rno+'">삭제</button> |<button class="update_reply_btn"  style="border-color: transparent; background-color :transparent" rno="'+e.rno+'">수정</button></span>').appendTo(reply_wrap2);
+                if(m_no_val== e.rmno || m_auth_val=='ROLE_ADMIN'){
+                    $('<span>'+e.rdate+' |<button class="delete_reply_btn"  style="border-color: transparent; background-color :transparent" rno="'+e.rno+'">삭제</button> |<button class="update_reply_btn"  style="border-color: transparent; background-color :transparent" rno="'+e.rno+'">수정</button></span>').appendTo(reply_wrap2);
                 }else{
                   $('<span>'+e.rdate+'</span>').appendTo(reply_wrap2);
                 }
