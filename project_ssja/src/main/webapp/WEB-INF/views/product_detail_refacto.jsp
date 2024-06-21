@@ -74,12 +74,21 @@ table {
 	border-color: gray;
 }
 
-.nav-link-custom:hover {
-	color: yellow;
+.nav-link.nav-link-custom:hover {
+	color: #ff9900;
 }
 
 .nav-link.nav-link-custom.active {
-	
+	color: white;
+	background-color: black;
+}
+
+.nav-link.nav-link-custom.active:hover {
+	color: #ff9900;
+}
+
+.nav-link.nav-link-custom{
+	color: black;
 }
 
 .input-group-text {

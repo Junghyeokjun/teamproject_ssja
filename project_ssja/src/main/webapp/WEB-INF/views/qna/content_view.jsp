@@ -364,7 +364,7 @@ body {
 		// $('#board_textarea')[0] : 해당 제이쿼리 객체에서 첫 번째 DOM 요소로 접근한다는 것을 의미.
 		if($('#board_textarea')[0].scrollHeight > $('#board_textarea').height()){
 			$('#board_textarea').css('height', 'auto');
-			$('#board_textarea').height($('#board_textarea').scrollHeight);
+			$('#board_textarea').height($('#board_textarea')[0].scrollHeight);
 		}else{
 			$('#board_textarea').height($('#board_textarea').css('min-height'));
 		}
@@ -389,6 +389,13 @@ body {
 				}
 			});
         };
+        
+        /* $(document).on('keypress','.form-control.board-textarea',function(e){
+        		if (e.key === 'Enter') {
+        			replyTextareaHeight();
+        		}
+        	})
+        } */
 		
 
 		// 댓글 리스트 가져오는 함수. 재사용성을 위해서 변수에 할당함.
