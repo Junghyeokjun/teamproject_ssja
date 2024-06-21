@@ -61,8 +61,9 @@ public class OAuth2UserService extends DefaultOAuth2UserService{
 			return null;
 		}
 		
-		//로그인 및 검증 로직 실행 
+		//로그인 및 검증 로직 실행 이미 소셜로그인을 하였는지 검증을 위해 id 값 초기화
 		String username = oAuth2Response.getProvider() + " " + oAuth2Response.getProviderId();
+		//이미 해당 이메일로 회원가입을 했을 경우 해당 회원의 정보를 가져와 맞춤
 		SocialUserInfoDTO existUser = socialUserMapper.findByUserName(username);
 		String auth = "";
 		

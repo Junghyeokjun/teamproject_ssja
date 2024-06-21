@@ -192,19 +192,16 @@ body {
 			<form action="${pageContext.request.contextPath}/board/write" method="post">
 			            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				<div class="input-group">
-<<<<<<< HEAD
 					<input type="hidden" class="form-control" name="bmno" value="${principal.memberNum}">
 					<input type="hidden" class="form-control" name="bbcno" value="${bcno}">
 					<c:choose>
-						<c:when test="${principal.isOAuth2User == false}">
+						<c:when test="${principal.isOAuth2User() == false}">
 							<input type="hidden" class="form-control" name="bwriter" value="${principal.userInfo.m_Name}">
 						</c:when>
 						<c:otherwise>
 							<input type="hidden" class="form-control" name="bwriter" value="${principal.oAuth2Response.getNickName()}">
 						</c:otherwise>
 					</c:choose>	
-=======
->>>>>>> origin/dev_ajs
 				</div>
 				<table class="table" >
 					<tr>

@@ -615,19 +615,19 @@ color:black;
 		let pronoInput = document.createElement("input");
 		pronoInput.setAttribute("type", "hidden");
 		pronoInput.setAttribute("name", "productNo");
-		pronoInput.setAttribute("value", $('#product_number_dv').val());
+		pronoInput.setAttribute("value", parseInt($('#product_number_dv').val()));
 		form.appendChild(pronoInput);
 
 		let mnoInput = document.createElement("input");
 		mnoInput.setAttribute("type", "hidden");
 		mnoInput.setAttribute("name", "mno");
-		mnoInput.setAttribute("value", $("#m_no").val());
+		mnoInput.setAttribute("value", parseInt($("#m_no").val()));
 		form.appendChild(mnoInput);
 
 		let quanInput = document.createElement("input");
 		quanInput.setAttribute("type", "hidden");
 		quanInput.setAttribute("name", "quantity");
-		quanInput.setAttribute("value", $("#quantity").val());
+		quanInput.setAttribute("value", parseInt($("#quantity").val()));
 		form.appendChild(quanInput);
 
 		// 폼을 body에 추가

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import teamproject.ssja.InfoProvider;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.service.Purchase.PurchaseService;
 
@@ -38,7 +39,8 @@ public class PurchaseController {
 //		return mv;
 //	}
 	@RequestMapping("")
-	public ModelAndView purchase(ModelAndView mv ,int quantity,long productNo, long mno) {
+	public ModelAndView purchase(ModelAndView mv ,int quantity,long productNo ) {
+		long mno = InfoProvider.getM_NO();
 		List<ProductDto> dtos=new ArrayList<>();
 		ProductDto dto=purchaseService.getProduct(productNo);
 		dto.setPRO_QUANTITY(quantity);
