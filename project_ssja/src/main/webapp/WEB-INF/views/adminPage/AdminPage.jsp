@@ -28,91 +28,12 @@
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <meta name="_csrf" content="${_csrf.token}" />
 <meta name="_csrf_header" content="${_csrf.headerName}" />
-<script src="/js/barscript.js"></script>
+<script src="/js/barscript_admin.js"></script>
 <script src="/js/footer.js"></script>
 <link href="/css/footerstyle.css?after" rel="stylesheet">
 <link href="/css/barstyle_admin.css?after" rel="stylesheet">
-
 <link rel="stylesheet"
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
-<style>
-#commuInfoContainer, #qnaInfoContainer {
-	width: 100%;
-	margin-bottom: 50px;
-	margin-top: 50px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	border: 1px solid #ccc;
-}
-
-#commuInfoTitle, #qnaInfoTitle {
-	padding: 40px;
-	display: flex;
-	border-bottom: 1px solid #ccc;
-	flex-direction: row;
-	align-items: center;
-	width: 100%;
-}
-
-#commuInfoTitle>h4, #qnaInfoTitle>h4 {
-	font-weight: bold;
-}
-
-#commuInfoPaging, #qnaInfoPaging {
-	display: flex;
-	flex-dirextion: row;
-	justify-content: center;
-	padding: 1.5em;
-}
-
-#paging_qnaInfoPaging_dv>button, #paging_commuInfoPaging_dv>button {
-	background-color: white;
-	border: 2px solid #ccc;
-	border-radius: 3px;
-}
-
-#commuContetnts>img {
-	width: 30%;
-	height: 100%;
-	object-fit: cover;
-	border-radius: 15px;
-}
-
-#commuContetnts {
-	width: 100%;
-}
-
-#commuInfoDiv, #commuEtcInfo {
-	width: 35%;
-}
-
-#commuInfoDiv>span {
-	display: inline-block;
-	max-width: 10em;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	text-align: start;
-}
-
-#commuEtcInfo>span {
-	display: inline-block;
-	max-width: 8em;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	text-align: end;
-}
-
-#commuInfoContent, #qnaInfoContent {
-	min-height: 350px;
-}
-
-#qnaDV {
-	margin-bottom: 150px;
-}
-</style>
 <script
 	src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 </head>
@@ -134,25 +55,25 @@
 		<div id="select_mp_top" class="text-center">관리자</div>
 		<div id="select_content">
 			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
-				style="border: 1px solid #cccccc">SSJA 현황</button>
+				style="border: 1px solid #cccccc" onclick="location.href='/adminPage'">SSJA 현황</button>
 			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
-				style="border: 1px solid #cccccc">회원 목록</button>
+				style="border: 1px solid #cccccc" onclick="location.href='/adminPage/membersList'">회원 목록</button>
 			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
-				style="border: 1px solid #cccccc">상품 목록</button>
+				style="border: 1px solid #cccccc" onclick="location.href='/adminPage/productsList'">상품 목록</button>
 			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
-				style="border: 1px solid #cccccc">주문 목록</button>
+				style="border: 1px solid #cccccc" onclick="location.href='/adminPage/purchasesList'">주문 목록</button>
 			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
-				style="border: 1px solid #cccccc">쿠폰 관리</button>
+				style="border: 1px solid #cccccc" onclick="location.href='/adminPage/couponsList'">쿠폰 관리</button>
 			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
-				style="border: 1px solid #cccccc">공지사항 관리</button>
+				style="border: 1px solid #cccccc" onclick="location.href='/adminPage/notice'">공지사항 관리</button>
 			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
-				style="border: 1px solid #cccccc">고객 문의 목록</button>
+				style="border: 1px solid #cccccc"onclick="location.href='/adminPage/qnasList'">고객 문의 목록</button>
 			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
-				style="border: 1px solid #cccccc">매출 현황</button>
+				style="border: 1px solid #cccccc" onclick="location.href='/adminPage/salesList'">매출 현황</button>
 		</div>
 	</div>
 	<main>
-	 <div id="main_container"
+		<div id="main_container"
 			class="d-flex flex-row align-items-center justify-content-center">
 			<div id="content_dv">
 				<div id="AdminPage_content_name">
@@ -164,36 +85,38 @@
 							style="background-color: rgb(238, 238, 238);">
 							<div id="userInfo_orders" style="cursor: auto;">
 								<h4>TODAY 총 매출액</h4>
-								<span></span>
+							<fmt:formatNumber value="${dailyPrice}" pattern="#,###원" />								
 							</div>
 							<div id="userInfo_wishs" style="cursor: auto;">
 								<h4>TODAY 주문 건수</h4>
-								<span></span>
+								<span>${dailyPurcount}건</span>
 							</div>
 							<div id="adminInfo_points" style="cursor: auto;">
 								<h4>TODAY 문의</h4>
-								<span></span>
+								<span>${dailyQnaCount}건</span>
 							</div>
 							<div id="adminInfo_coupons" style="cursor: auto;">
 								<h4>TODAY 가입자</h4>
-								<span></span>
+								<span>${dailyMCount}명</span>
 							</div>
 						</div>
-						<div id="adminInfo_dv3" class="my-3 mx-3"  >
-							<h4 class="mx-5 my-3">일일매출(최근 일주일)</h4>
-							<canvas id="dailySalesChart" width="400" height="200"></canvas>
-							<h4 class="mx-5 my-3">일일매출(최근 일주일)</h4>
-							<canvas id="monthlySalesChart" width="400" height="200"></canvas>
-							<h4 class="mx-5 my-3">일일매출(최근 일주일)</h4>
-							<canvas id="yearlySalesChart" width="400" height="200"></canvas>
+						<div id="adminInfo_dv3" class="my-3 mx-3"
+							style="display: flex; flex-wrap: wrap;">
+							<div style="flex: 1; margin-right: 10px;">
+								<h4 class="mx-5 my-3">일일매출(최근 일주일)</h4>
+								<canvas id="dailySalesChart" width="200" height="200"></canvas>
+							</div>
+							<div style="flex: 1; margin-left: 10px;">
+								<h4 class="mx-5 my-3">일일가입자(최근 일주일)</h4>
+								<canvas id="dailyMCountsChart" width="200" height="200"></canvas>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div> 
-	
-
-		<script>
+		</div>
+	</main>
+	<script>
         document.addEventListener('DOMContentLoaded', function() {
             var dailySalesString = '${dailySales}';
             console.log(dailySalesString); 
@@ -219,7 +142,7 @@
                 // Chart.js를 사용한 그래프 설정
                 var ctx = document.getElementById('dailySalesChart').getContext('2d');
                 var myChart = new Chart(ctx, {
-                    type: 'line',
+                    type: 'bar',
                     data: {
                         labels: dates,
                         datasets: [{
@@ -234,39 +157,47 @@
             }
         });
     </script>
-		<script>
+	<script>
         document.addEventListener('DOMContentLoaded', function() {
-            var monthlySalesString = '${monthlySales}';
+            var dailyMCountsString = '${dailyMCounts}';
+            console.log(dailyMCountsString); 
 
-            // 1. 문자열에서 =를 :로 대체합니다.
-            monthlySalesString = monthlySalesString.replace(/=/g, ':');
+           dailyMCountsString = dailyMCountsString.replace(/\{([^=]+)=([^,]+),\s*([^=]+)=([^}]+)\}/g, '{"$1":$2,"$3":"$4"}');
 
-            // 2. DAYSALES 키와 값을 적절히 변경합니다.
-            monthlySalesString = monthlySalesString.replace(/MONTH:/g, '"MONTH":"');
-            monthlySalesString = monthlySalesString.replace(/, MONTHLYTOTALPAY:/g, '", "MONTHLYTOTALPAY":');
-            
             // 3. 최종적으로 문자열을 JSON 형식으로 변환합니다.
-            console.log(monthlySalesString); 
+            console.log(dailyMCountsString); 
 
             try {
                 // JSON 형식의 문자열을 JavaScript 객체로 파싱합니다.
-                var monthlySales = JSON.parse(monthlySalesString);
+                var dailyMCounts = JSON.parse(dailyMCountsString);
 
                 // 날짜와 매출 데이터 추출
-                var months = monthlySales.map(item => item.MONTH.split(' ')[0]); // 날짜만 추출
-                var totalmonthsPays = monthlySales.map(item => item.P_PRICE);
+                var dates = dailyMCounts.map(item => item.M_DATE.split(' ')[0]); // 날짜만 추출
+                var totalMs = dailyMCounts.map(item => item.M_COUNT);
 
                 // Chart.js를 사용한 그래프 설정
-                var ctx = document.getElementById('monthlySalesChart').getContext('2d');
+                var ctx = document.getElementById('dailyMCountsChart').getContext('2d');
                 var myChart = new Chart(ctx, {
-                    type: 'line',
+                    type: 'bar',
                     data: {
-                        labels: months,
+                        labels: dates,
                         datasets: [{
-                            label: '월매출액',
-                            data: totalmonthsPays,
+                            label: '일일가입자수',
+                            data: totalMs,
                             backgroundColor: "#8e5ea2"
                         }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                            	max:10,
+                                beginAtZero: true,  // 축의 최소값을 0으로 설정
+                                ticks: {
+                                    stepSize: 1,    // 간격을 1로 설정하여 정수 값만 표시
+                                    precision: 0    // 정수 값만 표시하도록 설정
+                                }
+                            }
+                        }
                     }
                 });
             } catch (error) {
@@ -274,80 +205,10 @@
             }
         });
     </script>
-		<script>
-     document.addEventListener('DOMContentLoaded', function() {
-         var yearlySalesString = '${yearlySales}';
-         console.log(yearlySalesString); 
-
-         // 1. 문자열에서 =를 :로 대체합니다.
-         yearlySalesString = yearlySalesString.replace(/=/g, ':');
-
-
-         // 2. DAYSALES 키와 값을 적절히 변경합니다.
-         yearlySalesString = yearlySalesString.replace(/YEARLYTOTALPAY:/g, '"YEARLYTOTALPAY":"');
-         yearlySalesString = yearlySalesString.replace(/, YEAR:/g, '", "YEAR":');
-         
-         // 3. 최종적으로 문자열을 JSON 형식으로 변환합니다.
-         console.log(yearlySalesString); 
-
-         try {
-             // JSON 형식의 문자열을 JavaScript 객체로 파싱합니다.
-             var yearlySales = JSON.parse(yearlySalesString);
-
-             // 날짜와 매출 데이터 추출
-            var years = yearlySales.map(item => item.YEAR);
-             var totalYearsPays = yearlySales.map(item => item.YEARLYTOTALPAY);
-
-             // Chart.js를 사용한 그래프 설정
-             var ctx = document.getElementById('yearlySalesChart').getContext('2d');
-             var myChart = new Chart(ctx, {
-                 type: 'line',
-                 data: {
-                     labels: years,
-                     datasets: [{
-                         label: '년매출액',
-                         data: totalYearsPays,
-                         backgroundColor: "#8e5ea2"
-                     }]
-                 }
-             });
-         } catch (error) {
-             console.error('Error parsing JSON:', error);
-         } 
-     });
-    </script>
-		<script>
-	        // 조회 버튼 클릭 시
-	        $('#fetchSalesData').click(function() {
-	            // 선택한 날짜 가져오기
-	            const selectedDate = $('#salesDateInput').val();
-	            console.log('Selected Date:', selectedDate);
-
-	            // AJAX 요청 보내기
-	            $.ajax({
-	                url: "/adminPage/salesData/"+selectedDate,
-	                method: 'GET',
-	                success: function(data) {
-	                    console.log('Success:', data);
-	                    // 서버로부터 받은 데이터를 처리하는 로직을 여기에 작성하세요
-	                     $('#daily_profits').text(data.DAYSALES);
-	                     $('#transactionCount').text(data.DAYSTOTALPAY);
-	                },
-	                error: function(xhr, status, error) {
-	                    console.error('Error:', error);
-	                }
-	            });
-	        });
-	    </script>
-	</main>
 	<footer>
 		<div id="first_footer" class="p-3"></div>
 		<div id="second_footer"></div>
 		<div id="third_footer"></div>
 	</footer>
 </body>
- <script src="/js/adminPage/adminInfoPage.js"></script>
-<!--<script src="/js/adminPage/adminOrders.js"></script>
-<script src="/js/adminPage/applyVendor.js"></script>
-<script src="/js/adminPage/adminWrittenBoard.js"></script> -->
 </html>
