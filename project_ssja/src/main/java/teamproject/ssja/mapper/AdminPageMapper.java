@@ -15,6 +15,7 @@ import teamproject.ssja.dto.ProfitDto;
 import teamproject.ssja.dto.PurchaseDto;
 import teamproject.ssja.dto.PurchaseSearchDto;
 import teamproject.ssja.dto.QnaBoardDto;
+import teamproject.ssja.dto.QnaSearchDto;
 import teamproject.ssja.dto.userinfo.CouponDTO;
 import teamproject.ssja.page.Criteria;
 
@@ -73,5 +74,7 @@ public interface AdminPageMapper {
 		long getQnaListTotalCount();
 
 		List<QnaBoardDto> getQnaListWithPaging(Criteria cri);
+
+		List<QnaSearchDto> getQnaSearchList(String type, String keyword);
 
 }

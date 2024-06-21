@@ -25,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.MembersSearchDto;
 import teamproject.ssja.dto.ProductsSearchDto;
 import teamproject.ssja.dto.PurchaseSearchDto;
+import teamproject.ssja.dto.QnaSearchDto;
 import teamproject.ssja.dto.userinfo.CouponDTO;
 import teamproject.ssja.page.Criteria;
 import teamproject.ssja.page.Page10VO;
@@ -258,6 +259,14 @@ public class AdminPageController {
 		model.addAttribute("qnapageMaker", new Page10VO(Qnastotal, criteria));
 		model.addAttribute("qnas", qnaListService.getQnaListWithPaging(criteria));
 		return "/adminPage/qnasList";
+	}
+	
+	@GetMapping("/qnasSearchList")
+	public ResponseEntity<List<QnaSearchDto>> qnasSearchList(@RequestParam("type") String type,
+			@RequestParam("keyword") String keyword) {
+		log.info("qnasSearchList()..");
+		List<QnaSearchDto> searchResults = qnaListService.getQnaSearchList(type, keyword);
+		return ResponseEntity.ok(searchResults);
 	}
 	
 

@@ -98,15 +98,16 @@
 					<h2 id="AdminPageTitle">문의 목록</h2>
 				</div>
 				<br>
-			 <%-- <form name="qnas-search-form" autocomplete="off">
+			  <form name="qnas-search-form" autocomplete="off">
 					<select name="type">
 						<option selected value="">선택</option>
-						<option value="PUR_NO">주문번호</option>
 						<option value="M_NO">회원번호</option>
+						<option value="B_TITLE">제목</option>
+						<option value="B_CONTENT">내용</option>						
 					</select> <input type="text" name="keyword" value=""> <input
-						type="button" onclick="purchasesSearchList()"
+						type="button" onclick="qnasSearchList()"
 						class="btn btn-outline-dark mr-2" value="검색">
-				</form>  --%>
+				</form>  
 				<div class="table-responsive">
 					<table class="table" id="qnastable"
 						style="text-align: center;">
@@ -183,12 +184,10 @@
 					result.forEach(function(qna) {
 						var str = '<tr>';
 						str += "<td>" + qna.m_NO + "</td>";
-						str += "<td>" + qna.m_NO + "</td>";
 						str += "<td>" + qna.b_WRITER + "</td>";
 						str += "<td>" + qna.b_TITLE + "</td>";
 						str += "<td>" + qna.b_CONTENT + "</td>";
 						str += "<td>" + qna.b_DATE + "</td>";
-						str += "<td>" + qna.pro_NO + "</td>";
 						str += "</tr>";
 						$('#qnastable > tbody').append(str);
 					});

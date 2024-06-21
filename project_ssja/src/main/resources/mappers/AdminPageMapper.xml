@@ -396,6 +396,40 @@ WHERE TO_CHAR(pur_date, 'YY/MM/DD') = TO_CHAR(sysdate, 'YY/MM/DD')
 			where rnum > (#{pageNum}-1) * #{amount}
     ]]>
 	</select>
+	
+	<resultMap id="QnaSearchListMap" type="QnaSearchDto">
+		<id property="B_NO" column="B_NO" />
+		<result property="M_NO" column="M_NO" />
+		<result property="B_C_NO" column="B_C_NO" />
+		<result property="B_WRITER" column="B_WRITER" />
+		<result property="B_TITLE" column="B_TITLE" />
+		<result property="B_CONTENT" column="B_CONTENT" />
+		<result property="B_DATE" column="B_DATE" />
+		<result property="B_LIKE" column="B_LIKE" />
+		<result property="B_HIT" column="B_HIT" />
+		<result property="B_EVAL" column="B_EVAL" />
+		<result property="PRO_NO" column="PRO_NO" />
+		<result property="type" column="type" />
+		<result property="keyword" column="keyword" />
+	</resultMap>
+
+	<select id="getQnaSearchList"  parameterType="string"   resultMap="QnaSearchListMap">    
+
+SELECT * FROM board where  B_C_NO=20           
+               <choose>
+               <when test="#{type} != null and type.equals('M_NO')">
+                 and M_NO = '${keyword}'
+               </when>
+                <when test="#{type} != null and type.equals('B_TITLE')">
+                 and B_TITLE  LIKE '%${keyword}%'
+               </when>
+                <when test="#{type} != null and type.equals('B_CONTENT')">
+                 and B_CONTENT LIKE '%${keyword}%'
+               </when>
+               </choose> 
+                   
+               
+	</select>	
  
 	
 	
