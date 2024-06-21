@@ -29,109 +29,12 @@
 <meta name="_csrf_header" content="${_csrf.headerName}" />
 <script src="/js/barscript_admin.js"></script>
 <script src="/js/footer.js"></script>
+ <link href="/css/board.css?after" rel="stylesheet">
 <link href="/css/footerstyle.css?after" rel="stylesheet">
-<link href="/css/barstyle.css?after" rel="stylesheet">
+<link href="/css/barstyle_admin.css?after" rel="stylesheet">
 
 <link rel="stylesheet"
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
-<style>
-@font-face {
-	font-family: 'fonts';
-	src: url("https://webfontworld.github.io/NanumSquare/NanumSquare.css")
-		format('font1');
-}
-
-body {
-	font-family: 'fonts', NanumSquare;
-	background-color: #f7f0e8;
-}
-
-#logo_img {
-	width: 3.5em;
-	height: 3em;
-}
-
-.MyPage_btn {
-	background-color: white;
-	padding: 20px;
-}
-
-#select_MyPage {
-	z-index: 900;
-	position: fixed;
-	top: 30%;
-	left: 5%;
-	width: 12%;
-}
-
-#select_mp_top {
-	background-color: #f7f0e8;
-	padding: 2em;
-	height: auto;
-}
-
-#icon_div  img {
-	width: 40%;
-	text-align: center;
-}
-
-#icon_div {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-}
-
-#icon_container {
-	padding: 1.5em;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-}
-
-#icn_txt {
-	text-align: center;
-}
-
-#event_banners {
-	width: 100% auto;
-	height: 30em;
-}
-
-#title_best_conner  button {
-	width: 3em;
-	background-color: white;
-	border: none;
-	font-size: 2.5em;
-	color: #aaa;
-}
-
-#title_best_conner  button:hover {
-	color: #333;
-}
-
-#title_best_conner {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-}
-
-#show_more_bestItem {
-	background-color: white;
-	with: 100%;
-	border: 1px solid #ddd;
-	height: 5em;
-}
-
-h2, h4, p {
-	display: inline;
-	margin: 0;
-	margin-right: 10px;
-}
-
-</style>
 </head>
 <body>
 	<header>
@@ -147,69 +50,105 @@ h2, h4, p {
 	<div id="side_bar">
 		<div id="side_links" class="w-100"></div>
 	</div>
+	<div id="select_AdminPage" class="d-flex flex-column">
+		<div id="select_mp_top" class="text-center">관리자</div>
+		<div id="select_content">
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage'">SSJA 현황</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/membersList'">회원 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/productsList'">상품 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/purchasesList'">주문 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/couponsList'">쿠폰 관리</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/notice'">공지사항 관리</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/qnasList'">고객 문의 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/salesList'">매출 현황</button>
+		</div>
+	</div>
 	<main>
-		<div id="main_container" style="margin: 0 auto;">
-			<br> 
-			<h2>쿠폰관리</h2>
-			<button type="button" class="btn btn-dark" id="newCouponBtn">신규
-				쿠폰 발급</button>
-			<br> <br> <br>
-			<h4>쿠폰 현황</h4>
-			<p>현재 사용가능한 쿠폰을 조회합니다.</p>
-			<div class="table-responsive">
-				<table class="table" style="text-align: center;">
-					<thead>
-						<tr>
-							<th scope="col">번호</th>
-							<th scope="col">쿠폰 이름</th>
-							<th scope="col">할인율</th>
-							<th scope="col">사용기간</th>
-						</tr>
-					</thead>
-					<tbody class="table-group-divider">
-						<c:forEach var="coupon" items="${coupons}">
-							<tr>
-								<td>${coupon.c_no}</td>
-								<td>${coupon.c_name}</td>
-								<td>${coupon.c_dcper}%</td>
-								<td><fmt:formatDate value="${coupon.c_startdate}"
-										pattern="yyyy-MM-dd" />~<fmt:formatDate
-										value="${coupon.c_duedate}" pattern="yyyy-MM-dd" />
-									<button type="button" class="btn btn-outline-success"
-										id="modifyCouponBtn">수정</button>
-									<button type="button" class="btn btn-outline-danger"
-										id="deleteCouponBtn">삭제</button></td>
-							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
-				<div id="paging_dv">
-					<nav aria-label="Page navigation example">
-						<ul class="pagination ch-col justify-content-center">
-							<c:if test="${couponpageMaker.prev}">
-								<li class="page-item"><a class="page-link ch-col"
-									href="${pageContext.request.contextPath}/adminPage/couponsList${couponpageMaker.makeQuery(couponpageMaker.startPage-1)}"><</a></li>
-							</c:if>
-							<c:forEach var="idx" begin="${couponpageMaker.startPage}"
-								end="${couponpageMaker.endPage}">
-								<c:choose>
-									<c:when test="${couponpageMaker.criteria.pageNum == idx}">
-										<li class="page-item active"><a class="page-link"
-											href="${pageContext.request.contextPath}/adminPage/couponsList${couponpageMaker.makeQuery(idx)}">${idx}</a></li>
-									</c:when>
-									<c:otherwise>
-										<li class="page-item"><a class="page-link"
-											href="${pageContext.request.contextPath}/adminPage/couponsList${couponpageMaker.makeQuery(idx)}">${idx}</a></li>
-									</c:otherwise>
-								</c:choose>
-							</c:forEach>
-							<c:if
-								test="${couponpageMaker.next && couponpageMaker.endPage > 0}">
-								<li class="page-item"><a class="page-link ch-col"
-									href="${pageContext.request.contextPath}/adminPage/couponsList${couponpageMaker.makeQuery(couponpageMaker.endPage+1)}">></a></li>
-							</c:if>
-						</ul>
-					</nav>
+		<div id="main_container"
+			class="d-flex flex-row align-items-center justify-content-center">
+			<div id="content_dv">
+				<div id="AdminPage_content_name">
+					<h2 id="AdminPageTitle">쿠폰관리</h2>
+				</div>
+				<div id="adminInfo_dv3" class="my-3 mx-3"
+					style="display: flex; flex-wrap: nowrap; justify-content: center;">
+					<div style="flex: 1; margin-right: 10px; ">
+						<h4 style="display: inline-block;">쿠폰 현황</h4>
+						<button type="button" class="btn btn-dark ms-auto" id="newCouponBtn">신규 쿠폰 발급</button>
+						<p>현재 사용가능한 쿠폰을 조회합니다.</p>
+						<div class="table-responsive">
+							<table class="table" style="text-align: center;">
+								<thead>
+									<tr>
+										<th scope="col">번호</th>
+										<th scope="col">쿠폰 이름</th>
+										<th scope="col">할인율</th>
+										<th scope="col">사용기간</th>
+									</tr>
+								</thead>
+								<tbody class="table-group-divider">
+									<c:forEach var="coupon" items="${coupons}">
+										<tr>
+											<td>${coupon.c_no}</td>
+											<td>${coupon.c_name}</td>
+											<td>${coupon.c_dcper}%</td>
+											<td><fmt:formatDate value="${coupon.c_startdate}"
+													pattern="yyyy-MM-dd" />~<fmt:formatDate
+													value="${coupon.c_duedate}" pattern="yyyy-MM-dd" />
+												<button type="button" class="btn btn-outline-success"
+													id="modifyCouponBtn">수정</button>
+												<button type="button" class="btn btn-outline-danger"
+													id="deleteCouponBtn">삭제</button></td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+							<div id="paging_dv">
+								<nav aria-label="Page navigation example">
+									<ul class="pagination ch-col justify-content-center">
+										<c:if test="${couponpageMaker.prev}">
+											<li class="page-item"><a class="page-link ch-col"
+												href="${pageContext.request.contextPath}/adminPage/couponsList${couponpageMaker.makeQuery(couponpageMaker.startPage-1)}"><</a></li>
+										</c:if>
+										<c:forEach var="idx" begin="${couponpageMaker.startPage}"
+											end="${couponpageMaker.endPage}">
+											<c:choose>
+												<c:when test="${couponpageMaker.criteria.pageNum == idx}">
+													<li class="page-item active"><a class="page-link"
+														href="${pageContext.request.contextPath}/adminPage/couponsList${couponpageMaker.makeQuery(idx)}">${idx}</a></li>
+												</c:when>
+												<c:otherwise>
+													<li class="page-item"><a class="page-link"
+														href="${pageContext.request.contextPath}/adminPage/couponsList${couponpageMaker.makeQuery(idx)}">${idx}</a></li>
+												</c:otherwise>
+											</c:choose>
+										</c:forEach>
+										<c:if
+											test="${couponpageMaker.next && couponpageMaker.endPage > 0}">
+											<li class="page-item"><a class="page-link ch-col"
+												href="${pageContext.request.contextPath}/adminPage/couponsList${couponpageMaker.makeQuery(couponpageMaker.endPage+1)}">></a></li>
+										</c:if>
+									</ul>
+								</nav>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -295,130 +234,155 @@ h2, h4, p {
 		</div>
 	</div>
 	<script>
-    $(document).ready(function() {
-        // 신규 쿠폰 발급 버튼 클릭 시 모달 띄우기
-        $('#newCouponBtn').click(function() {
-            $('#newCouponModal').modal('show');
-        });
+		$(document).ready(
+				function() {
+					// 신규 쿠폰 발급 버튼 클릭 시 모달 띄우기
+					$('#newCouponBtn').click(function() {
+						$('#newCouponModal').modal('show');
+					});
 
-        // 쿠폰 발급 폼 제출 처리
-        $('#newCouponForm').submit(function(event) {
-            event.preventDefault(); // 폼 기본 동작 방지
+					// 쿠폰 발급 폼 제출 처리
+					$('#newCouponForm').submit(function(event) {
+						event.preventDefault(); // 폼 기본 동작 방지
 
-            // 폼 데이터 직렬화
-            var formData = $(this).serialize();
+						// 폼 데이터 직렬화
+						var formData = $(this).serialize();
 
-            // AJAX를 사용하여 서버로 데이터 전송
-            $.ajax({
-                type: "POST",
-                url: $(this).attr('action'), // 폼의 action 속성 값 가져오기
-                data: formData,
-                success: function(response) {
-                    // 성공적으로 처리된 경우, 원하는 동작 수행
-                    console.log('쿠폰 발급 성공');
-                    // 여기에 필요한 추가 동작 구현
-                },
-                error: function(xhr, status, error) {
-                    // 오류 발생 시 처리
-                    console.error('쿠폰 발급 오류:', error);
-                    // 오류 처리 로직 추가
-                }
-            });
+						// AJAX를 사용하여 서버로 데이터 전송
+						$.ajax({
+							type : "POST",
+							url : $(this).attr('action'), // 폼의 action 속성 값 가져오기
+							data : formData,
+							success : function(response) {
+								// 성공적으로 처리된 경우, 원하는 동작 수행
+								console.log('쿠폰 발급 성공');
+								// 여기에 필요한 추가 동작 구현
+							},
+							error : function(xhr, status, error) {
+								// 오류 발생 시 처리
+								console.error('쿠폰 발급 오류:', error);
+								// 오류 처리 로직 추가
+							}
+						});
 
-            // 모달 닫기
-            $('#newCouponModal').modal('hide');
-        });  
+						// 모달 닫기
+						$('#newCouponModal').modal('hide');
+					});
 
-     // 쿠폰 수정 버튼 클릭 시 모달 띄우기
-        $('body').on('click', '#modifyCouponBtn', function() {
-            var couponId = $(this).closest('tr').find('td:first').text(); // 쿠폰 ID 가져오기
+					// 쿠폰 수정 버튼 클릭 시 모달 띄우기
+					$('body').on(
+							'click',
+							'#modifyCouponBtn',
+							function() {
+								var couponId = $(this).closest('tr').find(
+										'td:first').text(); // 쿠폰 ID 가져오기
 
-            // AJAX를 통해 쿠폰 정보 가져오기
-            $.ajax({
-                type: "GET",
-                url: "/adminPage/modify",
-                data: { c_no: couponId },
-                success: function(response) {
-                    // 가져온 쿠폰 정보를 모달 폼에 채워 넣기
-                    $('#editCouponId').val(response.c_no);
-                    $('#editCouponName').val(response.c_name);
-                    $('#editDiscountPercentage').val(response.c_dcper);
+								// AJAX를 통해 쿠폰 정보 가져오기
+								$.ajax({
+									type : "GET",
+									url : "/adminPage/modify",
+									data : {
+										c_no : couponId
+									},
+									success : function(response) {
+										// 가져온 쿠폰 정보를 모달 폼에 채워 넣기
+										$('#editCouponId').val(response.c_no);
+										$('#editCouponName').val(
+												response.c_name);
+										$('#editDiscountPercentage').val(
+												response.c_dcper);
 
-                    // 날짜 포맷 변경 (yyyy-MM-dd)
-                    var startDate = new Date(response.c_startdate);
-                    var dueDate = new Date(response.c_duedate);
-                    $('#editStartDate').val(startDate.toISOString().slice(0, 10));
-                    $('#editDueDate').val(dueDate.toISOString().slice(0, 10));
+										// 날짜 포맷 변경 (yyyy-MM-dd)
+										var startDate = new Date(
+												response.c_startdate);
+										var dueDate = new Date(
+												response.c_duedate);
+										$('#editStartDate').val(
+												startDate.toISOString().slice(
+														0, 10));
+										$('#editDueDate').val(
+												dueDate.toISOString().slice(0,
+														10));
 
-                    // 모달 띄우기
-                    $('#editCouponModal').modal('show');
-                },
-                error: function(xhr, status, error) {
-                    console.error('쿠폰 정보 가져오기 오류:', error);
-                    // 오류 처리 로직 추가
-                }
-            });
-        });
+										// 모달 띄우기
+										$('#editCouponModal').modal('show');
+									},
+									error : function(xhr, status, error) {
+										console.error('쿠폰 정보 가져오기 오류:', error);
+										// 오류 처리 로직 추가
+									}
+								});
+							});
 
-        $('#editCouponForm').submit(function(event) {
-            event.preventDefault(); // 폼 기본 동작 방지
+					$('#editCouponForm').submit(
+							function(event) {
+								event.preventDefault(); // 폼 기본 동작 방지
 
-            // 폼 데이터 직렬화
-            var formData = $(this).serialize();
+								// 폼 데이터 직렬화
+								var formData = $(this).serialize();
 
-            // 직렬화된 데이터에서 날짜 필드를 ISO 포맷으로 변환
-            formData = formData.replace(/(\d{4})-(\d{2})-(\d{2})/g, function(match, year, month, day) {
-                return year + '-' + month + '-' + (parseInt(day) < 10 ? '0' + day : day);
-            });
+								// 직렬화된 데이터에서 날짜 필드를 ISO 포맷으로 변환
+								formData = formData.replace(
+										/(\d{4})-(\d{2})-(\d{2})/g, function(
+												match, year, month, day) {
+											return year
+													+ '-'
+													+ month
+													+ '-'
+													+ (parseInt(day) < 10 ? '0'
+															+ day : day);
+										});
 
-            // AJAX를 사용하여 서버로 데이터 전송
-            $.ajax({
-                type: "POST",
-                url: $(this).attr('action'),
-                data: formData,
-                success: function(response) {
-                    // 성공적으로 처리된 경우, 원하는 동작 수행
-                    console.log('쿠폰 수정 성공');
-                    // 여기에 필요한 추가 동작 구현
-                },
-                error: function(xhr, status, error) {
-                    // 오류 발생 시 처리
-                    console.error('쿠폰 수정 오류:', error);
-                    // 오류 처리 로직 추가
-                }
-            });
+								// AJAX를 사용하여 서버로 데이터 전송
+								$.ajax({
+									type : "POST",
+									url : $(this).attr('action'),
+									data : formData,
+									success : function(response) {
+										// 성공적으로 처리된 경우, 원하는 동작 수행
+										console.log('쿠폰 수정 성공');
+										// 여기에 필요한 추가 동작 구현
+									},
+									error : function(xhr, status, error) {
+										// 오류 발생 시 처리
+										console.error('쿠폰 수정 오류:', error);
+										// 오류 처리 로직 추가
+									}
+								});
 
-            // 모달 닫기
-            $('#editCouponModal').modal('hide');
-        });
+								// 모달 닫기
+								$('#editCouponModal').modal('hide');
+							});
 
+					// 쿠폰 삭제 버튼 클릭 시
+					$('body').on(
+							'click',
+							'#deleteCouponBtn',
+							function() {
+								var couponId = $(this).closest('tr').find(
+										'td:first').text(); // 테이블에서 쿠폰 ID 가져오기
 
-
-
-     // 쿠폰 삭제 버튼 클릭 시
-        $('body').on('click', '#deleteCouponBtn', function() {
-            var couponId = $(this).closest('tr').find('td:first').text(); // 테이블에서 쿠폰 ID 가져오기
-
-            // AJAX를 이용한 쿠폰 삭제 요청
-            $.ajax({
-                type: "POST",
-                url: "/adminPage/remove",
-                data: JSON.stringify({ c_no: couponId }), // JSON 형식으로 데이터 전송
-                contentType: "application/json", // 요청 데이터 타입 지정
-                success: function(response) {
-                    console.log('쿠폰 삭제 성공');
-                    // 삭제 성공 시 추가적인 작업 수행 (예: 테이블에서 해당 행 삭제)
-                    $(this).closest('tr').remove(); // 예시로 테이블에서 삭제된 행 제거
-                },
-                error: function(xhr, status, error) {
-                    console.error('쿠폰 삭제 오류', error);
-                    // 오류 처리 로직 추가
-                }
-            });
-        }); 
-    });
-     
-</script>
+								// AJAX를 이용한 쿠폰 삭제 요청
+								$.ajax({
+									type : "POST",
+									url : "/adminPage/remove",
+									data : JSON.stringify({
+										c_no : couponId
+									}), // JSON 형식으로 데이터 전송
+									contentType : "application/json", // 요청 데이터 타입 지정
+									success : function(response) {
+										console.log('쿠폰 삭제 성공');
+										// 삭제 성공 시 추가적인 작업 수행 (예: 테이블에서 해당 행 삭제)
+										$(this).closest('tr').remove(); // 예시로 테이블에서 삭제된 행 제거
+									},
+									error : function(xhr, status, error) {
+										console.error('쿠폰 삭제 오류', error);
+										// 오류 처리 로직 추가
+									}
+								});
+							});
+				});
+	</script>
 
 	<footer>
 		<div id="first_footer" class="p-3"></div>

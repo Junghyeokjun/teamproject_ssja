@@ -31,46 +31,20 @@
 <script src="/js/barscript_admin.js"></script>
 <script src="/js/footer.js"></script>
 <link href="/css/footerstyle.css?after" rel="stylesheet">
-<link href="/css/barstyle.css?after" rel="stylesheet">
+<link href="/css/barstyle_admin.css?after" rel="stylesheet">
 <link href="/css/board.css?after" rel="stylesheet">
-
 <link rel="stylesheet"
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
-<style>
-@font-face {
-	font-family: 'fonts';
-	src: url("https://webfontworld.github.io/NanumSquare/NanumSquare.css")
-		fotmat('font1');
-}
-
-body {
-	font-family: 'fonts', NanumSquare;
-	background-color: #f7f0e8;
-}
-
-#logo_img {
-	width: 3.5em;
-	height: 3em;
-}
-
-.MyPage_btn {
-	background-color: white;
-	padding: 20px;
-}
-
-#select_MyPage {
-	z-index: 900;
-	position: fixed;
-	top: 30%;
-	left: 5%;
-	width: 12%;
-}
-
-#select_mp_top {
-	background-color: #f7f0e8;
-	padding: 2em;
-	height: auto;
-}
+	<style>
+    /* 추가된 CSS 스타일 */
+    #purchasestable td {
+        white-space: nowrap; /* 줄 바꿈 없이 한 줄에 표시 */
+    }
+    
+    #purchasestable thead {
+        font-weight: bold; /* 열 제목을 굵은 글꼴로 설정 */
+    }
+    
 </style>
 </head>
 <body>
@@ -87,11 +61,44 @@ body {
 	<div id="side_bar">
 		<div id="side_links" class="w-100"></div>
 	</div>
+	<div id="select_AdminPage" class="d-flex flex-column">
+		<div id="select_mp_top" class="text-center">관리자</div>
+		<div id="select_content">
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage'">SSJA 현황</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/membersList'">회원 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/productsList'">상품 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/purchasesList'">주문 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/couponsList'">쿠폰 관리</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/notice'">공지사항 관리</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/qnasList'">고객 문의 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/salesList'">매출 현황</button>
+		</div>
+	</div>
 	<main>
-		<div id="main_container" style="margin: 0 auto;">
-			<br>
-			<h2>주문목록</h2>
-			<form name="purchases-search-form" autocomplete="off">
+		<div id="main_container"
+			class="d-flex flex-row align-items-center justify-content-center">
+			<div id="content_dv">
+				<div id="AdminPage_content_name">
+					<h2 id="AdminPageTitle">주문 목록</h2>
+				</div>
+				<br>
+				<form name="purchases-search-form" autocomplete="off">
 					<select name="type">
 						<option selected value="">선택</option>
 						<option value="PUR_NO">주문번호</option>
@@ -100,64 +107,66 @@ body {
 						type="button" onclick="purchasesSearchList()"
 						class="btn btn-outline-dark mr-2" value="검색">
 				</form>
-			<div class="table-responsive">
-				<table class="table" id="purchasestable" style="text-align: center;">
-					<thead>
-						<tr>
-							<td scope="col">주문번호</td>
-							<td scope="col">회원번호</td>
-							<td scope="col">총 금액</td>
-							<td scope="col">총 할인액</td>
-							<td scope="col">총 결제액</td>
-							<td scope="col">결제수단</td>
-							<td scope="col">주문일자</td>
-							<td scope="col">주소</td>
-							<td scope="col">배송업체</td>
-						</tr>
-					</thead>
-					<tbody class="table-group-divider">
-						<c:forEach var="purchase" items="${purchases}">
+				<div class="table-responsive">
+					<table class="table" id="purchasestable"
+						style="text-align: center;">
+						<thead>
 							<tr>
-								<td>${purchase.getPUR_NO()}</td>
-								<td>${purchase.getM_NO()}</td>
-								<td>${purchase.getPUR_TOT()}</td>
-								<td>${purchase.getPUR_DC()}</td>
-								<td>${purchase.getPUR_PAY()}</td>
-								<td>${purchase.getPUR_PAYMENT()}</td>
-								<td>${purchase.getPUR_DATE()}</td>
-								<td>${purchase.getPUR_DVADDRESS()}</td>
-								<td>${purchase.getPUR_DV()}</td>
+								<td scope="col">주문번호</td>
+								<td scope="col">회원번호</td>
+								<td scope="col">총 금액</td>
+								<td scope="col">총 할인액</td>
+								<td scope="col">총 결제액</td>
+								<td scope="col">결제수단</td>
+								<td scope="col">주문일자</td>
+								<td scope="col">주소</td>
+								<td scope="col">배송업체</td>
 							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
-				<div id="paging_dv">
-					<nav aria-label="Page navigation example">
-						<ul class="pagination ch-col justify-content-center">
-							<c:if test="${purchasepageMaker.prev}">
-								<li class="page-item"><a class="page-link ch-col"
-									href="${pageContext.request.contextPath}/adminPage/purchasesList${purchasepageMaker.makeQuery(purchasepageMaker.startPage-1)}"><</a></li>
-							</c:if>
-							<c:forEach var="idx" begin="${purchasepageMaker.startPage}"
-								end="${purchasepageMaker.endPage}">
-								<c:choose>
-									<c:when test="${purchasepageMaker.criteria.pageNum == idx}">
-										<li class="page-item active"><a class="page-link"
-											href="${pageContext.request.contextPath}/adminPage/purchasesList${purchasepageMaker.makeQuery(idx)}">${idx}</a></li>
-									</c:when>
-									<c:otherwise>
-										<li class="page-item"><a class="page-link"
-											href="${pageContext.request.contextPath}/adminPage/purchasesList${purchasepageMaker.makeQuery(idx)}">${idx}</a></li>
-									</c:otherwise>
-								</c:choose>
+						</thead>
+						<tbody class="table-group-divider">
+							<c:forEach var="purchase" items="${purchases}">
+								<tr>
+									<td>${purchase.getPUR_NO()}</td>
+									<td>${purchase.getM_NO()}</td>
+									<td>${purchase.getPUR_TOT()}</td>
+									<td>${purchase.getPUR_DC()}</td>
+									<td>${purchase.getPUR_PAY()}</td>
+									<td>${purchase.getPUR_PAYMENT()}</td>
+									<td>${purchase.getPUR_DATE()}</td>
+									<td>${purchase.getPUR_DVADDRESS()}</td>
+									<td>${purchase.getPUR_DV()}</td>
+								</tr>
 							</c:forEach>
-							<c:if
-								test="${purchasepageMaker.next && purchasepageMaker.endPage > 0}">
-								<li class="page-item"><a class="page-link ch-col"
-									href="${pageContext.request.contextPath}/adminPage/purchasesList${purchasepageMaker.makeQuery(purchasepageMaker.endPage+1)}">></a></li>
-							</c:if>
-						</ul>
-					</nav>
+						</tbody>
+					</table>
+					<div id="paging_dv">
+						<nav aria-label="Page navigation example">
+							<ul class="pagination ch-col justify-content-center">
+								<c:if test="${purchasepageMaker.prev}">
+									<li class="page-item"><a class="page-link ch-col"
+										href="${pageContext.request.contextPath}/adminPage/purchasesList${purchasepageMaker.makeQuery(purchasepageMaker.startPage-1)}"><</a></li>
+								</c:if>
+								<c:forEach var="idx" begin="${purchasepageMaker.startPage}"
+									end="${purchasepageMaker.endPage}">
+									<c:choose>
+										<c:when test="${purchasepageMaker.criteria.pageNum == idx}">
+											<li class="page-item active"><a class="page-link"
+												href="${pageContext.request.contextPath}/adminPage/purchasesList${purchasepageMaker.makeQuery(idx)}">${idx}</a></li>
+										</c:when>
+										<c:otherwise>
+											<li class="page-item"><a class="page-link"
+												href="${pageContext.request.contextPath}/adminPage/purchasesList${purchasepageMaker.makeQuery(idx)}">${idx}</a></li>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+								<c:if
+									test="${purchasepageMaker.next && purchasepageMaker.endPage > 0}">
+									<li class="page-item"><a class="page-link ch-col"
+										href="${pageContext.request.contextPath}/adminPage/purchasesList${purchasepageMaker.makeQuery(purchasepageMaker.endPage+1)}">></a></li>
+								</c:if>
+							</ul>
+						</nav>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -169,33 +178,33 @@ body {
 	</footer>
 </body>
 <script>
-function purchasesSearchList() {
-    $.ajax({
-        type: 'GET',
-        url: "/adminPage/purchasesSearchList",
-        data: $("form[name=purchases-search-form]").serialize(),
-        success: function(result) {
-			console.log(result);
-            $('#purchasestable > tbody').empty();
-            if (result.length >= 1) {
-            	$("#paging_dv").empty();
-                result.forEach(function(purchase) {
-                    var str = '<tr>';
-                    str += "<td>" + purchase.pur_NO + "</td>";
-                    str += "<td>" + purchase.m_NO + "</td>";
-                    str += "<td>" + purchase.pur_TOT + "</td>";
-                    str += "<td>" + purchase.pur_DC + "</td>";
-                    str += "<td>" + purchase.pur_PAY + "</td>";
-                    str += "<td>" + purchase.pur_PAYMENT + "</td>";
-                    str += "<td>" + purchase.pur_DATE + "</td>";
-                    str += "<td>" + purchase.pur_DVADDRESS + "</td>";
-                    str += "<td>" + purchase.pur_DV + "</td>";
-                    str += "</tr>";
-                    $('#purchasestable > tbody').append(str);
-                });
-            }
-        }
-    });
-}
+	function purchasesSearchList() {
+		$.ajax({
+			type : 'GET',
+			url : "/adminPage/purchasesSearchList",
+			data : $("form[name=purchases-search-form]").serialize(),
+			success : function(result) {
+				console.log(result);
+				$('#purchasestable > tbody').empty();
+				if (result.length >= 1) {
+					$("#paging_dv").empty();
+					result.forEach(function(purchase) {
+						var str = '<tr>';
+						str += "<td>" + purchase.pur_NO + "</td>";
+						str += "<td>" + purchase.m_NO + "</td>";
+						str += "<td>" + purchase.pur_TOT + "</td>";
+						str += "<td>" + purchase.pur_DC + "</td>";
+						str += "<td>" + purchase.pur_PAY + "</td>";
+						str += "<td>" + purchase.pur_PAYMENT + "</td>";
+						str += "<td>" + purchase.pur_DATE + "</td>";
+						str += "<td>" + purchase.pur_DVADDRESS + "</td>";
+						str += "<td>" + purchase.pur_DV + "</td>";
+						str += "</tr>";
+						$('#purchasestable > tbody').append(str);
+					});
+				}
+			}
+		});
+	}
 </script>
 </html>
