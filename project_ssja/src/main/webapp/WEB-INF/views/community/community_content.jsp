@@ -680,11 +680,7 @@
 
             </sec:authorize>
 
-<<<<<<< HEAD
-              <c:if test="${principal.userInfo.m_No == content.bmno and !(principal.userInfo.auth eq 'ROLE_ADMIN')}">
-=======
               <c:if test="${principal.userInfo.m_No == content.bmno and not (principal.userInfo.auth eq 'ROLE_ADMIN')}">
->>>>>>> 075ec34f245f69d95103536eec6cb3d532fc084c
                 <button class="btn btn-outline-primary" id="update_btn" >수정하기</button>
                 <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">삭제하기</button>
               </c:if> 
