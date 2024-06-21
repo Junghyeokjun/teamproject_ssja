@@ -425,7 +425,7 @@ let itemCartPageRender = function(pageNum){
 							var form = document.createElement("form");
 							form.setAttribute("id", "dynamicForm");
 							form.setAttribute("method", "POST");
-							form.setAttribute("action", '/purchase/'+$("#mno").val());
+							form.setAttribute("action", '/purchase/');
 							
 							// CSRF 토큰을 저장할 hidden input 요소 추가
 							var csrfInput = document.createElement("input");
