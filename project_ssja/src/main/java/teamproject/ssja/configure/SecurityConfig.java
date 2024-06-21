@@ -89,7 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	    .usernameParameter("username").passwordParameter("password")
 	    .loginProcessingUrl("/loginCheck")
 	    .failureHandler(AuthenticationFailureHandler)
-	    .defaultSuccessUrl("/").permitAll();
+	    .defaultSuccessUrl("/home").permitAll();
 	    
 	       http.oauth2Login()
            .loginPage("/login")

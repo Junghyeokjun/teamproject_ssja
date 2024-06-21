@@ -49,11 +49,7 @@
       background-color: #f7f0e8;
     }
 
-    #logo_img {
-      width: 3.5em;
-      height: 3em;
-      width:90%;
-    }
+
     
     /* 연관상품부분 */
     #product_link{
@@ -293,8 +289,8 @@
 
                   }
                   //삭제버튼 이벤트 추가예정
-                if(m_no_val== e.rmno){
-                  $('<span>'+e.rdate+' |<button class="delete_reply_btn"  style="border-color: transparent; background-color :transparent" rno="'+e.rno+'">삭제</button> |<button class="update_reply_btn"  style="border-color: transparent; background-color :transparent" rno="'+e.rno+'">수정</button></span>').appendTo(reply_wrap2);
+                if(m_no_val== e.rmno || m_auth_val=='ROLE_ADMIN'){
+                    $('<span>'+e.rdate+' |<button class="delete_reply_btn"  style="border-color: transparent; background-color :transparent" rno="'+e.rno+'">삭제</button> |<button class="update_reply_btn"  style="border-color: transparent; background-color :transparent" rno="'+e.rno+'">수정</button></span>').appendTo(reply_wrap2);
                 }else{
                   $('<span>'+e.rdate+'</span>').appendTo(reply_wrap2);
                 }
@@ -588,7 +584,7 @@
         </form>
         <button id="search_icon"></button>
         <a id="cart_link"><img id="cart_img"></a>
-        <a id="user_link"><img id="login_img"></a>
+        <a id="user_link" href="/login"><img id="login_img"></a>
       </div>
 
     </div>
@@ -744,6 +740,11 @@
       </div>
     </div>
   </div>
+
+   <sec:authorize access="isAuthenticated()">
+  <script src="/js/login_user_tab.js"> </script>
+  <script src="/js/user_cart_tab.js"> </script>
+</sec:authorize>
 
 </body>
 </html>

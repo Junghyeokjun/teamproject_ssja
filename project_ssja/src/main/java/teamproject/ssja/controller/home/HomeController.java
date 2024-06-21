@@ -41,7 +41,7 @@ public class HomeController {
 	@GetMapping("/event/page")
 	public String eventP(@RequestParam("event") int eventNum,Model model) {
 		
-		if(eventNum <= 0) return "sign_up_terms";
+		if(eventNum <= 0) return "redirect:/sign/sign_up_before";
 			
 		
 		EventPageDTO evPageInfo = eventMapper.getEventInfoToPage(eventNum);

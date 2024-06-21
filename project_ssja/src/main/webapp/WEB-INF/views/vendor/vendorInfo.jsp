@@ -105,8 +105,9 @@ cursor:pointer;
 					src="/images/utilities/logoSSJA.png"></a>
 				<form action="/logout" id=searchForm method="post"></form>
 				<button id="search_icon"></button>
-				<a id="cart_link"><img id="cart_img"></a> <a id="user_link"><img
-					id="login_img"></a>
+				<a id="cart_link"><img id="cart_img"></a>       
+				  <a id="user_link" href="/login"><img id="login_img"></a>
+
 			</div>
 
 		</div>
@@ -229,6 +230,7 @@ $.ajax({
 
 				let recent_post_wrap = $("#recent_post_wrap");
 				if (data.commuList.length !== 0) {
+					
 
 					data.commuList.forEach(function(commu, idx) {
 	
@@ -257,7 +259,14 @@ $.ajax({
 
 					})
 				}else{
-					console.log('커뮤 0')
+					$('#vItem_relative_c_content').append(
+							$("<div>").addClass('d-flex justify-content-center').append(
+									$("<img>").attr("src",'/images/utilities/warn_icon.png')
+									.css({'widht':'5rem','height':'5rem','margin-left':'3rem'}),
+									$("<div>").text('현재 게시된 스타일링 글이 존재하지 않습니다.')
+									.css({'color':'#ccc','font-size':'1.5rem','font-weight':'bold'})
+							)
+							)
 				}
 			}
 		})
@@ -278,9 +287,12 @@ $.ajax({
 	        contentType: "application/json",
 	        success: function(data) {
 	            console.log(data);
-	            if(data.length === 0 || data.length < 16){
+	            if(data.length === 0 ){
 	            	moreNotExist = true;
 	            	return;
+	            }
+	            if(data.length < 16){
+	            	moreNotExist = true;
 	            }
 	            
 	            let $list_content_dv = $("#vItem_content").addClass("d-flex flex-column");

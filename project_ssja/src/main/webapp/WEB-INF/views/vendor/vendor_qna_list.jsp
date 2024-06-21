@@ -287,7 +287,7 @@
         				${vendorMember.m_Name}
         				&gt;</h1>      			
         		</div>
-				<a id="user_link"><img id="login_img"></a>
+        <a id="user_link" href="/login"><img id="login_img"></a>
 			</div>
 		</div>
 		<nav id="total_bar">

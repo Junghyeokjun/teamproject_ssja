@@ -47,7 +47,7 @@ public class CommunityServiceImpl implements CommunityService {
 	MembersMapper membersMapper;
 	
 	//배포시에 경로에 따라 수정
-	final String absolutePath="\\\\DESKTOP-RDUHP84\\board_content";
+	final String absolutePath="/home/ubuntu/images";
 	final String path = "/images/board_content";
 	
 	@Override
@@ -253,7 +253,13 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public int updateHit(CustomPrincipal principal,long bno) {
 	    if (principal != null) {
-	    	Set<Long> hitSet=principal.getUserInfo().getHit();
+	    	Set<Long> hitSet= null;
+	    	try {
+	    		hitSet=principal.getUserInfo().getHit();
+			} catch (Exception e) {
+				return 0;
+			}
+	    	
 	    	if(!hitSet.contains(bno)) {
 	    		hitSet.add(bno);
 	    		return boardMapper.updateHit(bno);

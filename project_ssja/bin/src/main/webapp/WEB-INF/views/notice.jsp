@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -19,18 +20,19 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 	crossorigin="anonymous">
-    </script>
+	
+</script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="/js/barscript.js">
-
-  </script>
+	
+</script>
 <script src="/js/footer.js">
-
-  </script>
+	
+</script>
 <script src="/js/board.js">
-
-  </script>
+	
+</script>
 <link href="/css/footerstyle.css?after" rel="stylesheet">
 <link href="/css/barstyle.css?after" rel="stylesheet">
 <link href="/css/board.css?after" rel="stylesheet">
@@ -79,7 +81,6 @@ body {
 #icn_txt {
 	text-align: center;
 }
-
 </style>
 </head>
 
@@ -108,58 +109,60 @@ body {
 	<div id="side_bar">
 		<div id="side_links" class="w-100"></div>
 	</div>
-	<main style="margin: 0 auto;">
-		<a href="${pageContext.request.contextPath}/notice">공지사항</a>
+	<main>
 		<div id="main_container" style="margin: 0 auto;">
-			<table class="table table-hover" style="text-align: center;">
-				<thead class="table-dark">
-					<tr>
-						<td>번호</td>
-						<td>제목</td>
-						<td>이름</td>
-						<td>날짜</td>
-					</tr>
-				</thead>
-				<tbody>
-					<c:forEach var="notice" items="${notics}">
+			<br>
+			<h2>공지사항</h2>
+			<div class="table-responsive">
+				<table class="table" style="text-align: center;">
+					<thead>
 						<tr>
-							<td>${notice.bno}</td>
-							<td>
-	            				<a id="notice_title" class="" href="${pageContext.request.contextPath}/notice_view?bno=${notice.bno}" >
-	            				${notice.btitle}</a>
-							</td>
-							<td>${notice.bwriter}</td>
-							<td class="date_str">${notice.bdate}</td>
+							<td scope="col">번호</td>
+							<td scope="col">제목</td>
+							<td scope="col">이름</td>
+							<td scope="col">날짜</td>
 						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
-			<div>
-				<nav aria-label="Page navigation example">
-					<ul class="pagination ch-col justify-content-center">
-						<c:if test="${pageMaker.prev}">
-							<li class="page-item"><a class="page-link ch-col"
-								href="${pageContext.request.contextPath}/notice${pageMaker.makeQuery(pageMaker.startPage-1)}"><</a></li>
-						</c:if>
-						<c:forEach var="idx" begin="${pageMaker.startPage}"
-							end="${pageMaker.endPage}">
-							<c:choose>
-								<c:when test="${pageMaker.criteria.pageNum == idx}">
-									<li class="page-item active"><a class="page-link"
-										href="${pageContext.request.contextPath}/notice${pageMaker.makeQuery(idx)}">${idx}</a></li>
-								</c:when>
-								<c:otherwise>
-									<li class="page-item"><a class="page-link"
-										href="${pageContext.request.contextPath}/notice${pageMaker.makeQuery(idx)}">${idx}</a></li>
-								</c:otherwise>
-							</c:choose>
+					</thead>
+					<tbody class="table-group-divider">
+						<c:forEach var="notice" items="${notics}">
+							<tr>
+								<td>${notice.bno}</td>
+								<td><a id="notice_title" class=""
+									href="${pageContext.request.contextPath}/notice_view?bno=${notice.bno}">
+										${notice.btitle}</a></td>
+								<td>${notice.bwriter}</td>
+								<td class="date_str">${notice.bdate}</td>
+							</tr>
 						</c:forEach>
-						<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-							<li class="page-item"><a class="page-link ch-col"
-								href="${pageContext.request.contextPath}/notice${pageMaker.makeQuery(pageMaker.endPage+1)}">></a></li>
-						</c:if>
-					</ul>
-				</nav>
+					</tbody>
+				</table>
+				<div>
+					<nav aria-label="Page navigation example">
+						<ul class="pagination ch-col justify-content-center">
+							<c:if test="${pageMaker.prev}">
+								<li class="page-item"><a class="page-link ch-col"
+									href="${pageContext.request.contextPath}/notice${pageMaker.makeQuery(pageMaker.startPage-1)}"><</a></li>
+							</c:if>
+							<c:forEach var="idx" begin="${pageMaker.startPage}"
+								end="${pageMaker.endPage}">
+								<c:choose>
+									<c:when test="${pageMaker.criteria.pageNum == idx}">
+										<li class="page-item active"><a class="page-link"
+											href="${pageContext.request.contextPath}/notice${pageMaker.makeQuery(idx)}">${idx}</a></li>
+									</c:when>
+									<c:otherwise>
+										<li class="page-item"><a class="page-link"
+											href="${pageContext.request.contextPath}/notice${pageMaker.makeQuery(idx)}">${idx}</a></li>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+								<li class="page-item"><a class="page-link ch-col"
+									href="${pageContext.request.contextPath}/notice${pageMaker.makeQuery(pageMaker.endPage+1)}">></a></li>
+							</c:if>
+						</ul>
+					</nav>
+				</div>
 			</div>
 		</div>
 	</main>
