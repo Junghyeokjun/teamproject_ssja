@@ -57,9 +57,18 @@ public class AdminPageController {
 	private SalesListService salesListService;
 
 	@GetMapping("")
-	public String adminPage(Model model ) {
+	public String AdminPage(Model model) {
+		List<Map<String, Object>> dailySales = salesListService.getDailySales();
+		model.addAttribute("dailySales", dailySales);
+		List<Map<String, Object>> monthlySales = salesListService.getMonthlySales();
+		model.addAttribute("monthlySales", monthlySales);
+		List<Map<String, Object>> yearlySales = salesListService.getYearlySales();
+		model.addAttribute("yearlySales", yearlySales);
+	
+		model.addAttribute("salesData", salesListService.getSalesDataByDate());
 
-		return "/adminPage/salesList";
+		
+		return "/adminPage/AdminPage";
 	}
 	
 	@GetMapping("/membersList")
@@ -233,15 +242,15 @@ public class AdminPageController {
 		return "/adminPage/salesList";
 	}
 
-	@RequestMapping(value = "/adminPage/allSales", method = RequestMethod.GET)
-	@ResponseBody
-	public Map<String, Object> getAllSales() {
-		Map<String, Object> allSales = new HashMap<>();
-		allSales.put("dailySales", salesListService.getDailySales());
-		allSales.put("monthlySales", salesListService.getMonthlySales());
-		allSales.put("yearlySales", salesListService.getYearlySales());
-		return allSales;
-	}
+//	@RequestMapping(value = "/adminPage/allSales", method = RequestMethod.GET)
+//	@ResponseBody
+//	public Map<String, Object> getAllSales() {
+//		Map<String, Object> allSales = new HashMap<>();
+//		allSales.put("dailySales", salesListService.getDailySales());
+//		allSales.put("monthlySales", salesListService.getMonthlySales());
+//		allSales.put("yearlySales", salesListService.getYearlySales());
+//		return allSales;
+//	}
 
 	/*
 	 * @GetMapping("/salesData") public ResponseEntity<Map<String, Object>>
@@ -253,21 +262,20 @@ public class AdminPageController {
 	 * HttpStatus.OK); } else { return new ResponseEntity<>(HttpStatus.NOT_FOUND); }
 	 * }
 	 */
-
-	@GetMapping("/salesData/{date}")
-	public ResponseEntity<Map<String, Object>> getSalesDataByDate(@PathVariable String date) {
-		log.info("getSalesDataByDate()..");
-
-		// 날짜를 이용해서 매출 데이터를 가져오는 서비스 호출
-		Map<String, Object> salesData = salesListService.getSalesDataByDate(date);
-
-		if (salesData == null) {
-			// 데이터를 찾지 못한 경우 404 에러 반환
-			return ResponseEntity.notFound().build();
-		}
-
-		// 데이터를 성공적으로 가져온 경우 200 OK와 함께 반환
-		return ResponseEntity.ok(salesData);
-	}
+	
+//	 @GetMapping("/salesData") 
+//	 public ResponseEntity<Map<String, Object>>  getSalesDataByDate() {
+//	 log.info("getSalesDataByDate()..");
+//	 
+//	 // 날짜를 이용해서 매출 데이터를 가져오는 서비스 호출 
+//	 Map<String, Object> salesData = salesListService.getSalesDataByDate();
+//	 
+//	 if (salesData == null) { // 데이터를 찾지 못한 경우 404 에러 반환 return
+//	 ResponseEntity.notFound().build(); }
+//	 
+//	 // 데이터를 성공적으로 가져온 경우 200 OK와 함께 반환 
+//	 return ResponseEntity.ok(salesData); 
+//	 }
+	
 
 }

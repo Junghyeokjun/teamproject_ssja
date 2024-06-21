@@ -264,7 +264,7 @@
         ]]>
 	</delete>
 	
-	<resultMap id="SalesListMap" type="ProfitDto">
+	<!-- <resultMap id="SalesListMap" type="ProfitDto">
 		<result property="P_DATE" column="P_DATE" />
 		<result property="P_PRICE" column="P_PRICE" />
 	</resultMap>
@@ -307,15 +307,15 @@ ORDER BY
         ]]>
 	</select>
 	
-<select id="getSalesDataByDate" parameterType="String" resultType="MAP">
+	
+	
+ <select id="getSalesDataByDate"  resultType="MAP">
     <![CDATA[
-    SELECT TRUNC(PUR_DATE) AS DaySales, SUM(PUR_PAY) AS DaysTotalPay
-    FROM purchase
-    WHERE TRUNC(PUR_DATE) = TO_DATE(#{date}, 'YYYY-MM-DD')
-    GROUP BY TRUNC(PUR_DATE)
-    ORDER BY DaySales
+    SELECT count(*),sum(pur_tot) 
+FROM purchase 
+WHERE TO_CHAR(pur_date, 'YY/MM/DD') = TO_CHAR(sysdate, 'YY/MM/DD')
     ]]>
-</select>
+</select> -->
  
 	
 	

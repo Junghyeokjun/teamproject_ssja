@@ -10,6 +10,7 @@ import teamproject.ssja.dto.MembersDto;
 import teamproject.ssja.dto.MembersSearchDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ProductsSearchDto;
+import teamproject.ssja.dto.ProfitDto;
 import teamproject.ssja.dto.PurchaseDto;
 import teamproject.ssja.dto.PurchaseSearchDto;
 import teamproject.ssja.dto.userinfo.CouponDTO;
@@ -55,7 +56,8 @@ public interface AdminPageMapper {
 		
 		List<Map<String, Object>> getYearlySalesList();
 
-		Map<String, Object> getSalesDataByDate(@Param("date") String date);
+		ProfitDto getSalesDataByDate();
+
 
 
 }

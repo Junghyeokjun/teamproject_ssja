@@ -19,7 +19,7 @@ public class MyPageController {
 	public String myPageP(Model model ) {
 		
 //		if(InfoProvider.userAuth().equals("ROLE_ADMIN")) {
-//	         return "/adminPage";
+//	         return "/adminPage/AdminPage";
 //	      }
 //		
 		

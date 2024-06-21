@@ -28,113 +28,89 @@
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <meta name="_csrf" content="${_csrf.token}" />
 <meta name="_csrf_header" content="${_csrf.headerName}" />
-<script src="/js/barscript_admin.js"></script>
+<script src="/js/barscript.js"></script>
 <script src="/js/footer.js"></script>
 <link href="/css/footerstyle.css?after" rel="stylesheet">
-<link href="/css/barstyle.css?after" rel="stylesheet">
+<link href="/css/barstyle_admin.css?after" rel="stylesheet">
 
 <link rel="stylesheet"
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
 <style>
-@font-face {
-	font-family: 'fonts';
-	src: url("https://webfontworld.github.io/NanumSquare/NanumSquare.css")
-		format('font1');
-}
-
-body {
-	font-family: 'fonts', NanumSquare;
-	background-color: #f7f0e8;
-}
-
-#logo_img {
-	width: 3.5em;
-	height: 3em;
-}
-
-.MyPage_btn {
-	background-color: white;
-	padding: 20px;
-}
-
-#select_MyPage {
-	z-index: 900;
-	position: fixed;
-	top: 30%;
-	left: 5%;
-	width: 12%;
-}
-
-#select_mp_top {
-	background-color: #f7f0e8;
-	padding: 2em;
-	height: auto;
-}
-
-#icon_div  img {
-	width: 40%;
-	text-align: center;
-}
-
-#icon_div {
+#commuInfoContainer, #qnaInfoContainer {
+	width: 100%;
+	margin-bottom: 50px;
+	margin-top: 50px;
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 	align-items: center;
+	border: 1px solid #ccc;
 }
 
-#icon_container {
+#commuInfoTitle, #qnaInfoTitle {
+	padding: 40px;
+	display: flex;
+	border-bottom: 1px solid #ccc;
+	flex-direction: row;
+	align-items: center;
+	width: 100%;
+}
+
+#commuInfoTitle>h4, #qnaInfoTitle>h4 {
+	font-weight: bold;
+}
+
+#commuInfoPaging, #qnaInfoPaging {
+	display: flex;
+	flex-dirextion: row;
+	justify-content: center;
 	padding: 1.5em;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
 }
 
-#icn_txt {
-	text-align: center;
-}
-
-#event_banners {
-	width: 100% auto;
-	height: 30em;
-}
-
-#title_best_conner  button {
-	width: 3em;
+#paging_qnaInfoPaging_dv>button, #paging_commuInfoPaging_dv>button {
 	background-color: white;
-	border: none;
-	font-size: 2.5em;
-	color: #aaa;
+	border: 2px solid #ccc;
+	border-radius: 3px;
 }
 
-#title_best_conner  button:hover {
-	color: #333;
+#commuContetnts>img {
+	width: 30%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 15px;
 }
 
-#title_best_conner {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
+#commuContetnts {
+	width: 100%;
 }
 
-#show_more_bestItem {
-	background-color: white;
-	with: 100%;
-	border: 1px solid #ddd;
-	height: 5em;
+#commuInfoDiv, #commuEtcInfo {
+	width: 35%;
 }
 
-h2, h4, p {
-	display: inline;
-	margin: 0;
-	margin-right: 10px;
+#commuInfoDiv>span {
+	display: inline-block;
+	max-width: 10em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	text-align: start;
 }
 
-.table {
-	width: 100%; /* 테이블이 페이지 전체 너비를 차지하도록 설정 */
-	text-align: center; /* 테이블 텍스트 중앙 정렬 */
+#commuEtcInfo>span {
+	display: inline-block;
+	max-width: 8em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	text-align: end;
+}
+
+#commuInfoContent, #qnaInfoContent {
+	min-height: 350px;
+}
+
+#qnaDV {
+	margin-bottom: 150px;
 }
 </style>
 <script
@@ -154,58 +130,69 @@ h2, h4, p {
 	<div id="side_bar">
 		<div id="side_links" class="w-100"></div>
 	</div>
+	<div id="select_AdminPage" class="d-flex flex-column">
+		<div id="select_mp_top" class="text-center">관리자</div>
+		<div id="select_content">
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc">SSJA 현황</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc">회원 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc">상품 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc">주문 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc">쿠폰 관리</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc">공지사항 관리</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc">고객 문의 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc">매출 현황</button>
+		</div>
+	</div>
 	<main>
-	<br>
-    <div class="row">
-    <div class="col-sm-4 mb-3">
-        <div class="card text-center" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">오늘 총 매출액</h5>
-                <p class="card-text"></p>
-            </div>
-        </div>
-    </div>
+	 <div id="main_container"
+			class="d-flex flex-row align-items-center justify-content-center">
+			<div id="content_dv">
+				<div id="AdminPage_content_name">
+					<h2 id="AdminPageTitle">SSJA 현황</h2>
+				</div>
+				<div id=main_div>
+					<div id="AdminPage_content_container">
+						<div id="adminInfo_dv2" class="my-3 mx-3"
+							style="background-color: rgb(238, 238, 238);">
+							<div id="userInfo_orders" style="cursor: auto;">
+								<h4>TODAY 총 매출액</h4>
+								<span></span>
+							</div>
+							<div id="userInfo_wishs" style="cursor: auto;">
+								<h4>TODAY 주문 건수</h4>
+								<span></span>
+							</div>
+							<div id="adminInfo_points" style="cursor: auto;">
+								<h4>TODAY 문의</h4>
+								<span></span>
+							</div>
+							<div id="adminInfo_coupons" style="cursor: auto;">
+								<h4>TODAY 가입자</h4>
+								<span></span>
+							</div>
+						</div>
+						<div id="adminInfo_dv3" class="my-3 mx-3"  >
+							<h4 class="mx-5 my-3">일일매출(최근 일주일)</h4>
+							<canvas id="dailySalesChart" width="400" height="200"></canvas>
+							<h4 class="mx-5 my-3">일일매출(최근 일주일)</h4>
+							<canvas id="monthlySalesChart" width="400" height="200"></canvas>
+							<h4 class="mx-5 my-3">일일매출(최근 일주일)</h4>
+							<canvas id="yearlySalesChart" width="400" height="200"></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> 
+	
 
-    <div class="col-sm-4 mb-3">
-        <div class="card text-center" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">오늘 주문 건수</h5>
-                <p class="card-text"></p>
-            </div>
-        </div>
-    </div>
-
-     <div class="col-sm-4 mb-3">
-        <div class="card text-center" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">오늘 가입자 수</h5>
-                <p class="card-text"></p>
-            </div>
-        </div>
-    </div>
-</div>
-    
-		
-		<div id="salesDataResult">
-			<h2>매출 데이터</h2>
-			<p>${salesData.DaySales}</p>
-			<p>${salesData.DaysTotalPay}</p>			
-		</div>
-		<div class="row row-cols-1 row-cols-md-3 g-4">
-			<div class="col">
-				<h1>일일매출(최근 일주일)</h1>
-				<canvas id="dailySalesChart" width="400" height="200"></canvas>
-			</div>
-			<div class="col">
-				<h1>월매출</h1>
-				<canvas id="monthlySalesChart" width="400" height="200"></canvas>
-			</div>
-			<div class="col">
-				<h1>년매출</h1>
-				<canvas id="yearlySalesChart" width="400" height="200"></canvas>
-			</div>
-		</div>
-		<br>
 		<script>
         document.addEventListener('DOMContentLoaded', function() {
             var dailySalesString = '${dailySales}';
@@ -329,24 +316,29 @@ h2, h4, p {
          } 
      });
     </script>
-		<!-- <script>	      
+		<script>
+	        // 조회 버튼 클릭 시
+	        $('#fetchSalesData').click(function() {
+	            // 선택한 날짜 가져오기
+	            const selectedDate = $('#salesDateInput').val();
+	            console.log('Selected Date:', selectedDate);
+
 	            // AJAX 요청 보내기
 	            $.ajax({
-	                url: "/adminPage/salesData/",
+	                url: "/adminPage/salesData/"+selectedDate,
 	                method: 'GET',
 	                success: function(data) {
 	                    console.log('Success:', data);
 	                    // 서버로부터 받은 데이터를 처리하는 로직을 여기에 작성하세요
-	                     $('#totalSales').text(data.DAYSALES);
+	                     $('#daily_profits').text(data.DAYSALES);
 	                     $('#transactionCount').text(data.DAYSTOTALPAY);
 	                },
 	                error: function(xhr, status, error) {
 	                    console.error('Error:', error);
 	                }
 	            });
-	      
-	    </script> -->
-
+	        });
+	    </script>
 	</main>
 	<footer>
 		<div id="first_footer" class="p-3"></div>
@@ -354,4 +346,8 @@ h2, h4, p {
 		<div id="third_footer"></div>
 	</footer>
 </body>
+ <script src="/js/adminPage/adminInfoPage.js"></script>
+<!--<script src="/js/adminPage/adminOrders.js"></script>
+<script src="/js/adminPage/applyVendor.js"></script>
+<script src="/js/adminPage/adminWrittenBoard.js"></script> -->
 </html>

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import teamproject.ssja.dto.ProfitDto;
 import teamproject.ssja.mapper.AdminPageMapper;
 
 @Service
@@ -25,9 +26,11 @@ public class SalesListService {
 	public List<Map<String, Object>> getYearlySales() {
 		return adminPageMapper.getYearlySalesList();
 	}
+
+	public ProfitDto getSalesDataByDate() {
+		return adminPageMapper.getSalesDataByDate();
+	}
 	
-	public Map<String, Object> getSalesDataByDate(String date) {
-        return adminPageMapper.getSalesDataByDate(date);
-    }
+	
 
 }
