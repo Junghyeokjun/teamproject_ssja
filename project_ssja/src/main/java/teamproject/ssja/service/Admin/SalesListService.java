@@ -1,5 +1,6 @@
 package teamproject.ssja.service.Admin;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +38,15 @@ public class SalesListService {
 
 	public List<Map<String, Object>> dailyVCounts() {
 		return adminPageMapper.dailyVisitCountsList();
+	}
+	
+	public Map<String, List<ProfitDto>> totalProfit(){
+		
+		Map<String, List<ProfitDto>> data = new HashMap<>();
+		data.put("daily",adminPageMapper.totalDailyProfitData());
+		data.put("monthly",adminPageMapper.totalMonthlyProfitData());
+		data.put("yearly",adminPageMapper.totalYearlyProfitData());
+		return data;
 	}
 	
 	

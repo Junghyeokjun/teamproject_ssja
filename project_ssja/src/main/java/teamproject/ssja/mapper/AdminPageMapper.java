@@ -89,5 +89,10 @@ public interface AdminPageMapper {
 		@Update("UPDATE visitor_count SET visit_count = visit_count + 1 WHERE TRUNC(visit_date) = TRUNC(sysdate)")
 		void addVisitCount();
 
-
+		List<ProfitDto> totalDailyProfitData();
+		List<ProfitDto> totalMonthlyProfitData();
+		List<ProfitDto> totalYearlyProfitData();
+		
+		List<Long> getListMemberNo();
+		void insertCouponToMembers(List<Long> list);
 }

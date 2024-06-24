@@ -1,16 +1,23 @@
 package teamproject.ssja.controller.adminpage;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
@@ -31,8 +38,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.BoardForm;
+import teamproject.ssja.dto.ProfitDto;
 import teamproject.ssja.page.ListObjectPagingDTO;
 import teamproject.ssja.service.Admin.AdminService;
+import teamproject.ssja.service.Admin.SalesListService;
 
 @Controller
 @Slf4j
@@ -40,119 +49,132 @@ import teamproject.ssja.service.Admin.AdminService;
 @RequestMapping("/adminPage")
 public class AdminExpansionController {
 
+	private final SalesListService salesService;
 	private final AdminService adminService;
 	
-	
-	@GetMapping("/download/profit/admin")
-	public void getProgitExcel(HttpServletResponse response) throws IOException {
-			
-		
-		
-	        Workbook workbook = new XSSFWorkbook();
-	        Sheet sheet1 = workbook.createSheet("연 매출"); // 엑셀 sheet 이름
-	        Sheet sheet2= workbook.createSheet("월 매출"); // 엑셀 sheet 이름
-	        Sheet sheet3 = workbook.createSheet("일 매출"); // 엑셀 sheet 이름
-	        sheet1.setDefaultColumnWidth(15); // 디폴트 너비 설정
-	        sheet2.setDefaultColumnWidth(15); // 디폴트 너비 설정
-	        sheet3.setDefaultColumnWidth(15); // 디폴트 너비 설정
+	  @GetMapping("/download/profit")//연, 월, 일 매출 통계
+	    public void getProfitExcel(HttpServletResponse response) throws IOException {
+	        Workbook workbook = null;
+	        ServletOutputStream servletOutputStream = null;
 
-	        /**
-	         * header font style
-	         */
-	        XSSFFont headerXSSFFont = (XSSFFont) workbook.createFont();
-	        headerXSSFFont.setColor(new XSSFColor(new byte[]{(byte) 255, (byte) 255, (byte) 255}));
+	        try {
+	            workbook = new XSSFWorkbook();
+	            Sheet sheet = workbook.createSheet("매출");
 
-	        /**
-	         * header cell style
-	         */
-	        XSSFCellStyle headerXssfCellStyle = (XSSFCellStyle) workbook.createCellStyle();
+	            // 기본 열 너비 설정
+	            sheet.setDefaultColumnWidth(20);
 
-	        // 테두리 설정
-	        headerXssfCellStyle.setBorderLeft(BorderStyle.THIN);
-	        headerXssfCellStyle.setBorderRight(BorderStyle.THIN);
-	        headerXssfCellStyle.setBorderTop(BorderStyle.THIN);
-	        headerXssfCellStyle.setBorderBottom(BorderStyle.THIN);
+	            // 헤더 스타일 설정
+	            CellStyle headerCellStyle = workbook.createCellStyle();
+	            headerCellStyle.setFillForegroundColor(IndexedColors.CORAL.getIndex());
+	            headerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+	            headerCellStyle.setAlignment(HorizontalAlignment.CENTER); // 글자 가운데 정렬
 
-	        // 배경 설정
-	        headerXssfCellStyle.setFillForegroundColor(new XSSFColor(new byte[]{(byte) 34, (byte) 37, (byte) 41}));
-	        headerXssfCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-	        headerXssfCellStyle.setFont(headerXSSFFont);
+	            // 헤더 폰트 설정
+	            Font headerFont = workbook.createFont();
+	            headerFont.setBold(true);
+	            headerCellStyle.setFont(headerFont);
+	            
+	            // 본문 스타일 설정
+	            XSSFCellStyle bodyCellStyle = (XSSFCellStyle) workbook.createCellStyle();
+	            bodyCellStyle.setBorderLeft(BorderStyle.THIN);
+	            bodyCellStyle.setBorderRight(BorderStyle.THIN);
+	            bodyCellStyle.setBorderTop(BorderStyle.THIN);
+	            bodyCellStyle.setBorderBottom(BorderStyle.THIN);
 
-	        /**
-	         * body cell style
-	         */
-	        XSSFCellStyle bodyXssfCellStyle = (XSSFCellStyle) workbook.createCellStyle();
+	            // 첫 번째 행에 헤더 작성
+	            Row headerRow1 = sheet.createRow(0);
+	            headerRow1.createCell(0).setCellValue("일");
+	            headerRow1.createCell(2).setCellValue("월");
+	            headerRow1.createCell(4).setCellValue("연");
 
-	        // 테두리 설정
-	        bodyXssfCellStyle.setBorderLeft(BorderStyle.THIN);
-	        bodyXssfCellStyle.setBorderRight(BorderStyle.THIN);
-	        bodyXssfCellStyle.setBorderTop(BorderStyle.THIN);
-	        bodyXssfCellStyle.setBorderBottom(BorderStyle.THIN);
+	            for (int i = 0; i < 6; i++) {
+	                if (headerRow1.getCell(i) == null) {
+	                    headerRow1.createCell(i);
+	                }
+	                headerRow1.getCell(i).setCellStyle(headerCellStyle);
+	            }
 
-	        /**
-	         * header data
-	         */
-	        int rowCount = 0; // 데이터가 저장될 행
-	        String headerNames[] = new String[]{"첫번째 헤더", "두번째 헤더", "세번째 헤더"};
+	            // 첫 번째 행 셀 병합
+	            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 1));
+	            sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 3));
+	            sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 5));
 
-	        Row headerRow = null;
-	        Cell headerCell = null;
+	            // 데이터 가져오기
+	            Map<String, List<ProfitDto>> result = salesService.totalProfit();
+	            List<ProfitDto> dailyData = result.get("daily");
+	            List<ProfitDto> monthlyData = result.get("monthly");
+	            List<ProfitDto> yearlyData = result.get("yearly");
 
-	        headerRow = sheet1.createRow(rowCount++);
-	        for(int i=0; i<headerNames.length; i++) {
-	            headerCell = headerRow.createCell(i);
-	            headerCell.setCellValue(headerNames[i]); // 데이터 추가
-	            headerCell.setCellStyle(headerXssfCellStyle); // 스타일 추가
-	        }
+	            // 최대 크기 계산
+	            int maxSize = Math.max(dailyData.size(), Math.max(monthlyData.size(), yearlyData.size()));
 
-	        int a = 0;
-	        
-	        Row headerRow2 = sheet2.createRow(a++);
-	        int[] sheet2arr = new int[] {1,2,3,4,5};
-	        for(int i = 0 ; i < sheet2arr.length;i++) {
-	        	   headerCell = headerRow2.createCell(i);
-		            headerCell.setCellValue(sheet2arr[i]); // 데이터 추가
-		            headerCell.setCellStyle(headerXssfCellStyle);
-	        }
-	        
-	        
-	        /**
-	         * body data
-	         */
-	        String bodyDatass[][] = new String[][]{
-	            {"첫번째 행 첫번째 데이터", "첫번째 행 두번째 데이터", "첫번째 행 세번째 데이터"},
-	            {"두번째 행 첫번째 데이터", "두번째 행 두번째 데이터", "두번째 행 세번째 데이터"},
-	            {"세번째 행 첫번째 데이터", "세번째 행 두번째 데이터", "세번째 행 세번째 데이터"},
-	            {"네번째 행 첫번째 데이터", "네번째 행 두번째 데이터", "네번째 행 세번째 데이터"}
-	        };
+	            // 데이터 추가
+	            int rowCount = 1;
 
-	        Row bodyRow = null;
-	        Cell bodyCell = null;
+	            for (int i = 0; i < maxSize; i++) {
+	                Row row = sheet.createRow(rowCount++);
 
-	        for(String[] bodyDatas : bodyDatass) {
-	            bodyRow = sheet1.createRow(rowCount++);
+	                // 일 매출
+	                if (i < dailyData.size()) {
+	                    ProfitDto daily = dailyData.get(i);
+	                    Cell cell1 = row.createCell(0);
+	                    Cell cell2 = row.createCell(1);
+	                    cell1.setCellValue(daily.getP_DATE());
+	                    cell2.setCellValue(daily.getP_PRICE());
+	                    cell1.setCellStyle(bodyCellStyle);
+	                    cell2.setCellStyle(bodyCellStyle);
+	                } else {
+	                    row.createCell(0).setCellStyle(bodyCellStyle);
+	                    row.createCell(1).setCellStyle(bodyCellStyle);
+	                }
 
-	            for(int i=0; i<bodyDatas.length; i++) {
-	                bodyCell = bodyRow.createCell(i);
-	                bodyCell.setCellValue(bodyDatas[i]); // 데이터 추가
-	                bodyCell.setCellStyle(bodyXssfCellStyle); // 스타일 추가
+	                // 월 매출
+	                if (i < monthlyData.size()) {
+	                    ProfitDto monthly = monthlyData.get(i);
+	                    Cell cell3 = row.createCell(2);
+	                    Cell cell4 = row.createCell(3);
+	                    cell3.setCellValue(monthly.getP_DATE());
+	                    cell4.setCellValue(monthly.getP_PRICE());
+	                    cell3.setCellStyle(bodyCellStyle);
+	                    cell4.setCellStyle(bodyCellStyle);
+	                } 
+
+	                // 연 먀출
+	                if (i < yearlyData.size()) {
+	                    ProfitDto yearly = yearlyData.get(i);
+	                    Cell cell5 = row.createCell(4);
+	                    Cell cell6 = row.createCell(5);
+	                    cell5.setCellValue(yearly.getP_DATE());
+	                    cell6.setCellValue(yearly.getP_PRICE());
+	                    cell5.setCellStyle(bodyCellStyle);
+	                    cell6.setCellStyle(bodyCellStyle);
+	                }
+	            }
+	            /**
+	             * download
+	             */
+	            String fileName = "total_profit";//파일 이름 한글일 경우 깨짐
+
+	            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	            response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
+	            servletOutputStream = response.getOutputStream();
+
+	            workbook.write(servletOutputStream);
+	        } catch (IOException e) {
+	        	
+	            throw e;
+	            
+	        } finally {
+	        	
+	            if (workbook != null) {
+	                workbook.close();
+	            }
+	            if (servletOutputStream != null) {
+	                servletOutputStream.close();
 	            }
 	        }
-
-	        /**
-	         * download
-	         */
-	        String fileName = "excel_API";//파일 이름 한글일 경우 깨짐
-
-	        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-	        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
-	        ServletOutputStream servletOutputStream = response.getOutputStream();
-
-	        workbook.write(servletOutputStream);
-	        workbook.close();
-	        servletOutputStream.flush();
-	        servletOutputStream.close();
-	}
+	    }
 	
 
 	@GetMapping("/notice")
