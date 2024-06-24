@@ -117,7 +117,6 @@
 								<td scope="col">제목</td>
 								<td scope="col">내용</td>
 								<td scope="col">날짜</td>
-
 							</tr>
 						</thead>
 						<tbody class="table-group-divider">

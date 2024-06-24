@@ -109,8 +109,16 @@ WHERE TRUNC(m_date) =  TRUNC(sysdate)
                </when>
                </choose>          
                
-	</select>	
-		
+	</select>		
+	<!-- 참조 무결성 제약 조건을 유지하기 위해 삭제 대신 m_deletedate를 sysdate로 처리  -->
+	<update id="deleteMember" parameterType="MembersDto">
+		 <![CDATA[
+		 UPDATE members 
+			SET m_deletedate = sysdate
+			WHERE M_NO = #{M_NO}
+        ]]>
+	</update>
+				
 	<resultMap id="ProductsListMap" type="ProductDto">
 		<id property="PRO_NO" column="PRO_NO" />
 		<result property="V_NO" column="V_NO" />
@@ -177,6 +185,24 @@ WHERE TRUNC(m_date) =  TRUNC(sysdate)
                         
                </choose>                          
 	</select>	
+	
+	<select id="readProducts" resultMap="ProductsListMap">
+    	<![CDATA[
+        	select * from product where PRO_NO = #{PRO_NO}
+        ]]>
+	</select>
+	
+	<update id="updateProducts" parameterType="ProductDto">
+    <![CDATA[
+        UPDATE product
+        SET
+        PRO_PRICE = #{PRO_PRICE},
+        PRO_QUANTITY = #{PRO_QUANTITY},
+        PRO_BIZNAME = #{PRO_BIZNAME},
+        PRO_NAME = #{PRO_NAME}
+        WHERE PRO_NO = #{PRO_NO}
+    ]]>
+</update>
 	
 	<resultMap id="PurchasesListMap" type="PurchaseDto">
 		<id property="PUR_NO" column="PUR_NO" />

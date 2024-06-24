@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.MembersDto;
 import teamproject.ssja.dto.MembersSearchDto;
+import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ProductsSearchDto;
 import teamproject.ssja.dto.PurchaseSearchDto;
 import teamproject.ssja.dto.QnaBoardDto;
@@ -101,6 +102,15 @@ public class AdminPageController {
 		List<MembersSearchDto> searchResults = memberListService.getMemberSearchList(type, keyword);
 		return ResponseEntity.ok(searchResults);
 	}
+	
+	
+	@PostMapping("/removeMember")
+	public String removeMember(@RequestBody MembersDto membersDto) {
+		log.info("removeMember()..");
+		memberListService.removeMember(membersDto);
+		return "redirect:/adminPage/membersList";
+	}
+	
 
 	@RequestMapping("/productsList")
 	public String productsList(Model model, Criteria criteria) {
@@ -120,6 +130,23 @@ public class AdminPageController {
 		List<ProductsSearchDto> searchResults = productListService.getProductsSearchList(type, keyword);
 		return ResponseEntity.ok(searchResults);
 	}
+	
+	@GetMapping("/modifyProducts")
+	@ResponseBody
+	public ProductDto getProducts(@RequestParam("PRO_NO") int PRO_NO) {
+		log.info("getProducts()..");
+
+		return productListService.getProductsId(PRO_NO);
+	}
+
+	@PostMapping("/modifyProducts")
+    public String modifyProducts(@RequestBody ProductDto productDto) {
+        log.info("modifyProducts()..");
+
+        productListService.modifyProducts(productDto); 
+
+        return "redirect:/adminPage/productsList"; 
+    }	
 
 	@RequestMapping("/purchasesList")
 	public String purchasesList(Model model, Criteria criteria) {

@@ -19,6 +19,7 @@ public interface QnaListService {
 	
 	QnaBoardDto getQnaId(int b_no);
 	void modifyQna(QnaBoardDto qnaBoardDto);
+	
 	int removeQna(QnaBoardDto qnaBoardDto);
 
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.MembersDto;
 import teamproject.ssja.dto.MembersSearchDto;
+import teamproject.ssja.dto.QnaBoardDto;
 import teamproject.ssja.mapper.AdminPageMapper;
 import teamproject.ssja.page.Criteria;
 
@@ -34,4 +35,15 @@ public class MemberListServiceImpl implements MemberListService {
 
 		return adminPageMapper.getMemberSearchList(type,keyword);
 	}
+
+	@Override
+	public void removeMember(MembersDto membersDto) {
+    	adminPageMapper.deleteMember(membersDto); 
+
+		
+	}
+	
+	
+
+	
 }
