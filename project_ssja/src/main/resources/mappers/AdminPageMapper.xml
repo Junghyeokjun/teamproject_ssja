@@ -64,7 +64,7 @@ WHERE TRUNC(m_date) =  TRUNC(sysdate)
     <![CDATA[
 	select * from 
         	(
-			    selecte
+			    select
 			        rownum rnum , A.*
 			    from 
 			    (SELECT  * FROM Members order by M_NO) A 
@@ -278,7 +278,7 @@ WHERE TRUNC(m_date) =  TRUNC(sysdate)
 
 	</insert>
 	
-	<select id="read" resultMap="CouponsListMap">
+	<select id="readCoupon" resultMap="CouponsListMap">
     	<![CDATA[
         	select * from coupon where c_no=#{c_no}
         ]]>
@@ -317,13 +317,6 @@ ORDER BY m_date
 	
 	<select id="getDailySalesList" resultType="MAP">    
     <![CDATA[
-<<<<<<< HEAD
-=======
-SELECT TRUNC(PUR_DATE) AS Daily, SUM(PUR_tot) AS DailyTotalPay
-FROM purchase
-GROUP BY TRUNC(PUR_DATE)
-ORDER BY Daily
->>>>>>> origin/dev_ajs
 
 SELECT TO_CHAR(p_date, 'MM-DD') AS p_date, p_price 
 FROM profit 
@@ -335,23 +328,21 @@ ORDER BY p_date
 
 <select id="getMonthlySalesList" resultType="MAP">    
     <![CDATA[
-SELECT
-    TO_CHAR(PUR_DATE, 'YYYY-MM') AS Month,
-    SUM(PUR_tot) AS MonthlyTotalPay
-FROM
-    purchase
-GROUP BY
-    TO_CHAR(PUR_DATE, 'YYYY-MM')
-ORDER BY
-    Month
+select TO_CHAR(p_date,'YYYY-MM') as month,
+    SUM(p_price) AS MonthlyTotalPay
+ from profit 
+ GROUP BY
+    TO_CHAR(p_date, 'YYYY-MM')
+ order by month
+
 
         ]]>
 	</select>	
 	<select id="getYearlySalesList" resultType="MAP">    
     <![CDATA[
 SELECT
-    TO_CHAR(PUR_DATE, 'YYYY') AS Year,
-    SUM(PUR_tot) AS YearlyTotalPay
+    TO_CHAR(p_date, 'YYYY') AS Year,
+    SUM(p_price) AS YearlyTotalPay
 FROM
     profit
 GROUP BY
@@ -415,16 +406,6 @@ ORDER BY VISIT_DATE
 			where rnum > (#{pageNum}-1) * #{amount}
     ]]>
 	</select>
-	<delete id="deleteExpiredCoupon" >
-	  <![CDATA[ delete from coupon where  c_duedate < SYSDATE - (5.1 / (24 * 60))  ]]>
-	</delete>
-	
-	<insert id="renewYsterdayProfit">
-	SELECT TRUNC(SYSDATE -1) AS p_date,  SUM(PUR_TOT) AS DAILY_TOTAL_SALES
-	FROM purchase
-	WHERE TRUNC(PUR_DATE) = TRUNC(SYSDATE-1)
-	GROUP BY TRUNC(SYSDATE-1)
-	</insert>
 	
 	<resultMap id="QnaSearchListMap" type="QnaSearchDto">
 		<id property="B_NO" column="B_NO" />
@@ -459,13 +440,23 @@ SELECT * FROM board where  B_C_NO=20
                
 	</select>	
 	
+	<select id="readQna" resultMap="qnasListMap">
+    	<![CDATA[
+        	select * from board where B_C_NO=20 and B_NO = #{B_NO}
+        ]]>
+	</select>
+	
+	 <update id="updateQna" parameterType="QnaBoardDto">
+		<![CDATA[
+        	update board set B_WRITER=#{B_WRITER}, B_TITLE=#{B_TITLE},B_CONTENT=#{B_CONTENT} where B_NO=#{B_NO}
+        ]]>
+	</update>
+
 	<delete id="deleteQna" parameterType="QnaBoardDto">
 		 <![CDATA[
-        	delete FROM board where b_c_no=20 and B_NO = #{B_NO}
+        	delete FROM board where B_C_NO=20 and B_NO = #{B_NO}
         ]]>
 	</delete>
-	
- 
 	
 	
 	</mapper>

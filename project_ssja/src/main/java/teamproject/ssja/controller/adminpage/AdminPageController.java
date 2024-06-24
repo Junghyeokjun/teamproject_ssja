@@ -45,7 +45,7 @@ import java.text.ParseException;
 @Controller
 @RequestMapping("/adminPage")
 public class AdminPageController {
-	
+
 	@Autowired
 	private AdminInfoListService adminInfoListService;
 
@@ -63,13 +63,13 @@ public class AdminPageController {
 
 	@Autowired
 	private SalesListService salesListService;
-	
+
 	@Autowired
 	private QnaListService qnaListService;
 
 	@GetMapping("")
 	public String AdminPage(Model model) {
-		
+
 		model.addAttribute("dailyPrice", adminInfoListService.getDailyPrice());
 		model.addAttribute("dailyPurcount", adminInfoListService.getDailyPurcount());
 		model.addAttribute("dailyMCount", adminInfoListService.getDailyMcount());
@@ -80,10 +80,10 @@ public class AdminPageController {
 		model.addAttribute("dailyMCounts", dailyMCounts);
 		List<Map<String, Object>> dailyVCounts = salesListService.dailyVCounts();
 		model.addAttribute("dailyVCounts", dailyVCounts);
-		
+
 		return "/adminPage/AdminPage";
 	}
-	
+
 	@GetMapping("/membersList")
 	public String membersList(Model model, Criteria criteria) {
 		log.info("membersList()..");
@@ -101,7 +101,7 @@ public class AdminPageController {
 		List<MembersSearchDto> searchResults = memberListService.getMemberSearchList(type, keyword);
 		return ResponseEntity.ok(searchResults);
 	}
-	
+
 	@RequestMapping("/productsList")
 	public String productsList(Model model, Criteria criteria) {
 		log.info("productsList()..");
@@ -198,7 +198,7 @@ public class AdminPageController {
 		couponListService.removeCoupon(couponDto);
 		return "redirect:/adminPage/couponsList";
 	}
-	
+
 	@GetMapping("/salesList")
 	public String getDailySales(Model model) {
 		log.info("salesList()..");
@@ -220,7 +220,7 @@ public class AdminPageController {
 		model.addAttribute("qnas", qnaListService.getQnaListWithPaging(criteria));
 		return "/adminPage/qnasList";
 	}
-	
+
 	@GetMapping("/qnasSearchList")
 	public ResponseEntity<List<QnaSearchDto>> qnasSearchList(@RequestParam("type") String type,
 			@RequestParam("keyword") String keyword) {
@@ -228,13 +228,29 @@ public class AdminPageController {
 		List<QnaSearchDto> searchResults = qnaListService.getQnaSearchList(type, keyword);
 		return ResponseEntity.ok(searchResults);
 	}
-	
+
+	@GetMapping("/modifyQna")
+	@ResponseBody
+	public QnaBoardDto getQna(@RequestParam("B_NO") int B_NO) {
+		log.info("getQna()..");
+
+		return qnaListService.getQnaId(B_NO);
+	}
+
+	@PostMapping("/modifyQna")
+    public String modifyQna(@RequestBody QnaBoardDto qnaBoardDto) {
+        log.info("modifyQna()..");
+
+        qnaListService.modifyQna(qnaBoardDto); // 서비스 메서드를 호출하여 문의 글 수정 처리
+
+        return "redirect:/adminPage/qnasList"; // 수정 후 목록 페이지로 리다이렉트
+    }
+		
 	@PostMapping("/removeQna")
 	public String removeQna(@RequestBody QnaBoardDto qnaBoardDto) {
 		log.info("removeQna()..");
 		qnaListService.removeQna(qnaBoardDto);
 		return "redirect:/adminPage/qnasList";
 	}
-	
 
 }

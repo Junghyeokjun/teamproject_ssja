@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.QnaBoardDto;
 import teamproject.ssja.dto.QnaSearchDto;
+import teamproject.ssja.dto.userinfo.CouponDTO;
 import teamproject.ssja.mapper.AdminPageMapper;
 import teamproject.ssja.page.Criteria;
 
@@ -38,9 +39,18 @@ public class QnaListServiceImpl implements  QnaListService{
 	}
 
 	@Override
+	public QnaBoardDto getQnaId(int qnaId) {
+        return adminPageMapper.readQna(qnaId); 
+    }
+
+    @Override
+    public void modifyQna(QnaBoardDto qnaBoardDto) {
+    	adminPageMapper.updateQna(qnaBoardDto); 
+    }
+    
+    @Override
 	public int removeQna(QnaBoardDto qnaBoardDto) {
-		log.info("removeQna()..");
+		log.info("deleteQna()..");
 		return adminPageMapper.deleteQna(qnaBoardDto);
 	}
-
 }
