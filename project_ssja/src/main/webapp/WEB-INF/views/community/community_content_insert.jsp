@@ -29,8 +29,10 @@
   <script src="/js/footer.js">
 
   </script>
+  <script src="https://cdn.ckeditor.com/ckeditor5/12.0.0/classic/ckeditor.js"></script>
+
    <meta name="_csrf" content="${_csrf.token}"/>
-<meta name="_csrf_header" content="${_csrf.headerName}"/>
+  <meta name="_csrf_header" content="${_csrf.headerName}"/>
   <link href="/css/footerstyle.css?after" rel="stylesheet">
   <link href="/css/barstyle.css?after" rel="stylesheet">
 
@@ -45,6 +47,11 @@
     body {
       font-family: 'fonts', NanumSquare;
       background-color: #f7f0e8;
+    }
+    .product img{
+      width: 120px;
+      height: 80px;
+
     }
     #product_link{
       height: 100px;
@@ -62,6 +69,7 @@
       height: 100px;
     }
     #orders_product_Info{
+      width: 100%;
       height: 100px;
       overflow: hidden; 
       text-overflow: ellipsis; 
@@ -85,7 +93,9 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
- 
+    .ck-content{
+      min-height: 400px;
+    }
 
 
   </style>
@@ -128,8 +138,8 @@
               data.forEach(function(e){
                 productlist.append($('<div class="product" class="my-2" style="background-color: white;" imgPath="'+ e.pro_BANNERIMG+'" pro_no="'+e.pro_NO+'"  pro_name="'+e.pro_NAME+'" >'+
                                           '<div class="d-flex flex-row align-items-center my-3">'+
-                                          '<img src="'+e.pro_BANNERIMG+'" style="width: 120px; height: 80px;">'+
-                                          '<div class="d-flex flex-column justify-content-center" id="orders_product_Info" style="width: 290px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-left: 1em;"><span style="font-weight: bold;">'+e.pro_BIZNAME+'</span>'+
+                                          '<img src="'+e.pro_BANNERIMG+'" >'+
+                                          '<div class="d-flex flex-column justify-content-center" id="orders_product_Info" style=" overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-left: 1em;"><span style="font-weight: bold;">'+e.pro_BIZNAME+'</span>'+
                                             '<span style="color: black; text-decoration: none; font-weight: bold;">'+e.pro_NAME+'</span>'+
                                           '</div>'+
                                           '</div>'+
@@ -248,7 +258,8 @@
 
       insert_btn.on("click",function(){
         var title=$("#title").val();
-        var content=$("#update_content").text();
+        var content=$(".ck-content").html();
+        console.log(content);
         var bno;
         if(title==""){
           alert("제목을 입력해주세요.");
@@ -350,7 +361,7 @@
         product_update.val("false");
         product_no.val(0);
         product_has.text("선택된 상품이 없습니다.");
-        $("#product").remove();
+        $("#product_link").remove();
       })
       getProductList(search_keyword.val());
     })
@@ -411,7 +422,7 @@
       <div class="d-flex flex-column align-items-center mt-3 container-fluid">
         <input class="w-100 ps-3 py-2 mb-3 border-top border-bottom fs-3" id="title" style="border-right: 0px; border-left: 0px;"> 
         <div class="w-100 mb-3 d-flex flex-column align-items-center" id="content" style="min-height: 400px;">
-          <div contentEditable="true" id="update_content" class="w-75" style="min-height: 400px;"></div>
+          <textarea id="update_content" class="w-75" style="min-height: 400px;"></textarea>
           <input type="hidden" id="update_img" value="${content.img_path}">
 
         </div>
@@ -488,4 +499,6 @@
 </sec:authorize>
 
 </body>
+<script src="/js/ckeditor.js"></script>
+
 </html>

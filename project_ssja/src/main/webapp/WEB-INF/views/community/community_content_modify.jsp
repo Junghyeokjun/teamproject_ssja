@@ -29,6 +29,8 @@
   <script src="/js/footer.js">
 
   </script>
+  <script src="https://cdn.ckeditor.com/ckeditor5/12.0.0/classic/ckeditor.js"></script>
+
    <meta name="_csrf" content="${_csrf.token}"/>
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
   <link href="/css/footerstyle.css?after" rel="stylesheet">
@@ -50,7 +52,54 @@
     .product:hover{
       cursor: pointer;
     }
+    .product img{
+      display: inline-block;
+      width: 110px;
 
+    }
+    #product_link{
+      height: 100px;
+      display:inline-block;
+      text-decoration: none;
+    }
+    #product{
+      background-color: white;
+    }
+    #product > div:first-child{
+      border: 1px solid #ccc;
+    }
+    #product img{
+      width: 150px;
+      height: 100px;
+    }
+    #orders_product_Info{
+      width: 100%;
+      height: 100px;
+      overflow: hidden; 
+      text-overflow: ellipsis; 
+      white-space: nowrap; 
+      margin: 0 0 0 5px;
+    }
+    #pro_bizname{
+      font-weight: bold;
+    }
+    #pro_category, #pro_wish{
+      color: black;
+    }
+    #pro_name{
+      color: black; 
+      text-decoration: none; 
+      font-weight: bold;
+      word-break: keep-all;
+      height: 30px;
+      margin-top: 5px;
+      white-space:normal;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .ck-content{
+      min-height: 400px;
+    }
 
   </style>
   <script>
@@ -66,9 +115,11 @@
       let productlist=$("#productlist");
       let product_no=$("#product_no");
       let product_has=$("#product_has");
+      let content=$("#content");
 
       let update_btn=$("#update_btn");
       let img_modify_dtn=$("#img_modify_dtn");
+      let img_remove_btn=$("#img_remove_btn");
       let search_btn=$("#search_btn");
       let cancel_btn= $("#cancel_btn");
       let product_remove= $("#product_remove_btn")
@@ -92,10 +143,10 @@
                 productlist.append($("<h1>해당 상품은 존재하지 않습니다.</h1>"))
               };
               data.forEach(function(e){
-                productlist.append($('<div class="product" class="my-2" style="background-color: white;" imgPath="'+ e.pro_BANNERIMG+'" pro_no="'+e.pro_NO+'" pro_name="'+e.pro_NAME+'" >'+
+                productlist.append($('<div class="product" class="my-2" style="background-color: white;" imgPath="'+ e.pro_BANNERIMG+'" pro_no="'+e.pro_NO+'"  pro_name="'+e.pro_NAME+'" >'+
                                           '<div class="d-flex flex-row align-items-center my-3">'+
-                                          '<img src="'+e.pro_BANNERIMG+'" style="width: 120px; height: 80px;">'+
-                                          '<div class="d-flex flex-column justify-content-center" id="orders_product_Info" style="width: 290px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-left: 1em;"><span style="font-weight: bold;">'+e.pro_BIZNAME+'</span>'+
+                                          '<img src="'+e.pro_BANNERIMG+'" >'+
+                                          '<div class="d-flex flex-column justify-content-center" id="orders_product_Info" style=" overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-left: 1em;"><span style="font-weight: bold;">'+e.pro_BIZNAME+'</span>'+
                                             '<span style="color: black; text-decoration: none; font-weight: bold;">'+e.pro_NAME+'</span>'+
                                           '</div>'+
                                           '</div>'+
@@ -108,6 +159,54 @@
             }
           });
       }
+
+      function addProduct(pro_no){
+
+        $.ajax({
+        type : 'GET',
+        url : '/community/product/'+pro_no,
+        async : false,
+        dataType : 'json',  
+        success : function(result) {
+          if($("#product").attr("pno")==undefined){
+
+
+                            content.append('<div id="product_link" class="mt-2 w-75">'+
+                              '<div id="product" pno="'+result.product.pro_NO+'">'+
+                                '<div class="d-flex flex-row align-items-center" >' +
+                                  '<img src="'+result.product.pro_BANNERIMG+'" id="pro_img">' +
+                                  '<div class="d-flex flex-column justify-content-between" id="orders_product_Info" >'+
+                                    '<span class="d-flex justify-content-between ">'+
+                                      '<span class="fs-6 pt-2 ps-2 " id="pro_bizname">'+result.product.pro_BIZNAME+'</span>'+
+                                      '<span class="fs-6 pt-2 pe-2" >'+
+                                        '<span id="pro_wish" style="color: rgb(240, 101, 117);">'+result.product.pro_WISH+'</span>'+
+                                        '<img src="/images/utilities/wish_icon.png" style="width: 1.5em; height: 1.5em ;">'+
+                                      '</span>'+
+                                    '</span>'+
+                                    '<span class="fs-6 ps-2" id="pro_category">'+result.pcname+'</span>'+
+                                    '<span class="fs-5" id="pro_name">'+result.product.pro_NAME+'</span>'+
+                                  '</div>'+
+                                '</div>'+
+                              '</div>'+
+                            '</div>')
+          }else{
+            $("#product").attr("pno",result.product.pro_NO)
+            $("#pro_img").attr("src",result.product.pro_BANNERIMG);
+            $("#pro_bizname").text(result.product.pro_BIZNAME);
+            $("#pro_name").text(result.product.pro_NAME);
+            $("#pro_category").text(result.pcname);
+            $("#pro_wish").text(result.product.pro_WISH);
+          }
+        },    
+        error : function(request, status, error) {
+          alert(error);
+        }
+        })
+
+
+
+
+        }
       function readURL(input) {
         if (input.files && input.files[0]) {
           var reader = new FileReader();
@@ -136,25 +235,31 @@
 
       img_modify_dtn.on('click',function(){
         var file=document.getElementById("image_file");        
-        console.log(file.value);
-          $("#modal_close").click();
+       console.log(file.value);
+        $("#modal_close").click();
 
-          if(file.value==""){
-            return;
-          }
-          if($("#view_img").attr("src")==undefined){
-            $("#content").prepend('<img src="" alt="" id="view_img" class="w-75 d-inline-block mb-5 ">')
-            $("#update_content").css("min-height","30px");
+        if(file.value==""){
+          return;
+        }
+        if($("#view_img").attr("src")==undefined){
+          $("#content").prepend('<img src="" alt="" id="view_img" class="w-75 d-inline-block mb-5 ">')
+        }
+        readURL(file)
+        
 
-          }
-          readURL(file)
-          
-
-          img_update.val("true");
+        img_update.val("true");
       })
+
+      img_remove_btn.on('click',function(){
+        $("#view_img").remove();
+        $("#image_file").val("");
+        img_update.val("false");
+   
+      })
+
       update_btn.on("click",function(){
         var title=$("#title").val();
-        var content=$("#update_content").text();
+        var content=$(".ck-content").html();
         if(title==""){
           alert("제목을 입력해주세요.");
           return;
@@ -253,6 +358,7 @@
         product_update.val("true");
         product_no.val(this.getAttribute("pro_no"));
         product_has.text(this.getAttribute("pro_name")+"상품이 선택된 상태입니다.");
+        addProduct(this.getAttribute("pro_no"));
       })
 
       search_btn.on("click",function(){
@@ -261,12 +367,21 @@
       })
       //상품 삭제 버튼
       product_remove.on("click",function(){
-        product_update.val("true");
+        product_update.val("false");
         product_no.val(0);
         product_has.text("선택된 상품이 없습니다.");
+        $("#product_link").remove();
       })
 
       getProductList(search_keyword.val());
+
+      if(product_no.val()!=""){
+        addProduct(product_no.val());
+      }
+
+      
+      $(".ck-content").first().empty();
+      $(".ck-content").first().append($($("#prev_content").val()));
     })
 
   </script>
@@ -310,17 +425,20 @@
 
   <main>
     <input id="bno" type="hidden" value="${content.bno}">
+    <input id="prev_content" type="hidden" value="${content.bcontent}">
     <div id="main_container" class="border-start border-end container">
         
       <div class="d-flex flex-column align-items-center mt-3 container-fluid">
         <input class="w-100 ps-3 py-2 mb-3 border-top border-bottom fs-3 " id="title" style="border-right: 0px; border-left: 0px;" value="${content.btitle}" > 
-        <div class="w-100 mb-3 d-flex flex-column align-items-center" id="content" contentEditable >
+        <div class="w-100 mb-3 d-flex flex-column align-items-center" id="content" >
           <c:if test='${!content.img_path.equals("/images/board_content/temp.png")}'>
             <img src="${content.img_path}" alt="" id="view_img" class="w-75 d-inline-block mb-5 ">
           </c:if>
           <input type="hidden" id="update_img" value="${content.img_path}">
-          <div contentEditable="true" id="update_content" class="w-75" style="min-height:30px">${content.bcontent}</div>
+          <textarea id="update_content" class="w-75" style="min-height: 400px;"></textarea>
+          
         </div>
+
         <div class="ps-3 py-2 w-100 border-bottom d-flex flex-row justify-content-end">
           	<span>
               <button type="button" class="btn btn-secondary" id="cancel_btn" >취소</button>
@@ -363,6 +481,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" id="modal_close" data-bs-dismiss="modal">취소</button>
+          <button type="button" class="btn btn-danger" id="img_remove_btn">삭제</button>
           <button type="button" class="btn btn-primary" id="img_modify_dtn">업로드</button>
         </div>
       </div>
@@ -386,7 +505,7 @@
         </div>
         <div class="modal-body" >
           <input type="hidden" id="product_update" value="false">
-          <input type="hidden" id="product_no" value="null">
+          <input type="hidden" id="product_no" value="${content.prono}">
           <div id="productlist" style="min-height: 200px;">
           </div>
           <div class="d-flex justify-content-center my-2">
@@ -406,4 +525,6 @@
 </sec:authorize>
 
 </body>
+<script src="/js/ckeditor.js"></script>
+
 </html>
