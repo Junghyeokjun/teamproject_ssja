@@ -162,7 +162,7 @@ body {
 			<div class="main_whitespace p-5">
 				<h1 class="h3 text-center">내용 수정하기</h1>
 			</div>
-			<form action="${pageContext.request.contextPath}/board/modify" method="post">
+			<form class="board-form" action="${pageContext.request.contextPath}/board/modify" method="post">
 				<sec:csrfInput />
 				<div class="input-group">
 					<input type="hidden" class="form-control" name="bbcno" value="${modify_view.bbcno}">	

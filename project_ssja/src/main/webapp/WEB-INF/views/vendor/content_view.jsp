@@ -287,7 +287,7 @@ body {
 											|| (bcNum == 10 && principal.auth == 'ROLE_USER')
 											|| (bcNum == 30 && principal.auth == 'ROLE_USER') }">
 											<td colspan="2">
-												<h5 class="h5 m-1 p-1 text-center">댓글</h5>
+												<h5 class="h5 m-1 p-1 text-center">답변</h5>
 												<div class="input-group border visually-hidden">
 													<input id="inputReplyCon" type="text" class="form-control"
 														name="rcontent" data-rbno="${content_view.bno}"
@@ -297,7 +297,7 @@ body {
 										</c:when>
 										<c:otherwise>
 											<td colspan="2">
-												<h5 class="h5 m-1 p-1">댓글</h5>
+												<h5 class="h5 m-1 p-1">답변</h5>
 												<div class="input-group border">
 													<input id="inputReplyCon" type="text" class="form-control"
 														name="rcontent" data-rbno="${content_view.bno}"
@@ -518,7 +518,7 @@ body {
 								// $('#pagination').html(html2);
 
 								$('.h5.m-1.p-1').text(
-										'댓글 ' + response.pageMaker.total);
+										'답변 ' + response.pageMaker.total);
 							};
 
 							// $('.reply-modify').on('click',function(){
@@ -716,6 +716,5 @@ body {
 							});
 						});
 	</script>
-
 </body>
 </html>

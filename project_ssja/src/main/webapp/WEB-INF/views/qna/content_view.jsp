@@ -168,7 +168,7 @@ body {
 						<div class="main_whitespace p-5 my-2">
 							
 						</div>
-						<form action="${pageContext.request.contextPath}/board/modify_view" method="post">
+						<form class="board-form" action="${pageContext.request.contextPath}/board/modify_view" method="post">
 							<div class="input-group">
 								<input type="hidden" class="form-control" name="bno" value="${content_view.bno}">
 								<input type="hidden" class="form-control" name="bbcno" value="${content_view.bbcno}">
@@ -359,16 +359,6 @@ body {
 		let token = $("meta[name='_csrf']").attr("content");
 		let header = $("meta[name='_csrf_header']").attr("content");
 		
-		// 해당 jsp 파일에서만 텍스트 영역의 스크롤바를 없애고 내용에 따라 높이를 조정해 줄 예정
-		// srollHeight : 컨텐츠가 차지하는 공간 높이. 제이쿼리로는 접근을 못해서, DOM 객체로 변환 후 접근해야 함.
-		// $('#board_textarea')[0] : 해당 제이쿼리 객체에서 첫 번째 DOM 요소로 접근한다는 것을 의미.
-		if($('#board_textarea')[0].scrollHeight > $('#board_textarea').height()){
-			$('#board_textarea').css('height', 'auto');
-			$('#board_textarea').height($('#board_textarea')[0].scrollHeight);
-		}else{
-			$('#board_textarea').height($('#board_textarea').css('min-height'));
-		}
-
 		// 댓글 url
 		let replysUrl = '/api/replys';
 
@@ -376,26 +366,6 @@ body {
 		let rbno = $('#inputReplyCon').data('rbno');
 
 		console.log("inputReplyBno : " + rbno);		
-
-		// 댓글 텍스트 상자 높이 조절 함수
-		let replyTextareaHeight = function(){ 
-			$('.form-control.board-textarea').each(function() {
-				// 실제 스크롤 높이와 clientHeight 비교
-				if (this.scrollHeight > this.clientHeight) {
-					$(this).height('auto'); // 자동 높이 설정
-					$(this).height(this.scrollHeight); // 실제 스크롤 높이로 설정
-				} else {
-						$(this).height($(this).css('min-height')); // 최소 높이 값으로 설정
-				}
-			});
-        };
-        
-        /* $(document).on('keypress','.form-control.board-textarea',function(e){
-        		if (e.key === 'Enter') {
-        			replyTextareaHeight();
-        		}
-        	})
-        } */
 		
 
 		// 댓글 리스트 가져오는 함수. 재사용성을 위해서 변수에 할당함.
@@ -544,7 +514,7 @@ body {
 		// memberNum 변수 값 유무에 따라 로그인 여부를 체크하는 함수(소셜 로그인도 해당 변수에 값이 들어간 상태라고 함)
 		function isLoggedIn(){
 			let memberNum = '${principal.memberNum}';
-			console.log('isLoggedIn memberNum : ' + memberNum);
+			// console.log('isLoggedIn memberNum : ' + memberNum);
 			return memberNum != '' ? true : false;
 		}
 

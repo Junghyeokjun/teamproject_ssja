@@ -55,7 +55,37 @@ $(document).ready(function() {
 		$(this).text(formattedDate);
 	});
 
-	$('.form').on('submit', function(e){
+	// 해당 jsp 파일에서만 텍스트 영역의 스크롤바를 없애고 내용에 따라 높이를 조정해 줄 예정
+	// srollHeight : 컨텐츠가 차지하는 공간 높이. 제이쿼리로는 접근을 못해서, DOM 객체로 변환 후 접근해야 함.
+	// $('#board_textarea')[0] : 해당 제이쿼리 객체에서 첫 번째 DOM 요소로 접근한다는 것을 의미.
+	function textareaAutoHeight(textarea){
+		var $this = $(textarea);
+
+		// 최소 높이 설정
+		var minHeight = parseInt($this.css('min-height'));
+
+		if ($this[0].scrollHeight > minHeight) {
+			$this.css('height', 'auto');
+			if ($this[0].scrollHeight > $this.height()) {
+				$this.height($this[0].scrollHeight);
+			}
+		} else {
+			$this.height(minHeight);
+		}
+	}
+
+	// textarea 높이조절 기능(작성자)
+	$('#board_textarea').on('input', function() {
+		textareaAutoHeight(this);
+	});
+
+	// textarea 높이조절 기능(관리자 답변)
+	$('.board-textarea.form-control').on('input',function(){
+		textareaAutoHeight(this);
+	});
+
+
+	$('.board-form').on('submit', function(e){
 		e.preventDefault();
 
 		if($('input[name="btitle"]').val().trim() == ""){

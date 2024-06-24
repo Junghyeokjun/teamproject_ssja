@@ -188,7 +188,7 @@ body {
 			<div class="main_whitespace p-5">
 				<h1 class="h3 text-center">새로 작성하기</h1>
 			</div>
-			<form action="${pageContext.request.contextPath}/board/write" method="post">
+			<form class="board-form" action="${pageContext.request.contextPath}/board/write" method="post">
 			            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				<div class="input-group">
 					<input type="hidden" class="form-control" name="bmno" value="${principal.memberNum}">
