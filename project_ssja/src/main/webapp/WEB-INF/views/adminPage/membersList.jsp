@@ -34,16 +34,15 @@
 <link href="/css/board.css?after" rel="stylesheet">
 <link rel="stylesheet"
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
-	<style>
-    /* 추가된 CSS 스타일 */
-    #memberstable td {
-        white-space: nowrap; /* 줄 바꿈 없이 한 줄에 표시 */
-    }
-    
-    #memberstable thead {
-        font-weight: bold; /* 열 제목을 굵은 글꼴로 설정 */
-    }
-    
+<style>
+/* 추가된 CSS 스타일 */
+#memberstable td {
+	white-space: nowrap; /* 줄 바꿈 없이 한 줄에 표시 */
+}
+
+#memberstable thead {
+	font-weight: bold; /* 열 제목을 굵은 글꼴로 설정 */
+}
 </style>
 </head>
 <body>
@@ -121,6 +120,7 @@
 								<td scope="col">휴대폰번호</td>
 								<td scope="col">포인트</td>
 								<td scope="col">닉네임</td>
+								<td scope="col"></td>								
 							</tr>
 						</thead>
 						<tbody class="table-group-divider">
@@ -129,15 +129,19 @@
 									<td>${member.m_NO}</td>
 									<td>${member.m_ID}</td>
 									<td>${member.m_NAME}</td>
-									<td>${member.m_ADDRESS1}</td>									
-									<td>
-									     <fmt:formatDate value="${member.m_BIRTH}" pattern="yyyy-MM-dd"/>
-									</td>
+									<td>${member.m_ADDRESS1}</td>
+									<td><fmt:formatDate value="${member.m_BIRTH}"
+											pattern="yyyy-MM-dd" /></td>
 									<td>${member.m_GRADE}</td>
 									<td>${member.m_EMAIL}</td>
 									<td>${member.m_PHONE}</td>
 									<td>${member.m_POINT}</td>
 									<td>${member.m_NICKNAME}</td>
+									<td><button type="button" class="btn btn-outline-success"
+											id="modifyMemberBtn">수정</button>
+										<button type="button" class="btn btn-outline-danger"
+											id="deleteMemberBtn">삭제</button>
+									</td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -174,6 +178,156 @@
 			</div>
 		</div>
 	</main>
+	<script>
+		$(document).ready(
+				function() {
+					/* // 신규 쿠폰 발급 버튼 클릭 시 모달 띄우기
+					$('#newCouponBtn').click(function() {
+						$('#newCouponModal').modal('show');
+					});
+
+					// 쿠폰 발급 폼 제출 처리
+					$('#newCouponForm').submit(function(event) {
+						event.preventDefault(); // 폼 기본 동작 방지
+
+						// 폼 데이터 직렬화
+						var formData = $(this).serialize();
+
+						// AJAX를 사용하여 서버로 데이터 전송
+						$.ajax({
+							type : "POST",
+							url : $(this).attr('action'), // 폼의 action 속성 값 가져오기
+							data : formData,
+							success : function(response) {
+								// 성공적으로 처리된 경우, 원하는 동작 수행
+								console.log('쿠폰 발급 성공');
+								// 여기에 필요한 추가 동작 구현
+							},
+							error : function(xhr, status, error) {
+								// 오류 발생 시 처리
+								console.error('쿠폰 발급 오류:', error);
+								// 오류 처리 로직 추가
+							}
+						});
+
+						// 모달 닫기
+						$('#newCouponModal').modal('hide');
+					});
+
+					// 쿠폰 수정 버튼 클릭 시 모달 띄우기
+					$('body').on(
+							'click',
+							'#modifyCouponBtn',
+							function() {
+								var couponId = $(this).closest('tr').find(
+										'td:first').text(); // 쿠폰 ID 가져오기
+
+								// AJAX를 통해 쿠폰 정보 가져오기
+								$.ajax({
+									type : "GET",
+									url : "/adminPage/modifyCoupon",
+									data : {
+										c_no : couponId
+									},
+									success : function(response) {
+										// 가져온 쿠폰 정보를 모달 폼에 채워 넣기
+										$('#editCouponId').val(response.c_no);
+										$('#editCouponName').val(
+												response.c_name);
+										$('#editDiscountPercentage').val(
+												response.c_dcper);
+
+										// 날짜 포맷 변경 (yyyy-MM-dd)
+										var startDate = new Date(
+												response.c_startdate);
+										var dueDate = new Date(
+												response.c_duedate);
+										$('#editStartDate').val(
+												startDate.toISOString().slice(
+														0, 10));
+										$('#editDueDate').val(
+												dueDate.toISOString().slice(0,
+														10));
+
+										// 모달 띄우기
+										$('#editCouponModal').modal('show');
+									},
+									error : function(xhr, status, error) {
+										console.error('쿠폰 정보 가져오기 오류:', error);
+										// 오류 처리 로직 추가
+									}
+								});
+							});
+
+					$('#editCouponForm').submit(
+							function(event) {
+								event.preventDefault(); // 폼 기본 동작 방지
+
+								// 폼 데이터 직렬화
+								var formData = $(this).serialize();
+
+								// 직렬화된 데이터에서 날짜 필드를 ISO 포맷으로 변환
+								formData = formData.replace(
+										/(\d{4})-(\d{2})-(\d{2})/g, function(
+												match, year, month, day) {
+											return year
+													+ '-'
+													+ month
+													+ '-'
+													+ (parseInt(day) < 10 ? '0'
+															+ day : day);
+										});
+
+								// AJAX를 사용하여 서버로 데이터 전송
+								$.ajax({
+									type : "POST",
+									url : $(this).attr('action'),
+									data : formData,
+									success : function(response) {
+										// 성공적으로 처리된 경우, 원하는 동작 수행
+										console.log('쿠폰 수정 성공');
+										// 여기에 필요한 추가 동작 구현
+									},
+									error : function(xhr, status, error) {
+										// 오류 발생 시 처리
+										console.error('쿠폰 수정 오류:', error);
+										// 오류 처리 로직 추가
+									}
+								});
+
+								// 모달 닫기
+								$('#editCouponModal').modal('hide');
+							}); */
+
+					// 쿠폰 삭제 버튼 클릭 시
+					$('body').on(
+							'click',
+							'#deleteMemberBtn',
+							function() {
+								var couponId = $(this).closest('tr').find(
+										'td:first').text(); // 테이블에서 쿠폰 ID 가져오기
+
+								// AJAX를 이용한 쿠폰 삭제 요청
+								$.ajax({
+									type : "POST",
+									url : "/adminPage/removeMember",
+									data : JSON.stringify({
+										c_no : couponId
+									}), // JSON 형식으로 데이터 전송
+									contentType : "application/json", // 요청 데이터 타입 지정
+									success : function(response) {
+										console.log('쿠폰 삭제 성공');
+										// 삭제 성공 시 추가적인 작업 수행 (예: 테이블에서 해당 행 삭제)
+										$(this).closest('tr').remove(); // 예시로 테이블에서 삭제된 행 제거
+									},
+									error : function(xhr, status, error) {
+										console.error('쿠폰 삭제 오류', error);
+										// 오류 처리 로직 추가
+									}
+								});
+							});
+				});
+	</script>
 	<footer>
 		<div id="first_footer" class="p-3"></div>
 		<div id="second_footer"></div>

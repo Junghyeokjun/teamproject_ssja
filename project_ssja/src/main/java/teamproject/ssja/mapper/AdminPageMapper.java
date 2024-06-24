@@ -77,4 +77,8 @@ public interface AdminPageMapper {
 
 		List<QnaSearchDto> getQnaSearchList(String type, String keyword);
 
+		int deleteQna(QnaBoardDto qnaBoardDto);
+
+		List<Map<String, Object>> dailyVisitCountsList();
+
 }

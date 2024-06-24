@@ -34,5 +34,4 @@ public class MemberListServiceImpl implements MemberListService {
 
 		return adminPageMapper.getMemberSearchList(type,keyword);
 	}
-
 }

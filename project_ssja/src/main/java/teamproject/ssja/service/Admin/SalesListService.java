@@ -34,6 +34,10 @@ public class SalesListService {
 	public List<Map<String, Object>> dailyMCounts() {
 		return adminPageMapper.dailyMCountsList();
 	}
+
+	public List<Map<String, Object>> dailyVCounts() {
+		return adminPageMapper.dailyVisitCountsList();
+	}
 	
 	
 

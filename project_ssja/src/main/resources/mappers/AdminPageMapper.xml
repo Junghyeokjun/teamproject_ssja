@@ -107,11 +107,10 @@ WHERE TRUNC(m_date) =  TRUNC(sysdate)
                 <when test="#{type} != null and type.equals('m_grade')">
                 m_grade = '${keyword}'
                </when>
-               </choose> 
-                   
+               </choose>          
                
 	</select>	
-	
+		
 	<resultMap id="ProductsListMap" type="ProductDto">
 		<id property="PRO_NO" column="PRO_NO" />
 		<result property="V_NO" column="V_NO" />
@@ -297,6 +296,8 @@ WHERE TRUNC(m_date) =  TRUNC(sysdate)
         ]]>
 	</delete>
 	
+	
+	
  <resultMap id="SalesListMap" type="ProfitDto">
 		<result property="P_DATE" column="P_DATE" />
 		<result property="P_PRICE" column="P_PRICE" />
@@ -350,9 +351,7 @@ ORDER BY
     Year
 
         ]]>
-	</select>
-	
-	
+	</select>	
 	
  <select id="getSalesDataByDate"  resultType="MAP">
     <![CDATA[
@@ -361,6 +360,17 @@ FROM purchase
 WHERE TO_CHAR(pur_date, 'YY/MM/DD') = TO_CHAR(sysdate, 'YY/MM/DD')
     ]]>
 </select> 
+
+<select id="dailyVisitCountsList" resultType="MAP">    
+    <![CDATA[
+
+SELECT VISIT_DATE, VISIT_COUNT
+FROM visitor_count
+WHERE VISIT_DATE >= TRUNC(SYSDATE) - 7
+  AND VISIT_DATE < TRUNC(SYSDATE) + 1
+ORDER BY VISIT_DATE
+        ]]>
+	</select>
 
 <resultMap id="qnasListMap" type="QnaBoardDto">
 		<id property="B_NO" column="B_NO" />
@@ -426,10 +436,16 @@ SELECT * FROM board where  B_C_NO=20
                 <when test="#{type} != null and type.equals('B_CONTENT')">
                  and B_CONTENT LIKE '%${keyword}%'
                </when>
-               </choose> 
-                   
+               </choose>                  
                
 	</select>	
+	
+	<delete id="deleteQna" parameterType="QnaBoardDto">
+		 <![CDATA[
+        	delete FROM board where b_c_no=20 and B_NO = #{B_NO}
+        ]]>
+	</delete>
+	
  
 	
 	

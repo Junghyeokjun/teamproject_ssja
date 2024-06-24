@@ -37,4 +37,10 @@ public class QnaListServiceImpl implements  QnaListService{
 		return adminPageMapper.getQnaSearchList(type,keyword);
 	}
 
+	@Override
+	public int removeQna(QnaBoardDto qnaBoardDto) {
+		log.info("removeQna()..");
+		return adminPageMapper.deleteQna(qnaBoardDto);
+	}
+
 }

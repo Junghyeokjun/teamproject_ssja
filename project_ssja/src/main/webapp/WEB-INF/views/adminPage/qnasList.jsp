@@ -118,6 +118,7 @@
 								<td scope="col">제목</td>
 								<td scope="col">내용</td>
 								<td scope="col">날짜</td>
+								
 							</tr>
 						</thead>
 						<tbody class="table-group-divider">
@@ -126,8 +127,13 @@
 									<td>${qna.getM_NO()}</td>
 									<td>${qna.getB_WRITER()}</td>
 									<td>${qna.getB_TITLE()}</td>
-									<td>${qna.getB_CONTENT()}</td>
-									<td>${qna.getB_DATE()}</td>
+ 									<td>${qna.getB_CONTENT()}</td>
+									<td>${qna.getB_DATE()}
+									<button type="button" class="btn btn-outline-success"
+													id="modifyQnaBtn">수정</button>
+									<button type="button" class="btn btn-outline-danger"
+													id="deleteQnaBtn">삭제</button>									
+									</td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -163,7 +169,66 @@
 				</div>
 			</div>
 		</div>
-	</main>
+	</main>	
+	<script>
+	$(document).ready(function() {
+	    // 쿠폰 삭제 버튼 클릭 시
+	    $(document).on('click', '#deleteQnaBtn', function() {
+	        var qnabno = $(this).closest('tr').find('td:first').text(); // 테이블에서 번호 가져오기
+			console.log(qna.B_NO);
+	        // AJAX를 이용한 삭제 요청
+	        $.ajax({
+	            type: "POST",
+	            url: "/adminPage/removeQna",
+	            data: JSON.stringify({ B_NO: qnabno }),
+	            contentType: "application/json",
+	            success: function(response) {
+	                console.log('삭제 성공');
+	                // 삭제 성공 시 해당 행 삭제
+	                $(this).closest('tr').remove(); // 이 부분에서 $(this)는 적절한 요소를 가리키지 않습니다.
+	                // 실제 테이블에서 행을 삭제하는 방법은 테이블의 DOM 구조와 jQuery의 traverse 기능을 이용하여야 합니다.
+	            },
+	            error: function(xhr, status, error) {
+	                console.error('삭제 오류', error);
+	                // 오류 처리 로직 추가
+	            }
+	        });
+	    });
+	});
+
+	</script>
+<!-- 	<script>
+		$(document).ready(
+				function() {
+					// 쿠폰 삭제 버튼 클릭 시
+					$('body').on(
+							'click',
+							'#deleteQnaBtn',
+							function() {
+								var qnabno = $(this).closest('tr').find(
+										'td:first').text(); // 테이블에서 쿠폰 ID 가져오기
+
+								// AJAX를 이용한 쿠폰 삭제 요청
+								$.ajax({
+									type : "POST",
+									url : "/adminPage/removeQna",
+									data : JSON.stringify({
+										B_NO : qnabno
+									}), // JSON 형식으로 데이터 전송
+									contentType : "application/json", // 요청 데이터 타입 지정
+									success : function(response) {
+										console.log('쿠폰 삭제 성공');
+										// 삭제 성공 시 추가적인 작업 수행 (예: 테이블에서 해당 행 삭제)
+										$(this).closest('tr').remove(); // 예시로 테이블에서 삭제된 행 제거
+									},
+									error : function(xhr, status, error) {
+										console.error('쿠폰 삭제 오류', error);
+										// 오류 처리 로직 추가
+									}
+								});
+							});
+				});
+	</script> -->
 	<footer>
 		<div id="first_footer" class="p-3"></div>
 		<div id="second_footer"></div>
@@ -186,7 +251,7 @@
 						str += "<td>" + qna.m_NO + "</td>";
 						str += "<td>" + qna.b_WRITER + "</td>";
 						str += "<td>" + qna.b_TITLE + "</td>";
-						str += "<td>" + qna.b_CONTENT + "</td>";
+ 						str += "<td>" + qna.b_CONTENT + "</td>";
 						str += "<td>" + qna.b_DATE + "</td>";
 						str += "</tr>";
 						$('#qnastable > tbody').append(str);
