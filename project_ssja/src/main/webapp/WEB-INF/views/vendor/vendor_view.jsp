@@ -278,6 +278,11 @@ main, footer {
 	border-bottom: 2px solid #ccc;
 }
 
+th{
+  background-color: #706b6b !important; 
+  color: #fff !important;
+}
+
 @media screen and (min-width: 1120px){
 	#seller-download{
 	  position: fixed; 

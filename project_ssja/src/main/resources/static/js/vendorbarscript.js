@@ -144,28 +144,38 @@ $(document).ready(function () {
         }
   
         // table thead 추가
-        let thead = $('<thead>').append($('<tr>').append($('<th>').text('매출일')).append($('<th>').text('매출')));
+        let thead = $('<thead>').append($('<tr>').append($('<th>').text('매출일')).append($('<th>').text('매출')).append($('<th>').text('주문 횟수')));
         $('#sales').append(thead);
         let tbody = $('<tbody>');
         
         let sum = 0;
 
+        let orderSum = 0;
+
         for(let i=0; i< response.length; i++){
           // trTag 추가
           let trTag = $('<tr>');
-          trTag.append($('<td>').text(response[i].orderDate.substring(5,10)));
+          if(Number(response[i].orderDate.substring(5,7)) < 10){
+            trTag.append($('<td>').text(response[i].orderDate.substring(6,7) + '월 ' + response[i].orderDate.substring(8,10) + '일'));
+          }else{
+            trTag.append($('<td>').text(response[i].orderDate.substring(5,7) + '월 ' + response[i].orderDate.substring(8,10) + '일'));
+          }          
           trTag.append($('<td>').text(response[i].totalSales.toLocaleString() + ' 원'));
+          // 추후 추가한 내용
+          trTag.append($('<td>').text(response[i].purchaseCount.toLocaleString() + ' 번'));
           // table에 추가
           tbody.append(trTag);					
           sum += response[i].totalSales;
+          orderSum += response[i].purchaseCount;
         }	
 
         // 일주일 평균
         let avg = sum / 7 ;
+        let ordersAvg = orderSum / 7;
 
         // 평균은 소수 첫번째 자리까지 보여주기. 해당 처리를 하지 않으면 소수 세번째 자리까지 보여주는 상황임.(toLocalString()이 처리해줌.)
-        let tfooter = $('<tfoot>').append($('<tr>').append($('<th>').text('합계')).append($('<td>').text(sum.toLocaleString() + ' 원')))
-              .append($('<tr>').append($('<th>').text('평균')).append($('<td>').text(Number(avg.toFixed(0)).toLocaleString() + ' 원')));
+        let tfooter = $('<tfoot>').append($('<tr>').append($('<th>').text('합계')).append($('<td>').text(sum.toLocaleString() + ' 원')).append($('<td>').text(orderSum.toLocaleString() + ' 번')))
+              .append($('<tr>').append($('<th>').text('평균')).append($('<td>').text(Number(avg.toFixed(0)).toLocaleString() + ' 원')).append($('<td>').text(Number(ordersAvg.toFixed(0)).toLocaleString() + ' 원')));
         $('#sales').append(tfooter);
 
 
