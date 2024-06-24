@@ -46,7 +46,45 @@
       font-family: 'fonts', NanumSquare;
       background-color: #f7f0e8;
     }
-
+    #product_link{
+      height: 100px;
+      display:inline-block;
+      text-decoration: none;
+    }
+    #product{
+      background-color: white;
+    }
+    #product > div:first-child{
+      border: 1px solid #ccc;
+    }
+    #product img{
+      width: 150px;
+      height: 100px;
+    }
+    #orders_product_Info{
+      height: 100px;
+      overflow: hidden; 
+      text-overflow: ellipsis; 
+      white-space: nowrap; 
+      margin: 0 0 0 5px;
+    }
+    #pro_bizname{
+      font-weight: bold;
+    }
+    #pro_category, #pro_wish{
+      color: black;
+    }
+    #pro_name{
+      color: black; 
+      text-decoration: none; 
+      font-weight: bold;
+      word-break: keep-all;
+      height: 30px;
+      margin-top: 5px;
+      white-space:normal;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
  
 
 
@@ -66,7 +104,8 @@
       let product_has=$("#product_has");
 
       let insert_btn=$("#insert_btn");
-      let img_insert_dtn=$("#img_insert_dtn");
+      let img_insert_btn=$("#img_insert_btn");
+      let img_remove_btn=$("#img_remove_btn");
       let search_btn=$("#search_btn");
       let cancel_btn= $("#cancel_btn");
       let product_remove= $("#product_remove_btn")
@@ -103,6 +142,52 @@
             }
           });
       }
+      function addProduct(pro_no){
+
+          $.ajax({
+          type : 'GET',
+          url : '/community/product/'+pro_no,
+          async : false,
+          dataType : 'json',  
+          success : function(result) {
+            if($("#product").attr("pno")==undefined){
+                
+              content.append('<div id="product_link" class="mt-2 w-75">'+
+                              '<div id="product" pno="'+result.product.pro_NO+'">'+
+                                '<div class="d-flex flex-row align-items-center" >' +
+                                  '<img src="'+result.product.pro_BANNERIMG+'" id="pro_img">' +
+                                  '<div class="d-flex flex-column justify-content-between" id="orders_product_Info" >'+
+                                    '<span class="d-flex justify-content-between ">'+
+                                      '<span class="fs-6 pt-2 ps-2 " id="pro_bizname">'+result.product.pro_BIZNAME+'</span>'+
+                                      '<span class="fs-6 pt-2 pe-2" >'+
+                                        '<span id="pro_wish" style="color: rgb(240, 101, 117);">'+result.product.pro_WISH+'</span>'+
+                                        '<img src="/images/utilities/wish_icon.png" style="width: 1.5em; height: 1.5em ;">'+
+                                      '</span>'+
+                                    '</span>'+
+                                    '<span class="fs-6 ps-2" id="pro_category">'+result.pcname+'</span>'+
+                                    '<span class="fs-5" id="pro_name">'+result.product.pro_NAME+'</span>'+
+                                  '</div>'+
+                                '</div>'+
+                              '</div>'+
+                            '</div>')
+            }else{
+              $("#product").attr("pno",result.product.pro_NO)
+              $("#pro_img").attr("src",result.product.pro_BANNERIMG);
+              $("#pro_bizname").text(result.product.pro_BIZNAME);
+              $("#pro_name").text(result.product.pro_NAME);
+              $("#pro_category").text(result.pcname);
+              $("#pro_wish").text(result.product.pro_WISH);
+            }
+          },    
+          error : function(request, status, error) {
+            alert(error);
+          }
+        })
+        
+
+
+        
+      }
       function readURL(input) {
         if (input.files && input.files[0]) {
           var reader = new FileReader();
@@ -135,7 +220,7 @@
 
 
 
-      img_insert_dtn.on('click',function(){
+      img_insert_btn.on('click',function(){
         
         var file=document.getElementById("image_file");        
        console.log(file.value);
@@ -146,8 +231,6 @@
         }
         if($("#view_img").attr("src")==undefined){
           $("#content").prepend('<img src="" alt="" id="view_img" class="w-75 d-inline-block mb-5 ">')
-          $("#update_content").css("min-height","30px");
-
         }
         readURL(file)
         
@@ -155,6 +238,14 @@
         img_update.val("true");
    
       })
+
+      img_remove_btn.on('click',function(){
+        $("#view_img").remove();
+        $("#image_file").val("");
+        img_update.val("false");
+   
+      })
+
       insert_btn.on("click",function(){
         var title=$("#title").val();
         var content=$("#update_content").text();
@@ -248,6 +339,7 @@
         product_update.val("true");
         product_no.val(this.getAttribute("pro_no"));
         product_has.text(this.getAttribute("pro_name")+"상품이 선택된 상태입니다.");
+        addProduct(this.getAttribute("pro_no"));
       })
       search_btn.on("click",function(){
         productlist.empty();
@@ -255,9 +347,10 @@
       })
       //상품 삭제 버튼
       product_remove.on("click",function(){
-        product_update.val("true");
+        product_update.val("false");
         product_no.val(0);
         product_has.text("선택된 상품이 없습니다.");
+        $("#product").remove();
       })
       getProductList(search_keyword.val());
     })
@@ -273,7 +366,7 @@
 
         <button type="toggle-button" class="top_btn" id="top_btn"></button>
         <a id="logo_toHome" href=""><img id="logo_img" src="/images/utilities/logoSSJA.png"></a>
-        <form action="http://www.naver.com" id=searchForm method="get">
+        <form action="http://www.naver.com" id="searchForm" method="get">
          
         </form>
         <button id="search_icon"></button>
@@ -317,7 +410,7 @@
         
       <div class="d-flex flex-column align-items-center mt-3 container-fluid">
         <input class="w-100 ps-3 py-2 mb-3 border-top border-bottom fs-3" id="title" style="border-right: 0px; border-left: 0px;"> 
-        <div class="w-100 mb-3 d-flex flex-column align-items-center" id="content" style="min-height: 400px;" contentEditable >
+        <div class="w-100 mb-3 d-flex flex-column align-items-center" id="content" style="min-height: 400px;">
           <div contentEditable="true" id="update_content" class="w-75" style="min-height: 400px;"></div>
           <input type="hidden" id="update_img" value="${content.img_path}">
 
@@ -358,7 +451,8 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" id="modal_close" data-bs-dismiss="modal">취소</button>
-          <button type="button" class="btn btn-primary" id="img_insert_dtn">업로드</button>
+          <button type="button" class="btn btn-danger" id="img_remove_btn">삭제</button>
+          <button type="button" class="btn btn-primary" id="img_insert_btn">업로드</button>
         </div>
       </div>
     </div>
