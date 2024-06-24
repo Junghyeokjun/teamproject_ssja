@@ -23,6 +23,7 @@ import teamproject.ssja.dto.community.CommunityBoardDto;
 import teamproject.ssja.dto.login.CustomPrincipal;
 import teamproject.ssja.mapper.BoardMapper;
 import teamproject.ssja.mapper.MembersMapper;
+import teamproject.ssja.mapper.ProductCategoryMapper;
 import teamproject.ssja.mapper.ProductDetailMapper;
 import teamproject.ssja.mapper.ProductListMapper;
 import teamproject.ssja.mapper.ReplyMapper;
@@ -46,9 +47,13 @@ public class CommunityServiceImpl implements CommunityService {
 	@Autowired
 	MembersMapper membersMapper;
 	
+	@Autowired
+	ProductCategoryMapper categoryMapper;
+	
 	//배포시에 경로에 따라 수정
-	final String absolutePath="/home/ubuntu/images";
-	final String path = "/images/board_content";
+//	final String absolutePath="/home/ubuntu/images";
+    final String absolutePath="src/main/resources/static/images/board_content";	
+    final String path = "/images/board_content";
 	
 	@Override
 	public List<CommunityBoardDto> getPost(int pageNum, int amount) {
@@ -309,6 +314,11 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public List<BoardDto> getReviews(long mno) {
 		return boardMapper.selectReview(mno);
+	}
+
+	@Override
+	public String getProductCategory(long pcno) {
+		return categoryMapper.selectPC(pcno);
 	}
 
 

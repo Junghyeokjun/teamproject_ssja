@@ -235,9 +235,13 @@ public class CommunityController {
 	}
 	//게시글 연관상품 획득 메서드
 	@GetMapping("/product/{proNo}")
-	public ProductDto product(@PathVariable("proNo") long proNo){
-
-		return communityService.getRelatedProduct(proNo);
+	public Map<String, Object> product(@PathVariable("proNo") long proNo){
+		Map<String, Object> productData= new HashMap<>();
+		ProductDto product=communityService.getRelatedProduct(proNo) ;
+		productData.put("product",product);
+		productData.put("pcname",communityService.getProductCategory(product.getP_C_NO()));
+		
+		return productData;
 	}
 	
 	//게시글 상품리스트 획득 메서드

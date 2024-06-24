@@ -78,6 +78,9 @@ public interface CommunityService {
 	//특정유저의 리뷰를 얻어오는 메서드
 	List<BoardDto> getReviews(long mno);
 	
+	//상품의 카테고리를 얻어오는 메서드
+	String getProductCategory(long pcno);
+	
 	
 	
 }
