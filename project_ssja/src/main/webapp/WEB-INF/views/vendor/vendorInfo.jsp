@@ -410,7 +410,7 @@ $.ajax({
 	        let scrollPosition = $(window).height() + $(window).scrollTop();
 
 	       
-	        if (scrollPosition >= scrollHeight-200) {
+	        if (scrollPosition >= scrollHeight-400) {
 	            pageNum++; 
 	            getVendorItems(bizname, pageNum,start, end, order); 
 	        }
