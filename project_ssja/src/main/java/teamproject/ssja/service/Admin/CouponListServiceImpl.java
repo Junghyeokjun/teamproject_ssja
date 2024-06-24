@@ -31,15 +31,8 @@ public class CouponListServiceImpl implements CouponListService {
 	public int addCoupon(CouponDTO couponDto) {
 		log.info("addCoupon()..");
 		return adminPageMapper.insertCoupon(couponDto);
-		
 	}
 
-//	@Override
-//	public int modifyCoupon(CouponDTO couponDto) {
-//		log.info("modifyCoupon()..");
-//		return adminPageMapper.updateCoupon(couponDto);
-//		
-//	}
     @Override
 	public CouponDTO getCouponById(int couponId) {
         return adminPageMapper.read(couponId); // read 쿼리 실행

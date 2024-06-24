@@ -15,5 +15,6 @@ public interface QnaListService {
 	List<QnaBoardDto> getQnaListWithPaging(Criteria cri);
 	//검색리스트
 	List<QnaSearchDto> getQnaSearchList(String type, String keyword);
+	int removeQna(QnaBoardDto qnaBoardDto);
 
 }
