@@ -3,6 +3,8 @@ package teamproject.ssja.mapper;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 
+import java.sql.Date;
+
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +66,7 @@ class MembersMapperTest {
 	@Disabled
 	@Test
 	void insertMnameTest() {
-		MembersDto member= new MembersDto(0,"testUser1","testUser1","testUser1","수원시","팔달구","21231","990408",null,"user@gmail.com","01023451234",0,null,"tam");
+		MembersDto member= new MembersDto(0,"testUser1","testUser1","testUser1","수원시","팔달구","21231",Date.valueOf("990408"),null,"user@gmail.com","01023451234",0,null,"tam");
 		int result=membersMapper.insertMember(member);
 		log.info(result+"");
 	}

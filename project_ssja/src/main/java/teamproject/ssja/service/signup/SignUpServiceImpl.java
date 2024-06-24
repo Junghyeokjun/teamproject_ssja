@@ -97,13 +97,13 @@ public class SignUpServiceImpl implements SignUpService {
 		
 	}
 
-	 @Override
-	   public List<String> getTerms() {
-	      List<String> termsList= new ArrayList<String>();
-	      
-	      termsList.add("해당 약관은 필수 약관입니다.");
-	      termsList.add("해당 약관은 선택 약관입니다.");
-	      
+//	 @Override
+//	   public List<String> getTerms() {
+//	      List<String> termsList= new ArrayList<String>();
+//	      
+//	      termsList.add("해당 약관은 필수 약관입니다.");
+//	      termsList.add("해당 약관은 선택 약관입니다.");
+//	      
 	      //추후에 파일위치에 따라 경로 수정
 	      //현재는 상대경로로 프로젝트 디렉터리를 루트로 하여 참조
 //	      File file=new File("src/main/resources/static/terms.dat");
@@ -140,8 +140,8 @@ public class SignUpServiceImpl implements SignUpService {
 //	      }
 	//   
 
-	      return termsList;
-	   }
+//	      return termsList;
+//	   }
 	 
 
 	@Override

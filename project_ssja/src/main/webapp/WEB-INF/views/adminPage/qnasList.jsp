@@ -37,11 +37,11 @@
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
 	<style>
     /* 추가된 CSS 스타일 */
-    #productstable td {
+    #qnastable td {
         white-space: nowrap; /* 줄 바꿈 없이 한 줄에 표시 */
     }
     
-    #productstable thead {
+    #qnastable thead {
         font-weight: bold; /* 열 제목을 굵은 글꼴로 설정 */
     }
     
@@ -95,41 +95,39 @@
 			class="d-flex flex-row align-items-center justify-content-center">
 			<div id="content_dv">
 				<div id="AdminPage_content_name">
-					<h2 id="AdminPageTitle">상품 목록</h2>
-				</div>	
-				<br>						
-				<form name="products-search-form" autocomplete="off">
+					<h2 id="AdminPageTitle">문의 목록</h2>
+				</div>
+				<br>
+			  <form name="qnas-search-form" autocomplete="off">
 					<select name="type">
 						<option selected value="">선택</option>
-						<option value="PRO_NO">상품번호</option>
-						<option value="PRO_BIZNAME">사업자이름</option>
-					</select> <input type="text" class="form-control border w-50" name="keyword" value=""> <input
-						type="button" onclick="productsSearchList()"
+						<option value="M_NO">회원번호</option>
+						<option value="B_TITLE">제목</option>
+						<option value="B_CONTENT">내용</option>						
+					</select> <input type="text" name="keyword" value=""> <input
+						type="button" onclick="qnasSearchList()"
 						class="btn btn-outline-dark mr-2" value="검색">
-				</form>
+				</form>  
 				<div class="table-responsive">
-					<table class="table" id="productstable" style="text-align: center;">
-						<thead class="table">
+					<table class="table" id="qnastable"
+						style="text-align: center;">
+						<thead>
 							<tr>
-								<td scope="col">상품번호</td>
-								<td scope="col">상품이름</td>
-								<td scope="col">가격</td>
-								<td scope="col">수량</td>
-								<td scope="col">위시 수</td>
-								<td scope="col">판매 수</td>
-								<td scope="col">사업자이름</td>
+								<td scope="col">회원번호</td>
+								<td scope="col">작성자</td>
+								<td scope="col">제목</td>
+								<td scope="col">내용</td>
+								<td scope="col">날짜</td>
 							</tr>
 						</thead>
 						<tbody class="table-group-divider">
-							<c:forEach var="product" items="${products}">
+							<c:forEach var="qna" items="${qnas}">
 								<tr>
-									<td>${product.getPRO_NO()}</td>
-									<td>${product.getPRO_NAME()}</td>
-									<td>${product.getPRO_PRICE()}</td>
-									<td>${product.getPRO_QUANTITY()}</td>
-									<td>${product.getPRO_WISH()}</td>
-									<td>${product.getPRO_SELLCOUNT()}</td>
-									<td>${product.getPRO_BIZNAME()}</td>
+									<td>${qna.getM_NO()}</td>
+									<td>${qna.getB_WRITER()}</td>
+									<td>${qna.getB_TITLE()}</td>
+									<td>${qna.getB_CONTENT()}</td>
+									<td>${qna.getB_DATE()}</td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -137,27 +135,27 @@
 					<div id="paging_dv">
 						<nav aria-label="Page navigation example">
 							<ul class="pagination ch-col justify-content-center">
-								<c:if test="${productpageMaker.prev}">
+								<c:if test="${qnapageMaker.prev}">
 									<li class="page-item"><a class="page-link ch-col"
-										href="${pageContext.request.contextPath}/adminPage/productsList${productpageMaker.makeQuery(productpageMaker.startPage-1)}"><</a></li>
+										href="${pageContext.request.contextPath}/adminPage/qnasList${qnapageMaker.makeQuery(qnapageMaker.startPage-1)}"><</a></li>
 								</c:if>
-								<c:forEach var="idx" begin="${productpageMaker.startPage}"
-									end="${productpageMaker.endPage}">
+								<c:forEach var="idx" begin="${qnapageMaker.startPage}"
+									end="${qnapageMaker.endPage}">
 									<c:choose>
-										<c:when test="${productpageMaker.criteria.pageNum == idx}">
+										<c:when test="${qnapageMaker.criteria.pageNum == idx}">
 											<li class="page-item active"><a class="page-link"
-												href="${pageContext.request.contextPath}/adminPage/productsList${productpageMaker.makeQuery(idx)}">${idx}</a></li>
+												href="${pageContext.request.contextPath}/adminPage/qnasList${qnapageMaker.makeQuery(idx)}">${idx}</a></li>
 										</c:when>
 										<c:otherwise>
 											<li class="page-item"><a class="page-link"
-												href="${pageContext.request.contextPath}/adminPage/productsList${productpageMaker.makeQuery(idx)}">${idx}</a></li>
+												href="${pageContext.request.contextPath}/adminPage/qnasList${qnapageMaker.makeQuery(idx)}">${idx}</a></li>
 										</c:otherwise>
 									</c:choose>
 								</c:forEach>
 								<c:if
-									test="${productpageMaker.next && productpageMaker.endPage > 0}">
+									test="${qnapageMaker.next && qnapageMaker.endPage > 0}">
 									<li class="page-item"><a class="page-link ch-col"
-										href="${pageContext.request.contextPath}/adminPage/productsList${productpageMaker.makeQuery(productpageMaker.endPage+1)}">></a></li>
+										href="${pageContext.request.contextPath}/adminPage/qnasList${qnapageMaker.makeQuery(qnapageMaker.endPage+1)}">></a></li>
 								</c:if>
 							</ul>
 						</nav>
@@ -172,33 +170,30 @@
 		<div id="third_footer"></div>
 	</footer>
 </body>
-<script>
-	function productsSearchList() {
+ <script>
+	function qnasSearchList() {
 		$.ajax({
 			type : 'GET',
-			url : "/adminPage/productsSearchList",
-			data : $("form[name=products-search-form]").serialize(),
+			url : "/adminPage/qnasSearchList",
+			data : $("form[name=qnas-search-form]").serialize(),
 			success : function(result) {
 				console.log(result);
-				$('#productstable > tbody').empty();
+				$('#qnastable > tbody').empty();
 				if (result.length >= 1) {
 					$("#paging_dv").empty();
-					result.forEach(function(product) {
+					result.forEach(function(qna) {
 						var str = '<tr>';
-						str += "<td>" + product.pro_NO + "</td>";
-						str += "<td>" + product.pro_NAME + "</td>";
-						str += "<td>" + product.pro_PRICE + "</td>";
-						str += "<td>" + product.pro_QUANTITY + "</td>";
-						str += "<td>" + product.pro_WISH + "</td>";
-						str += "<td>" + product.pro_SELLCOUNT + "</td>";
-						str += "<td>" + product.pro_BIZNAME + "</td>";
+						str += "<td>" + qna.m_NO + "</td>";
+						str += "<td>" + qna.b_WRITER + "</td>";
+						str += "<td>" + qna.b_TITLE + "</td>";
+						str += "<td>" + qna.b_CONTENT + "</td>";
+						str += "<td>" + qna.b_DATE + "</td>";
 						str += "</tr>";
-						$('#productstable > tbody').append(str);
+						$('#qnastable > tbody').append(str);
 					});
 				}
 			}
 		});
 	}
-</script>
-
+</script> 
 </html>

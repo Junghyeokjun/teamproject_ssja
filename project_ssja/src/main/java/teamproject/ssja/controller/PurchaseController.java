@@ -41,8 +41,6 @@ public class PurchaseController {
 //		return mv;
 //	}
 	@RequestMapping("")
-	public ModelAndView purchase(ModelAndView mv ,int quantity,long productNo ) {
-		long mno = InfoProvider.getM_NO();
 	public ModelAndView purchase(ModelAndView mv ,int quantity,long productNo, @AuthenticationPrincipal CustomPrincipal user) {
 		long mno= InfoProvider.getM_NO();
 		List<ProductDto> dtos=new ArrayList<>();
