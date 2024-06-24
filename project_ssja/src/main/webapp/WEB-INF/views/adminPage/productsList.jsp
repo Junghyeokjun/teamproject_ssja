@@ -11,6 +11,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SSJA</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -20,10 +22,8 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 	crossorigin="anonymous">
-	
 </script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <meta name="_csrf" content="${_csrf.token}" />
@@ -35,16 +35,15 @@
 <link href="/css/board.css?after" rel="stylesheet">
 <link rel="stylesheet"
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
-	<style>
-    /* 추가된 CSS 스타일 */
-    #productstable td {
-        white-space: nowrap; /* 줄 바꿈 없이 한 줄에 표시 */
-    }
-    
-    #productstable thead {
-        font-weight: bold; /* 열 제목을 굵은 글꼴로 설정 */
-    }
-    
+<style>
+/* 추가된 CSS 스타일 */
+#productstable td {
+	white-space: nowrap; /* 줄 바꿈 없이 한 줄에 표시 */
+}
+
+#productstable thead {
+	font-weight: bold; /* 열 제목을 굵은 글꼴로 설정 */
+}
 </style>
 </head>
 <body>
@@ -96,14 +95,14 @@
 			<div id="content_dv">
 				<div id="AdminPage_content_name">
 					<h2 id="AdminPageTitle">상품 목록</h2>
-				</div>	
-				<br>						
+				</div>
+				<br>
 				<form name="products-search-form" autocomplete="off">
 					<select name="type">
 						<option selected value="">선택</option>
 						<option value="PRO_NO">상품번호</option>
 						<option value="PRO_BIZNAME">사업자이름</option>
-					</select> <input type="text"  name="keyword" value=""> <input
+					</select> <input type="text" name="keyword" value=""> <input
 						type="button" onclick="productsSearchList()"
 						class="btn btn-outline-dark mr-2" value="검색">
 				</form>
@@ -130,6 +129,12 @@
 									<td>${product.getPRO_WISH()}</td>
 									<td>${product.getPRO_SELLCOUNT()}</td>
 									<td>${product.getPRO_BIZNAME()}</td>
+									<td>
+										<button type="button" class="btn btn-outline-success"
+											id="modifyProductBtn">수정</button>
+										<button type="button" class="btn btn-outline-danger"
+											id="deleteProductBtn">삭제</button>
+									</td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -165,6 +170,111 @@
 				</div>
 			</div>
 		</div>
+		<!-- 모달 창 -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">상품 수정</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- 상품 정보 수정 폼 -->
+                <form id="editForm">
+                    <div class="form-group">
+                        <label for="editProductName">상품 이름</label>
+                        <input type="text" class="form-control" id="editProductName" name="editProductName">
+                    </div>
+                    <div class="form-group">
+                        <label for="editProductPrice">가격</label>
+                        <input type="number" class="form-control" id="editProductPrice" name="editProductPrice">
+                    </div>
+                    <div class="form-group">
+                        <label for="editProductQuantity">수량</label>
+                        <input type="number" class="form-control" id="editProductQuantity" name="editProductQuantity">
+                    </div>
+                    <div class="form-group">
+                        <label for="editBusinessName">사업자 이름</label>
+                        <input type="text" class="form-control" id="editBusinessName" name="editBusinessName">
+                    </div>
+                    <input type="hidden" id="editProductId" name="editProductId">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                <button type="button" class="btn btn-primary" onclick="saveChanges()">저장</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$(document).ready(function() {
+    // 수정 버튼 클릭 시
+    $('#productstable').on('click', '#modifyProductBtn', function() {
+        // 선택한 행에서 상품 정보를 가져와 모달에 채움
+        var row = $(this).closest('tr');
+        var productId = row.find('td:eq(0)').text(); // 상품 번호
+        var productName = row.find('td:eq(1)').text(); // 상품 이름
+        var productPrice = row.find('td:eq(2)').text(); // 가격
+        var productQuantity = row.find('td:eq(3)').text(); // 수량
+        var businessName = row.find('td:eq(6)').text(); // 사업자 이름
+
+        // 모달에 값 채우기
+        $('#editProductId').val(productId);
+        $('#editProductName').val(productName);
+        $('#editProductPrice').val(productPrice);
+        $('#editProductQuantity').val(productQuantity);
+        $('#editBusinessName').val(businessName);
+
+        // 모달 띄우기
+        $('#editModal').modal('show');
+    });
+
+    // 저장 버튼 클릭 시
+    $('#editModal').on('click', '#saveChangesBtn', function() {
+        // 수정된 상품 정보를 서버로 전송하는 함수 호출
+        saveChanges();
+    });
+});
+
+function saveChanges() {
+    // 수정된 정보를 가져와 서버로 전송하는 로직 구현
+    var editedProductId = $('#editProductId').val();
+    var editedProductName = $('#editProductName').val();
+    var editedProductPrice = $('#editProductPrice').val();
+    var editedProductQuantity = $('#editProductQuantity').val();
+    var editedBusinessName = $('#editBusinessName').val();
+
+    // AJAX를 사용하여 서버로 데이터 전송
+    $.ajax({
+        type: 'POST',
+        url: '/adminPage/modifyProducts', // 수정된 정보를 처리할 서버의 URL
+        contentType: 'application/json', // 요청의 데이터 타입 지정
+        data: JSON.stringify({
+            productId: editedProductId,
+            productName: editedProductName,
+            productPrice: editedProductPrice,
+            productQuantity: editedProductQuantity,
+            businessName: editedBusinessName
+        }),
+        success: function(response) {
+            // 서버로부터의 응답 처리
+            console.log('수정이 성공적으로 처리되었습니다.');
+            $('#editModal').modal('hide'); // 모달 닫기
+            location.reload(); // 현재 페이지 새로고침
+        },
+        error: function(xhr, status, error) {
+            // 오류 처리
+            console.error('수정 중 오류가 발생했습니다: ' + error);
+        }
+    });
+}
+
+
+
+</script>
 	</main>
 	<footer>
 		<div id="first_footer" class="p-3"></div>

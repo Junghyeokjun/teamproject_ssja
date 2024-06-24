@@ -35,4 +35,15 @@ public class ProductListServiceImpl implements ProductListService {
 
 		return adminPageMapper.getProductsSearchList(type,keyword);
 	}
+
+	@Override
+	public ProductDto getProductsId(int productsId) {
+        return adminPageMapper.readProducts(productsId); 
+
+	}
+
+	@Override
+	public void modifyProducts(ProductDto productDto) {
+    	adminPageMapper.updateProducts(productDto); 		
+	}
 }
