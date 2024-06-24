@@ -201,8 +201,8 @@ public class VendorServiceImpl implements VendorService{
 
 
 	@Override
-	public List<VendorSalesDto> getWeeklySalesData() {
+	public List<VendorSalesDto> getWeeklySalesData(long vno) {
 		// TODO Auto-generated method stub
-		return vendorMapper.selectVendorSalesInWeek();
+		return vendorMapper.selectVendorSalesInWeek(vno);
 	}
 }

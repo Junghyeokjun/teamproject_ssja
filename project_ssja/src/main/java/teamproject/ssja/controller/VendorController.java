@@ -170,6 +170,7 @@ public class VendorController {
 	public String addOne(@AuthenticationPrincipal CustomPrincipal principal, BoardDto boardDto) {
 		log.info("addOne()..");		
 		// 관리자 영역. 추후 수정이 필요하거나, 수정하지 않아도 됨.
+		boardService.addBoard(boardDto);
 		return "redirect:/vendor/question/" + boardDto.getBbcno();
 	}
 

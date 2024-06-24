@@ -48,7 +48,6 @@
       background-color: #f7f0e8;
     }
 
-
     /* number타입의 input 화살표제거 */
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
@@ -534,7 +533,7 @@
               <span>주소</span>
             </td>
             <td>
-              <input type="text" size="35" class="mb-1 form-control" id="address" name="M_ADDRESS1">
+              <input type="text" size="35" class="mb-1 form-control" id="address" name="M_ADDRESS1" readonly="readonly">
             </td>
           </tr>
           
@@ -546,7 +545,7 @@
               <input type="text" size="23" class=" mb-1 form-control w-50 d-inline" id="detail_address" name="M_ADDRESS2"  >
               <input type="text" size="6" class="mb-1 d-none" id="extra_address" name="extra_address" >
               <input type="text" size="10" class="mb-1 d-none" id="post" name="M_ZIPCODE">
-              <input type="button" value="주소 찾기" class="mb-1 ms-3 btn btn-primary" id="post_search_btn">
+              <input type="button" value="주소 찾기" class="mb-1 ms-3 btn btn-secondary" id="post_search_btn">
             </td>
           </tr>
         </table>
@@ -559,9 +558,9 @@
         	<div class="product my-3" style="height:150px;">
             <input class="product_no" type="hidden" value="${product.PRO_NO}">
 	          <img src="${product.PRO_BANNERIMG}" alt="" class="me-2" style="width: 150px;height: 150px; float: left;">
-	          <div class="m-2 pt-3 fs-4"><span class="product_name">${product.PRO_NAME}</span></div>
+	          <div class="m-2 pt-3 fs-5"><span class="product_name">${product.PRO_NAME}</span></div>
 	          <!-- <div class="m-2 fs-4"><span>옵션 :</span><span id="product_opt">네이비블루</span></div> -->
-	          <div class="m-2 fs-4"><span>금액:</span><span class="product_price">${product.PRO_PRICE}</span>원 <span>수량:</span> <span class="product_pcs">${product.PRO_QUANTITY}</span>개</div>
+	          <div class="m-2 fs-5"><span>금액:</span><span class="product_price">${product.PRO_PRICE}</span>원 <br><span>수량:</span> <span class="product_pcs">${product.PRO_QUANTITY}</span>개</div>
             <div class="btn-group" role="group" aria-label="Basic example">
               <button type="button" class="btn btn-primary pcs_plus">1개추가</button>
               <button type="button" class="btn btn-secondary pcs_minus">1개감소</button>

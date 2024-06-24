@@ -49,10 +49,10 @@ public interface VendorService {
 	
 	public long getProductCounts(Criteria criteria);
 	
+	// 판매자 홈에 쓰일, 해당 판매자의 최근 일주일 동안의 매출 내역 가져오기
+	public List<VendorSalesDto> getWeeklySalesData(long vno);
 	//회원의 판매자 조회
 	TotalVendorInfoDto getVendorTotalInfo(String bizname, int pageNum);
 	List<ProductDto> getVendorItemList(VendorItemCondition condition);
-	// 판매자 홈에 쓰일, 최근 일주일 동안의 매출 내역 가져오기
-	public List<VendorSalesDto> getWeeklySalesData();
 }
 

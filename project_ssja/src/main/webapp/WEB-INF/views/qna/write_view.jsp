@@ -27,9 +27,9 @@
 </script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="/js/barscript.js">
+<!-- <script src="/js/barscript.js">
 	
-</script>
+</script> -->
 <script src="/js/footer.js">
 	
 </script>
@@ -130,6 +130,7 @@ body {
 	    	});
 		</script>
   	</sec:authorize>
+<<<<<<< HEAD
 <c:choose>	
 	<c:when test="${principal.auth != 'ROLE_VENDOR'}">
 	  <header>
@@ -181,6 +182,58 @@ body {
   </c:when>
 </c:choose>
 
+=======
+		<c:choose>	
+			<c:when test="${principal.auth != 'ROLE_VENDOR'}">
+			  <header>
+			    <div id="title_bar" class="fixed-top">
+			      <div class="py-2 px-1" id="top-bar">
+			        <button type="toggle-button" class="top_btn" id="top_btn"></button>
+			        <a id="logo_toHome" href=""><img id="logo_img" src="/images/utilities/logoSSJA.png"></a>
+			        <form action="http://www.naver.com" id=searchForm method="get">
+			
+			        </form>
+			        <button id="search_icon"></button>
+			        <a id="cart_link"><img id="cart_img"></a>
+			        <a id="user_link"><img id="login_img"></a>
+			      </div>
+			
+			    </div>
+			    <nav id="total_bar">
+			      <div id="home_user_bar"> </div>
+			      <div id="sub_bar"></div>
+			    </nav>
+			  </header>
+		  </c:when>
+		  <c:when test="${principal.auth == 'ROLE_VENDOR'}">
+		  	<header class="fixed-top">
+				<div id="title_bar" >
+					<div class="py-2 px-1 d-flex justify-content-between" id="top-bar">
+						<div class="d-flex align-items-center">
+							<button type="toggle-button" class="top_btn"></button>
+							<a id="logo_toHome" href=""><img id="logo_img" src="/images/utilities/logoSSJA.png"></a>
+						</div>
+						<div class="mx-5 my-2 d-flex ">
+							<h1 class="h1 vendorTitle" >판매자 :&nbsp;</h1>
+		        			<h1 class="h1 vendorNames"> 
+		        				&lt;
+		        				<sec:authorize access="isAuthenticated()">
+		        					<sec:authentication property="principal.userInfo" var="vendorMember"/>
+		        				</sec:authorize>
+		        				<input type="hidden" id="vendorData" value="${vendorMember.m_No}">
+		        				${vendorMember.m_Name}
+		        				&gt;</h1>      			
+		        		</div>
+		        		<a id="cart_link" hidden="hidden"></a>
+						<a id="user_link"><img id="login_img"></a>
+					</div>
+				</div>
+				<nav id="total_bar">
+				</nav>
+			</header>
+		  </c:when>
+		</c:choose>
+>>>>>>> origin/dev_ss
 	<div id="side_bar">
 		<div id="side_links" class="w-100"></div>
 	</div>
@@ -199,7 +252,7 @@ body {
 							<input type="hidden" class="form-control" name="bwriter" value="${principal.userInfo.m_Name}">
 						</c:when>
 						<c:otherwise>
-							<input type="hidden" class="form-control" name="bwriter" value="${principal.oAuth2Response.getNickName()}">
+							<input type="hidden" class="form-control" name="bwriter" value="${principal.getOAuth2Response().getNickName()}">
 						</c:otherwise>
 					</c:choose>	
 				</div>

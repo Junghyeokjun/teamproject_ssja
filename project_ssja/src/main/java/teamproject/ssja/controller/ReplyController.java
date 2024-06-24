@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
+import teamproject.ssja.dto.ReplysDto;
 import teamproject.ssja.dto.login.CustomPrincipal;
 import teamproject.ssja.dto.userinfo.ReviewForm;
 import teamproject.ssja.page.Criteria;
@@ -82,5 +83,38 @@ public class ReplyController {
 		}catch(Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("에러 발 생");
 		}
+	}
+	
+	@PostMapping("/add") 
+	public ResponseEntity<String> addReply(ReplysDto replysDto){
+		try {		
+			replyService.addReply(replysDto);			
+			return ResponseEntity.ok("add reply success");			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("답변 입력에 에러가 발생");
+		} 		
+	}
+	
+	@PostMapping("/modify") 
+	public ResponseEntity<String> modifyReply(ReplysDto replysDto){
+		try {		
+			replyService.modifyReply(replysDto);			
+			return ResponseEntity.ok("modify reply success");			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("답변 수정에 에러가 발생");
+		} 		
+	}
+	
+	@PostMapping("/delete") 
+	public ResponseEntity<String> deleteReply(ReplysDto replysDto){
+		try {		
+			replyService.removeReply(replysDto);			
+			return ResponseEntity.ok("remove reply success");			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("답변 삭제에 에러가 발생");
+		} 		
 	}
 }

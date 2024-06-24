@@ -34,10 +34,12 @@
 			JOIN VENDOR V ON PR.V_NO = V.V_NO
 			WHERE P.PUR_DATE >= TRUNC(SYSDATE) - 7
 			  AND P.PUR_DATE < TRUNC(SYSDATE)
+              AND V.V_NO=#{vno} 
 			GROUP BY TRUNC(P.PUR_DATE)
 			ORDER BY TRUNC(P.PUR_DATE)
 	 	]]>
  	</select>
+ 	
  	<!-- 페이징은 기본으로 깔고 가기 -->
 	<select id="selectVendorProducts" resultMap="ProductsListMap">
 		 <![CDATA[

@@ -7,8 +7,7 @@ a{
 	border : 0;
 }
 
-#board_textarea{
-	overflow : hidden;
+#board_textarea, .form-control.board-textarea{
 	width : 100%;
 	min-height: 30em; 
     border: none;
@@ -114,12 +113,6 @@ a{
 .btn-primary.btn-format:hover, .btn-primary.btn-format:focus{
 	background-color: cornflowerblue;
 	border-color: cornflowerblue;
-}
-
-.rcontent.form-control{
-	resize: none; 
-	overflow: hidden;
-	height: auto;
 }
 
 .main_whitespace{

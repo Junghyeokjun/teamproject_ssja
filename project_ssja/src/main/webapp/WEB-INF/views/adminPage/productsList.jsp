@@ -90,12 +90,12 @@ body {
 		<div id="main_container" style="margin: 0 auto;">
 			<br>
 			<h2>상품목록</h2>
-			<form name="products-search-form" autocomplete="off">
-					<select name="type">
+			<form class="w-50 input-group" name="products-search-form" autocomplete="off">
+					<select class="form-select border" name="type">
 						<option selected value="">선택</option>
 						<option value="PRO_NO">상품번호</option>
 						<option value="PRO_BIZNAME">사업자이름</option>
-					</select> <input type="text" name="keyword" value=""> <input
+					</select> <input type="text" class="form-control border w-50" name="keyword" value=""> <input
 						type="button" onclick="productsSearchList()"
 						class="btn btn-outline-dark mr-2" value="검색">
 				</form>

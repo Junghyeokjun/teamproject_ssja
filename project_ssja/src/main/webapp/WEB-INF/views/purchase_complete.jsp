@@ -45,8 +45,7 @@
       background-color: #f7f0e8;
     }
 
-
-  </style>
+  </style> 	
   <script>
 
   </script>

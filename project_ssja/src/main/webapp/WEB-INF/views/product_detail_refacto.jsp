@@ -74,12 +74,21 @@ table {
 	border-color: gray;
 }
 
-.nav-link-custom:hover {
-	color: yellow;
+.nav-link.nav-link-custom:hover {
+	color: #ff9900;
 }
 
 .nav-link.nav-link-custom.active {
-	
+	color: white;
+	background-color: black;
+}
+
+.nav-link.nav-link-custom.active:hover {
+	color: #ff9900;
+}
+
+.nav-link.nav-link-custom{
+	color: black;
 }
 
 .input-group-text {
@@ -397,7 +406,7 @@ color:black;
 							<div class="border rounded-2 px-3 py-2 bg-white">
 								<ul class="nav nav-pills nav-justified mb-3" id="ex1"
 									role="tablist">
-									<li class="nav-item d-flex " role="presentation"><a
+									<li class="nav-item d-flex custom-nav" role="presentation"><a
 										class="nav-link nav-link-custom d-flex align-items-center justify-content-center w-100 active"
 										id="ex1-tab-1" data-mdb-toggle="pill" href="#ex1-pills-1"
 										role="tab" aria-controls="ex1-pills-1" aria-selected="true">상품정보</a>
