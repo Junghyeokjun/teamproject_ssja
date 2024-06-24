@@ -29,7 +29,6 @@ import teamproject.ssja.dto.community.CommunityPage;
 import teamproject.ssja.dto.login.CustomPrincipal;
 import teamproject.ssja.service.Community.CommunityService;
 
-@Controller
 @RestController
 @RequestMapping("/community")
 public class CommunityController {

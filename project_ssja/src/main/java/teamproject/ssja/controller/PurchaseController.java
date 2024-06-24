@@ -41,7 +41,7 @@ public class PurchaseController {
 //		return mv;
 //	}
 	@RequestMapping("")
-	public ModelAndView purchase(ModelAndView mv ,int quantity,long productNo, @AuthenticationPrincipal CustomPrincipal user) {
+	public ModelAndView purchase(ModelAndView mv ,int quantity,long productNo) {
 		long mno= InfoProvider.getM_NO();
 		List<ProductDto> dtos=new ArrayList<>();
 
@@ -53,6 +53,7 @@ public class PurchaseController {
 		mv.setViewName("purchase");
 		return mv;
 	}
+	
 	@PostMapping("/")
 	public ModelAndView purchaseCart(ModelAndView mv,@RequestParam("deleteList") List<Integer> list) {
 		long mno= InfoProvider.getM_NO();
