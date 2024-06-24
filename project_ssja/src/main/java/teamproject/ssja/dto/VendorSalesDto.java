@@ -18,9 +18,14 @@ public class VendorSalesDto {
 	
 	// 단위 별 통계 
 	private long totalSales;
-	
+
 	// purchase에 포함된 order 개수  (계산 및 배달완료처리가 된 주문 개수)
 	private long purchaseCount;
+	
+	// 지난 주, 저번 달, 저번 년도(단위별 이전 데이터)
+	private long lastTotalSales;
+	
+	private long lastPurchaseCount;
 	
 	// 변수에 값을 할당할 때, 구분지어서 할당하기 위함
 	

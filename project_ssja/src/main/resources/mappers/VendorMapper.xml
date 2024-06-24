@@ -24,6 +24,7 @@
  <!-- 상품  -->
  
  	<!-- 최근 일주일 간 팔린 상품 매출 내역 -->
+	<!--  	
  	<select id="selectVendorSalesInWeek" resultMap="VendorSalesDtoMap">
 	 	<![CDATA[
 	 		SELECT TRUNC(P.PUR_DATE) AS ORDER_DATE,
@@ -40,6 +41,35 @@
 			ORDER BY TRUNC(P.PUR_DATE)
 	 	]]>
  	</select>
+ 	 -->
+ 	<select id="selectVendorSalesInWeek" resultMap="VendorSalesDtoMap">
+	 	<![CDATA[
+	 		SELECT 
+			    TRUNC(PUR_DATE) AS ORDER_DATE,
+			    SUM(CASE WHEN TRUNC(P.PUR_DATE) >= TRUNC(SYSDATE) - 7 AND TRUNC(P.PUR_DATE) < TRUNC(SYSDATE) THEN O.O_PRICE ELSE 0 END) AS TOTAL_SALES,
+			    SUM(CASE WHEN TRUNC(P.PUR_DATE) >= TRUNC(SYSDATE) - 14 AND TRUNC(P.PUR_DATE) < TRUNC(SYSDATE) - 7 THEN O.O_PRICE ELSE 0 END) AS LAST_TOTAL_SALES,			  
+			    COUNT(*) AS PURCHASE_COUNT,
+			    (SELECT COUNT(*)
+			     FROM PURCHASE P2
+			     JOIN ORDERS O2 ON P2.PUR_NO = O2.PUR_NO
+			     JOIN PRODUCT PR2 ON O2.PRO_NO = PR2.PRO_NO
+			     JOIN VENDOR V2 ON PR2.V_NO = V2.V_NO
+			     WHERE TRUNC(P2.PUR_DATE) >= TRUNC(SYSDATE) - 14
+			       AND TRUNC(P2.PUR_DATE) < TRUNC(SYSDATE) - 7
+			       AND V2.V_NO = #{vno}
+			    ) AS LAST_PURCHASE_COUNT
+			FROM PURCHASE P
+			JOIN ORDERS O ON P.PUR_NO = O.PUR_NO
+			JOIN PRODUCT PR ON O.PRO_NO = PR.PRO_NO
+			JOIN VENDOR V ON PR.V_NO = V.V_NO
+			WHERE TRUNC(P.PUR_DATE) >= TRUNC(SYSDATE) - 7
+			  AND TRUNC(P.PUR_DATE) < TRUNC(SYSDATE)
+			  AND V.V_NO = #{vno}
+			GROUP BY TRUNC(P.PUR_DATE)
+			ORDER BY TRUNC(P.PUR_DATE)
+	 	]]>
+ 	</select>
+ 	
  	
  	<!-- 페이징은 기본으로 깔고 가기 -->
 	<select id="selectVendorProducts" resultMap="ProductsListMap">
@@ -169,6 +199,8 @@
 		<result property="orderDate" column="ORDER_DATE"/>
 		<result property="totalSales" column="TOTAL_SALES"/>
 		<result property="purchaseCount" column="PURCHASE_COUNT"/>
+		<result property="lastTotalSales" column="LAST_TOTAL_SALES"/>
+		<result property="lastPurchaseCount" column="LAST_PURCHASE_COUNT"/>
 	</resultMap>
 	
 	<resultMap type="teamproject.ssja.dto.BoardDto" id="BoardDtoMap">

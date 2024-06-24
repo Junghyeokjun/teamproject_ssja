@@ -19,8 +19,6 @@ public interface VendorMapper {
 	
 	// 판매자 자신의 판매자 데이터 가져오기
 	VendorInfoDTO selectVendor(long mNo);
-	
-
 
 	// 판매자 자신의 판매 물품 목록 가져오기
 	List<ProductDto> selectVendorProducts(Criteria criteria);
@@ -30,9 +28,7 @@ public interface VendorMapper {
 	
 	// 판매자 자신의 최근 일주일 동안의 매출 내액(sysdate - 7)
 	List<VendorSalesDto> selectVendorSalesInWeek(long vno);
-	
-	
-	
+
 	// 판매자 자신이 입력했던 물품의 번호 가져오기
 	long selectInsertedProNum(ProductDto product);
 	
