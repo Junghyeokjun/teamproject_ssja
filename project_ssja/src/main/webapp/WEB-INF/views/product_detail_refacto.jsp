@@ -261,8 +261,8 @@ color:black;
 				<form action="http://www.naver.com" id=searchForm method="get">
 				</form>
 				<button id="search_icon"></button>
-				<a id="cart_link"><img id="cart_img"></a> <a id="user_link"><img
-					id="login_img"></a>
+				<a id="cart_link"><img id="cart_img"></a> 
+				<a id="user_link" href="/login"><img id="login_img"></a>
 			</div>
 		</div>
 		<nav id="total_bar">
@@ -272,7 +272,7 @@ color:black;
 		<sec:authorize access="isAuthenticated()">
 			<sec:authentication property="principal" var="principal"/>
 		</sec:authorize>
-		<input type="hidden" id="m_no" value="${productData.pro_no }"><!-- 상품번호 히든 -->
+		<input type="hidden" id="m_no" value="${principal.userInfo.m_No}"><!-- 유저 번호 히든 -->
 	</header>
 	<div id="side_bar">
 		<div id="side_links" class="w-100"></div>
@@ -624,19 +624,19 @@ color:black;
 		let pronoInput = document.createElement("input");
 		pronoInput.setAttribute("type", "hidden");
 		pronoInput.setAttribute("name", "productNo");
-		pronoInput.setAttribute("value", $('#product_number_dv').val());
+		pronoInput.setAttribute("value", parseInt($('#product_number_dv').val()));
 		form.appendChild(pronoInput);
 
 		let mnoInput = document.createElement("input");
 		mnoInput.setAttribute("type", "hidden");
 		mnoInput.setAttribute("name", "mno");
-		mnoInput.setAttribute("value", $("#m_no").val());
+		mnoInput.setAttribute("value", parseInt($("#m_no").val()));
 		form.appendChild(mnoInput);
 
 		let quanInput = document.createElement("input");
 		quanInput.setAttribute("type", "hidden");
 		quanInput.setAttribute("name", "quantity");
-		quanInput.setAttribute("value", $("#quantity").val());
+		quanInput.setAttribute("value", parseInt($("#quantity").val()));
 		form.appendChild(quanInput);
 
 		// 폼을 body에 추가

@@ -113,7 +113,7 @@ let getListProductToServer = function(condition){
 		                }
 					
 					  let $item_content_dv = $("<div>").addClass("item-content-div")
-	                    .css({ "max-width": "25%", 'height': '20em','margin-bottom':'1em' })
+	                    .css({ "max-width": "25%","min-width": "25%", 'height': '20em','margin-bottom':'1em' })
 	                    .hover(
 	                        function () {
 	                            $item_img_dv.css('background-size', '115%');
@@ -229,7 +229,8 @@ let getListProductToServer = function(condition){
 let wish_click = function(productnumber) {
 	let count = 0;
     $.ajax({
-        type: "PUT",
+    	
+        type: "patch",
         beforeSend: function(xhr) {
             xhr.setRequestHeader(header, token);
         },
@@ -325,7 +326,7 @@ handleClick("#select_review", fontBoldResetDiv3, function() {
 });
 
 handleClick("#select_wish", fontBoldResetDiv3, function() {
-    product_condition.setConditionSelect('RATING_AVG desc');
+    product_condition.setConditionSelect('pro_wish desc');
 });
 
 handleClick("#select_new", fontBoldResetDiv3, function() {
@@ -346,5 +347,4 @@ $('#search_custom_money_btn').on('click',function(){
 
 
 getListProductToServer(product_condition);
-
 

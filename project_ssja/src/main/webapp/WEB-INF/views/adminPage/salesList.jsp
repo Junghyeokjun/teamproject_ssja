@@ -22,6 +22,7 @@
 	crossorigin="anonymous"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 <script src='https://code.jquery.com/jquery-3.3.1.min.js'></script>
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -30,113 +31,11 @@
 <script src="/js/barscript_admin.js"></script>
 <script src="/js/footer.js"></script>
 <link href="/css/footerstyle.css?after" rel="stylesheet">
-<link href="/css/barstyle.css?after" rel="stylesheet">
-
+<link href="/css/barstyle_admin.css?after" rel="stylesheet">
 <link rel="stylesheet"
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
-<style>
-@font-face {
-	font-family: 'fonts';
-	src: url("https://webfontworld.github.io/NanumSquare/NanumSquare.css")
-		format('font1');
-}
-
-body {
-	font-family: 'fonts', NanumSquare;
-	background-color: #f7f0e8;
-}
-
-#logo_img {
-	width: 3.5em;
-	height: 3em;
-}
-
-.MyPage_btn {
-	background-color: white;
-	padding: 20px;
-}
-
-#select_MyPage {
-	z-index: 900;
-	position: fixed;
-	top: 30%;
-	left: 5%;
-	width: 12%;
-}
-
-#select_mp_top {
-	background-color: #f7f0e8;
-	padding: 2em;
-	height: auto;
-}
-
-#icon_div  img {
-	width: 40%;
-	text-align: center;
-}
-
-#icon_div {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-}
-
-#icon_container {
-	padding: 1.5em;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-}
-
-#icn_txt {
-	text-align: center;
-}
-
-#event_banners {
-	width: 100% auto;
-	height: 30em;
-}
-
-#title_best_conner  button {
-	width: 3em;
-	background-color: white;
-	border: none;
-	font-size: 2.5em;
-	color: #aaa;
-}
-
-#title_best_conner  button:hover {
-	color: #333;
-}
-
-#title_best_conner {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-}
-
-#show_more_bestItem {
-	background-color: white;
-	with: 100%;
-	border: 1px solid #ddd;
-	height: 5em;
-}
-
-h2, h4, p {
-	display: inline;
-	margin: 0;
-	margin-right: 10px;
-}
-
-.table {
-	width: 100%; /* 테이블이 페이지 전체 너비를 차지하도록 설정 */
-	text-align: center; /* 테이블 텍스트 중앙 정렬 */
-}
-</style>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 </head>
 <body>
 	<header>
@@ -152,33 +51,80 @@ h2, h4, p {
 	<div id="side_bar">
 		<div id="side_links" class="w-100"></div>
 	</div>
-	<main>
-	<br>
-		<div class="row row-cols-1 row-cols-md-3 g-4">	
-		 <div class="col">	
-			<h1>일일매출</h1>
-			<canvas id="dailySalesChart" width="400" height="200"></canvas>
-			</div>
-			 <div class="col">
-			<h1>월매출</h1>
-			<canvas id="monthlySalesChart" width="400" height="200"></canvas>
-			</div>
-			 <div class="col">
-			<h1>년매출</h1>
-			<canvas id="yearlySalesChart" width="400" height="200"></canvas>
-			</div>			
+	<div id="select_AdminPage" class="d-flex flex-column">
+		<div id="select_mp_top" class="text-center">관리자</div>
+		<div id="select_content">
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage'">SSJA 현황</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/membersList'">회원 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/productsList'">상품 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/purchasesList'">주문 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/couponsList'">쿠폰 관리</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/notice'">공지사항 관리</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/qnasList'">고객 문의 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/salesList'">매출 현황</button>
 		</div>
-			<br>
-	<script>
+	</div>
+	<main>
+		<div id="main_container"
+			class="d-flex flex-row align-items-center justify-content-center">
+			<div id="content_dv">
+				<div id="AdminPage_content_name">
+					<h2 id="AdminPageTitle">매출 현황</h2>
+				</div>
+
+				<div id="adminInfo_dv3" class="my-3 mx-3"
+					style="display: flex; flex-wrap: nowrap; justify-content: center;">
+					<div style="flex: 1; margin-right: 10px; text-align: center;">
+						<h4 class="mx-5 my-3">
+							일일 매출
+							<p style="font-size: 0.8em; display: inline;">(최근일주일)</p>
+						</h4>
+						<canvas id="dailySalesChart" width="50" height="50"></canvas>
+					</div>
+					<div
+						style="flex: 1; margin-left: 10px; margin-right: 10px; text-align: center;">
+						<h4 class="mx-5 my-3">월 매출</h4>
+						<canvas id="monthlySalesChart" width="50" height="50"></canvas>
+					</div>
+					<div style="flex: 1; margin-left: 10px; text-align: center;">
+						<h4 class="mx-5 my-3">년 매출</h4>
+						<canvas id="yearlySalesChart" width="50" height="50"></canvas>
+					</div>
+				</div>
+
+
+
+			</div>
+
+		</div>
+
+		<script>
         document.addEventListener('DOMContentLoaded', function() {
             var dailySalesString = '${dailySales}';
+            console.log(dailySalesString); 
 
             // 1. 문자열에서 =를 :로 대체합니다.
             dailySalesString = dailySalesString.replace(/=/g, ':');
 
             // 2. DAYSALES 키와 값을 적절히 변경합니다.
-            dailySalesString = dailySalesString.replace(/DAILY:/g, '"DAILY":"');
-            dailySalesString = dailySalesString.replace(/, DAILYTOTALPAY:/g, '", "DAILYTOTALPAY":');
+            dailySalesString = dailySalesString.replace(/P_DATE:/g, '"P_DATE":"');
+            dailySalesString = dailySalesString.replace(/, P_PRICE:/g, '", "P_PRICE":');
             
             // 3. 최종적으로 문자열을 JSON 형식으로 변환합니다.
             console.log(dailySalesString); 
@@ -188,8 +134,8 @@ h2, h4, p {
                 var dailySales = JSON.parse(dailySalesString);
 
                 // 날짜와 매출 데이터 추출
-                var dates = dailySales.map(item => item.DAILY.split(' ')[0]); // 날짜만 추출
-                var totalPays = dailySales.map(item => item.DAILYTOTALPAY);
+                var dates = dailySales.map(item => item.P_DATE.split(' ')[0]); // 날짜만 추출
+                var totalPays = dailySales.map(item => item.P_PRICE);
 
                 // Chart.js를 사용한 그래프 설정
                 var ctx = document.getElementById('dailySalesChart').getContext('2d');
@@ -209,54 +155,71 @@ h2, h4, p {
             }
         });
     </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var monthlySalesString = '${monthlySales}';
+		<script>
+		document.addEventListener('DOMContentLoaded', function() {
+		    var monthlySalesString = '${monthlySales}';
 
-            // 1. 문자열에서 =를 :로 대체합니다.
-            monthlySalesString = monthlySalesString.replace(/=/g, ':');
+		    // 1. 문자열에서 =를 :로 대체합니다.
+		    monthlySalesString = monthlySalesString.replace(/=/g, ':');
 
-            // 2. DAYSALES 키와 값을 적절히 변경합니다.
-            monthlySalesString = monthlySalesString.replace(/MONTH:/g, '"MONTH":"');
-            monthlySalesString = monthlySalesString.replace(/, MONTHLYTOTALPAY:/g, '", "MONTHLYTOTALPAY":');
-            
-            // 3. 최종적으로 문자열을 JSON 형식으로 변환합니다.
-            console.log(monthlySalesString); 
+		    // 2. DAYSALES 키와 값을 적절히 변경합니다.
+		    monthlySalesString = monthlySalesString.replace(/MONTH:/g, '"MONTH":"');
+		    monthlySalesString = monthlySalesString.replace(/, MONTHLYTOTALPAY:/g, '", "MONTHLYTOTALPAY":');
+		    
+		    // 3. 최종적으로 문자열을 JSON 형식으로 변환합니다.
+		    console.log(monthlySalesString); 
 
-            try {
-                // JSON 형식의 문자열을 JavaScript 객체로 파싱합니다.
-                var monthlySales = JSON.parse(monthlySalesString);
+		    try {
+		        // JSON 형식의 문자열을 JavaScript 객체로 파싱합니다.
+		        var monthlySales = JSON.parse(monthlySalesString);
 
-                // 날짜와 매출 데이터 추출
-                var months = monthlySales.map(item => item.MONTH.split(' ')[0]); // 날짜만 추출
-                var totalmonthsPays = monthlySales.map(item => item.MONTHLYTOTALPAY);
+		        // 날짜와 매출 데이터 추출
+		        var months = monthlySales.map(item => item.MONTH.split(' ')[0]); // 날짜만 추출
+		        var totalmonthsPays = monthlySales.map(item => item.MONTHLYTOTALPAY); // 월매출액 추출
 
-                // Chart.js를 사용한 그래프 설정
-                var ctx = document.getElementById('monthlySalesChart').getContext('2d');
-                var myChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: months,
-                        datasets: [{
-                            label: '월매출액',
-                            data: totalmonthsPays,
-                            backgroundColor: "#8e5ea2"
-                        }]
-                    }
-                });
-            } catch (error) {
-                console.error('Error parsing JSON:', error);
-            }
-        });
+		        // Chart.js를 사용한 그래프 설정
+		        var ctx = document.getElementById('monthlySalesChart').getContext('2d');
+		        var myChart = new Chart(ctx, {
+		            type: 'bar',
+		            data: {
+		                labels: months,
+		                datasets: [{
+		                    label: '월매출액',
+		                    data: totalmonthsPays,
+		                    backgroundColor: "#8e5ea2"
+		                }]
+		            },
+		            options: {
+		                scales: {
+		                    yAxes: [{
+		                        ticks: {
+		                            beginAtZero: true,
+		                            callback: function(value, index, values) {
+		                                // 값이 숫자인 경우에만 포맷팅
+		                                if (Number.isInteger(value)) {
+		                                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		                                } else {
+		                                    return value;
+		                                }
+		                            }
+		                        }
+		                    }]
+		                }
+		            }
+		        });
+		    } catch (error) {
+		        console.error('Error parsing JSON:', error);
+		    }
+		});
+
     </script>
-     <script>
+		<script>
      document.addEventListener('DOMContentLoaded', function() {
          var yearlySalesString = '${yearlySales}';
          console.log(yearlySalesString); 
- 
+
          // 1. 문자열에서 =를 :로 대체합니다.
          yearlySalesString = yearlySalesString.replace(/=/g, ':');
-         console.log(yearlySalesString); 
 
 
          // 2. DAYSALES 키와 값을 적절히 변경합니다.
@@ -291,7 +254,24 @@ h2, h4, p {
              console.error('Error parsing JSON:', error);
          } 
      });
-    </script> 
+    </script>
+		<!-- <script>	      
+	            // AJAX 요청 보내기
+	            $.ajax({
+	                url: "/adminPage/salesData/",
+	                method: 'GET',
+	                success: function(data) {
+	                    console.log('Success:', data);
+	                    // 서버로부터 받은 데이터를 처리하는 로직을 여기에 작성하세요
+	                     $('#totalSales').text(data.DAYSALES);
+	                     $('#transactionCount').text(data.DAYSTOTALPAY);
+	                },
+	                error: function(xhr, status, error) {
+	                    console.error('Error:', error);
+	                }
+	            });
+	      
+	    </script> -->
 
 	</main>
 	<footer>

@@ -1,5 +1,7 @@
 package teamproject.ssja.dto;
 
+import java.sql.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,7 +37,7 @@ public class MembersDto {
 	private String M_ADDRESS1;
 	private String M_ADDRESS2;
 	private String M_ZIPCODE;
-	private String M_BIRTH;
+	private Date M_BIRTH;
 	private String M_GRADE;
 	private String M_EMAIL;
 	private String M_PHONE;

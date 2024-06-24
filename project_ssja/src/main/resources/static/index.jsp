@@ -80,7 +80,7 @@
         </form>
         <button id="search_icon"></button>
         <a id="cart_link"><img id="cart_img"></a>
-        <a id="user_link"><img id="login_img"></a>
+        <a id="user_link" href="<sec:authorize access="isAuthenticated()">/mypage</sec:authorize><sec:authorize access="!isAuthenticated()">/login</sec:authorize>"><img id="login_img"></a>
       </div>
 
     </div>

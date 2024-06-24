@@ -18,10 +18,10 @@ public class MyPageController {
 	@GetMapping("")
 	public String myPageP(Model model ) {
 		
-//		if(InfoProvider.userAuth().equals("ROLE_ADMIN")) {
-//	         return "/adminPage/membersList";
-//	      }
-//		
+		if(InfoProvider.userAuth().equals("ROLE_ADMIN")) {
+	         return "redirect:/adminPage";
+	      }
+		
 		
 		int loginMethod = LoginChecker.check();
 		
@@ -33,7 +33,7 @@ public class MyPageController {
 		 }else if(loginMethod == 1){//1반환
 			 return "/myPage/MyPage";
 		 }
-		 
+		 log.info("return login");
 		 //둘 다 아닌 -> 로그인 X, 인증하지 않음
 		 return "redirect:/login";
 	}

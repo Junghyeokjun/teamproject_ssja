@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">        
+<mapper namespace="teamproject.ssja.mapper.ProductCategoryMapper">
+
+	<!-- 모든 카테고리 개수 출력(현재는 소분류 개수도 이와 동일하다) -->
+	<select id="selectPCAllCount" resultMap="ProductCategoryDtoMap">    
+    	<![CDATA[
+              	SELECT count(*) FROM PRODUCT_CATEGORY 
+        ]]>
+	</select>
+	
+	<!-- 카테고리 대분류 개수 출력 -->
+	<select id="selectPCMainCount" resultType="long">    
+    	<![CDATA[
+              	SELECT 
+              		count(*) 
+           		FROM 
+           		(SELECT ROWNUM, P_C_SUBNAME
+				FROM (
+				    SELECT DISTINCT
+				        SUBSTR(P_C_NAME, 1, INSTR(P_C_NAME, '-') - 1) AS P_C_SUBNAME
+				    FROM PRODUCT_CATEGORY
+				))
+        ]]>
+	</select>
+
+	<!-- 대분류 카테고리 명 출력 -->
+	<select id="selectPCMainList" resultMap="ProductCategoryGroupDtoMap">    
+    	<![CDATA[
+              	SELECT ROWNUM AS ROW_NUM, P_C_SUBNAME
+				FROM (
+				    SELECT DISTINCT
+				        SUBSTR(P_C_NAME, 1, INSTR(P_C_NAME, '-') - 1) AS P_C_SUBNAME
+				    FROM PRODUCT_CATEGORY
+				)
+        ]]>
+	</select>
+	
+	<!-- 해당 대분류에 속하는 소분류 카테고리 명을 출력 -->
+	<select id="selectPCSubList" parameterType="java.lang.Long" resultMap="ProductCategoryGroupDtoMap">    
+    	<![CDATA[
+             	SELECT P_C_NO AS ROW_NUM, P_C_SUBNAME
+				FROM (
+				    SELECT
+                        P_C_NO,
+				        SUBSTR(P_C_NAME, INSTR(P_C_NAME, '-') + 1) AS P_C_SUBNAME
+				    FROM PRODUCT_CATEGORY
+				) where P_C_NO between (#{mainPCNum}*10) and (#{mainPCNum}+1)*10-1
+        ]]>
+	</select>
+	
+
+	<!-- 관리자 영역  -->
+
+	<!-- 모든 카테고리 명을 그대로 출력 -->
+	<select id="selectPCList" resultMap="ProductCategoryDtoMap">    
+    	<![CDATA[
+			SELECT 
+			    P_C_NO, 
+			    P_C_NAME,
+			    SUBSTR(P_C_NAME, 1, INSTR(P_C_NAME, '-') - 1) AS P_C_MAIN,
+			    SUBSTR(P_C_NAME, INSTR(P_C_NAME, '-') + 1) AS P_C_SUB 
+			FROM 
+			    PRODUCT_CATEGORY
+        ]]>
+	</select>
+
+<!-- 	
+	모든 소분류 카테고리 명 출력. mapper.java에 메서드를 추가하고 해당 이름으로 변경해야 함.
+	<select id="selectPCSubList" resultMap="ProductCategoryGroupDtoMap">    
+    	<![CDATA[
+              	SELECT P_C_NO AS ROW_NUM, P_C_SUBNAME
+				FROM (
+				    SELECT
+				        SUBSTR(P_C_NAME, INSTR(P_C_NAME, '-') + 1) AS P_C_SUBNAME
+				    FROM PRODUCT_CATEGORY
+				)
+        ]]>
+	</select>
+-->
+	
+	<insert id="insertPC" parameterType="ProductCategoryDto">    
+    	<![CDATA[
+			INSERT INTO product_category(p_c_no, p_c_name) VALUES (#{pcNo},#{pcName}) 
+        ]]>
+	</insert>
+	
+	<update id="updatePC" parameterType="ProductCategoryDto">    
+    	<![CDATA[
+            UPDATE product_category SET p_c_no = #{pcNo}, p_c_name = #{pcName}  
+        ]]>
+	</update>
+	
+	<delete id="deletePC" parameterType="long">    
+    	<![CDATA[
+            DELETE FROM product_category FROM p_c_no = #{pcNo}
+        ]]>
+	</delete>
+	
+	<!-- 총 분류 -->
+	<resultMap type="teamproject.ssja.dto.ProductCategoryDto" id="ProductCategoryDtoMap" >
+		<result column="P_C_NO" property="pcNo" />
+		<result column="P_C_NAME" property="pcName" />
+		<result column="P_C_MAIN" property="pcMain" />
+		<result column="P_C_SUB" property="pcSub" />	
+	</resultMap>
+
+	<!-- 대분류, 소분류 -->
+	<resultMap type="teamproject.ssja.dto.ProductCategoryGroupDto" id="ProductCategoryGroupDtoMap" >
+		<result column="ROW_NUM" property="pcNum" />
+		<result column="P_C_SUBNAME" property="pcSubName"/>	
+	</resultMap>	
+</mapper>

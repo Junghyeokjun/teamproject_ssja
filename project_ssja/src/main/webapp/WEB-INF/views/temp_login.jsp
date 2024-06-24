@@ -50,10 +50,7 @@
     input[type=password]{
       font-family: sans-serif;
     }
-    #logo_img {
-      width: 3.5em;
-      height: 3em;
-    }
+  
     /* 로그인 추가코드 */
     #recover a{
       color: black;
@@ -132,7 +129,7 @@ let error = urlParams.get('error');
         
         </form>
         <a id="cart_link"><img id="cart_img"></a>
-        <a id="user_link"><img id="login_img"></a>
+        <a id="user_link" href="/login"><img id="login_img"></a>
       </div>
 
     </div>

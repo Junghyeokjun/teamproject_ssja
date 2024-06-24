@@ -47,7 +47,7 @@ public class CommunityServiceImpl implements CommunityService {
 	MembersMapper membersMapper;
 	
 	//배포시에 경로에 따라 수정
-	final String absolutePath="\\\\DESKTOP-RDUHP84\\board_content";
+	final String absolutePath="/home/ubuntu/images";
 	final String path = "/images/board_content";
 	
 	@Override

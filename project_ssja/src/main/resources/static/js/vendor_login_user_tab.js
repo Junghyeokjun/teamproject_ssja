@@ -44,3 +44,7 @@
                     $login_user_div.hide();
                 }
         	);
+        
+
+        $("#user_link").attr("href", "/myPage");
+        

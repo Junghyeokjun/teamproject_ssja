@@ -7,12 +7,12 @@ function formatNumber(num) {
 }
 let bestItemPageNum = 0;
 
-let getListBestToServer = function (pageNum) {
+let getListBestToServer = function (bestPageNum) {
     $.ajax({
         type: "get",
         contentType: "application/json",
         url: "/product/best-mainpage",
-        data: { 'page': pageNum },
+        data: { 'page': bestPageNum },
         success: function (data) {
             console.log(data);
             //$best_item_content.empty();
@@ -26,7 +26,7 @@ let getListBestToServer = function (pageNum) {
                 }
 
                 let $item_content_dv = $("<div>").addClass("item-content-div")
-                    .css({ "max-width": "25%", 'height': '20em' })
+                    .css({ "max-width": "25%","min-width": "25%", 'height': '20em' })
                     .hover(
                         function () {
                             $item_img_dv.css('background-size', '115%');
@@ -70,13 +70,14 @@ let getListBestToServer = function (pageNum) {
                         		
                         $("<div>").append($("<span>").text(e.pro_WISH).css("color", "#f06575"),
                         		
-                            $("<img>").attr("src", "/images/utilities/wish_icon.png").css("width", "1.5em")
-                            .on("click", function (event) {
-                                event.preventDefault();
-                                let countwish = wish_click(e.pro_NO);
-                                $(this).prev("span").text(countwish);
-                                return false;//상품상세 링크 이동 방지                         
-                                })
+                        		$("<img>").attr("src", "/images/utilities/wish_icon.png").css("width", "1.5em")
+                                 .on("click", function (event) {
+                                	 event.preventDefault();
+                                	 event.stopImmediatePropagation();
+                                	    let countwish = wish_click(e.pro_NO);
+                                        $(this).prev("span").text(countwish);
+                                     return false;//상품상세 링크 이동 방지                         
+                                     })
                         )
                     );
 
@@ -99,11 +100,11 @@ $("#more_best_item_btn").on('click', function () {
 let wish_click = function (productnumber) {
     let count = 0;
     $.ajax({
-        type: "put",
+        type: "patch",
         beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
-        data: JSON.stringify({ "pro_no": productnumber }),
+        data: JSON.stringify({"pro_no": productnumber}),
         url: "/wishlist",
         async: false,
         contentType: "application/json",
