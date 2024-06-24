@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Update;
 
 import teamproject.ssja.dto.MembersDto;
 import teamproject.ssja.dto.MembersSearchDto;
@@ -53,7 +54,12 @@ public interface AdminPageMapper {
 		List<Map<String, Object>> getMonthlySalesList();
 		
 		List<Map<String, Object>> getYearlySalesList();
+		
+		void deleteExpiredCoupon();// 스케쥴러 시간 만료기간 초과된 쿠폰 삭제
 
-
+		void renewYsterdayProfit();//스케줄러 전날 매출 insert
+		//방문자 수 쿼리
+		@Update("UPDATE visitor_count SET visit_count = visit_count + 1 WHERE TRUNC(visit_date) = TRUNC(sysdate)")
+		void addVisitCount();
 
 }

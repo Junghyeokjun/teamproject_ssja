@@ -31,7 +31,7 @@
     <![CDATA[
 	select * from 
         	(
-			    select
+			    selecte
 			        rownum rnum , A.*
 			    from 
 			    (SELECT  * FROM Members order by M_NO) A 
@@ -272,7 +272,7 @@
 	
 	<select id="getDailySalesList" resultType="MAP">    
     <![CDATA[
-SELECT TRUNC(PUR_DATE) AS Daily, SUM(PUR_PAY) AS DailyTotalPay
+SELECT TRUNC(PUR_DATE) AS Daily, SUM(PUR_tot) AS DailyTotalPay
 FROM purchase
 GROUP BY TRUNC(PUR_DATE)
 ORDER BY Daily
@@ -284,7 +284,7 @@ ORDER BY Daily
     <![CDATA[
 SELECT
     TO_CHAR(PUR_DATE, 'YYYY-MM') AS Month,
-    SUM(PUR_PAY) AS MonthlyTotalPay
+    SUM(PUR_tot) AS MonthlyTotalPay
 FROM
     purchase
 GROUP BY
@@ -298,7 +298,7 @@ ORDER BY
     <![CDATA[
 SELECT
     TO_CHAR(PUR_DATE, 'YYYY') AS Year,
-    SUM(PUR_PAY) AS YearlyTotalPay
+    SUM(PUR_tot) AS YearlyTotalPay
 FROM
     purchase
 GROUP BY
@@ -308,5 +308,15 @@ ORDER BY
 
         ]]>
 	</select>
+	<delete id="deleteExpiredCoupon" >
+	  <![CDATA[ delete from coupon where  c_duedate < SYSDATE - (5.1 / (24 * 60))  ]]>
+	</delete>
+	
+	<insert id="renewYsterdayProfit">
+	SELECT TRUNC(SYSDATE -1) AS p_date,  SUM(PUR_TOT) AS DAILY_TOTAL_SALES
+	FROM purchase
+	WHERE TRUNC(PUR_DATE) = TRUNC(SYSDATE-1)
+	GROUP BY TRUNC(SYSDATE-1)
+	</insert>
 	
 	</mapper>

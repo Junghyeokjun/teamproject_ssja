@@ -1,7 +1,6 @@
 package teamproject.ssja.trace.aspect;
 
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 
@@ -37,4 +36,6 @@ public class LogTraceAspect {
 		}
 	
 	}
+	
+	
 }
