@@ -188,7 +188,11 @@ public class CommunityController {
 
 		return data;
 	}
-	
+	@GetMapping("/post/{bno}")
+	public CommunityBoardDto getPost(@PathVariable("bno") long bno){
+
+		return communityService.getContent(bno);
+	}
 	//커뮤니티 게시글을 삭제하는 부분
 	@PostMapping("/post")
 	public long insertPost(@RequestBody Map<String, Object> data){

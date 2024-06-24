@@ -233,7 +233,7 @@
       img_insert_btn.on('click',function(){
         
         var file=document.getElementById("image_file");        
-       console.log(file.value);
+        console.log(file.value);
         $("#modal_close").click();
 
         if(file.value==""){

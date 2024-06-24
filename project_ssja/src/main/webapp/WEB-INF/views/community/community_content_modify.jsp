@@ -101,6 +101,7 @@
       min-height: 400px;
     }
 
+
   </style>
   <script>
     var header = $("meta[name='_csrf_header']").attr('content');
@@ -235,7 +236,7 @@
 
       img_modify_dtn.on('click',function(){
         var file=document.getElementById("image_file");        
-       console.log(file.value);
+        console.log(file.value);
         $("#modal_close").click();
 
         if(file.value==""){
@@ -331,7 +332,7 @@
 
           $.ajax({
             type:'post', 
-            url: '/community/product/',
+            url: '/community/product',
             beforeSend : function(xhr) {
 					    xhr.setRequestHeader(header, token);
             },
@@ -367,7 +368,7 @@
       })
       //상품 삭제 버튼
       product_remove.on("click",function(){
-        product_update.val("false");
+        product_update.val("true");
         product_no.val(0);
         product_has.text("선택된 상품이 없습니다.");
         $("#product_link").remove();
@@ -379,9 +380,24 @@
         addProduct(product_no.val());
       }
 
-      
-      $(".ck-content").first().empty();
-      $(".ck-content").first().append($($("#prev_content").val()));
+      //에디터 추가부분
+      ClassicEditor 
+      .create( document.querySelector( '#update_content' ) ) 
+      .then( editor => {
+            $.ajax({
+              type:'get', 
+              url: '/community/post/'+bno_val,
+              dataType:"json",
+              success: function(data) {
+                editor.setData(data.bcontent);
+              }
+		        });
+            $(".ck-editor").addClass("w-100")
+          } )
+      .catch( error => {
+         console.error( error );
+           } );
+
     })
 
   </script>
@@ -425,7 +441,6 @@
 
   <main>
     <input id="bno" type="hidden" value="${content.bno}">
-    <input id="prev_content" type="hidden" value="${content.bcontent}">
     <div id="main_container" class="border-start border-end container">
         
       <div class="d-flex flex-column align-items-center mt-3 container-fluid">
@@ -525,6 +540,5 @@
 </sec:authorize>
 
 </body>
-<script src="/js/ckeditor.js"></script>
 
 </html>

@@ -53,6 +53,7 @@
     
     /* 연관상품부분 */
     #product_link{
+      width: 100%;
       height: 100px;
       display:inline-block;
       text-decoration: none;
@@ -68,6 +69,7 @@
       height: 100px;
     }
     #orders_product_Info{
+      width: 100%;
       height: 100px;
       overflow: hidden; 
       text-overflow: ellipsis; 
