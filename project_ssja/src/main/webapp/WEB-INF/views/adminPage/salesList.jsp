@@ -87,7 +87,10 @@
 				<div id="AdminPage_content_name">
 					<h2 id="AdminPageTitle">매출 현황</h2>
 				</div>
-
+				<!-- 매출엑셀버튼 -->
+				<button type="button" id="salesListUp">
+					Download.xsl <img src="/images/utilities/excel_icon.png"  alt="Excel 아이콘" onclick="">
+				</button>
 				<div id="adminInfo_dv3" class="my-3 mx-3"
 					style="display: flex; flex-wrap: nowrap; justify-content: center;">
 					<div style="flex: 1; margin-right: 10px; text-align: center;">
@@ -107,13 +110,8 @@
 						<canvas id="yearlySalesChart" width="50" height="50"></canvas>
 					</div>
 				</div>
-
-
-
 			</div>
-
 		</div>
-
 		<script>
         document.addEventListener('DOMContentLoaded', function() {
             var dailySalesString = '${dailySales}';
