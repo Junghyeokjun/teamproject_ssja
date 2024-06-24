@@ -81,12 +81,20 @@ $(document).ready(function () {
     let showChart = $('.d-flex.show-chart');
     let position = showChart.position();
 
+    // 초기 너비 값을 0으로 설정
+    let totalWidth = 0;
+
+    // .show-chart 자식 요소들의 너비 합산
+    showChart.children().each(function() {
+        totalWidth += $(this).outerWidth(true); // true를 전달하여 마진을 포함한 전체 너비를 계산
+    });
+
     // overlay 요소 생성 및 스타일 적용
     let overlay = $('<div class="overlay"></div>');
     overlay.css({
         position: 'absolute',
         top: showChart.top,
-        width: showChart.outerWidth(),
+        width: totalWidth,
         height: showChart.outerHeight(),
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         zIndex: 10,
@@ -114,8 +122,11 @@ $(document).ready(function () {
   });
   }
   
-  
-// 차트 추가
+  // 단락을 구분하기 위해 사용할 hr 태그
+  let divHr1 = $('<div>').append($('<hr>').addClass('border border-2 opacity-75'));
+  let divHr2 = $('<div>').append($('<hr>').addClass('border border-2 opacity-75'));
+
+  // 차트 추가
   function setCharts(vendorNo){   
     console.log("vendorNo setchart() : " + vendorNo);
     $.ajax({
@@ -262,8 +273,7 @@ $(document).ready(function () {
           removeOverlay();
         }
 
-        let divHr1 = $('<div>').append($('<hr>').addClass('border border-2 opacity-75'));
-        let divHr2 = $('<div>').append($('<hr>').addClass('border border-2 opacity-75'));
+       
         $('#main_container').prepend(divHr1);
         $('#main_container').append(divHr2);
       },

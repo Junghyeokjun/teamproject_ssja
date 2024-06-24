@@ -249,6 +249,55 @@ main, footer {
 .btn-danger.btn-tuning:hover {
 	background-color: #c43c3c;
 }
+
+.ssja-main-width{
+	width: 66%;
+}
+
+#seller-download{
+	width: 66%;
+	clear: both;
+}
+
+.download-img{
+	border: 0;
+}
+
+.download-img:hover{
+	border: 0;
+	background-color: #ccc;
+}
+
+.seller-download-main{
+	border: 1px solid #ccc;
+	padding: 1em 1em 1em 1em;
+	border-radius: 5px 5px 5px 5px;
+}
+
+.seller-download-h4{
+	border-bottom: 2px solid #ccc;
+}
+
+@media screen and (min-width: 1120px){
+	#seller-download{
+	  position: fixed; 
+	  left: 85%;
+	  top: 220px; 
+	  text-align:center;
+	  width: 100px;
+	  height: 150px;
+	  margin-right: 50px;
+	  padding: 15px 5px;
+	  border: 1px solid #ccc;
+	  border-radius: 10px;
+	}	
+
+	.seller-download-main{
+		border : 0;
+		padding: 0 0 0 0;
+	}
+}
+
 </style>
 </head>
 
@@ -277,10 +326,10 @@ main, footer {
 							<div class="mx-5 my-2 d-flex ">
 								<h1 class="h1 vendorTitle">판매자 :&nbsp;</h1>
 								<!-- 
-						땡땡땡땡 : 상호명
-						로그인 시 vendorDto에 담기는 vendor.vbizname 또한 가져오기						
-						그냥 조인을 쓴다면 vendorDto가 아니라 조인한 결과를 담는 다른 Dto가 필요할 것이다.
-					 -->
+									땡땡땡땡 : 상호명
+									로그인 시 vendorDto에 담기는 vendor.vbizname 또한 가져오기						
+									그냥 조인을 쓴다면 vendorDto가 아니라 조인한 결과를 담는 다른 Dto가 필요할 것이다.
+					 			-->
 								<h1 class="h1 vendorNames">
 									&lt;
 									<sec:authorize access="isAuthenticated()">
@@ -303,7 +352,22 @@ main, footer {
 				</div>
 				<main>
 					<div class="main_whitespace p-5 my-2"></div>
-					<div id="main_container">
+					<div id="seller-download" class="text-center d-flex justify-content-center">
+						<div class="seller-download-main">
+							<div class="seller-download-h4">
+								<h4 class="h4">다운로드 </h4>
+							</div>
+							<div class="download-icon pt-2">
+							<a href=""><img class="download-img img-thumbnail" alt="excel" src="/images/utilities/excel_download.png" style="width: 60px; height:60px"></img></a>
+							<br><p class="m-0">excel</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="ssja-main-width">
+						
+					</div>
+					<div id="main_container">						
 						<div class="d-flex flex-row align-items-center justify-content-center container">
 							<div id="MyPage_content_container" class="p-5">
 								<div class="text-center mb-3">
