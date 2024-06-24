@@ -22,9 +22,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.extern.slf4j.Slf4j;
+import teamproject.ssja.dto.MembersDto;
 import teamproject.ssja.dto.MembersSearchDto;
 import teamproject.ssja.dto.ProductsSearchDto;
 import teamproject.ssja.dto.PurchaseSearchDto;
+import teamproject.ssja.dto.QnaBoardDto;
 import teamproject.ssja.dto.QnaSearchDto;
 import teamproject.ssja.dto.userinfo.CouponDTO;
 import teamproject.ssja.page.Criteria;
@@ -76,6 +78,8 @@ public class AdminPageController {
 		model.addAttribute("dailySales", dailySales);
 		List<Map<String, Object>> dailyMCounts = salesListService.dailyMCounts();
 		model.addAttribute("dailyMCounts", dailyMCounts);
+		List<Map<String, Object>> dailyVCounts = salesListService.dailyVCounts();
+		model.addAttribute("dailyVCounts", dailyVCounts);
 		
 		return "/adminPage/AdminPage";
 	}
@@ -97,7 +101,7 @@ public class AdminPageController {
 		List<MembersSearchDto> searchResults = memberListService.getMemberSearchList(type, keyword);
 		return ResponseEntity.ok(searchResults);
 	}
-
+	
 	@RequestMapping("/productsList")
 	public String productsList(Model model, Criteria criteria) {
 		log.info("productsList()..");
@@ -147,38 +151,14 @@ public class AdminPageController {
 		return "/adminPage/couponsList";
 	}
 
-	@PostMapping("/write")
+	@PostMapping("/writeCoupon")
 	public String addCoupon(CouponDTO couponDto) {
 		log.info("addCoupon()..");
 		couponListService.addCoupon(couponDto);
 		return "redirect:/adminPage/couponsList";
 	}
 
-	/*
-	 * @PostMapping("/modify") public String modifyCoupon(CouponDTO couponDto) {
-	 * log.info("modifyCoupon().."); couponListService.modifyCoupon(couponDto);
-	 * return "redirect:/adminPage/couponsList"; }
-	 */
-
-//	@GetMapping("/remove")
-//	@PostMapping("/remove")
-//	public String removeCoupon(CouponDTO couponDto) {
-//		log.info("removeCoupon()..");
-//		couponListService.removeCoupon(couponDto);
-//		return "redirect:/adminPage/couponsList";
-//	}
-//	 @GetMapping("/modify")
-//	    @ResponseBody
-//	    public CouponDTO getCoupon(@RequestParam("c_no") int c_no) {
-//	        return couponListService.getCouponById(c_no);
-//	    }
-//	 
-//	  @PostMapping("/modify")
-//	    public String modifyCoupon(@ModelAttribute CouponDTO couponDto) {
-//		  couponListService.modifyCoupon(couponDto);
-//	        return "redirect:/adminPage/couponsList";
-//	    }
-	@GetMapping("/modify")
+	@GetMapping("/modifyCoupon")
 	@ResponseBody
 	public CouponDTO getCoupon(@RequestParam("c_no") int c_no) {
 		log.info("getCoupon()..");
@@ -186,7 +166,7 @@ public class AdminPageController {
 		return couponListService.getCouponById(c_no);
 	}
 
-	@PostMapping("/modify")
+	@PostMapping("/modifyCoupon")
 	public String modifyCoupon(@RequestParam("c_no") int c_no, @RequestParam("c_startdate") String c_startdateStr,
 			@RequestParam("c_duedate") String c_duedateStr, @RequestParam("c_name") String c_name,
 			@RequestParam("c_dcper") int c_dcper) {
@@ -212,33 +192,13 @@ public class AdminPageController {
 		return "redirect:/adminPage/couponsList";
 	}
 
-//	@PostMapping("/modify")
-//	public String modifyCoupon(@RequestParam("c_no") int c_no, 
-//			@RequestParam("c_startdate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date c_startdate,
-//            @RequestParam("c_duedate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date c_duedate,
-//	                           @RequestParam("c_name") String c_name,
-//	                           @RequestParam("c_dcper") int c_dcper) {
-//	    log.info("modifyCoupon()..");
-//
-//	    // 생성된 CouponDTO 객체로 넘겨주기
-//	    CouponDTO couponDto = new CouponDTO(c_no,  c_startdate, c_duedate,c_name, c_dcper);
-//	    couponListService.modifyCoupon(couponDto);
-//
-//	    return "redirect:/adminPage/couponsList";
-//	}
-//	@PostMapping("/modify")
-//	public String modify(BoardDto boardDto) {
-//		boardService.modifyBoard(boardDto);
-//		return "redirect:/board/list";
-//	}
-
-	@PostMapping("/remove")
+	@PostMapping("/removeCoupon")
 	public String removeCoupon(@RequestBody CouponDTO couponDto) {
 		log.info("removeCoupon()..");
 		couponListService.removeCoupon(couponDto);
 		return "redirect:/adminPage/couponsList";
 	}
-
+	
 	@GetMapping("/salesList")
 	public String getDailySales(Model model) {
 		log.info("salesList()..");
@@ -267,6 +227,13 @@ public class AdminPageController {
 		log.info("qnasSearchList()..");
 		List<QnaSearchDto> searchResults = qnaListService.getQnaSearchList(type, keyword);
 		return ResponseEntity.ok(searchResults);
+	}
+	
+	@PostMapping("/removeQna")
+	public String removeQna(@RequestBody QnaBoardDto qnaBoardDto) {
+		log.info("removeQna()..");
+		qnaListService.removeQna(qnaBoardDto);
+		return "redirect:/adminPage/qnasList";
 	}
 	
 

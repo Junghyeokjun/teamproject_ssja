@@ -55,21 +55,29 @@
 		<div id="select_mp_top" class="text-center">관리자</div>
 		<div id="select_content">
 			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
-				style="border: 1px solid #cccccc" onclick="location.href='/adminPage'">SSJA 현황</button>
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage'">SSJA 현황</button>
 			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
-				style="border: 1px solid #cccccc" onclick="location.href='/adminPage/membersList'">회원 목록</button>
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/membersList'">회원 목록</button>
 			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
-				style="border: 1px solid #cccccc" onclick="location.href='/adminPage/productsList'">상품 목록</button>
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/productsList'">상품 목록</button>
 			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
-				style="border: 1px solid #cccccc" onclick="location.href='/adminPage/purchasesList'">주문 목록</button>
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/purchasesList'">주문 목록</button>
 			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
-				style="border: 1px solid #cccccc" onclick="location.href='/adminPage/couponsList'">쿠폰 관리</button>
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/couponsList'">쿠폰 관리</button>
 			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
-				style="border: 1px solid #cccccc" onclick="location.href='/adminPage/notice'">공지사항 관리</button>
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/notice'">공지사항 관리</button>
 			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
-				style="border: 1px solid #cccccc"onclick="location.href='/adminPage/qnasList'">고객 문의 목록</button>
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/qnasList'">고객 문의 목록</button>
 			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
-				style="border: 1px solid #cccccc" onclick="location.href='/adminPage/salesList'">매출 현황</button>
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/salesList'">매출 현황</button>
 		</div>
 	</div>
 	<main>
@@ -85,7 +93,7 @@
 							style="background-color: rgb(238, 238, 238);">
 							<div id="userInfo_orders" style="cursor: auto;">
 								<h4>TODAY 총 매출액</h4>
-							<fmt:formatNumber value="${dailyPrice}" pattern="#,###원" />								
+								<fmt:formatNumber value="${dailyPrice}" pattern="#,###원" />
 							</div>
 							<div id="userInfo_wishs" style="cursor: auto;">
 								<h4>TODAY 주문 건수</h4>
@@ -101,17 +109,51 @@
 							</div>
 						</div>
 						<div id="adminInfo_dv3" class="my-3 mx-3"
-							style="display: flex; flex-wrap: wrap;">
-							<div style="flex: 1; margin-right: 10px;">
-								<h4 class="mx-5 my-3">일일매출(최근 일주일)</h4>
-								<canvas id="dailySalesChart" width="200" height="200"></canvas>
+							style="display: flex; flex-wrap: nowrap; justify-content: center;">
+							<div style="flex: 1; margin-right: 10px; text-align: center;">
+								<h4 class="mx-5 my-3">
+									일일매출
+									<p style="font-size: 0.5em; display: inline;">(최근일주일)</p>
+
+								</h4>
+								<canvas id="dailySalesChart" width="50" height="50"></canvas>
 							</div>
-							<div style="flex: 1; margin-left: 10px;">
-								<h4 class="mx-5 my-3">일일가입자(최근 일주일)</h4>
-								<canvas id="dailyMCountsChart" width="200" height="200"></canvas>
+							<div
+								style="flex: 1; margin-left: 10px; margin-right: 10px; text-align: center;">
+								<h4 class="mx-5 my-3">
+									일일가입자
+									<p style="font-size: 0.5em; display: inline;">(최근일주일)</p>
+
+								</h4>
+								<canvas id="dailyMCountsChart" width="50" height="50"></canvas>
+							</div>
+							<div
+								style="flex: 1; margin-left: 10px; margin-right: 10px; text-align: center;">
+								<h4 class="mx-5 my-3">
+									일일방문자
+									<p style="font-size: 0.5em; display: inline;">(최근일주일)</p>
+
+								</h4>
+								<canvas id="dailyVisitCountsChart" width="50" height="50"></canvas>
 							</div>
 						</div>
 					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal" id="totalInfoModal" tabindex="-1"
+			aria-labelledby="totalInfoModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content"
+					style="width: 800px; height: 700px; background-color: white;">
+					<div class="modal-header">
+						<h5 class="modal-title" id="totalInfoModalLabel"></h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body" id="totalInfoContent"></div>
+					<div class="modal-footer d-flex flex-row justify-content-center"
+						id="totlaInfoTooter"></div>
 				</div>
 			</div>
 		</div>
@@ -184,6 +226,54 @@
                         datasets: [{
                             label: '일일가입자수',
                             data: totalMs,
+                            backgroundColor: "#8e5ea2"
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                            	max:10,
+                                beginAtZero: true,  // 축의 최소값을 0으로 설정
+                                ticks: {
+                                    stepSize: 1,    // 간격을 1로 설정하여 정수 값만 표시
+                                    precision: 0    // 정수 값만 표시하도록 설정
+                                }
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+            }
+        });
+    </script>
+	<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var dailyVCountsString = '${dailyVCounts}';
+            console.log(dailyVCounts); 
+
+            dailyVCountsString = dailyVCountsString.replace(/\{([^=]+)=([^,]+),\s*([^=]+)=([^}]+)\}/g, '{"$1":$2,"$3":"$4"}');
+
+            // 3. 최종적으로 문자열을 JSON 형식으로 변환합니다.
+            console.log(dailyVCountsString); 
+
+            try {
+                // JSON 형식의 문자열을 JavaScript 객체로 파싱합니다.
+                var dailyVCounts = JSON.parse(dailyVCountsString);
+
+                // 날짜와 매출 데이터 추출
+                var dates = dailyVCounts.map(item => item.VISIT_DATE.split(' ')[0]); // 날짜만 추출
+                var countVs = dailyVCounts.map(item => item.VISIT_COUNT);
+
+                // Chart.js를 사용한 그래프 설정
+                var ctx = document.getElementById('dailyVisitCountsChart').getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: dates,
+                        datasets: [{
+                            label: '일일방문자수',
+                            data: countVs,
                             backgroundColor: "#8e5ea2"
                         }]
                     },
