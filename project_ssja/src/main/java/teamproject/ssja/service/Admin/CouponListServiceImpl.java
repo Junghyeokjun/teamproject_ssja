@@ -35,7 +35,7 @@ public class CouponListServiceImpl implements CouponListService {
 
     @Override
 	public CouponDTO getCouponById(int couponId) {
-        return adminPageMapper.read(couponId); // read 쿼리 실행
+        return adminPageMapper.readCoupon(couponId); // read 쿼리 실행
     }
 
     @Override

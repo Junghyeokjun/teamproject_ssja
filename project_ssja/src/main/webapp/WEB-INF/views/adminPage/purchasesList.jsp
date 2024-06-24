@@ -103,8 +103,9 @@
 						<option selected value="">선택</option>
 						<option value="PUR_NO">주문번호</option>
 						<option value="M_NO">회원번호</option>
-					</select> <input type="text" class="form-control border w-50" name="keyword" value=""> <input
-						type="button" onclick="purchasesSearchList()"
+					</select>
+					 <input type="text"  name="keyword" value="">
+					  <input 	type="button" onclick="purchasesSearchList()"
 						class="btn btn-outline-dark mr-2" value="검색">
 				</form>
 				<div class="table-responsive">

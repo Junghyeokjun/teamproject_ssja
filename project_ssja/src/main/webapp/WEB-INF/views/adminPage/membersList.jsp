@@ -102,8 +102,8 @@
 						<option value="m_name">회원이름</option>
 						<option value="m_id">아이디</option>
 						<option value="m_grade">등급</option>
-					</select> <input type="text" name="keyword" value=""> <input
-						type="button" onclick="membersSearchList()"
+					</select> <input type="text" name="keyword" value="">
+					 <input type="button" onclick="membersSearchList()"
 						class="btn btn-outline-dark mr-2" value="검색">
 				</form>
 				<div class="table-responsive">

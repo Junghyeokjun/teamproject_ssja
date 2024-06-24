@@ -103,7 +103,7 @@
 						<option selected value="">선택</option>
 						<option value="PRO_NO">상품번호</option>
 						<option value="PRO_BIZNAME">사업자이름</option>
-					</select> <input type="text" class="form-control border w-50" name="keyword" value=""> <input
+					</select> <input type="text"  name="keyword" value=""> <input
 						type="button" onclick="productsSearchList()"
 						class="btn btn-outline-dark mr-2" value="검색">
 				</form>
