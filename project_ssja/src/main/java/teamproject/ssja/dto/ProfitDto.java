@@ -15,6 +15,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProfitDto {
-	private Date P_DATE;
+	private String P_DATE;
 	private int P_PRICE;
 }

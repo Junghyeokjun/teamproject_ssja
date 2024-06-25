@@ -1,4 +1,7 @@
-	  $(window).on('scroll resize', function() {
+$(document).ready(	function(){
+	
+
+$(window).on('scroll resize', function() {
 	      let userLinkPosition = $('#user_link').offset();
 	      
 	      $('#login_user_div').css({
@@ -46,3 +49,6 @@
                     $login_user_div.hide();
                 }
         	);
+        
+        $("#user_link").attr("href", "/myPage");
+} )

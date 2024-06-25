@@ -1,10 +1,10 @@
-	//   $(window).on('scroll resize', function() {
-	//       let userLinkPosition = $('#user_link').offset();
-	      
-	//       $('#login_user_div').css({
-	//           'left': userLinkPosition.left,
-	//       });
-	//   });
+//	   $(window).on('scroll resize', function() {
+//	       let userLinkPosition = $('#user_link').offset();
+//	      
+//	       $('#login_user_div').css({
+//	           'left': userLinkPosition.left,
+//	       });
+//	   });
         let $login_user_div = $("<div>").attr("id", "login_user_div")
         .css({'border-radius':'5px','display':'none'}).appendTo($("#user_link"));
         
@@ -44,3 +44,7 @@
                     $login_user_div.hide();
                 }
         	);
+        
+
+        $("#user_link").attr("href", "/myPage");
+        

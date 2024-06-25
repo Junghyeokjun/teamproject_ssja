@@ -89,10 +89,6 @@ body {
 	background-color: #f7f0e8;
 }
 
-#logo_img {
-	width: 3.5em;
-	height: 3em;
-}
 </style>
 <style>
 #icon_div  img {
@@ -130,7 +126,6 @@ body {
 	    	});
 		</script>
   	</sec:authorize>
-<<<<<<< HEAD
 <c:choose>	
 	<c:when test="${principal.auth != 'ROLE_VENDOR'}">
 	  <header>
@@ -182,14 +177,13 @@ body {
   </c:when>
 </c:choose>
 
-=======
 		<c:choose>	
 			<c:when test="${principal.auth != 'ROLE_VENDOR'}">
 			  <header>
 			    <div id="title_bar" class="fixed-top">
 			      <div class="py-2 px-1" id="top-bar">
 			        <button type="toggle-button" class="top_btn" id="top_btn"></button>
-			        <a id="logo_toHome" href=""><img id="logo_img" src="/images/utilities/logoSSJA.png"></a>
+			        <a id="logo_toHome" href="/"><img id="logo_img" src="/images/utilities/logoSSJA.png"></a>
 			        <form action="http://www.naver.com" id=searchForm method="get">
 			
 			        </form>
@@ -233,7 +227,6 @@ body {
 			</header>
 		  </c:when>
 		</c:choose>
->>>>>>> origin/dev_ss
 	<div id="side_bar">
 		<div id="side_links" class="w-100"></div>
 	</div>

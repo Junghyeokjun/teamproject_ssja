@@ -155,6 +155,7 @@ color:#aaa;
 		<button id="select_hot">인기 순</button>
 		<button id="select_rowPrice">저렴 순</button>
 		<button id="select_wish">위시 순</button>
+		<button id="select_rating">평점 순</button>
 		<button id="select_new">신상품 순</button>
 		</div>
     </div>

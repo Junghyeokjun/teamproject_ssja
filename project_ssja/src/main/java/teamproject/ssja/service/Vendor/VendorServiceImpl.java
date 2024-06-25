@@ -2,7 +2,9 @@ package teamproject.ssja.service.Vendor;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -204,5 +206,12 @@ public class VendorServiceImpl implements VendorService{
 	public List<VendorSalesDto> getWeeklySalesData(long vno) {
 		// TODO Auto-generated method stub
 		return vendorMapper.selectVendorSalesInWeek(vno);
+	}
+
+	@Override
+	public Map<String, ?> getDataForExcel(Long vno) {
+		Map<String, ?> data = new HashMap<>();
+		
+		return null;
 	}
 }

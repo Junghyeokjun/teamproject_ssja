@@ -115,7 +115,7 @@ body {
 	        </form>
 	        <button id="search_icon"></button>
 	        <a id="cart_link"><img id="cart_img"></a>
-	        <a id="user_link"><img id="login_img"></a>
+        <a id="user_link" href="/login"><img id="login_img"></a>
 	      </div>
 	
 	    </div>
@@ -145,7 +145,7 @@ body {
         				&gt;</h1>      			
         		</div>
         		<a id="cart_link" hidden="hidden"></a>
-				<a id="user_link"><img id="login_img"></a>
+				<a id="user_link" href="<sec:authorize access="isAuthenticated()">/mypage</sec:authorize><sec:authorize access="!isAuthenticated()">/login</sec:authorize>"><img id="login_img"></a>
 			</div>
 		</div>
 		<nav id="total_bar">
@@ -162,7 +162,7 @@ body {
 			<div class="main_whitespace p-5">
 				<h1 class="h3 text-center">내용 수정하기</h1>
 			</div>
-			<form action="${pageContext.request.contextPath}/board/modify" method="post">
+			<form class="board-form" action="${pageContext.request.contextPath}/board/modify" method="post">
 				<sec:csrfInput />
 				<div class="input-group">
 					<input type="hidden" class="form-control" name="bbcno" value="${modify_view.bbcno}">	

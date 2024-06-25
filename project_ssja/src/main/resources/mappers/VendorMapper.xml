@@ -233,6 +233,10 @@
 			rownum &lt;= 5
 	</select>
 	
+	<select id="getVendorData" resultMap="VendorDtoMap">
+	select * from vendor where v_no = #{vno}
+	</select>
+	
 	
 	<!-- 게시글 맵 -->
 <!-- 맵 -->

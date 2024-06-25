@@ -35,6 +35,9 @@
   <script src="/js/footer.js">
 
   </script>
+  <script src="/js/board.js">
+  
+  </script>
   <link href="/css/footerstyle.css?after" rel="stylesheet">
   <link href="/css/vendorbarstyle.css?after" rel="stylesheet">
   <link href="/css/board.css?after" rel="stylesheet">
@@ -51,9 +54,14 @@
       background-color: #f7f0e8;
     }
 
-	header, main, footer{
+	header{
 		height: auto;
-		overflow : hidden;
+	}
+	
+	
+	main, footer {
+		height: auto;
+		overflow: hidden;
 	}
 	
     #logo_img {
@@ -254,6 +262,9 @@
 		            });
 				</script>
 			</c:when>
+			<c:otherwise>
+			
+			</c:otherwise>
 		</c:choose>
     </sec:authorize>
 	<sec:authorize access="isAnonymous()">
@@ -287,7 +298,7 @@
         				${vendorMember.m_Name}
         				&gt;</h1>      			
         		</div>
-				<a id="user_link"><img id="login_img"></a>
+        <a id="user_link" href="/login"><img id="login_img"></a>
 			</div>
 		</div>
 		<nav id="total_bar">
@@ -313,7 +324,7 @@
 						<a href="${pageContext.request.contextPath}/vendor/question/write_view/${bc.bcno}" class="btn btn-primary btn-tuning">글 작성</a>
 					</div>
 					<table class="table table-hover" style="text-align: center;">
-						<thead class="table-dark">
+						<thead class="table-secondary">
 							<tr>
 								<td>번호</td>
 								<td>제목</td>
@@ -327,8 +338,7 @@
 									<td><a id="board_title" class=""
 										href="${pageContext.request.contextPath}/vendor/question/content_view/${bc.bcno}?bno=${board.bno}">${board.btitle}</a>	
 									</td>
-									<td class="date_str">${board.bdate}</td>
-									<%-- <td><button type="button" onclick="location.href='/dept/remove?deptno=${dept.deptno}';">삭제</button></td> --%>
+									<td class="date_str">${board.bdate}</td>								
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -362,6 +372,20 @@
 								</c:if>
 							</ul>
 						</nav>
+					</div>
+					<!-- 모양내기 -->
+					<div class="d-flex justify-content-center">
+						<form class="w-50 input-group" name="members-search-form" autocomplete="off">
+							<select class="form-select border" name="type">
+								<option selected value="">선택</option>
+								<option value="bTitle">제목</option>
+								<option value="bContent">내용</option>
+								<option value="m_name">제목 + 내용</option>
+								<option value="m_id">작성일</option>
+							</select> 
+							<input type="text" class="form-control border w-50" name="keyword" > 
+							<input type="submit" class="btn btn-outline-dark mr-2" value="검색">
+						</form>
 					</div>
 				</c:otherwise>
 			</c:choose>

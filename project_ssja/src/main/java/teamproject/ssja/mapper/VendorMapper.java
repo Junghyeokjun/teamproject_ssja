@@ -62,5 +62,5 @@ public interface VendorMapper {
 	VendorEtcInfoDTO getVendorInfoEtc(String bizname);
 	List<CommunityBoardDto> getVendorInfoCommu(String bizname);
 	
-	
+	VendorInfoDTO getVendorData(Long vno);
 }

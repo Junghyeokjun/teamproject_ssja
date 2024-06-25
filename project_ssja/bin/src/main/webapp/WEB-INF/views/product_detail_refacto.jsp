@@ -74,12 +74,21 @@ table {
 	border-color: gray;
 }
 
-.nav-link-custom:hover {
-	color: yellow;
+.nav-link.nav-link-custom:hover {
+	color: #ff9900;
 }
 
 .nav-link.nav-link-custom.active {
-	
+	color: white;
+	background-color: black;
+}
+
+.nav-link.nav-link-custom.active:hover {
+	color: #ff9900;
+}
+
+.nav-link.nav-link-custom{
+	color: black;
 }
 
 .input-group-text {
@@ -252,8 +261,8 @@ color:black;
 				<form action="http://www.naver.com" id=searchForm method="get">
 				</form>
 				<button id="search_icon"></button>
-				<a id="cart_link"><img id="cart_img"></a> <a id="user_link"><img
-					id="login_img"></a>
+				<a id="cart_link"><img id="cart_img"></a> 
+				<a id="user_link" href="/login"><img id="login_img"></a>
 			</div>
 		</div>
 		<nav id="total_bar">
@@ -263,7 +272,7 @@ color:black;
 		<sec:authorize access="isAuthenticated()">
 			<sec:authentication property="principal" var="principal"/>
 		</sec:authorize>
-		<input type="hidden" id="m_no" value="${productData.pro_no }"><!-- 상품번호 히든 -->
+		<input type="hidden" id="m_no" value="${principal.userInfo.m_No}"><!-- 유저 번호 히든 -->
 	</header>
 	<div id="side_bar">
 		<div id="side_links" class="w-100"></div>
@@ -397,7 +406,7 @@ color:black;
 							<div class="border rounded-2 px-3 py-2 bg-white">
 								<ul class="nav nav-pills nav-justified mb-3" id="ex1"
 									role="tablist">
-									<li class="nav-item d-flex " role="presentation"><a
+									<li class="nav-item d-flex custom-nav" role="presentation"><a
 										class="nav-link nav-link-custom d-flex align-items-center justify-content-center w-100 active"
 										id="ex1-tab-1" data-mdb-toggle="pill" href="#ex1-pills-1"
 										role="tab" aria-controls="ex1-pills-1" aria-selected="true">상품정보</a>
@@ -615,19 +624,19 @@ color:black;
 		let pronoInput = document.createElement("input");
 		pronoInput.setAttribute("type", "hidden");
 		pronoInput.setAttribute("name", "productNo");
-		pronoInput.setAttribute("value", $('#product_number_dv').val());
+		pronoInput.setAttribute("value", parseInt($('#product_number_dv').val()));
 		form.appendChild(pronoInput);
 
 		let mnoInput = document.createElement("input");
 		mnoInput.setAttribute("type", "hidden");
 		mnoInput.setAttribute("name", "mno");
-		mnoInput.setAttribute("value", $("#m_no").val());
+		mnoInput.setAttribute("value", parseInt($("#m_no").val()));
 		form.appendChild(mnoInput);
 
 		let quanInput = document.createElement("input");
 		quanInput.setAttribute("type", "hidden");
 		quanInput.setAttribute("name", "quantity");
-		quanInput.setAttribute("value", $("#quantity").val());
+		quanInput.setAttribute("value", parseInt($("#quantity").val()));
 		form.appendChild(quanInput);
 
 		// 폼을 body에 추가

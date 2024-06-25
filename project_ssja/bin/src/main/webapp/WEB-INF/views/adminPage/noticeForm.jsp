@@ -27,7 +27,7 @@
    <meta name="_csrf" content="${_csrf.token}"/>
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
   <link href="/css/footerstyle.css?after" rel="stylesheet">
-  <link href="/css/barstyle.css?after" rel="stylesheet">
+  <link href="/css/barstyle_admin.css?after" rel="stylesheet">
 
   <link rel="stylesheet" href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
 
@@ -54,7 +54,7 @@ min-height:400px;
         </form>
         <button id="search_icon"></button>
         <a id="cart_link"><img id="cart_img"></a>
-        <a id="user_link"><img id="login_img"></a>
+        <a id="user_link" href="/login"><img id="login_img"></a>
       </div>
 
     </div>
@@ -67,6 +67,27 @@ min-height:400px;
   <div id="side_bar"> 
     <div id="side_links" class="w-100"></div>
 </div>
+<div id="select_AdminPage" class="d-flex flex-column">
+		<div id="select_mp_top" class="text-center">관리자</div>
+		<div id="select_content">
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc" onclick="location.href='/adminPage'">SSJA 현황</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc" onclick="location.href='/adminPage/membersList'">회원 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc" onclick="location.href='/adminPage/productsList'">상품 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc" onclick="location.href='/adminPage/purchasesList'">주문 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc" onclick="location.href='/adminPage/couponsList'">쿠폰 관리</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc" onclick="location.href='/adminPage/notice'">공지사항 관리</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc" onclick="location.href='/adminPage/qnasList'">고객 문의 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc" onclick="location.href='/adminPage/salesList'">매출 현황</button>
+		</div>
+	</div>
 <main>
   <div id="main_container" style="min-height: 400px; width: 70%;">
     <form action="/adminPage/notice/form" method="post">

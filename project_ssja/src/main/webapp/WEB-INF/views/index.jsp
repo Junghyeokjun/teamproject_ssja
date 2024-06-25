@@ -124,25 +124,7 @@ cursor:pointer;
   <main>
     <div id="main_container" >
     
- 	   <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
-				<div class="carousel-indicators">
-					<button type="button" data-bs-target="#carouselExampleIndicators"data-bs-slide-to="0" 
-						class="active" aria-current="true"aria-label="Slide 1"></button>
-				</div>
-				<div class="carousel-inner" id="event_banner_content">
-					<div class="carousel-item active">
-					<a href="/event/page?event=0" id="event_default_link"><img src="/images/event/banner/event_banner_img_default.jpg" id="event_banners" class="d-block w-100" alt="Event1..."></a>
-					</div>
-				</div>
-				<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
+ 	  
 
 
 
@@ -184,6 +166,26 @@ cursor:pointer;
         <img src="/images/utilities/arrow1.png" alt="">
       </button>
     </div>
+     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+				<div class="carousel-indicators">
+					<button type="button" data-bs-target="#carouselExampleIndicators"data-bs-slide-to="0" 
+						class="active" aria-current="true"aria-label="Slide 1"></button>
+				</div>
+				<div class="carousel-inner" id="event_banner_content">
+					<div class="carousel-item active">
+					<a href="/event/page?event=0" id="event_default_link"><img src="/images/event/banner/event_banner_img_default.jpg" id="event_banners" class="d-block w-100" alt="Event1..."></a>
+					</div>
+				</div>
+				<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+    
     <!-- 추가부분끝 -->
     <div id="icon_container" class="d-flex flex-row justify-content-evenly align-items-center">
           <div id="icon_div"><img id="icon_img1"src="/images/utilities/icon_fur.png"><div id="icn_txt">가구</div></div>

@@ -484,5 +484,31 @@ SELECT * FROM board where  B_C_NO=20
         ]]>
 	</delete>
 	
+ <select id="totalDailyProfitData" resultType="ProfitDto">
+  SELECT TO_CHAR(P_DATE, 'YYYY-MM-DD') AS P_DATE, SUM(p_price) AS P_PRICE
+FROM   profit GROUP BY   TO_CHAR(P_DATE, 'YYYY-MM-DD') ORDER BY   P_DATE desc
+ </select>
+	 <select id="totalMonthlyProfitData" resultType="ProfitDto">
+ SELECT TO_CHAR(P_DATE, 'YYYY-MM') AS P_DATE, SUM(p_price) AS P_PRICE
+FROM   profit GROUP BY   TO_CHAR(P_DATE, 'YYYY-MM') ORDER BY   P_DATE desc
+ </select>
+  <select id="totalYearlyProfitData" resultType="ProfitDto">
+  SELECT TO_CHAR(P_DATE, 'YYYY') AS P_DATE, SUM(p_price) AS P_PRICE
+FROM   profit GROUP BY   TO_CHAR(P_DATE, 'YYYY') ORDER BY   P_DATE desc
+ </select>
+	
+	<select id="getListMemberNo" resultType="long">
+	SELECT m_no FROM members
+	</select>
+	
+	
+      <update id="insertCouponToMembers" parameterType="java.util.List">
+    <foreach collection="list" item="m_no" separator=" " open="INSERT ALL" close="SELECT * FROM DUAL">
+        INTO ownedcoupon (m_no, c_no)
+        VALUES (#{m_no}, c_seq.currval)
+    </foreach>
+</update>
+	
+	
 	
 	</mapper>

@@ -24,7 +24,7 @@
   }
 
   #recent_post_wrap{
-    width: 280%;
+    width: 400%;
     height: 250px;
   }
 
@@ -39,7 +39,7 @@
   #recent_post_wrap>span{
     position: relative;
     display: inline-block;
-    width: 8.8vw;
+    width: 11.5vw;
     min-width: 125px;
     height: 250px;
     margin-left: 20px;
@@ -107,7 +107,7 @@
     }
 
     #recent_post_wrap>span{
-      width: 11.5vw;
+      width: 14vw;
     }
     #recent_post_wrap>span:nth-child(6n){
       margin-left: 80px;

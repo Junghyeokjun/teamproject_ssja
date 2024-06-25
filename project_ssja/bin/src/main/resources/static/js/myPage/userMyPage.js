@@ -30,17 +30,7 @@
         let modal = new bootstrap.Modal(document.getElementById('totalInfoModal'));
         let condition = 'd';
 		
-		
-		  function openCenteredWindow(url, width, height) {
-	            const screenWidth = $(window).width();
-	            const screenHeight = $(window).height();
-
-	            const left = (screenWidth / 2) - (width / 2);
-	            const top = (screenHeight / 2) - (height / 2);
-
-	            window.open(url, '_blank', 'width=' + width + ',height=' + height + ',top=' + top + ',left=' + left);
-	        }
-		
+     
 
 	let myPageUserInfo = function() {
 		

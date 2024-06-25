@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,12 +45,7 @@
       background-color: #f7f0e8;
     }
 
-    #logo_img {
-      width: 3.5em;
-      height: 3em;
-    }
-
-  </style>
+  </style> 	
   <script>
 
   </script>
@@ -66,7 +63,7 @@
         </form>
         <button id="search_icon"></button>
         <a id="cart_link"><img id="cart_img"></a>
-        <a id="user_link"><img id="login_img"></a>
+        <a id="user_link" href="login"><img id="login_img"></a>
       </div>
 
     </div>
@@ -100,7 +97,10 @@
     <div id="second_footer"></div>
     <div id="third_footer"></div>
   </footer>
-
+<sec:authorize access="isAuthenticated()">
+  <script src="/js/login_user_tab.js"> </script>
+  <script src="/js/user_cart_tab.js"> </script>
+</sec:authorize>
 </body>
 
 </html>
