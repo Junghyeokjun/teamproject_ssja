@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,12 +17,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.nimbusds.jose.shaded.json.JSONObject;
 
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.BoardIsLikedDto;
-import teamproject.ssja.dto.MembersDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ReplysDto;
 import teamproject.ssja.dto.community.CommunityBoardDto;
@@ -79,10 +81,21 @@ public class CommunityController {
 		return mv;
 	}
 
-	//게시글 수정 임시 이미지 수정
-	@PostMapping("/content/tempImg/{bno}")
-	public String modifyTempImg(@PathVariable("bno") long bno, @RequestParam("image") MultipartFile file) {
-		return communityService.updateTempBoardImg(bno, file)+"";
+	//게시글 임시 이미지 삭제
+	@PostMapping("/tempImg")
+	public String deleteTempImg(@RequestParam(value="list[]") List<String> data ) {
+		
+		return communityService.deleteTempBoardImg(data)+"";
+	}
+	
+	//게시글 입력시 임시 이미지를 삭제하는 메서드
+	@PutMapping("/tempImg")
+	public boolean modifyTempImg(@RequestParam(value="allList[]") List<String> allList,
+								 @RequestParam(value="realList[]") List<String> realList,
+								 @RequestParam(value="bno") long bno){
+		System.out.println(communityService.updateTempBoardImg(allList, realList, bno));
+		
+		return true;
 	}
 	
 	//게시글 업데이트
@@ -97,17 +110,13 @@ public class CommunityController {
 		communityService.modifyContent(content);
 		
 	}
-	
-	//게시글 이미지 수정
-	@PostMapping("/content/img/{bno}")
-	public String modifyImg(@PathVariable("bno") long bno, @RequestParam("image") MultipartFile file) {
-		return communityService.updateBoardImg(bno, file)+"";
-	}
-	
-	//게시글 이미지 삭제
-	@DeleteMapping("/content/img/{bno}")
-	public String deleteImg(@PathVariable("bno") long bno) {
-		return communityService.deleteBoardImg(bno)+"";
+	//게시글 이미지 수정(editor)
+	@PostMapping("/content/img")
+	public ResponseEntity<JSONObject> modifyEditorImg(MultipartHttpServletRequest multiRequest) {
+		JSONObject data = new JSONObject();
+		data.put("url", communityService.updateEditorImage(multiRequest.getMultiFileMap()));
+        
+		return ResponseEntity.ok().body(data);
 	}
 	
 	//댓글 페이징해서 얻어오는 부분
@@ -187,7 +196,12 @@ public class CommunityController {
 
 		return data;
 	}
-	
+	//게시글 내용을 얻어오는 메서드
+	@GetMapping("/post/{bno}")
+	public CommunityBoardDto getPost(@PathVariable("bno") long bno){
+
+		return communityService.getContent(bno);
+	}
 	//커뮤니티 게시글을 삭제하는 부분
 	@PostMapping("/post")
 	public long insertPost(@RequestBody Map<String, Object> data){
@@ -197,11 +211,6 @@ public class CommunityController {
 														data.get("writer").toString(), 
 														data.get("title").toString(), 
 														data.get("content").toString(), "SYSDATE", 0, 0, 0, 0, 0,0));
-	}	
-	//게시글 입력시 임시 이미지를 삭제하는 메서드
-	@DeleteMapping("/tempImg/{randomNum}")
-	public boolean deleteTempImg(@PathVariable("randomNum") long randomNum){
-		return communityService.deleteTempBoardImg(randomNum);
 	}
 	
 	//커뮤니티 게시글을 삭제하는 부분
@@ -214,9 +223,7 @@ public class CommunityController {
 	@GetMapping("/bestPost")
 	public List<CommunityBoardDto> bestPost(){
 		return communityService.getBestPost();
-
 	}
-
 	//커뮤니티 게시글을 검색하여 얻어오는 부분
 	@GetMapping("/search")
 	public Map<String,Object> search(int pageNum, int amount,String option, String keyword){
@@ -234,9 +241,13 @@ public class CommunityController {
 	}
 	//게시글 연관상품 획득 메서드
 	@GetMapping("/product/{proNo}")
-	public ProductDto product(@PathVariable("proNo") long proNo){
-
-		return communityService.getRelatedProduct(proNo);
+	public Map<String, Object> product(@PathVariable("proNo") long proNo){
+		Map<String, Object> productData= new HashMap<>();
+		ProductDto product=communityService.getRelatedProduct(proNo) ;
+		productData.put("product",product);
+		productData.put("pcname",communityService.getProductCategory(product.getP_C_NO()));
+		
+		return productData;
 	}
 	
 	//게시글 상품리스트 획득 메서드
@@ -254,6 +265,7 @@ public class CommunityController {
 													  Long.valueOf(data.get("proNo").toString()).longValue());
 	}
 
+	//유저 정보 획득
 	@GetMapping("/userinfo/{mno}")
 	public ModelAndView userinfo(ModelAndView mv ,@PathVariable("mno") long mno ){
 				

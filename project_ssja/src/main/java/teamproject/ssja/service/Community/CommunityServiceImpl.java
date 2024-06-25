@@ -2,14 +2,15 @@ package teamproject.ssja.service.Community;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ import teamproject.ssja.dto.community.CommunityBoardDto;
 import teamproject.ssja.dto.login.CustomPrincipal;
 import teamproject.ssja.mapper.BoardMapper;
 import teamproject.ssja.mapper.MembersMapper;
+import teamproject.ssja.mapper.ProductCategoryMapper;
 import teamproject.ssja.mapper.ProductDetailMapper;
 import teamproject.ssja.mapper.ProductListMapper;
 import teamproject.ssja.mapper.ReplyMapper;
@@ -46,9 +48,13 @@ public class CommunityServiceImpl implements CommunityService {
 	@Autowired
 	MembersMapper membersMapper;
 	
+	@Autowired
+	ProductCategoryMapper categoryMapper;
+	
 	//배포시에 경로에 따라 수정
-	final String absolutePath="/home/ubuntu/images";
-	final String path = "/images/board_content";
+//	final String absolutePath="/home/ubuntu/images";
+    final String absolutePath="\\\\DESKTOP-RDUHP84\\board_content";
+    final String path = "/images/board_content";
 	
 	@Override
 	public List<CommunityBoardDto> getPost(int pageNum, int amount) {
@@ -147,84 +153,49 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 	@Override
-	public String updateTempBoardImg(long bno, MultipartFile file) {
-		String fileName="Temp_"+bno+".png";
-		File targetFile=new File(absolutePath+"/"+fileName);
-		if(file==null || file.isEmpty()) {
-			
-			return "null";
-		}
-		try{
-			FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(targetFile));
-        }catch (IOException ioException){
-            log.error(ioException.toString(),ioException);
-            return "null";
-        }
+	public String updateTempBoardImg(List<String> allList,List<String> realList,long bno) {
+		File targetFile=null;
+		boolean banner=true;
 		
-		return path+"/"+fileName;
-	}
-
-	@Override
-	public boolean updateBoardImg(long bno, MultipartFile file) {
-		boolean result=false;
-		String fileName="board_img_"+bno+".png";
-		File targetFile=new File(absolutePath+"/"+fileName);
-		File tempFile= new File(absolutePath+"/"+"Temp_"+bno+".png");
-
-		boardMapper.deleteBoardProduct(bno);
-		//원래 이미지가 존재하지 않을경우 이미지 삽입 
 		if(boardMapper.selectBoardImg(bno)==0) {
 			boardMapper.insertBoardImg(new BoardImgsDto(0,bno,path+"/temp.png"));
 		}
-		//파일이 존재하지 않을경우리턴 
-		if(file==null || file.isEmpty()) {			
-			return result;
+		
+		for (String filePath : allList) {
+			if(realList.contains(filePath)) {
+				if(banner) {
+					boardMapper.updateBoardImg(new BoardImgsDto(0, bno, filePath));
+					banner=false;
+				}
+			}else {
+				targetFile=new File(filePath.replace(path, absolutePath));
+				if(targetFile.exists()) {
+					targetFile.delete();
+				}
+			}
 		}
-
-		boardMapper.updateBoardImg(new BoardImgsDto(0, bno, path+"/"+fileName));
-		//임시파일 삭제
-		if(tempFile.exists()) {
-			tempFile.delete();
+		if(realList.get(0).equals("temp")) {
+			boardMapper.updateBoardImg(new BoardImgsDto(0, bno, path+"/temp.png"));
+			return "temp";
 		}
 		
-		try{
-			FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(targetFile));
-            result=true;
-        }catch (IOException ioException){
-            log.error(ioException.toString(),ioException);
-            return false;
-        }
-		
-		
-		return result;
-	}
-
-	
-
-	@Override
-	public int deleteBoardImg(long bno) {
-		String fileName="board_img_"+bno+".png";
-		File file= new File(absolutePath+"/"+fileName);
-		System.out.println(file.exists());
-		if(file.exists()) {
-			file.delete();
-		}
-		boardMapper.deleteBoardProduct(bno);
-		boardMapper.updateBoardImg(new BoardImgsDto(0, bno, "/images/board_content/temp.png"));
-		
-		
-		return 0;
+		return "imgae";
 	}
 
 
+
+
 	@Override
-	public boolean deleteTempBoardImg(long randomNum) {
-		String fileName="Temp_"+randomNum+".png";
-		File file= new File(absolutePath+"/"+fileName);
-		if(file.exists()) {
-			file.delete();
+	public boolean deleteTempBoardImg(List<String> fileNames) {
+		File file=null;
+		for (String fileName : fileNames) {
+			fileName=fileName.replace(path, absolutePath);
+			file=new File(fileName);
+			if(file.exists()) {
+				file.delete();
+			}
 		}
-		return false;
+		return true;
 	}
 
 
@@ -311,7 +282,29 @@ public class CommunityServiceImpl implements CommunityService {
 		return boardMapper.selectReview(mno);
 	}
 
+	@Override
+	public String getProductCategory(long pcno) {
+		return categoryMapper.selectPC(pcno);
+	}
 
+	@Override
+	public String updateEditorImage(MultiValueMap<String, MultipartFile> multiValueMap) {
+		MultipartFile fileload = multiValueMap.get("upload").get(0);
+		String fileName = fileload.getOriginalFilename();
 
+		int index = fileName.lastIndexOf(".");
+		String ext = fileName.substring(index+1);
+		Random ran = new Random(System.currentTimeMillis());
+		fileName = System.currentTimeMillis()+"_"+(int)(ran.nextDouble()*10000)+"."+ext;
+
+		File targetFile = new File(absolutePath+ File.separator + fileName);
+		try {
+			FileCopyUtils.copy(fileload.getInputStream(), new FileOutputStream(targetFile));
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return path+ File.separator + fileName;
+	}
 
 }

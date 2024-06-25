@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.BoardIsLikedDto;
 import teamproject.ssja.dto.ReplysDto;
 import teamproject.ssja.dto.community.CommunityBoardDto;
-import teamproject.ssja.mapper.BoardMapper;
 
 
 @Slf4j
