@@ -61,10 +61,26 @@ ClassicEditor
 	.create(document.querySelector('#update_content'),{
 		language:'ko',
 		extraPlugins: [MyCustomUploadAdapterPlugin],
+		toolbar: {
+            items: [
+                'heading',
+                'bold',
+                'italic',
+				'link',
+                'bulletedList',
+                'numberedList',
+                'imageUpload',
+                'blockquote',
+                'MediaEmbed',
+                'undo',
+                'redo'
+            ]
+        }
 		
 	})
 	.then(editor => {
-		$(".ck-editor").addClass("w-100")
+		$(".ck-editor").addClass("w-100");
+
 		console.log(editor);
 	})
 	.catch(error => {
