@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 //P_DATE  NOT NULL DATE       
 //P_PRICE NOT NULL NUMBER(20) 
@@ -12,6 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class VendorSalesDto {
 	// 저장 데이터의 날짜들 보관
 	private String orderDate;

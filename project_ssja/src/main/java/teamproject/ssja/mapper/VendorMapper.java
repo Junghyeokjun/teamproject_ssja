@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ProductImgDto;
+import teamproject.ssja.dto.StatisticVO;
 import teamproject.ssja.dto.VendorSalesDto;
 import teamproject.ssja.dto.community.CommunityBoardDto;
 import teamproject.ssja.dto.vendor.VendorEtcInfoDTO;
@@ -29,11 +30,20 @@ public interface VendorMapper {
 	// 판매자 자신의 최근 일주일 동안의 매출 내액(sysdate - 7)
 	List<VendorSalesDto> selectVendorSalesInWeek(long vno);
 
+	// 판매자 자신의 총 통계 수치 가져오기
+	VendorSalesDto selectVendorSalesTotal(long vno);
+	
+	// 일, 월, 년
+	List<VendorSalesDto> selectVendorSalesInDay(StatisticVO statisticVO);
+	List<VendorSalesDto> selectVendorSalesInMonth(StatisticVO statisticVO);
+	List<VendorSalesDto> selectVendorSalesInYear(StatisticVO statisticVO);
+	
 	// 판매자 자신이 입력했던 물품의 번호 가져오기
 	long selectInsertedProNum(ProductDto product);
 	
 	// 상품 정보 집어넣기
 	int insertProduct(ProductDto product);
+	
 	
 	// 상품 이미지 경로 집어넣기
 	int insertProductImgs(ProductImgDto productImg); 

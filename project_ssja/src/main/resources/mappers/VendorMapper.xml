@@ -22,34 +22,15 @@
  -->
  	
  <!-- 상품  -->
- 
  	<!-- 최근 일주일 간 팔린 상품 매출 내역 -->
-	<!--  	
- 	<select id="selectVendorSalesInWeek" resultMap="VendorSalesDtoMap">
-	 	<![CDATA[
-	 		SELECT TRUNC(P.PUR_DATE) AS ORDER_DATE,
-			       SUM(O.O_PRICE) AS TOTAL_SALES,
-			       COUNT(*) AS PURCHASE_COUNT
-			FROM PURCHASE P
-			JOIN ORDERS O ON P.PUR_NO = O.PUR_NO
-			JOIN PRODUCT PR ON O.PRO_NO = PR.PRO_NO
-			JOIN VENDOR V ON PR.V_NO = V.V_NO
-			WHERE P.PUR_DATE >= TRUNC(SYSDATE) - 7
-			  AND P.PUR_DATE < TRUNC(SYSDATE)
-              AND V.V_NO=#{vno} 
-			GROUP BY TRUNC(P.PUR_DATE)
-			ORDER BY TRUNC(P.PUR_DATE)
-	 	]]>
- 	</select>
- 	 -->
  	<select id="selectVendorSalesInWeek" resultMap="VendorSalesDtoMap">
 	 	<![CDATA[
 	 		SELECT 
 			    TRUNC(PUR_DATE) AS ORDER_DATE,
-			    SUM(CASE WHEN TRUNC(P.PUR_DATE) >= TRUNC(SYSDATE) - 7 AND TRUNC(P.PUR_DATE) < TRUNC(SYSDATE) THEN O.O_PRICE ELSE 0 END) AS TOTAL_SALES,
-			    SUM(CASE WHEN TRUNC(P.PUR_DATE) >= TRUNC(SYSDATE) - 14 AND TRUNC(P.PUR_DATE) < TRUNC(SYSDATE) - 7 THEN O.O_PRICE ELSE 0 END) AS LAST_TOTAL_SALES,			  
-			    COUNT(*) AS PURCHASE_COUNT,
-			    (SELECT COUNT(*)
+			    SUM(CASE WHEN TRUNC(P.PUR_DATE) >= TRUNC(SYSDATE) - 7 AND TRUNC(P.PUR_DATE) < TRUNC(SYSDATE) THEN P.PUR_TOT ELSE 0 END) AS TOTAL_SALES,
+			    SUM(CASE WHEN TRUNC(P.PUR_DATE) >= TRUNC(SYSDATE) - 14 AND TRUNC(P.PUR_DATE) < TRUNC(SYSDATE) - 7 THEN P.PUR_TOT ELSE 0 END) AS LAST_TOTAL_SALES,			  
+			    COUNT(DISTINCT P.PUR_NO) AS PURCHASE_COUNT,
+			    (SELECT COUNT(DISTINCT P2.PUR_NO)
 			     FROM PURCHASE P2
 			     JOIN ORDERS O2 ON P2.PUR_NO = O2.PUR_NO
 			     JOIN PRODUCT PR2 ON O2.PRO_NO = PR2.PRO_NO
@@ -70,7 +51,67 @@
 	 	]]>
  	</select>
  	
+ 	<!-- 판매자 총계. 변수 생성을 최대한 줄이기 위해 기존 변수를 일부 활용. -->
+ 	<select id="selectVendorSalesTotal" resultMap="VendorSalesDtoMap">
+ 		<![CDATA[
+ 		SELECT 
+		     COUNT(DISTINCT P.PUR_NO) AS PURCHASE_COUNT,
+		     SUM(O.O_PRICE) AS TOTAL_SALES       
+		FROM PURCHASE P, ORDERS O, PRODUCT PR, VENDOR V
+		WHERE P.PUR_NO = O.PUR_NO
+		AND O.PRO_NO = PR.PRO_NO
+		AND PR.V_NO = V.V_NO
+		AND V.V_NO = #{vno}
+ 		]]>
+ 	</select>
  	
+ 	<!-- 특정 월 기준으로, 하루 단위로 일별 데이터 조회  -->
+ 	<select id="selectVendorSalesInDay" resultMap="VendorSalesDtoMap">
+ 		<![CDATA[
+	 		SELECT TO_CHAR(PUR_DATE, 'YYYY-MM-DD') AS ORDER_DATE,
+			       SUM(P.pur_TOT) AS TOTAL_SALES
+			FROM PURCHASE P
+			JOIN ORDERS OD ON P.PUR_NO = OD.PUR_NO
+			JOIN PRODUCT PR ON OD.PRO_NO = PR.PRO_NO
+			JOIN VENDOR V ON PR.V_NO = V.V_NO
+			WHERE TO_CHAR(P.PUR_DATE, 'YYYY-MM') = #{dateStr} 
+			AND V.V_NO = #{vno}
+			GROUP BY TO_CHAR(PUR_DATE, 'YYYY-MM-DD')
+			ORDER BY ORDER_DATE
+ 		]]> 
+ 	</select>
+
+	<!-- 특정 년 기준으로, 한 달 단위로 월별 데이터 조회  -->
+	<select id="selectVendorSalesInMonth" resultMap="VendorSalesDtoMap">
+ 		<![CDATA[
+	 		SELECT TO_CHAR(PUR_DATE, 'YYYY-MM') AS ORDER_DATE,
+			       SUM(P.pur_TOT) AS TOTAL_SALES
+			FROM PURCHASE P
+			JOIN ORDERS OD ON P.PUR_NO = OD.PUR_NO
+			JOIN PRODUCT PR ON OD.PRO_NO = PR.PRO_NO
+			JOIN VENDOR V ON PR.V_NO = V.V_NO
+			WHERE TO_CHAR(P.PUR_DATE, 'YYYY') = #{dateStr}
+			AND V.V_NO = #{vno}
+			GROUP BY TO_CHAR(PUR_DATE, 'YYYY-MM')
+			ORDER BY ORDER_DATE
+ 		]]> 		
+ 	</select>
+
+	<!-- 일 년 단위로, 연도별 데이터 조회  -->
+	<select id="selectVendorSalesInYear" resultMap="VendorSalesDtoMap">
+ 		<![CDATA[
+	 		SELECT TO_CHAR(PUR_DATE, 'YYYY') AS ORDER_DATE,
+			       SUM(P.pur_TOT) AS TOTAL_SALES
+			FROM PURCHASE P
+			JOIN ORDERS OD ON P.PUR_NO = OD.PUR_NO
+			JOIN PRODUCT PR ON OD.PRO_NO = PR.PRO_NO
+			JOIN VENDOR V ON PR.V_NO = V.V_NO
+			WHERE TO_CHAR(P.PUR_DATE, 'YYYY') = #{dateStr}
+			AND V.V_NO = #{vno}
+			GROUP BY TO_CHAR(PUR_DATE, 'YYYY')
+			ORDER BY ORDER_DATE
+ 		]]> 		
+ 	</select>
  	<!-- 페이징은 기본으로 깔고 가기 -->
 	<select id="selectVendorProducts" resultMap="ProductsListMap">
 		 <![CDATA[
