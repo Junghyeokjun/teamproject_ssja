@@ -57,7 +57,7 @@ $(document).ready(function () {
             } 
             
             if($('#vendorNo').length != 0){
-              setCharts(response.v_no);
+              setCharts(response.v_no, 7);
             }
 
             callback(response.v_no);
@@ -122,12 +122,11 @@ $(document).ready(function () {
   });
   }
   
-  // 단락을 구분하기 위해 사용할 hr 태그
-  let divHr1 = $('<div>').append($('<hr>').addClass('border border-2 opacity-75'));
-  let divHr2 = $('<div>').append($('<hr>').addClass('border border-2 opacity-75'));
+  // 총 통계 부분 줄 그어주기
+  $('#total-statistics').prepend($('<div>').append($('<hr>').addClass('border border-2 opacity-75')));
 
   // 차트 추가
-  function setCharts(vendorNo){   
+  function setCharts(vendorNo, dataLength){   
     console.log("vendorNo setchart() : " + vendorNo);
     $.ajax({
       type: "GET",
@@ -144,13 +143,17 @@ $(document).ready(function () {
         }
   
         // table thead 추가
-        let thead = $('<thead>').append($('<tr>').append($('<th>').text('매출일')).append($('<th>').text('매출')).append($('<th>').text('주문 횟수')));
+        let thead = $('<thead>').append($('<tr>').append($('<th>').text('매출일')).append($('<th>').text('매출')).append($('<th>').text('주문 건수')));
         $('#sales').append(thead);
         let tbody = $('<tbody>');
         
         let sum = 0;
 
         let orderSum = 0;
+
+        let lastTotalSales = 0;
+
+        let lastPurchaseCount = 0;
 
         for(let i=0; i< response.length; i++){
           // trTag 추가
@@ -160,32 +163,52 @@ $(document).ready(function () {
           }else{
             trTag.append($('<td>').text(response[i].orderDate.substring(5,7) + '월 ' + response[i].orderDate.substring(8,10) + '일'));
           }          
-          trTag.append($('<td>').text(response[i].totalSales.toLocaleString() + ' 원'));
+          trTag.append($('<td>').addClass('text-end').text(response[i].totalSales.toLocaleString() + ' 원'));
           // 추후 추가한 내용
-          trTag.append($('<td>').text(response[i].purchaseCount.toLocaleString() + ' 번'));
+          trTag.append($('<td>').addClass('text-end').text(response[i].purchaseCount.toLocaleString() + ' 번'));
           // table에 추가
           tbody.append(trTag);					
           sum += response[i].totalSales;
           orderSum += response[i].purchaseCount;
+
+          if( lastTotalSales != response[i].lastTotalSales){
+            lastTotalSales = response[i].lastTotalSales;
+          }
+          
+          if(lastPurchaseCount != response[i].lastPurchaseCount){
+            lastPurchaseCount = response[i].lastPurchaseCount;
+          }          
         }	
 
+        
         // 일주일 평균
-        let avg = sum / 7 ;
-        let ordersAvg = orderSum / 7;
+        let avg = sum / dataLength ;
+        let ordersAvg = orderSum / dataLength;
 
         // 평균은 소수 첫번째 자리까지 보여주기. 해당 처리를 하지 않으면 소수 세번째 자리까지 보여주는 상황임.(toLocalString()이 처리해줌.)
-        let tfooter = $('<tfoot>').append($('<tr>').append($('<th>').text('합계')).append($('<td>').text(sum.toLocaleString() + ' 원')).append($('<td>').text(orderSum.toLocaleString() + ' 번')))
-              .append($('<tr>').append($('<th>').text('평균')).append($('<td>').text(Number(avg.toFixed(0)).toLocaleString() + ' 원')).append($('<td>').text(Number(ordersAvg.toFixed(0)).toLocaleString() + ' 원')));
+        let tfooter = $('<tfoot>').append($('<tr>').append($('<th>').text('합계')).append($('<td>').addClass('text-end').text(sum.toLocaleString() + ' 원')).append($('<td>').addClass('text-end').text(orderSum.toLocaleString() + ' 번')))
+              .append($('<tr>').append($('<th>').text('평균')).append($('<td>').addClass('text-end').text(Number(avg.toFixed(0)).toLocaleString() + ' 원')).append($('<td>').addClass('text-end').text(Number(ordersAvg.toFixed(0)).toLocaleString() + '  번')));
+              
         $('#sales').append(tfooter);
-
 
         // 차트를 만들기 위한 변수들 선언
         let labels = [];
+        // 이후 추가된 객체... 
         let datasets = [{
-          label: '일별 매출',
+          label: '단위별 매출',
+          type: 'line',
           backgroundColor: 'rgb(85, 160, 50)',
           borderColor: 'rgb(85, 160, 50)',
-          data : []
+          data : [],
+          yAxisID : 'dayTotalSales'
+        },{ 
+          label: '주문 건수',
+          type: 'bar',
+          backgroundColor: 'rgb(231, 135, 36)',
+          borderColor: 'rgb(231, 135, 36)',
+          borderWidth: 1,
+          data: [],
+          yAxisID : 'dayPurchaseCount'
         }];
 
         let data = {
@@ -196,14 +219,14 @@ $(document).ready(function () {
         // 데이터가 7개 미만일 때 sysdate - 7 부터 sysdate까지의 날짜와 매출 데이터 채우기
         let currentDate = new Date();
         let pastDate = new Date(currentDate);
-        pastDate.setDate(currentDate.getDate() - 7);				
+        pastDate.setDate(currentDate.getDate() - dataLength);				
 
         // label에 넣기 전, 본래 값을 비교하기 위해 사용하는 배열 선언 및 사용.
         // label에 사용될 문자열은 고칠 예정
         let labelsOrigin = [];
 
         // 데이터가 7개가 될 때까지 데이터 추가
-        while (data.labels.length < 7) {
+        while (data.labels.length < dataLength) {
           let dateToFill = new Date(pastDate);
           dateToFill.setDate(dateToFill.getDate() + data.labels.length); // 7일 이전 날짜에 더해주기
           
@@ -224,8 +247,10 @@ $(document).ready(function () {
 
           if (foundData) {
             data.datasets[0].data.push(foundData.totalSales);
+            data.datasets[1].data.push(foundData.purchaseCount);
           } else {
             data.datasets[0].data.push(0);
+            data.datasets[1].data.push(0);
           }
 
           // 날짜 문자열을 원하는 형식으로 보이도록 변경
@@ -260,8 +285,43 @@ $(document).ready(function () {
         let options = {
           responsive: true,
           scales: {
-            y: {
-              beginAtZero: true
+            // 기존 1개만 보여주는 방식과 동일
+            // y: {
+            //   beginAtZero: true
+            // }
+            
+            // //Chart.js 2.x 버전
+            // // yAxes: [{
+            // //   id: 'day-totalSales',
+            // //   type: 'linear',
+            // //   position: 'left',
+            // //   ticks: {
+            // //     beginAtZero: true
+            // //   }
+            // // }, {
+            // //   id: 'day-purchaseCount',
+            // //   type: 'linear',
+            // //   position: 'right',
+            // //   ticks: {
+            // //     beginAtZero: true
+            // //   }
+            // // }]
+
+            //Chart.js 3.x 버전
+            dayTotalSales: {
+              position: 'left',
+              ticks: {
+                beginAtZero: true
+              }
+            }, 
+
+            //3.x 버전에서는 막대 그래프를 구현할 때 데이터셋에 backgroundColor와 borderColor 속성을 설정하여 막대 그래프를 표현
+            // 물론 여기다가 type 지정했다간 제대로 작동 안함. datasets 배열 내 객체에 type 설정하면 잘 됨. 여기는 주로 position 설정을 위해 남겨두기.
+            dayPurchaseCount: {              
+              position: 'right',
+              ticks: {
+                beginAtZero: true
+              },
             }
           }
         };
@@ -274,15 +334,58 @@ $(document).ready(function () {
           options: options
         });
         
-        $('.h5.years').text('[' + labelsOrigin[0] + ' ~ ' + labelsOrigin[6] + ']');
+        
+        $('.h5.years').text('[' + labelsOrigin[0] + ' ~ ' + labelsOrigin[labelsOrigin.length-1] + ']');
 
-        if(response.length == 0){
+        let comparisonH5Ments = $('<h5>').addClass('h5 text-center');
+        if(dataLength == 7){
+          comparisonH5Ments.text('전 주 대비 상승률');
+        }else{// 기본 설정
+          comparisonH5Ments.text('전 주 대비 상승률');
+        }
+        
+
+        let comparisonTable = $('<table>').addClass('table text-center').append($('<tr>').append($('<td>').text('')).append($('<th>').text('단위 판매가')).append($('<th>').text('단위 주문 건수')))
+                              .append($('<tr>').addClass('comparison').append($('<th>').text('상승률')));
+
+        console.log('lastTotalSales : ' + lastTotalSales);
+        console.log('lastPurchaseCount : ' + lastPurchaseCount);
+
+        if(lastTotalSales < sum && lastTotalSales != 0){          
+          console.log('매출 증가 퍼센트 : ' + ((sum-lastTotalSales)/lastTotalSales * 100).toFixed(2));
+          comparisonTable.find('.comparison').first().append($('<td>').addClass('text-info table-light border-black').text(((sum-lastTotalSales)/lastTotalSales * 100).toFixed(2) + '% UP'));
+        }else if(lastTotalSales == 0 && (sum- lastTotalSales) > 500){
+          comparisonTable.find('.comparison').first().append($('<td>').addClass('text-info table-light border-black').text('500% 이상 UP'));
+        }else{
+          console.log('매출 감소 퍼센트 : ' + ((sum-lastTotalSales)/lastTotalSales * 100).toFixed(2));
+          comparisonTable.find('.comparison').first().append($('<td>').addClass('text-danger table-light border-end border-black').text(((sum-lastTotalSales)/lastTotalSales * 100).toFixed(2) + '% DOWN'));
+        }        
+              
+
+        if(lastPurchaseCount < orderSum && lastPurchaseCount != 0){          
+          console.log('주문 증가 퍼센트 : ' + ((orderSum-lastPurchaseCount)/lastPurchaseCount * 100).toFixed(2));
+          comparisonTable.find('.comparison').first().append($('<td>').addClass('text-info table-light border-black').text(((orderSum-lastPurchaseCount)/lastPurchaseCount * 100).toFixed(2) + '% UP'));
+        }else if(lastPurchaseCount == 0 && (orderSum-lastPurchaseCount) > 500){
+          comparisonTable.find('.comparison').first().append($('<td>').addClass('text-info table-light border-black').text('500% 이상 UP'));
+        }else{
+          console.log('주문 감소 퍼센트: ' + ((orderSum-lastPurchaseCount)/lastPurchaseCount * 100).toFixed(2));
+          comparisonTable.find('.comparison').first().append($('<td>').addClass('text-danger table-light border-end border-black').text(((orderSum-lastPurchaseCount)/lastPurchaseCount * 100).toFixed(2) + '% DOWN'));
+        }
+                              
+        let compareDiv = $('<div>').addClass('px-5 py-1');
+        compareDiv.append(comparisonH5Ments);
+        compareDiv.append(comparisonTable);
+        $('#chart-table').append(compareDiv);
+
+        if(response.length == 0 && dataLength == 7 ){
           addOverlay();
           $('.overlay').addClass('d-flex align-items-center justify-content-center').append($('<h2>').addClass('h2 text-center').css('color','white').text('최근 일주일 간 매출 데이터가 없습니다.'))
         }else{
           removeOverlay();
         }
-
+        // 단락을 구분하기 위해 사용할 hr 태그
+        let divHr1 = $('<div>').append($('<hr>').addClass('border border-2 opacity-75'));
+        let divHr2 = $('<div>').append($('<hr>').addClass('border border-2 opacity-75'));
        
         $('#main_container').prepend(divHr1);
         $('#main_container').append(divHr2);

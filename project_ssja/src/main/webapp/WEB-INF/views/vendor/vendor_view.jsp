@@ -369,12 +369,28 @@ th{
 						</div>
 					</div>
 
-					<div class="ssja-main-width">
-						
+					<div id="total-statistics" class="ssja-main-width text-center">
+						<div class="text-center mb-3">
+							<h5 class="h5">총 합계</h5>
+						</div>						
+						<table id="ssja-vendor-datas" class="table">
+							<tr>
+								<th class="w-25">a</th>
+								<th class="w-25">b</th>							
+								<th class="w-25">c</th>
+								<th class="w-25">d</th>								
+							</tr>
+							<tr>
+								<td>111,111</td>
+								<td>111</td>
+								<td>1,111</td>
+								<td>11,111</td>
+							</tr>
+						</table>
 					</div>
 					<div id="main_container">						
 						<div class="d-flex flex-row align-items-center justify-content-center container">
-							<div id="MyPage_content_container" class="p-5">
+							<div id="MyPage_content_container" class="px-5 pt-5 pb-1">
 								<div class="text-center mb-3">
 									<h5 class="h5">최근 일주일 간 매출 데이터</h5>
 									<h5 class="h5 years"></h5>
@@ -387,8 +403,8 @@ th{
 											</table>
 										</div>
 									</div>
-									<div id="chart-area" class="border p-3">
-										<div>
+									<div id="chart-area" class="border p-3 d-flex align-items-center">
+										<div >
 											<canvas id="salesChart" width="400px" height="300px"></canvas>
 										</div>
 									</div>
