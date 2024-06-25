@@ -469,7 +469,6 @@ body {
 					console.log("replyTotal : " + response.pageMaker.total);
 					console.log("===============================");
 					getReplyLists(response);	
-					replyTextareaHeight();
 					adminReplyHead();
 				},
 				error : function(xhr, status, error){
@@ -501,7 +500,6 @@ body {
 					console.log("pageMaker : " + response.pageMaker);
 					console.log("replyTotal : " + response.pageMaker.total);
 					getReplyLists(response);
-					replyTextareaHeight();
 					adminReplyHead();
 				},
 				error : function(xhr, status, error){

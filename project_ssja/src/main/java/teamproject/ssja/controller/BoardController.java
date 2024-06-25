@@ -85,7 +85,7 @@ public class BoardController {
 		boardDto.setBwriter(writer);
 		boardDto.setBbcno(20);
 		boardService.addBoard(boardDto);
-		return "redirect:/board/list/" + boardDto.getBbcno();
+		return "redirect:/board/list/20";
 	}
 
 	@PostMapping("/modify_view")

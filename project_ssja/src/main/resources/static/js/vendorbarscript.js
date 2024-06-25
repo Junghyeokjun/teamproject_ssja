@@ -29,6 +29,25 @@ $(document).ready(function () {
     sideLink3 = "/vendor/product/list/" + vendorNo;
   }
 
+  // 통합 정보
+  function totals(vendorNo){
+    $.ajax({
+      type: "GET",
+      url: '/api/vendor/total/' + vendorNo,     
+      success: function(response){
+
+        $('#ssja-vendor-datas').empty();
+  
+        $('#ssja-vendor-datas').append($('<tbody>').append($('<tr>').append($('<th>').addClass('w-25').text('누적 판매 건')).append($('<th>').addClass('w-25').text('누적 판매가')).append($('<th>').addClass('w-25').text('누적 판매 개수')))
+                                                   .append($('<tr>').append($('<td>').text(response.purchaseCount.toLocaleString() + '건')).append($('<td>').text(response.totalSales.toLocaleString() + '원')).append($('<td>').text(response.productSoldCount.toLocaleString()+'개'))) );                             
+      },
+      error : function(xhr, status, error){
+        alert("판매자 통합 통계 정보를 가져오지 못했습니다");
+        console.error(xhr.responseText);
+      }
+    });
+  }
+
   function setVendor(callback) {
     //  판매자 상호명 가져오기  
     
@@ -56,8 +75,10 @@ $(document).ready(function () {
               console.log("warning : " + vendorData + "와(과) 일치하지 않음");
             } 
             
+            totals(response.v_no);
+
             if($('#vendorNo').length != 0){
-              setCharts(response.v_no, 7);
+              setCharts(response.v_no, 7, "/api/vendor/salesdata/" + response.v_no);
             }
 
             callback(response.v_no);
@@ -70,8 +91,8 @@ $(document).ready(function () {
       }
     }
   
-  setVendor(getVno);
-  
+  setVendor(getVno);  
+
   // overlay를 추가하는 함수
   function addOverlay() {
     // 이미 존재할 경우 추가하지 않음
@@ -126,11 +147,10 @@ $(document).ready(function () {
   $('#total-statistics').prepend($('<div>').append($('<hr>').addClass('border border-2 opacity-75')));
 
   // 차트 추가
-  function setCharts(vendorNo, dataLength){   
-    console.log("vendorNo setchart() : " + vendorNo);
+  function setCharts(vendorNo, dataLength, url){   
     $.ajax({
       type: "GET",
-      url: "/api/vendor/salesdata/" + vendorNo,     
+      url: url,     
       success: function(response) {
         // 기존에 있는 자식 요소들을 제거하기. 
         
@@ -197,15 +217,15 @@ $(document).ready(function () {
         let datasets = [{
           label: '단위별 매출',
           type: 'line',
-          backgroundColor: 'rgb(85, 160, 50)',
-          borderColor: 'rgb(85, 160, 50)',
+          backgroundColor: 'rgb(1, 124, 198)',
+          borderColor: 'rgb(1, 124, 198)',
           data : [],
           yAxisID : 'dayTotalSales'
         },{ 
           label: '주문 건수',
           type: 'bar',
-          backgroundColor: 'rgb(231, 135, 36)',
-          borderColor: 'rgb(231, 135, 36)',
+          backgroundColor: 'rgb(214, 78, 9)',
+          borderColor: 'rgb(214, 78, 9)',
           borderWidth: 1,
           data: [],
           yAxisID : 'dayPurchaseCount'
@@ -258,8 +278,18 @@ $(document).ready(function () {
           let year = originDate.slice(0, 4);
 
           let month = parseInt(originDate.slice(5, 7), 10); // '06'을 숫자로 변환
-          let formattedDate = month + '월' + parseInt(originDate.slice(8, 10), 10) + '일';
+          
+          let day = parseInt(originDate.slice(8, 10), 10); // 숫자로 변환
 
+          let formattedDate = '';
+          // 받는 데이터 종류에 따라 
+          if(day != 0){
+            formattedDate = month + '월' + day + '일';
+          }else if(day == 0 && month != 0){
+            formattedDate = year + '년' + month + '월';
+          }else{
+            formattedDate = year + '년';
+          }          
           data.labels.push(formattedDate);
         }
 
@@ -269,49 +299,21 @@ $(document).ready(function () {
 
         console.log("label : " + labels);
         console.log(data);
-        // 차트 데이터 준비
-        // const labels = ['1일', '2일', '3일', '4일', '5일', '6일', '7일'];
-        // const data = {
-        // 	labels: labels,
-        // 	datasets: [{
-        // 		label: '일별 매출',
-        // 		backgroundColor: 'rgb(54, 162, 235)',
-        // 		borderColor: 'rgb(54, 162, 235)',
-        // 		data: [100, 150, 200, 180, 250, 300, 280],
-        // 	}]
-        // };
+
 
         // 차트 옵션 설정
         let options = {
           responsive: true,
           scales: {
-            // 기존 1개만 보여주는 방식과 동일
-            // y: {
-            //   beginAtZero: true
-            // }
-            
-            // //Chart.js 2.x 버전
-            // // yAxes: [{
-            // //   id: 'day-totalSales',
-            // //   type: 'linear',
-            // //   position: 'left',
-            // //   ticks: {
-            // //     beginAtZero: true
-            // //   }
-            // // }, {
-            // //   id: 'day-purchaseCount',
-            // //   type: 'linear',
-            // //   position: 'right',
-            // //   ticks: {
-            // //     beginAtZero: true
-            // //   }
-            // // }]
-
             //Chart.js 3.x 버전
             dayTotalSales: {
               position: 'left',
               ticks: {
                 beginAtZero: true
+                
+              },
+              grid: {
+                display: false
               }
             }, 
 
@@ -322,6 +324,9 @@ $(document).ready(function () {
               ticks: {
                 beginAtZero: true
               },
+              grid: {
+                display: false
+              }
             }
           }
         };
@@ -334,6 +339,19 @@ $(document).ready(function () {
           options: options
         });
         
+        if(dataLength != 7){
+          $('.h5.chart-title').empty();
+        }
+
+        if(dataLength == 30){
+          $('.h5.chart-title').text('한달 간 매출 데이터(' + labelsOrigin[0].slice(0,4)+'년 ' + labelsOrigin[0].slice(5,7)+'월)');
+        }else if(dataLength == 12){
+          $('.h5.chart-title').text('1년 간 매출 데이터 ');
+        }else if(dataLength == 5){
+          $('.h5.chart-title').text('연간 매출 데이터');
+        }else{
+          $('.h5.chart-title').text('최근 일주일 간 매출 데이터');
+        }
         
         $('.h5.years').text('[' + labelsOrigin[0] + ' ~ ' + labelsOrigin[labelsOrigin.length-1] + ']');
 
@@ -345,37 +363,40 @@ $(document).ready(function () {
         }
         
 
-        let comparisonTable = $('<table>').addClass('table text-center').append($('<tr>').append($('<td>').text('')).append($('<th>').text('단위 판매가')).append($('<th>').text('단위 주문 건수')))
-                              .append($('<tr>').addClass('comparison').append($('<th>').text('상승률')));
+        if(dataLength == 7){
+          let comparisonTable = $('<table>').addClass('table text-center').append($('<tr>').append($('<td>').text('')).append($('<th>').text('단위 판매가')).append($('<th>').text('단위 주문 건수')))
+          .append($('<tr>').addClass('comparison').append($('<th>').text('상승률')));
 
-        console.log('lastTotalSales : ' + lastTotalSales);
-        console.log('lastPurchaseCount : ' + lastPurchaseCount);
+          console.log('lastTotalSales : ' + lastTotalSales);
+          console.log('lastPurchaseCount : ' + lastPurchaseCount);
 
-        if(lastTotalSales < sum && lastTotalSales != 0){          
+          if(lastTotalSales < sum && lastTotalSales != 0){          
           console.log('매출 증가 퍼센트 : ' + ((sum-lastTotalSales)/lastTotalSales * 100).toFixed(2));
           comparisonTable.find('.comparison').first().append($('<td>').addClass('text-info table-light border-black').text(((sum-lastTotalSales)/lastTotalSales * 100).toFixed(2) + '% UP'));
-        }else if(lastTotalSales == 0 && (sum- lastTotalSales) > 500){
+          }else if(lastTotalSales == 0 && (sum- lastTotalSales) > 500){
           comparisonTable.find('.comparison').first().append($('<td>').addClass('text-info table-light border-black').text('500% 이상 UP'));
-        }else{
+          }else{
           console.log('매출 감소 퍼센트 : ' + ((sum-lastTotalSales)/lastTotalSales * 100).toFixed(2));
           comparisonTable.find('.comparison').first().append($('<td>').addClass('text-danger table-light border-end border-black').text(((sum-lastTotalSales)/lastTotalSales * 100).toFixed(2) + '% DOWN'));
-        }        
-              
+          }        
 
-        if(lastPurchaseCount < orderSum && lastPurchaseCount != 0){          
+
+          if(lastPurchaseCount < orderSum && lastPurchaseCount != 0){          
           console.log('주문 증가 퍼센트 : ' + ((orderSum-lastPurchaseCount)/lastPurchaseCount * 100).toFixed(2));
           comparisonTable.find('.comparison').first().append($('<td>').addClass('text-info table-light border-black').text(((orderSum-lastPurchaseCount)/lastPurchaseCount * 100).toFixed(2) + '% UP'));
-        }else if(lastPurchaseCount == 0 && (orderSum-lastPurchaseCount) > 500){
+          }else if(lastPurchaseCount == 0 && (orderSum-lastPurchaseCount) > 500){
           comparisonTable.find('.comparison').first().append($('<td>').addClass('text-info table-light border-black').text('500% 이상 UP'));
-        }else{
+          }else{
           console.log('주문 감소 퍼센트: ' + ((orderSum-lastPurchaseCount)/lastPurchaseCount * 100).toFixed(2));
           comparisonTable.find('.comparison').first().append($('<td>').addClass('text-danger table-light border-end border-black').text(((orderSum-lastPurchaseCount)/lastPurchaseCount * 100).toFixed(2) + '% DOWN'));
+          }
+                    
+          let compareDiv = $('<div>').addClass('px-5 py-1');
+          compareDiv.append(comparisonH5Ments);
+          compareDiv.append(comparisonTable);
+          $('#chart-table').append(compareDiv);
         }
-                              
-        let compareDiv = $('<div>').addClass('px-5 py-1');
-        compareDiv.append(comparisonH5Ments);
-        compareDiv.append(comparisonTable);
-        $('#chart-table').append(compareDiv);
+       
 
         if(response.length == 0 && dataLength == 7 ){
           addOverlay();

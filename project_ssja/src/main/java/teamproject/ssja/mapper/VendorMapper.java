@@ -44,14 +44,15 @@ public interface VendorMapper {
 	// 상품 정보 집어넣기
 	int insertProduct(ProductDto product);
 	
-	
 	// 상품 이미지 경로 집어넣기
 	int insertProductImgs(ProductImgDto productImg); 
-	
 	//////
 	
 	// 판매자 자신의 문의 목록 가져오기
 	List<BoardDto> selectVendorQnas(Criteria criteria);
+	
+	// 문의 목록 검색 기능
+	List<BoardDto> selectSearchVendorQnas(Criteria criteria, String option, String keyword);
 	
 	// 판매자 자신의 총 문의 개수 가져오기
 	long selectVendorQnaCount(Criteria criteria);
@@ -60,7 +61,5 @@ public interface VendorMapper {
 	// 판매자를 회원이 조회 하는 부분
 	List<ProductDto> getVendorItemList(VendorItemCondition condition);
 	VendorEtcInfoDTO getVendorInfoEtc(String bizname);
-	List<CommunityBoardDto> getVendorInfoCommu(String bizname);
-	
-	
+	List<CommunityBoardDto> getVendorInfoCommu(String bizname);	
 }

@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.ProductDto;
+import teamproject.ssja.dto.StatisticVO;
 import teamproject.ssja.dto.VendorSalesDto;
 import teamproject.ssja.dto.vendor.TotalVendorInfoDto;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
@@ -38,9 +39,10 @@ public interface VendorService {
 	
 	
 	
-	
 	// 판매자의 문의 데이터 가져오기
 	public List<BoardDto> getQnaLists(Criteria criteria, Long bcno, Long bmno);
+	
+	public List<BoardDto> getQnaSearchLists(Criteria criteria, String option, String keyword);
 	
 	public long getQnaCounts(Criteria criteria);
 	
@@ -51,6 +53,14 @@ public interface VendorService {
 	
 	// 판매자 홈에 쓰일, 해당 판매자의 최근 일주일 동안의 매출 내역 가져오기
 	public List<VendorSalesDto> getWeeklySalesData(long vno);
+	// 총계 가져오기
+	public VendorSalesDto getTotalSalesData(long vno);
+	
+	// 연, 월, 일 매출 내역 가져오기
+	public List<VendorSalesDto> getDaySalesData(StatisticVO statisticVO);	
+	public List<VendorSalesDto> getMonthSalesData(StatisticVO statisticVO);
+	public List<VendorSalesDto> getYearSalesData(StatisticVO statisticVO);
+	
 	//회원의 판매자 조회
 	TotalVendorInfoDto getVendorTotalInfo(String bizname, int pageNum);
 	List<ProductDto> getVendorItemList(VendorItemCondition condition);

@@ -50,68 +50,7 @@
 			ORDER BY TRUNC(P.PUR_DATE)
 	 	]]>
  	</select>
- 	
- 	<!-- 판매자 총계. 변수 생성을 최대한 줄이기 위해 기존 변수를 일부 활용. -->
- 	<select id="selectVendorSalesTotal" resultMap="VendorSalesDtoMap">
- 		<![CDATA[
- 		SELECT 
-		     COUNT(DISTINCT P.PUR_NO) AS PURCHASE_COUNT,
-		     SUM(O.O_PRICE) AS TOTAL_SALES       
-		FROM PURCHASE P, ORDERS O, PRODUCT PR, VENDOR V
-		WHERE P.PUR_NO = O.PUR_NO
-		AND O.PRO_NO = PR.PRO_NO
-		AND PR.V_NO = V.V_NO
-		AND V.V_NO = #{vno}
- 		]]>
- 	</select>
- 	
- 	<!-- 특정 월 기준으로, 하루 단위로 일별 데이터 조회  -->
- 	<select id="selectVendorSalesInDay" resultMap="VendorSalesDtoMap">
- 		<![CDATA[
-	 		SELECT TO_CHAR(PUR_DATE, 'YYYY-MM-DD') AS ORDER_DATE,
-			       SUM(P.pur_TOT) AS TOTAL_SALES
-			FROM PURCHASE P
-			JOIN ORDERS OD ON P.PUR_NO = OD.PUR_NO
-			JOIN PRODUCT PR ON OD.PRO_NO = PR.PRO_NO
-			JOIN VENDOR V ON PR.V_NO = V.V_NO
-			WHERE TO_CHAR(P.PUR_DATE, 'YYYY-MM') = #{dateStr} 
-			AND V.V_NO = #{vno}
-			GROUP BY TO_CHAR(PUR_DATE, 'YYYY-MM-DD')
-			ORDER BY ORDER_DATE
- 		]]> 
- 	</select>
 
-	<!-- 특정 년 기준으로, 한 달 단위로 월별 데이터 조회  -->
-	<select id="selectVendorSalesInMonth" resultMap="VendorSalesDtoMap">
- 		<![CDATA[
-	 		SELECT TO_CHAR(PUR_DATE, 'YYYY-MM') AS ORDER_DATE,
-			       SUM(P.pur_TOT) AS TOTAL_SALES
-			FROM PURCHASE P
-			JOIN ORDERS OD ON P.PUR_NO = OD.PUR_NO
-			JOIN PRODUCT PR ON OD.PRO_NO = PR.PRO_NO
-			JOIN VENDOR V ON PR.V_NO = V.V_NO
-			WHERE TO_CHAR(P.PUR_DATE, 'YYYY') = #{dateStr}
-			AND V.V_NO = #{vno}
-			GROUP BY TO_CHAR(PUR_DATE, 'YYYY-MM')
-			ORDER BY ORDER_DATE
- 		]]> 		
- 	</select>
-
-	<!-- 일 년 단위로, 연도별 데이터 조회  -->
-	<select id="selectVendorSalesInYear" resultMap="VendorSalesDtoMap">
- 		<![CDATA[
-	 		SELECT TO_CHAR(PUR_DATE, 'YYYY') AS ORDER_DATE,
-			       SUM(P.pur_TOT) AS TOTAL_SALES
-			FROM PURCHASE P
-			JOIN ORDERS OD ON P.PUR_NO = OD.PUR_NO
-			JOIN PRODUCT PR ON OD.PRO_NO = PR.PRO_NO
-			JOIN VENDOR V ON PR.V_NO = V.V_NO
-			WHERE TO_CHAR(P.PUR_DATE, 'YYYY') = #{dateStr}
-			AND V.V_NO = #{vno}
-			GROUP BY TO_CHAR(PUR_DATE, 'YYYY')
-			ORDER BY ORDER_DATE
- 		]]> 		
- 	</select>
  	<!-- 페이징은 기본으로 깔고 가기 -->
 	<select id="selectVendorProducts" resultMap="ProductsListMap">
 		 <![CDATA[
@@ -168,10 +107,43 @@
 			    select
 			        rownum rnum , A.*
 			    from 
-			    (SELECT  * FROM board where b_c_no=#{bcno} and m_no=#{bmno} order by B_NO desc) A 
+			    (SELECT  * FROM board where b_c_no=#{bcno} and m_no=#{bmno}
+				order by B_NO desc) A 
 		    	where rownum <= #{pageNum} * #{amount} 
 		    )
 			where rnum > (#{pageNum}-1) * #{amount}
+   		 ]]>
+	</select>
+	
+	<!-- 판매자 전용 -->
+	<select id="selectSearchVendorQnas" resultMap="BoardDtoMap">
+		 <![CDATA[
+			select * from 
+        	(
+			    select
+			        rownum rnum , A.*
+			    from 
+			    (SELECT  * FROM board where b_c_no=#{criteria.bcno} and m_no=#{criteria.bmno} and 
+		 ]]>	    
+		<choose>     
+	        <when test="#{option} != null and option.equals('title')">
+	         B_TITLE like '%${keyword}%'
+	        </when> 
+	        <when test="#{option} != null and option.equals('content')">
+	         B_CONTENT like '%${keyword}%'
+	        </when> 
+	        <when test="#{option} != null and option.equals('title_and_content')">
+	         (B_TITLE like '%${keyword}%' or B_CONTENT like '%${keyword}%')
+	        </when> 
+	        <when test="#{option} != null and option.equals('writer')">
+	         B_WRITER like '%${keyword}%'
+	        </when> 
+       	</choose>
+         <![CDATA[
+				order by B_NO desc) A 
+		    	where rownum <= #{criteria.pageNum} * #{criteria.amount} 
+		    )
+			where rnum > (#{criteria.pageNum}-1) * #{criteria.amount}
    		 ]]>
 	</select>
 	
@@ -234,7 +206,74 @@
 	</select>
 	
 	
-	<!-- 게시글 맵 -->
+<!-- 통계 -->
+ 	<!-- 판매자 총계. 변수 생성을 최대한 줄이기 위해 기존 변수를 일부 활용. -->
+ 	<select id="selectVendorSalesTotal" resultMap="VendorSalesDtoMap">
+ 		<![CDATA[
+ 		SELECT 
+		     COUNT(DISTINCT P.PUR_NO) AS PURCHASE_COUNT,
+		     SUM(P.PUR_TOT) AS TOTAL_SALES,
+		     SUM(O_QUANTITY) AS PRODUCT_SOLD_COUNT       
+		FROM PURCHASE P, ORDERS O, PRODUCT PR, VENDOR V
+		WHERE P.PUR_NO = O.PUR_NO
+		AND O.PRO_NO = PR.PRO_NO
+		AND PR.V_NO = V.V_NO
+		AND V.V_NO = #{vno}
+ 		]]>
+ 	</select>
+ 	
+ 	<!-- 특정 월 기준으로, 하루 단위로 일별 데이터 조회  -->
+ 	<select id="selectVendorSalesInDay" resultMap="VendorSalesDtoMap">
+ 		<![CDATA[
+	 		SELECT TO_CHAR(PUR_DATE, 'YYYY-MM-DD') AS ORDER_DATE,
+			       SUM(P.pur_TOT) AS TOTAL_SALES,
+			       COUNT(DISTINCT P.PUR_NO) AS PURCHASE_COUNT
+			FROM PURCHASE P
+			JOIN ORDERS OD ON P.PUR_NO = OD.PUR_NO
+			JOIN PRODUCT PR ON OD.PRO_NO = PR.PRO_NO
+			JOIN VENDOR V ON PR.V_NO = V.V_NO
+			WHERE TO_CHAR(P.PUR_DATE, 'YYYY-MM') = #{dateStr} 
+			AND V.V_NO = #{vno}
+			GROUP BY TO_CHAR(PUR_DATE, 'YYYY-MM-DD')
+			ORDER BY ORDER_DATE
+ 		]]> 
+ 	</select>
+
+	<!-- 특정 년 기준으로, 한 달 단위로 월별 데이터 조회  -->
+	<select id="selectVendorSalesInMonth" resultMap="VendorSalesDtoMap">
+ 		<![CDATA[
+	 		SELECT TO_CHAR(PUR_DATE, 'YYYY-MM') AS ORDER_DATE,
+			       SUM(P.pur_TOT) AS TOTAL_SALES,
+			       COUNT(DISTINCT P.PUR_NO) AS PURCHASE_COUNT
+			FROM PURCHASE P
+			JOIN ORDERS OD ON P.PUR_NO = OD.PUR_NO
+			JOIN PRODUCT PR ON OD.PRO_NO = PR.PRO_NO
+			JOIN VENDOR V ON PR.V_NO = V.V_NO
+			WHERE TO_CHAR(P.PUR_DATE, 'YYYY') = #{dateStr}
+			AND V.V_NO = #{vno}
+			GROUP BY TO_CHAR(PUR_DATE, 'YYYY-MM')
+			ORDER BY ORDER_DATE
+ 		]]> 		
+ 	</select>
+
+	<!-- 일 년 단위로, 연도별 데이터 조회  -->
+	<select id="selectVendorSalesInYear" resultMap="VendorSalesDtoMap">
+ 		<![CDATA[
+	 		SELECT TO_CHAR(PUR_DATE, 'YYYY') AS ORDER_DATE,
+			       SUM(P.pur_TOT) AS TOTAL_SALES,
+			       COUNT(DISTINCT P.PUR_NO) AS PURCHASE_COUNT			       
+			FROM PURCHASE P
+			JOIN ORDERS OD ON P.PUR_NO = OD.PUR_NO
+			JOIN PRODUCT PR ON OD.PRO_NO = PR.PRO_NO
+			JOIN VENDOR V ON PR.V_NO = V.V_NO
+			WHERE TO_CHAR(P.PUR_DATE, 'YYYY') = #{dateStr}
+			AND V.V_NO = #{vno}
+			GROUP BY TO_CHAR(PUR_DATE, 'YYYY')
+			ORDER BY ORDER_DATE
+ 		]]> 		
+ 	</select>
+ 		
+	<!-- 게시글 맵 -->	
 <!-- 맵 -->
 	<resultMap type="teamproject.ssja.dto.VendorSalesDto" id="VendorSalesDtoMap">
 		<result property="orderDate" column="ORDER_DATE"/>
@@ -242,6 +281,7 @@
 		<result property="purchaseCount" column="PURCHASE_COUNT"/>
 		<result property="lastTotalSales" column="LAST_TOTAL_SALES"/>
 		<result property="lastPurchaseCount" column="LAST_PURCHASE_COUNT"/>
+		<result property="productSoldCount" column="PRODUCT_SOLD_COUNT"/>
 	</resultMap>
 	
 	<resultMap type="teamproject.ssja.dto.BoardDto" id="BoardDtoMap">

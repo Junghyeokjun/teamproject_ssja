@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import lombok.extern.slf4j.Slf4j;
+import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.StatisticVO;
 import teamproject.ssja.dto.VendorSalesDto;
+import teamproject.ssja.page.Criteria;
 
 @SpringBootTest
 @Slf4j
@@ -105,6 +107,16 @@ class VendorMapperTest3 {
 	@Test
 	void testGetVendorInfoCommu() {
 		fail("Not yet implemented");
+	}
+	
+	@Test
+	void testSelectSearchVendorQnas() {
+		Criteria criteria = new Criteria();
+		criteria.setBcno(20);
+		criteria.setBmno(1);
+		for(BoardDto dto : vendorMapper.selectSearchVendorQnas(criteria, "title", "test")) {
+			log.info("" + dto);
+		}
 	}
 
 }
