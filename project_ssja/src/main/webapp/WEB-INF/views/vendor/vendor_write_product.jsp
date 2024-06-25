@@ -460,8 +460,13 @@ main, footer {
 
 </body>
 
-<sec:authorize access="isAuthenticated()">
-	<script src="/js/vendor_login_user_tab.js"> </script>
+ <sec:authorize access="isAuthenticated()">
+	 
+	 <sec:authorize access="hasRole('ROLE_VENDOR')">
+        <input type="hidden" id="isVendorCheck" value="1">
+    </sec:authorize>
+	 
+  <script src="/js/login_user_tab.js"> </script>
 </sec:authorize>
 
 <script type="text/javascript">

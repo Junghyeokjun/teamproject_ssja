@@ -460,7 +460,12 @@
               <div id="second_footer"></div>
               <div id="third_footer"></div>
             </footer>
-   <sec:authorize access="isAuthenticated()">
+ <sec:authorize access="isAuthenticated()">
+	 
+	 <sec:authorize access="hasRole('ROLE_VENDOR')">
+        <input type="hidden" id="isVendorCheck" value="1">
+    </sec:authorize>
+	 
   <script src="/js/login_user_tab.js"> </script>
   <script src="/js/user_cart_tab.js"> </script>
 </sec:authorize>

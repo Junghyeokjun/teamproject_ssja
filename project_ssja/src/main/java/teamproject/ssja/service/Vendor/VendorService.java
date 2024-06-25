@@ -12,6 +12,7 @@ import teamproject.ssja.dto.VendorSalesDto;
 import teamproject.ssja.dto.vendor.TotalVendorInfoDto;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
 import teamproject.ssja.dto.vendor.VendorItemCondition;
+import teamproject.ssja.dto.vendor.VendorProfitDTO;
 import teamproject.ssja.page.Criteria;
 
 public interface VendorService {
@@ -57,6 +58,6 @@ public interface VendorService {
 	List<ProductDto> getVendorItemList(VendorItemCondition condition);
 	
 	//엑셀 데이터 공급
-	Map<String, ?> getDataForExcel(Long bno);
+	Map<String, List<VendorProfitDTO>> getDataForExcel(Long vno, String condition);
 }
 

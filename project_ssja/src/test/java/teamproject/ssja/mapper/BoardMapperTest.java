@@ -31,7 +31,7 @@ class BoardMapperTest {
 //		}
 //	}
 
-	@Disabled
+	//@Disabled
 	@Transactional
 	@Test
 	void testInsertBoard() {
@@ -49,7 +49,7 @@ class BoardMapperTest {
 		}
 	}
 	
-	@Disabled
+	//@Disabled
 	@Test
 	void testDeleteBoard() {
 		Criteria criteria = new Criteria(); 
@@ -66,13 +66,13 @@ class BoardMapperTest {
 		}
 	}
 
-	@Disabled
+	//@Disabled
 	@Test
 	void testRead() {
 		log.info("this dto : " + boardMapper.read(140));
 	}
 
-	@Disabled
+	//@Disabled
 	@Test
 	void testUpdateBoard() {
 		BoardDto boardDto = new BoardDto();
@@ -85,7 +85,7 @@ class BoardMapperTest {
 		boardMapper.read(205);
 	}
 
-	@Disabled
+	//@Disabled
 	@Test
 	void testUpdateHit() {
 		boardMapper.read(205);
@@ -93,7 +93,7 @@ class BoardMapperTest {
 		boardMapper.read(205);
 	}
 
-	@Disabled
+	//@Disabled
 	@Test
 	void testUpdateBLikeUp() {
 		BoardDto dto = boardMapper.read(130);
@@ -104,7 +104,7 @@ class BoardMapperTest {
 		log.info("dto's like up after : " + dto.getBlike());		
 	}
 
-	@Disabled
+	//@Disabled
 	@Test
 	void testUpdateBLikeDown() {
 		BoardDto dto = boardMapper.read(130);
@@ -115,13 +115,13 @@ class BoardMapperTest {
 		log.info("dto's like down after : " + dto.getBlike());	
 	}
 
-	@Disabled
+	//@Disabled
 	@Test
 	void testSelectTotalCount() {
 		log.info("총 게시글 수는 " + boardMapper.selectTotalCount(20) + "개입니다.");
 	}
 
-	@Disabled
+	//@Disabled
 	@Test
 	void testSelectListWithPaging() {
 		// 기본 criteria : 1페이지에 출력되는 10개  
@@ -130,7 +130,7 @@ class BoardMapperTest {
 		}
 	}
 
-	@Disabled
+	//@Disabled
 	@Test
 	void testSelectBoardLikes() {
 		long likes = boardMapper.selectBoardLikes(205);
@@ -138,7 +138,7 @@ class BoardMapperTest {
 		log.info("205번 게시글 좋아요 수 : " + likes);
 	}
 	
-	@Disabled
+	//@Disabled
 	@Test
 	void TestSelectBoardCategorys() {
 		for(BoardCategoryDto dto : boardMapper.selectBoardCategorys()) {
@@ -146,7 +146,7 @@ class BoardMapperTest {
 		}
 	}
 	
-	@Disabled
+	//@Disabled
 	@Test
 	void TestSelectCommunity() {
 		
@@ -155,7 +155,7 @@ class BoardMapperTest {
 		}
 	}
 
-	@Disabled
+	//@Disabled
 	@Test
 	void TestSelectBestCommunity() {
 		
@@ -163,7 +163,7 @@ class BoardMapperTest {
 			log.info("communitydto : " + dto);
 		}
 	}
-	@Disabled
+	//@Disabled
 	@Test
 	void TestSelectCommunityContent() {
 			log.info("communitydto : " + boardMapper.selectCommunityContent(600));
@@ -171,20 +171,20 @@ class BoardMapperTest {
 	}
 	// 보드 이미지 체크 테스트
 	
-	@Disabled
+	//@Disabled
 	@Test
 	void selectBoardImgTest() {
 		log.info(boardMapper.selectBoardImg(11614)+"");
 	}
 	// 보드 이미지 체크 테스트
 	
-	@Disabled
+	//@Disabled
 	@Test
 	void updateBoardImgTest() {
 		boardMapper.updateBoardImg(new BoardImgsDto(0, 11614, "/images/board_content/temp.png"));
 	}
 	
-	@Disabled
+	//@Disabled
 	@Test
 	void selectSearchTotal() {
 		System.out.println(boardMapper.selectSearchTotalCount(40, "title", "파일 구현"));

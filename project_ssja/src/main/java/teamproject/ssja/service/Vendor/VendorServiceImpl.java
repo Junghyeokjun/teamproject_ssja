@@ -20,6 +20,7 @@ import teamproject.ssja.dto.vendor.TotalVendorInfoDto;
 import teamproject.ssja.dto.vendor.VendorEtcInfoDTO;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
 import teamproject.ssja.dto.vendor.VendorItemCondition;
+import teamproject.ssja.dto.vendor.VendorProfitDTO;
 import teamproject.ssja.mapper.VendorMapper;
 import teamproject.ssja.page.Criteria;
 
@@ -209,9 +210,12 @@ public class VendorServiceImpl implements VendorService{
 	}
 
 	@Override
-	public Map<String, ?> getDataForExcel(Long vno) {
-		Map<String, ?> data = new HashMap<>();
+	public Map<String, List<VendorProfitDTO>> getDataForExcel(Long vno, String condition) {
+		Map<String, List<VendorProfitDTO>> data = new HashMap<>();
+		data.put("day", vendorMapper.getProfitStatistic(vno, "YY-MM-DD", condition));
+		data.put("month", vendorMapper.getProfitStatistic(vno, "YYYY-MM", condition));
+		data.put("year", vendorMapper.getProfitStatistic(vno, "YYYY", condition));
 		
-		return null;
+		return data;
 	}
 }

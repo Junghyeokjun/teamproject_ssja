@@ -13,6 +13,7 @@ import teamproject.ssja.dto.community.CommunityBoardDto;
 import teamproject.ssja.dto.vendor.VendorEtcInfoDTO;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
 import teamproject.ssja.dto.vendor.VendorItemCondition;
+import teamproject.ssja.dto.vendor.VendorProfitDTO;
 import teamproject.ssja.page.Criteria;
 
 @Mapper
@@ -62,5 +63,5 @@ public interface VendorMapper {
 	VendorEtcInfoDTO getVendorInfoEtc(String bizname);
 	List<CommunityBoardDto> getVendorInfoCommu(String bizname);
 	
-	VendorInfoDTO getVendorData(Long vno);
+	List<VendorProfitDTO> getProfitStatistic(Long vno, String dateCondition, String condition);
 }

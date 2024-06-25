@@ -244,13 +244,16 @@ transform: translate(-50%, -50%);
     <div id="second_footer"></div>
     <div id="third_footer"></div>
   </footer>
-  
+ 
 <sec:authorize access="isAuthenticated()">
 	<c:choose>
   		<c:when test="${principal.auth eq 'ROLE_VENDOR'}">
 			<script src="/js/vendor_login_user_tab.js"> </script>	
 		</c:when>
 		<c:otherwise>
+			 <sec:authorize access="hasRole('ROLE_VENDOR')">
+        <input type="hidden" id="isVendorCheck" value="1">
+    </sec:authorize>
 			<script src="/js/login_user_tab.js"> </script>	
 		</c:otherwise>
 	</c:choose>  	

@@ -431,7 +431,12 @@ th{
 		</script>
 	</sec:authorize>
 </body>
-<script src="/js/vendor_login_user_tab.js"> </script>
+	 
+	 <sec:authorize access="hasRole('ROLE_VENDOR')">
+        <input type="hidden" id="isVendorCheck" value="1">
+    </sec:authorize>
+	 
+  <script src="/js/login_user_tab.js"> </script>
 <script type="text/javascript">
 	
 </script>

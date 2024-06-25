@@ -238,5 +238,7 @@ public class AdminExpansionController {
 		adminService.renewNotice(data);
 		return "redirect:/adminPage/notice";
 	}
+	
+	
 
 }
