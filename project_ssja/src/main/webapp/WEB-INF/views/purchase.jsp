@@ -564,7 +564,7 @@
             <div class="btn-group" role="group" aria-label="Basic example">
               <button type="button" class="btn btn-primary pcs_plus">1개추가</button>
               <button type="button" class="btn btn-secondary pcs_minus">1개감소</button>
-              <button type="button" class="btn btn-danger pro_rm">빼기</button>
+              <button type="button" class="btn btn-danger pro_rm">X</button>
             </div>
           </div>
         </c:forEach>

@@ -109,6 +109,9 @@
     figcaption{
       display: none;
     }
+    .ck-widget__selection-handler{
+      display: none;
+    }
   </style>
   <script>
     var header = $("meta[name='_csrf_header']").attr('content');

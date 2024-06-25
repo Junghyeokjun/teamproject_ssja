@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -121,18 +120,6 @@ public class CommunityController {
 		return ResponseEntity.ok().body(data);
 	}
 	
-	//게시글 이미지 수정
-	@PostMapping("/content/img/{bno}")
-	public String modifyImg(@PathVariable("bno") long bno, @RequestParam("image") MultipartFile file) {
-		return communityService.updateBoardImg(bno, file)+"";
-	}
-	
-	//게시글 이미지 삭제
-	@DeleteMapping("/content/img/{bno}")
-	public String deleteImg(@PathVariable("bno") long bno) {
-		return communityService.deleteBoardImg(bno)+"";
-	}
-	
 	//댓글 페이징해서 얻어오는 부분
 	@GetMapping("/reply")
 	public List<ReplysDto> reply(int replyNum,int amount, long bno){
@@ -210,6 +197,7 @@ public class CommunityController {
 
 		return data;
 	}
+	//게시글 내용을 얻어오는 메서드
 	@GetMapping("/post/{bno}")
 	public CommunityBoardDto getPost(@PathVariable("bno") long bno){
 
@@ -224,8 +212,7 @@ public class CommunityController {
 														data.get("writer").toString(), 
 														data.get("title").toString(), 
 														data.get("content").toString(), "SYSDATE", 0, 0, 0, 0, 0,0));
-	}	
-
+	}
 	
 	//커뮤니티 게시글을 삭제하는 부분
 	@DeleteMapping("/post")
@@ -237,9 +224,7 @@ public class CommunityController {
 	@GetMapping("/bestPost")
 	public List<CommunityBoardDto> bestPost(){
 		return communityService.getBestPost();
-
 	}
-
 	//커뮤니티 게시글을 검색하여 얻어오는 부분
 	@GetMapping("/search")
 	public Map<String,Object> search(int pageNum, int amount,String option, String keyword){
@@ -281,6 +266,7 @@ public class CommunityController {
 													  Long.valueOf(data.get("proNo").toString()).longValue());
 	}
 
+	//유저 정보 획득
 	@GetMapping("/userinfo/{mno}")
 	public ModelAndView userinfo(ModelAndView mv ,@PathVariable("mno") long mno ){
 				

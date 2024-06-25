@@ -122,9 +122,7 @@
     history.replaceState({}, null, location.pathname);
     $(document).ready(function () {
 
-      // let img_update = $("#img_update");
       let product_update = $("#product_update");
-      let content_box = $("#content");
       let search_keyword = $("#search_keyword");
       let productlist = $("#productlist");
       let product_no = $("#product_no");
@@ -132,8 +130,6 @@
       let content = $("#content");
 
       let update_btn = $("#update_btn");
-      let img_modify_dtn = $("#img_modify_dtn");
-      let img_remove_btn = $("#img_remove_btn");
       let search_btn = $("#search_btn");
       let cancel_btn = $("#cancel_btn");
       let product_remove = $("#product_remove_btn")
@@ -176,6 +172,7 @@
         });
       }
 
+      //연관 상품 화면 추가 메서드
       function addProduct(pro_no) {
 
         $.ajax({
@@ -221,22 +218,25 @@
       }
       //남아있는 이미지의 링크리스트를 반환하는 메서드
       function getRealImg() {
-            var templist = [];
-            $(".ck-content img").each(function (idx, item) {
-              var arrIdx = imgList.indexOf(item.getAttribute("src"));
-              console.log(item);
-              if (arrIdx != -1) {
-                templist.push(item.getAttribute("src"));
-              }
-            })
-            return templist;
+        var templist = [];
+        $(".ck-content img").each(function (idx, item) {
+          var arrIdx = imgList.indexOf(item.getAttribute("src"));
+          console.log(item);
+          if (arrIdx != -1) {
+            templist.push(item.getAttribute("src"));
           }
+        })
+        return templist;
+      }
 
+
+      //취소 버튼 이벤트
       cancel_btn.on('click', function () {
 
         location.href = "/community/content/" + bno_val;
       })
 
+      //수정 버튼 이벤트
       update_btn.on("click", function () {
         var title = $("#title").val();
         var content = $(".ck-content").html();
@@ -330,10 +330,12 @@
         addProduct(this.getAttribute("pro_no"));
       })
 
+      //상품 검색 이벤트
       search_btn.on("click", function () {
         productlist.empty();
         getProductList(search_keyword.val());
       })
+
       //상품 삭제 버튼
       product_remove.on("click", function () {
         product_update.val("true");
@@ -341,9 +343,10 @@
         product_has.text("선택된 상품이 없습니다.");
         $("#product_link").remove();
       })
-
+      //초기 설정(상품 리스트 로드)
       getProductList(search_keyword.val());
 
+      //초기설정(설정된 연관 상품 로드)
       if (product_no.val() != "") {
         addProduct(product_no.val());
       }
@@ -485,8 +488,6 @@
           <span>
             <button type="button" class="btn btn-secondary" id="cancel_btn">취소</button>
             <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#productModal">상품 태그</button>
-            <!-- <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">이미지
-              수정</button> -->
             <button class="btn btn-primary" id="update_btn">수정하기</button>
           </span>
 

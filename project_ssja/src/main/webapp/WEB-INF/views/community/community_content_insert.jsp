@@ -121,7 +121,6 @@
     history.replaceState({}, null, location.pathname);
     $(document).ready(function () {
 
-      let img_update = $("#img_update");
       let product_update = $("#product_update");
       let content = $("#content");
       let search_keyword = $("#search_keyword");
@@ -130,8 +129,6 @@
       let product_has = $("#product_has");
 
       let insert_btn = $("#insert_btn");
-      let img_insert_btn = $("#img_insert_btn");
-      let img_remove_btn = $("#img_remove_btn");
       let search_btn = $("#search_btn");
       let cancel_btn = $("#cancel_btn");
       let product_remove = $("#product_remove_btn")
@@ -140,6 +137,7 @@
       let m_NickName_val = $("#m_NickName").val();
       let randomNum = (new Date().getTime());
 
+      //상품 리스트 추가 메서드
       function getProductList(keyword) {
         $.ajax({
           type: 'GET',
@@ -168,6 +166,7 @@
           }
         });
       }
+      //연관상품 화면 추가 메서드
       function addProduct(pro_no) {
 
         $.ajax({
@@ -226,18 +225,7 @@
         return templist;
       }
 
-      function readURL(input) {
-        if (input.files && input.files[0]) {
-          var reader = new FileReader();
-          reader.onload = function (e) {
-            document.getElementById('view_img').src = e.target.result;
-          };
-          reader.readAsDataURL(input.files[0]);
-        } else {
-          document.getElementById('view_img').src = "";
-        }
-      }
-
+      //글쓰기 취소 이벤트
       cancel_btn.on('click', function () {
 
 
@@ -263,35 +251,7 @@
 
       })
 
-
-
-
-      img_insert_btn.on('click', function () {
-
-        var file = document.getElementById("image_file");
-        console.log(file.value);
-        $("#modal_close").click();
-
-        if (file.value == "") {
-          return;
-        }
-        if ($("#view_img").attr("src") == undefined) {
-          $("#content").prepend('<img src="" alt="" id="view_img" class="w-75 d-inline-block mb-5 ">')
-        }
-        readURL(file)
-
-
-        img_update.val("true");
-
-
-
-        img_remove_btn.on('click', function () {
-          $("#view_img").remove();
-          $("#image_file").val("");
-          img_update.val("false");
-
-        })
-      })
+      //글쓰기 버튼 이벤트
       insert_btn.on("click", function () {
         var title = $("#title").val();
         var content = $(".ck-content").html();
@@ -377,6 +337,7 @@
         location.assign("/community/content/" + bno);
 
       });
+
       //상품 선택 버튼 
       $(document).on("click", ".product", function () {
         $("#product_modal_close").click();
@@ -385,10 +346,13 @@
         product_has.text(this.getAttribute("pro_name") + "상품이 선택된 상태입니다.");
         addProduct(this.getAttribute("pro_no"));
       })
+      
+      //상품 검색 버튼
       search_btn.on("click", function () {
         productlist.empty();
         getProductList(search_keyword.val());
       })
+
       //상품 삭제 버튼
       product_remove.on("click", function () {
         product_update.val("false");

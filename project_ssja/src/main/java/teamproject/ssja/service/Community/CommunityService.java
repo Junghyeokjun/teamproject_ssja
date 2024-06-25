@@ -1,7 +1,6 @@
 package teamproject.ssja.service.Community;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,10 +47,6 @@ public interface CommunityService {
 	String updateTempBoardImg(List<String> allList,List<String> realList,long bno);	
 	//게시글 입력시 임시 이미지 삭제 메서드
 	boolean deleteTempBoardImg(List<String> fileNames);
-	//게시글 이미지 업데이트 메서드	
-	boolean updateBoardImg(long bno,MultipartFile file);
-	//게시글 이미지 삭제 메서드
-	int deleteBoardImg(long bno);
 	//게시글의 상품 업데이트 메서드
 	int updateBoardProduct(long bno,long proNo);
 	//게시글의 연관 상품을 가져오는 메서드
