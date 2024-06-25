@@ -21,56 +21,31 @@ class BoardServiceTest {
 		for(BoardCategoryDto dto : boardService.showBoardCategorys()) {
 			log.info("BS BC dto : " + dto);
 		}
+		assertNotNull(boardService.showBoardCategorys());
 	}
 
-	@Test
-	void testAddBoard() {
-		
-	}
-
-	@Test
-	void testRemoveBoard() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testShowContent() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testModifyBoard() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testUpHit() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testSetCookie() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetCookieValue() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetTotal() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testShowListWithPaging() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testModifyGetBoardLikes() {
-		fail("Not yet implemented");
-	}
+	/*
+	 * @Test void testAddBoard() {
+	 * 
+	 * }
+	 * 
+	 * @Test void testRemoveBoard() { fail("Not yet implemented"); }
+	 * 
+	 * @Test void testShowContent() { fail("Not yet implemented"); }
+	 * 
+	 * @Test void testModifyBoard() { fail("Not yet implemented"); }
+	 * 
+	 * @Test void testUpHit() { fail("Not yet implemented"); }
+	 * 
+	 * @Test void testSetCookie() { fail("Not yet implemented"); }
+	 * 
+	 * @Test void testGetCookieValue() { fail("Not yet implemented"); }
+	 * 
+	 * @Test void testGetTotal() { fail("Not yet implemented"); }
+	 * 
+	 * @Test void testShowListWithPaging() { fail("Not yet implemented"); }
+	 * 
+	 * @Test void testModifyGetBoardLikes() { fail("Not yet implemented"); }
+	 */
 
 }

@@ -107,7 +107,7 @@ let getListProductToServer = function(keyword,start,end,pageNum,selectedConditio
 	                .attr('id', 'item-review-wish-div')
 	                    .append(
 	                        $("<div>").append($("<img>").attr("src", "/images/utilities/star_icon.jpg")
-	                        		.css("width", "1.5em"), $("<span>").text(e.rating_avg)),
+	                        		.css("width", "1.5em"), $("<span>").text(e.rating_avg.toFixed(2))),
 	                        		
 	                        $("<div>").append($("<span>").text(e.pro_WISH).css("color", "#f06575"),
 	                        		
@@ -269,7 +269,7 @@ handleClick("#select_rowPrice", fontBoldResetDiv3, function() {
 });
 
 handleClick("#select_rating", fontBoldResetDiv3, function() {
-	selectedCondition = 'rating_avg desc';
+	selectedCondition = 'nvl((SELECT avg(b.b_eval) FROM board b WHERE b.pro_no = p.pro_no),0)  desc';
 });
 
 handleClick("#select_review", fontBoldResetDiv3, function() {

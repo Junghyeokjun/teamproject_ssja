@@ -156,7 +156,7 @@ let getListProductToServer = function(condition){
 	                .attr('id', 'item-review-wish-div')
 	                    .append(
 	                        $("<div>").append($("<img>").attr("src", "/images/utilities/star_icon.jpg")
-	                        		.css("width", "1.5em"), $("<span>").text(e.rating_avg)),
+	                        		.css("width", "1.5em"), $("<span>").text(e.rating_avg.toFixed(2))),
 	                        		
 	                        $("<div>").append($("<span>").text(e.pro_WISH).css("color", "#f06575"),
 	                        		
