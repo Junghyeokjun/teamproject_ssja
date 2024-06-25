@@ -27,7 +27,7 @@
    <meta name="_csrf" content="${_csrf.token}"/>
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
   <link href="/css/footerstyle.css?after" rel="stylesheet">
-  <link href="/css/barstyle.css?after" rel="stylesheet">
+  <link href="/css/barstyle_admin.css?after" rel="stylesheet">
 
   <link rel="stylesheet" href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
 
@@ -54,7 +54,7 @@ min-height:400px;
         </form>
         <button id="search_icon"></button>
         <a id="cart_link"><img id="cart_img"></a>
-        <a id="user_link"><img id="login_img"></a>
+        <a id="user_link" href="/login"><img id="login_img"></a>
       </div>
 
     </div>

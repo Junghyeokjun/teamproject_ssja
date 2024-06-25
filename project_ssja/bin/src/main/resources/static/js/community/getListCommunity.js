@@ -79,7 +79,7 @@ let getListPostToServer = function(condition){
 				   let $item_img_dv = $("<div>").attr("id", "item_img_dv").css("width","100%").append($("<img>").attr("src", e.img_path)
 						   .css('width', '100%') .css('height', '10em').css('overflow', 'hidden'));
 				   
-				   let $item_title_dv=$("<div>").attr("id",'$item_title_dv').text(e.bcontent.substring(0,15) ).css('font-size','1em');
+				   let $item_title_dv=$("<div>").attr("id",'$item_title_dv').text("").css('font-size','1em');
 				   
 				   let $item_bizname_dv=$("<div>").attr("id",'$item_bizname_dv')
 				   .text(e.btitle).css("text-bold",'weight').css('font-size','1.5em');
@@ -214,7 +214,7 @@ let getListSearchPostToServer = function(condition,option,keyword){
 				   let $item_img_dv = $("<div>").attr("id", "item_img_dv").css("width","100%").append($("<img>").attr("src", e.img_path)
 						   .css('width', '100%') .css('height', '10em').css('overflow', 'hidden'));
 				   
-				   let $item_title_dv=$("<div>").attr("id",'$item_title_dv').text(e.bcontent.substring(0,15) ).css('font-size','1em');
+				   let $item_title_dv=$("<div>").attr("id",'$item_title_dv').text("").css('font-size','1em');
 				   
 				   let $item_bizname_dv=$("<div>").attr("id",'$item_bizname_dv')
 				   .text(e.btitle).css("text-bold",'weight').css('font-size','1.5em');

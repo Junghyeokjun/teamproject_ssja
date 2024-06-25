@@ -51,7 +51,7 @@
 	</select>
 	
 	<insert id="insertBoard" parameterType="BoardDto">
-        	INSERT INTO board (B_NO, M_NO, B_C_NO, B_WRITER, B_TITLE, B_CONTENT, B_DATE, B_LIKE, B_HIT, B_EVAL, PRO_NO)
+            INSERT INTO board (B_NO, M_NO, B_C_NO, B_WRITER, B_TITLE, B_CONTENT, B_DATE, B_LIKE, B_HIT, B_EVAL, PRO_NO)
         	VALUES (B_SEQ.NEXTVAL, #{bmno}, #{bbcno}, #{bwriter}, #{btitle}, #{bcontent}, sysdate, #{blike}, #{bhit}, #{beval}, #{prono})
 	        <selectKey keyProperty="bno" resultType="int" order="AFTER">
 				select B_NO

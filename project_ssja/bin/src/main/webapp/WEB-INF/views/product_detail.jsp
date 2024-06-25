@@ -74,13 +74,19 @@ table {
 	border-color: gray;
 }
 
-.nav-link-custom:hover {
+.nav-link.nav-link-custom:hover {
 	color: yellow;
 }
 
 .nav-link.nav-link-custom.active {
-	
+	color: white;
+	background-color: black;
 }
+
+.nav-link.nav-link-custom{
+	color: black;
+}
+
 
 .input-group-text {
 	width: 7em;
@@ -203,7 +209,7 @@ border-radius:5px;
 				<form action="http://www.naver.com" id=searchForm method="get">
 				</form>
 				<button id="search_icon"></button>
-				<a id="cart_link"><img id="cart_img"></a> <a id="user_link"><img
+				<a id="cart_link"><img id="cart_img"></a> <a id="user_link" href="/login"><img
 					id="login_img"></a>
 			</div>
 		</div>

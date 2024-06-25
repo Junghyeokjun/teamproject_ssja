@@ -20,6 +20,7 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 	crossorigin="anonymous">
+	
 </script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -30,46 +31,20 @@
 <script src="/js/barscript_admin.js"></script>
 <script src="/js/footer.js"></script>
 <link href="/css/footerstyle.css?after" rel="stylesheet">
-<link href="/css/barstyle.css?after" rel="stylesheet">
+<link href="/css/barstyle_admin.css?after" rel="stylesheet">
 <link href="/css/board.css?after" rel="stylesheet">
-
 <link rel="stylesheet"
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
-<style>
-@font-face {
-	font-family: 'fonts';
-	src: url("https://webfontworld.github.io/NanumSquare/NanumSquare.css")
-		fotmat('font1');
-}
-
-body {
-	font-family: 'fonts', NanumSquare;
-	background-color: #f7f0e8;
-}
-
-#logo_img {
-	width: 3.5em;
-	height: 3em;
-}
-
-.MyPage_btn {
-	background-color: white;
-	padding: 20px;
-}
-
-#select_MyPage {
-	z-index: 900;
-	position: fixed;
-	top: 30%;
-	left: 5%;
-	width: 12%;
-}
-
-#select_mp_top {
-	background-color: #f7f0e8;
-	padding: 2em;
-	height: auto;
-}
+	<style>
+    /* 추가된 CSS 스타일 */
+    #productstable td {
+        white-space: nowrap; /* 줄 바꿈 없이 한 줄에 표시 */
+    }
+    
+    #productstable thead {
+        font-weight: bold; /* 열 제목을 굵은 글꼴로 설정 */
+    }
+    
 </style>
 </head>
 <body>
@@ -86,73 +61,107 @@ body {
 	<div id="side_bar">
 		<div id="side_links" class="w-100"></div>
 	</div>
+	<div id="select_AdminPage" class="d-flex flex-column">
+		<div id="select_mp_top" class="text-center">관리자</div>
+		<div id="select_content">
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage'">SSJA 현황</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/membersList'">회원 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/productsList'">상품 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/purchasesList'">주문 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/couponsList'">쿠폰 관리</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/notice'">공지사항 관리</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/qnasList'">고객 문의 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc"
+				onclick="location.href='/adminPage/salesList'">매출 현황</button>
+		</div>
+	</div>
 	<main>
-		<div id="main_container" style="margin: 0 auto;">
-			<br>
-			<h2>상품목록</h2>
-			<form name="products-search-form" autocomplete="off">
+		<div id="main_container"
+			class="d-flex flex-row align-items-center justify-content-center">
+			<div id="content_dv">
+				<div id="AdminPage_content_name">
+					<h2 id="AdminPageTitle">상품 목록</h2>
+				</div>	
+				<br>						
+				<form name="products-search-form" autocomplete="off">
 					<select name="type">
 						<option selected value="">선택</option>
 						<option value="PRO_NO">상품번호</option>
 						<option value="PRO_BIZNAME">사업자이름</option>
-					</select> <input type="text" name="keyword" value=""> <input
+					</select> <input type="text" class="form-control border w-50" name="keyword" value=""> <input
 						type="button" onclick="productsSearchList()"
 						class="btn btn-outline-dark mr-2" value="검색">
 				</form>
-			<div class="table-responsive">
-				<table class="table" id="productstable"style="text-align: center;">
-					<thead class="table">
-						<tr>
-							<td scope="col">상품번호</td>
-							<td scope="col">상품이름</td>
-							<td scope="col">가격</td>
-							<td scope="col">수량</td>
-							<td scope="col">위시 수</td>
-							<td scope="col">판매 수</td>
-							<td scope="col">사업자이름</td>
-						</tr>
-					</thead>
-					<tbody class="table-group-divider" >
-						<c:forEach var="product" items="${products}">
+				<div class="table-responsive">
+					<table class="table" id="productstable" style="text-align: center;">
+						<thead class="table">
 							<tr>
-								<td>${product.getPRO_NO()}</td>
-								<td>${product.getPRO_NAME()}</td>
-								<td>${product.getPRO_PRICE()}</td>
-								<td>${product.getPRO_QUANTITY()}</td>
-								<td>${product.getPRO_WISH()}</td>
-								<td>${product.getPRO_SELLCOUNT()}</td>
-								<td>${product.getPRO_BIZNAME()}</td>
+								<td scope="col">상품번호</td>
+								<td scope="col">상품이름</td>
+								<td scope="col">가격</td>
+								<td scope="col">수량</td>
+								<td scope="col">위시 수</td>
+								<td scope="col">판매 수</td>
+								<td scope="col">사업자이름</td>
 							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
-				<div id="paging_dv">
-					<nav aria-label="Page navigation example">
-						<ul class="pagination ch-col justify-content-center">
-							<c:if test="${productpageMaker.prev}">
-								<li class="page-item"><a class="page-link ch-col"
-									href="${pageContext.request.contextPath}/adminPage/productsList${productpageMaker.makeQuery(productpageMaker.startPage-1)}"><</a></li>
-							</c:if>
-							<c:forEach var="idx" begin="${productpageMaker.startPage}"
-								end="${productpageMaker.endPage}">
-								<c:choose>
-									<c:when test="${productpageMaker.criteria.pageNum == idx}">
-										<li class="page-item active"><a class="page-link"
-											href="${pageContext.request.contextPath}/adminPage/productsList${productpageMaker.makeQuery(idx)}">${idx}</a></li>
-									</c:when>
-									<c:otherwise>
-										<li class="page-item"><a class="page-link"
-											href="${pageContext.request.contextPath}/adminPage/productsList${productpageMaker.makeQuery(idx)}">${idx}</a></li>
-									</c:otherwise>
-								</c:choose>
+						</thead>
+						<tbody class="table-group-divider">
+							<c:forEach var="product" items="${products}">
+								<tr>
+									<td>${product.getPRO_NO()}</td>
+									<td>${product.getPRO_NAME()}</td>
+									<td>${product.getPRO_PRICE()}</td>
+									<td>${product.getPRO_QUANTITY()}</td>
+									<td>${product.getPRO_WISH()}</td>
+									<td>${product.getPRO_SELLCOUNT()}</td>
+									<td>${product.getPRO_BIZNAME()}</td>
+								</tr>
 							</c:forEach>
-							<c:if
-								test="${productpageMaker.next && productpageMaker.endPage > 0}">
-								<li class="page-item"><a class="page-link ch-col"
-									href="${pageContext.request.contextPath}/adminPage/productsList${productpageMaker.makeQuery(productpageMaker.endPage+1)}">></a></li>
-							</c:if>
-						</ul>
-					</nav>
+						</tbody>
+					</table>
+					<div id="paging_dv">
+						<nav aria-label="Page navigation example">
+							<ul class="pagination ch-col justify-content-center">
+								<c:if test="${productpageMaker.prev}">
+									<li class="page-item"><a class="page-link ch-col"
+										href="${pageContext.request.contextPath}/adminPage/productsList${productpageMaker.makeQuery(productpageMaker.startPage-1)}"><</a></li>
+								</c:if>
+								<c:forEach var="idx" begin="${productpageMaker.startPage}"
+									end="${productpageMaker.endPage}">
+									<c:choose>
+										<c:when test="${productpageMaker.criteria.pageNum == idx}">
+											<li class="page-item active"><a class="page-link"
+												href="${pageContext.request.contextPath}/adminPage/productsList${productpageMaker.makeQuery(idx)}">${idx}</a></li>
+										</c:when>
+										<c:otherwise>
+											<li class="page-item"><a class="page-link"
+												href="${pageContext.request.contextPath}/adminPage/productsList${productpageMaker.makeQuery(idx)}">${idx}</a></li>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+								<c:if
+									test="${productpageMaker.next && productpageMaker.endPage > 0}">
+									<li class="page-item"><a class="page-link ch-col"
+										href="${pageContext.request.contextPath}/adminPage/productsList${productpageMaker.makeQuery(productpageMaker.endPage+1)}">></a></li>
+								</c:if>
+							</ul>
+						</nav>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -164,32 +173,32 @@ body {
 	</footer>
 </body>
 <script>
-function productsSearchList() {
-    $.ajax({
-        type: 'GET',
-        url: "/adminPage/productsSearchList",
-        data: $("form[name=products-search-form]").serialize(),
-        success: function(result) {
-			console.log(result);
-            $('#productstable > tbody').empty();
-            if (result.length >= 1) {
-            	$("#paging_dv").empty();
-                result.forEach(function(product) {
-                    var str = '<tr>';
-                    str += "<td>" + product.pro_NO + "</td>";
-                    str += "<td>" + product.pro_NAME + "</td>";
-                    str += "<td>" + product.pro_PRICE + "</td>";
-                    str += "<td>" + product.pro_QUANTITY + "</td>";
-                    str += "<td>" + product.pro_WISH + "</td>";
-                    str += "<td>" + product.pro_SELLCOUNT + "</td>";
-                    str += "<td>" + product.pro_BIZNAME + "</td>";              
-                    str += "</tr>";
-                    $('#productstable > tbody').append(str);
-                });
-            }
-        }
-    });
-}
+	function productsSearchList() {
+		$.ajax({
+			type : 'GET',
+			url : "/adminPage/productsSearchList",
+			data : $("form[name=products-search-form]").serialize(),
+			success : function(result) {
+				console.log(result);
+				$('#productstable > tbody').empty();
+				if (result.length >= 1) {
+					$("#paging_dv").empty();
+					result.forEach(function(product) {
+						var str = '<tr>';
+						str += "<td>" + product.pro_NO + "</td>";
+						str += "<td>" + product.pro_NAME + "</td>";
+						str += "<td>" + product.pro_PRICE + "</td>";
+						str += "<td>" + product.pro_QUANTITY + "</td>";
+						str += "<td>" + product.pro_WISH + "</td>";
+						str += "<td>" + product.pro_SELLCOUNT + "</td>";
+						str += "<td>" + product.pro_BIZNAME + "</td>";
+						str += "</tr>";
+						$('#productstable > tbody').append(str);
+					});
+				}
+			}
+		});
+	}
 </script>
 
 </html>

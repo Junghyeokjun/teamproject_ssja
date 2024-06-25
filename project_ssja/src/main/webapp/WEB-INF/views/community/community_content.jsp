@@ -61,6 +61,9 @@
     }
     .product{
       background-color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #ccc;
     }
     .product > div:first-child{
       border: 1px solid #ccc;
@@ -103,7 +106,9 @@
         max-width: 100%;
         object-fit: cover;
     }
-
+    figcaption{
+      display: none;
+    }
   </style>
   <script>
     var header = $("meta[name='_csrf_header']").attr('content');

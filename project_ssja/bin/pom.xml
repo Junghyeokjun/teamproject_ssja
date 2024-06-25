@@ -72,19 +72,17 @@
 		</dependency>
 
 
-		<!-- 오라클 JDBC 드라이버 -->
-		 <dependency>
-			<groupId>oracle</groupId>
-			<artifactId>ojdbc6</artifactId>
-			<version>11.2.0.3</version>
-		</dependency> 
-		
-		<!-- aws배포용 데이터베이스 -->
-	<!-- 	<dependency>
-    <groupId>com.oracle.database.jdbc</groupId>
-    <artifactId>ojdbc8</artifactId>
-    <version>19.8.0.0</version>
-</dependency> -->
+	<!-- 오라클 JDBC 드라이버 -->
+	<!-- <dependency> <groupId>oracle</groupId> 
+	<artifactId>ojdbc6</artifactId> 
+		<version>11.2.0.3</version> </dependency> -->
+
+	<!-- aws배포용 데이터베이스 -->
+	<dependency>
+		<groupId>com.oracle.database.jdbc</groupId>
+		<artifactId>ojdbc8</artifactId>
+		<version>19.8.0.0</version>
+	</dependency> 
 		
 		
 		

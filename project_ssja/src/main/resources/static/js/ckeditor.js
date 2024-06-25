@@ -61,12 +61,7 @@ ClassicEditor
 	.create(document.querySelector('#update_content'),{
 		language:'ko',
 		extraPlugins: [MyCustomUploadAdapterPlugin],
-		image: {
-            toolbar: ['imageTextAlternative', '|', 'imageStyle:alignLeft', 'imageStyle:full', 'imageStyle:alignRight'],
-            maxWidth: 800,
-            maxHeight: 600
-        },
-		plugins: [ Image, ImageResizeEditing]
+		
 	})
 	.then(editor => {
 		$(".ck-editor").addClass("w-100")

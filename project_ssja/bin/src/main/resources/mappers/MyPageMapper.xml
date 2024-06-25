@@ -78,7 +78,7 @@ update members set m_email = #{email} where m_id = #{userId}
     <result property="O_DISCOUNT" column="O_DISCOUNT"/>
     <result property="O_PRICE" column="O_PRICE"/>
     <result property="O_PAY" column="O_PAY"/>
-    <result property="O_USECOUPON" column="O_USECOUPON"/>
+    <result property="USECOUPON" column="USECOUPON"/>
     <result property="O_STATE" column="O_STATE"/>
     <result property="isWiriteReview" column="rv"/>
     <result property="PRO_NAME" column="PRO_NAME"/>
@@ -94,7 +94,7 @@ update members set m_email = #{email} where m_id = #{userId}
 	FROM 
     	(SELECT 
        		p.pro_name,  p.pro_bannerimg,     p.pro_bizname,  o.o_no,   o.pro_no,   o.o_quantity,
-        	o.pur_no,  o.o_discount,   o.o_price,   o.o_pay,   o.o_usecoupon,  o.o_state,
+        	o.pur_no,  o.o_discount,   o.o_price,   o.o_pay,  nvl((select c_name from coupon t where t.c_no = o.o_usecoupon),'사용안함') as USECOUPON,  o.o_state,
         	(SELECT COUNT(*)   FROM board b   WHERE b.pro_no = p.pro_no AND b.m_no = #{id} AND b.b_c_no = 30) AS rv
     	 FROM  product p  
      	INNER JOIN orders o  
