@@ -3,6 +3,39 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="teamproject.ssja.mapper.AdminPageMapper">
+	
+	<select id="getDailyPrice" resultType="int">
+	    <![CDATA[		
+	    SELECT NVL(sum(p_price), 0) as Daily_price
+		FROM profit
+		WHERE TRUNC(p_date) = TRUNC(sysdate)
+	     ]]>
+	</select>
+	
+	<select id="getDailyPurcount" resultType="int">
+	    <![CDATA[		
+	    SELECT count(*) as Daily_purcount
+		FROM purchase
+		WHERE TRUNC(pur_date) =  TRUNC(sysdate)
+	     ]]>
+	</select>
+	
+	<select id="getDailyMcount" resultType="int">
+	    <![CDATA[		
+	   SELECT count(*)
+FROM members
+WHERE TRUNC(m_date) =  TRUNC(sysdate)
+	     ]]>
+	</select>
+	
+	
+	<select id="getDailyQnaCount" resultType="int">
+	    <![CDATA[		
+	   SELECT count(*) 
+	   FROM board 
+	   where b_c_no=20 and TRUNC(b_date) =  TRUNC(sysdate)
+	     ]]>
+	</select>
 
 	<resultMap id="MembersListMap" type="MembersDto">
 		<id property="M_NO" column="M_NO" />
@@ -12,7 +45,7 @@
 		<result property="M_ADDRESS1" column="M_ADDRESS1" />
 		<result property="M_ADDRESS2" column="M_ADDRESS2" />
 		<result property="M_ZIPCODE" column="M_ZIPCODE" />
-		<result property="M_BIRTH" column="M_BIRTH" />
+    <result property="M_BIRTH" column="M_BIRTH" />
 		<result property="M_GRADE" column="M_GRADE" />
 		<result property="M_EMAIL" column="M_EMAIL" />
 		<result property="M_PHONE" column="M_PHONE" />
@@ -31,7 +64,7 @@
     <![CDATA[
 	select * from 
         	(
-			    select
+			    selecte
 			        rownum rnum , A.*
 			    from 
 			    (SELECT  * FROM Members order by M_NO) A 
@@ -74,11 +107,10 @@
                 <when test="#{type} != null and type.equals('m_grade')">
                 m_grade = '${keyword}'
                </when>
-               </choose> 
-                   
+               </choose>          
                
 	</select>	
-	
+		
 	<resultMap id="ProductsListMap" type="ProductDto">
 		<id property="PRO_NO" column="PRO_NO" />
 		<result property="V_NO" column="V_NO" />
@@ -264,19 +296,40 @@
         ]]>
 	</delete>
 	
-	<resultMap id="SalesListMap" type="PurchaseDto">
-		<id property="PUR_NO" column="PUR_NO" />
-		<result property="PUR_PAY" column="PUR_PAY" />
-		<result property="PUR_DATE" column="PUR_DATE" />
+	
+	
+ <resultMap id="SalesListMap" type="ProfitDto">
+		<result property="P_DATE" column="P_DATE" />
+		<result property="P_PRICE" column="P_PRICE" />
 	</resultMap>
+	
+	<select id="dailyMCountsList" resultType="MAP">    
+    <![CDATA[
+
+SELECT TO_CHAR(m_date, 'YYYY-MM-DD') AS m_date, count(*) AS m_count
+FROM members
+WHERE m_date >= TRUNC(SYSDATE) - 7
+  AND m_date < TRUNC(SYSDATE) + 1
+GROUP BY TO_CHAR(m_date, 'YYYY-MM-DD')
+ORDER BY m_date
+        ]]>
+	</select>
 	
 	<select id="getDailySalesList" resultType="MAP">    
     <![CDATA[
-SELECT TRUNC(PUR_DATE) AS Daily, SUM(PUR_PAY) AS DailyTotalPay
+<<<<<<< HEAD
+=======
+SELECT TRUNC(PUR_DATE) AS Daily, SUM(PUR_tot) AS DailyTotalPay
 FROM purchase
 GROUP BY TRUNC(PUR_DATE)
 ORDER BY Daily
+>>>>>>> origin/dev_ajs
 
+SELECT TO_CHAR(p_date, 'MM-DD') AS p_date, p_price 
+FROM profit 
+WHERE p_date >= SYSDATE - 7
+AND p_date <= SYSDATE
+ORDER BY p_date
         ]]>
 	</select>
 
@@ -284,7 +337,7 @@ ORDER BY Daily
     <![CDATA[
 SELECT
     TO_CHAR(PUR_DATE, 'YYYY-MM') AS Month,
-    SUM(PUR_PAY) AS MonthlyTotalPay
+    SUM(PUR_tot) AS MonthlyTotalPay
 FROM
     purchase
 GROUP BY
@@ -298,15 +351,121 @@ ORDER BY
     <![CDATA[
 SELECT
     TO_CHAR(PUR_DATE, 'YYYY') AS Year,
-    SUM(PUR_PAY) AS YearlyTotalPay
+    SUM(PUR_tot) AS YearlyTotalPay
 FROM
-    purchase
+    profit
 GROUP BY
-    TO_CHAR(PUR_DATE, 'YYYY')
+    TO_CHAR(p_date, 'YYYY')
 ORDER BY
     Year
 
         ]]>
+	</select>	
+	
+ <select id="getSalesDataByDate"  resultType="MAP">
+    <![CDATA[
+    SELECT count(*),sum(pur_tot) 
+FROM purchase 
+WHERE TO_CHAR(pur_date, 'YY/MM/DD') = TO_CHAR(sysdate, 'YY/MM/DD')
+    ]]>
+</select> 
+
+<select id="dailyVisitCountsList" resultType="MAP">    
+    <![CDATA[
+
+SELECT VISIT_DATE, VISIT_COUNT
+FROM visitor_count
+WHERE VISIT_DATE >= TRUNC(SYSDATE) - 7
+  AND VISIT_DATE < TRUNC(SYSDATE) + 1
+ORDER BY VISIT_DATE
+        ]]>
 	</select>
+
+<resultMap id="qnasListMap" type="QnaBoardDto">
+		<id property="B_NO" column="B_NO" />
+		<result property="M_NO" column="M_NO" />
+		<result property="B_C_NO" column="B_C_NO" />
+		<result property="B_WRITER" column="B_WRITER" />
+		<result property="B_TITLE" column="B_TITLE" />
+		<result property="B_CONTENT" column="B_CONTENT" />
+		<result property="B_DATE" column="B_DATE" />
+		<result property="B_LIKE" column="B_LIKE" />
+		<result property="B_HIT" column="B_HIT" />
+		<result property="B_EVAL" column="B_EVAL" />
+		<result property="PRO_NO" column="PRO_NO" />
+	</resultMap>
+
+	<select id="getQnaListTotalCount" resultType="long">    
+    <![CDATA[
+    SELECT count(*) FROM board where b_c_no=20
+    
+        ]]>
+	</select>
+
+	<select id="getQnaListWithPaging" resultMap="qnasListMap">    
+    <![CDATA[
+	select * from 
+        	(
+			    select
+			        rownum rnum , A.*
+			    from 
+			    (SELECT * FROM board where b_c_no=20 order by b_date desc ) A 
+		    	where rownum <= #{pageNum} * #{amount} 
+		    )
+			where rnum > (#{pageNum}-1) * #{amount}
+    ]]>
+	</select>
+	<delete id="deleteExpiredCoupon" >
+	  <![CDATA[ delete from coupon where  c_duedate < SYSDATE - (5.1 / (24 * 60))  ]]>
+	</delete>
+	
+	<insert id="renewYsterdayProfit">
+	SELECT TRUNC(SYSDATE -1) AS p_date,  SUM(PUR_TOT) AS DAILY_TOTAL_SALES
+	FROM purchase
+	WHERE TRUNC(PUR_DATE) = TRUNC(SYSDATE-1)
+	GROUP BY TRUNC(SYSDATE-1)
+	</insert>
+	
+	<resultMap id="QnaSearchListMap" type="QnaSearchDto">
+		<id property="B_NO" column="B_NO" />
+		<result property="M_NO" column="M_NO" />
+		<result property="B_C_NO" column="B_C_NO" />
+		<result property="B_WRITER" column="B_WRITER" />
+		<result property="B_TITLE" column="B_TITLE" />
+		<result property="B_CONTENT" column="B_CONTENT" />
+		<result property="B_DATE" column="B_DATE" />
+		<result property="B_LIKE" column="B_LIKE" />
+		<result property="B_HIT" column="B_HIT" />
+		<result property="B_EVAL" column="B_EVAL" />
+		<result property="PRO_NO" column="PRO_NO" />
+		<result property="type" column="type" />
+		<result property="keyword" column="keyword" />
+	</resultMap>
+
+	<select id="getQnaSearchList"  parameterType="string"   resultMap="QnaSearchListMap">    
+
+SELECT * FROM board where  B_C_NO=20           
+               <choose>
+               <when test="#{type} != null and type.equals('M_NO')">
+                 and M_NO = '${keyword}'
+               </when>
+                <when test="#{type} != null and type.equals('B_TITLE')">
+                 and B_TITLE  LIKE '%${keyword}%'
+               </when>
+                <when test="#{type} != null and type.equals('B_CONTENT')">
+                 and B_CONTENT LIKE '%${keyword}%'
+               </when>
+               </choose>                  
+               
+	</select>	
+	
+	<delete id="deleteQna" parameterType="QnaBoardDto">
+		 <![CDATA[
+        	delete FROM board where b_c_no=20 and B_NO = #{B_NO}
+        ]]>
+	</delete>
+	
+ 
+	
 	
 	</mapper>

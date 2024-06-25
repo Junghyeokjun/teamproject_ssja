@@ -15,7 +15,7 @@ let getNoticeList = function(pageNum, keyword){
 		success:function(data){
 			console.log(data);
 			$adimnPage_notic_content.empty();
-			let $notice_content = $("<div>").addClass("px-3").appendTo($adimnPage_notic_content);
+			let $notice_content = $("<div>").appendTo($adimnPage_notic_content);
 			
 			let $paging_dv = $("<div>").attr('id','paging_dv').addClass("d-flex flex-row justify-content-center py-3")
 			.appendTo($adimnPage_notic_content);
@@ -31,7 +31,7 @@ let getNoticeList = function(pageNum, keyword){
 			
 			data.objectList.forEach(function(notice, index){
 				let $noitce_item=$('<div>').attr('id','notice_content_dv').addClass('d-flex flex-column').append(
-				$("<div>").addClass("my-2 d-flex flex-row justify-content-evenly align-items-center p-2 text-center")
+				$("<div>").addClass("d-flex flex-row justify-content-evenly align-items-center p-2 text-center")
 				.hover(
 						function(){
 							$(this).css({'cursor':'pointer','background':'#eee'});
@@ -56,7 +56,7 @@ let getNoticeList = function(pageNum, keyword){
 						
 						$('<span>').css({'width':'8%'}).text(notice.bhit),
 						
-						$('<button>').css({'width':'10%'}).text('삭제').addClass('btn')
+						$('<button>').css({'width':'8%'}).text('삭제').addClass('btn')
 						.css({'background':'#bbb','width':'4em'})
 						.on('click', function(){
 							deleteNotice(notice.bno);

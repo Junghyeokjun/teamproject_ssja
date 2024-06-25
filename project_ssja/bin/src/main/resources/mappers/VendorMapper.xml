@@ -27,17 +27,20 @@
  	<select id="selectVendorSalesInWeek" resultMap="VendorSalesDtoMap">
 	 	<![CDATA[
 	 		SELECT TRUNC(P.PUR_DATE) AS ORDER_DATE,
-			       SUM(O.O_PRICE) AS TOTAL_SALES
+			       SUM(O.O_PRICE) AS TOTAL_SALES,
+			       COUNT(*) AS PURCHASE_COUNT
 			FROM PURCHASE P
 			JOIN ORDERS O ON P.PUR_NO = O.PUR_NO
 			JOIN PRODUCT PR ON O.PRO_NO = PR.PRO_NO
 			JOIN VENDOR V ON PR.V_NO = V.V_NO
 			WHERE P.PUR_DATE >= TRUNC(SYSDATE) - 7
 			  AND P.PUR_DATE < TRUNC(SYSDATE)
+              AND V.V_NO=#{vno} 
 			GROUP BY TRUNC(P.PUR_DATE)
 			ORDER BY TRUNC(P.PUR_DATE)
 	 	]]>
  	</select>
+ 	
  	<!-- 페이징은 기본으로 깔고 가기 -->
 	<select id="selectVendorProducts" resultMap="ProductsListMap">
 		 <![CDATA[
@@ -52,6 +55,7 @@
 			where rnum > (#{pageNum}-1) * #{amount}
    		 ]]>
 	</select>
+
 
 	<select id="selectVendorProductsCount" resultType="java.lang.Long">
 		<![CDATA[
@@ -164,6 +168,7 @@
 	<resultMap type="teamproject.ssja.dto.VendorSalesDto" id="VendorSalesDtoMap">
 		<result property="orderDate" column="ORDER_DATE"/>
 		<result property="totalSales" column="TOTAL_SALES"/>
+		<result property="purchaseCount" column="PURCHASE_COUNT"/>
 	</resultMap>
 	
 	<resultMap type="teamproject.ssja.dto.BoardDto" id="BoardDtoMap">

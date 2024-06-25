@@ -446,3 +446,13 @@ let getCategoryItems = function(categoryNum, categoyPageNum){
 		getCategoryItems(categoryNum,categoyPageNum)	
 		})
 	
+	$("#event_default_link").on('click', function(event){
+		console.log($("#user_link").attr("href"))
+		if($("#user_link").attr("href") == "/login"){
+			return true;
+		}
+		alert("해당 이벤트의 링크는 회원가입 페이지로 연결되어있습니다. \n 고객님께서는 이미 회원으로 로그인한 상태이십니다.")
+		 event.preventDefault();
+		return false;
+	})
+		
