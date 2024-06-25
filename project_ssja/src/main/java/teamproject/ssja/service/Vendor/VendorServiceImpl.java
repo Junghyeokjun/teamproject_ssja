@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ProductImgDto;
+import teamproject.ssja.dto.StatisticVO;
 import teamproject.ssja.dto.VendorSalesDto;
 import teamproject.ssja.dto.vendor.TotalVendorInfoDto;
 import teamproject.ssja.dto.vendor.VendorEtcInfoDTO;
@@ -217,5 +218,32 @@ public class VendorServiceImpl implements VendorService{
 		data.put("year", vendorMapper.getProfitStatistic(vno, "YYYY", condition));
 		
 		return data;
+	}
+	public List<VendorSalesDto> getDaySalesData(StatisticVO statisticVO) {
+		// TODO Auto-generated method stub
+		return vendorMapper.selectVendorSalesInDay(statisticVO);
+	}
+
+	@Override
+	public List<VendorSalesDto> getMonthSalesData(StatisticVO statisticVO) {
+		// TODO Auto-generated method stub
+		return vendorMapper.selectVendorSalesInMonth(statisticVO);
+	}
+
+	@Override
+	public List<VendorSalesDto> getYearSalesData(StatisticVO statisticVO) {
+		// TODO Auto-generated method stub
+		return vendorMapper.selectVendorSalesInYear(statisticVO);
+	}
+
+	@Override
+	public VendorSalesDto getTotalSalesData(long vno) {
+		// TODO Auto-generated method stub
+		return vendorMapper.selectVendorSalesTotal(vno);
+	}
+
+	@Override
+	public List<BoardDto> getQnaSearchLists(Criteria criteria, String option, String keyword) {
+		return vendorMapper.selectSearchVendorQnas(criteria, option, keyword);
 	}
 }

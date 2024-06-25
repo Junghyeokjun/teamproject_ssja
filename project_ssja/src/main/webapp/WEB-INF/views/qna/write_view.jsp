@@ -27,15 +27,7 @@
 </script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<!-- <script src="/js/barscript.js">
-	
-</script> -->
-<script src="/js/footer.js">
-	
-</script>
-<script src="/js/board.js">
-	
-</script>
+
 <meta name="_csrf" content="${_csrf.token}"/>
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
 
@@ -51,31 +43,31 @@
     </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-  
-   <meta name="_csrf" content="${_csrf.token}"/>
-<meta name="_csrf_header" content="${_csrf.headerName}"/>
 
 <c:choose>
-<c:when test="${principal.auth != 'ROLE_VENDOR'}">
-  <script src="/js/barscript.js">
-
-  </script>
-  <link href="/css/barstyle.css?after" rel="stylesheet">
-</c:when>
-<c:when test="${principal.auth == 'ROLE_VENDOR'}">
-  <script src="/js/vendorbarscript.js">
-
-  </script>
-  <link href="/css/vendorbarstyle.css?after" rel="stylesheet">
-</c:when>
+	<c:when test="${principal.auth != 'ROLE_VENDOR'}">
+		<script src="/js/barscript.js">
+			
+		</script>
+		<link href="/css/barstyle.css?after" rel="stylesheet">
+	</c:when>
+	<c:when test="${principal.auth == 'ROLE_VENDOR'}">
+		<script src="/js/vendorbarscript.js">
+			
+		</script>
+		<link href="/css/vendorbarstyle.css?after" rel="stylesheet">
+	</c:when>
 </c:choose>
-  <script src="/js/footer.js">
+<script src="/js/footer.js">
+	
+</script>
+<script src="/js/board.js">
+</script>
+<link href="/css/footerstyle.css?after" rel="stylesheet">
+<link href="/css/board.css?after" rel="stylesheet">
 
-  </script>
-  <link href="/css/footerstyle.css?after" rel="stylesheet">
-  <link href="/css/board.css?after" rel="stylesheet">
-
-  <link rel="stylesheet" href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
+<link rel="stylesheet"
+	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
 
 <style>
 @font-face {
@@ -176,57 +168,6 @@ body {
 	</header>
   </c:when>
 </c:choose>
-
-		<c:choose>	
-			<c:when test="${principal.auth != 'ROLE_VENDOR'}">
-			  <header>
-			    <div id="title_bar" class="fixed-top">
-			      <div class="py-2 px-1" id="top-bar">
-			        <button type="toggle-button" class="top_btn" id="top_btn"></button>
-			        <a id="logo_toHome" href="/"><img id="logo_img" src="/images/utilities/logoSSJA.png"></a>
-			        <form action="http://www.naver.com" id=searchForm method="get">
-			
-			        </form>
-			        <button id="search_icon"></button>
-			        <a id="cart_link"><img id="cart_img"></a>
-			        <a id="user_link"><img id="login_img"></a>
-			      </div>
-			
-			    </div>
-			    <nav id="total_bar">
-			      <div id="home_user_bar"> </div>
-			      <div id="sub_bar"></div>
-			    </nav>
-			  </header>
-		  </c:when>
-		  <c:when test="${principal.auth == 'ROLE_VENDOR'}">
-		  	<header class="fixed-top">
-				<div id="title_bar" >
-					<div class="py-2 px-1 d-flex justify-content-between" id="top-bar">
-						<div class="d-flex align-items-center">
-							<button type="toggle-button" class="top_btn"></button>
-							<a id="logo_toHome" href=""><img id="logo_img" src="/images/utilities/logoSSJA.png"></a>
-						</div>
-						<div class="mx-5 my-2 d-flex ">
-							<h1 class="h1 vendorTitle" >판매자 :&nbsp;</h1>
-		        			<h1 class="h1 vendorNames"> 
-		        				&lt;
-		        				<sec:authorize access="isAuthenticated()">
-		        					<sec:authentication property="principal.userInfo" var="vendorMember"/>
-		        				</sec:authorize>
-		        				<input type="hidden" id="vendorData" value="${vendorMember.m_No}">
-		        				${vendorMember.m_Name}
-		        				&gt;</h1>      			
-		        		</div>
-		        		<a id="cart_link" hidden="hidden"></a>
-						<a id="user_link"><img id="login_img"></a>
-					</div>
-				</div>
-				<nav id="total_bar">
-				</nav>
-			</header>
-		  </c:when>
-		</c:choose>
 	<div id="side_bar">
 		<div id="side_links" class="w-100"></div>
 	</div>

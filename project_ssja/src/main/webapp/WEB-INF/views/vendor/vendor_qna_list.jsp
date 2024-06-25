@@ -375,13 +375,13 @@
 					</div>
 					<!-- 모양내기 -->
 					<div class="d-flex justify-content-center">
-						<form class="w-50 input-group" name="members-search-form" autocomplete="off">
+						<form id="qnas-search-form" class="w-50 input-group" autocomplete="off">
 							<select class="form-select border" name="type">
 								<option selected value="">선택</option>
-								<option value="bTitle">제목</option>
-								<option value="bContent">내용</option>
-								<option value="m_name">제목 + 내용</option>
-								<option value="m_id">작성일</option>
+								<option value="title">제목</option>
+								<option value="content">내용</option>
+								<option value="title_and_content">제목 + 내용</option>
+								<option value="writer">작성자</option>
 							</select> 
 							<input type="text" class="form-control border w-50" name="keyword" > 
 							<input type="submit" class="btn btn-outline-dark mr-2" value="검색">
@@ -420,7 +420,26 @@
     });
 
 
+	$(document).ready(function(){
+		$(document).on('submit', '#qnas-search-form', function(e){
+			e.preventDefault();
 
+			let option = '';
+			let keyword = '';
+			let pageNum = '${pageMaker.criteria.pageNum}';
+			let amount = '${pageMaker.criteria.amount}';
+			let bmno = '${vendorMember.m_No}'
+
+			console.log(pageNum + " + " + amount + " + " + bmno);
+			if($('.form-select').val() == ''){
+				alert('검색 옵션을 선택하지 않았습니다. 옵션을 선택하십시오.');
+				return;
+			}else if(bmno == ''){
+				alert('판매자 정보가 없습니다.');
+				return;
+			}
+		});
+	});
 </script>
 
 </html>

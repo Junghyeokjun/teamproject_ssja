@@ -269,14 +269,15 @@ main, footer {
 }
 
 .seller-download-main{
+	width : 50%;
+	display : flex;
+	justify-content :space-between;
+	align-items : center;
 	border: 1px solid #ccc;
 	padding: 1em 1em 1em 1em;
 	border-radius: 5px 5px 5px 5px;
 }
 
-.seller-download-h4{
-	border-bottom: 2px solid #ccc;
-}
 
 th{
   background-color: #706b6b !important; 
@@ -289,8 +290,8 @@ th{
 	  left: 85%;
 	  top: 220px; 
 	  text-align:center;
-	  width: 100px;
-	  height: 150px;
+	  width: 150px;
+	  height: 250px;
 	  margin-right: 50px;
 	  padding: 15px 5px;
 	  border: 1px solid #ccc;
@@ -298,9 +299,19 @@ th{
 	}	
 
 	.seller-download-main{
+		width:100%;
+		display : block;
 		border : 0;
 		padding: 0 0 0 0;
 	}
+	
+	.download-img.img-thumbnail{
+		display: none;
+	}
+	
+	.table.download-table{
+		border-radius: 10px;
+	}	
 }
 
 </style>
@@ -357,34 +368,62 @@ th{
 				</div>
 				<main>
 					<div class="main_whitespace p-5 my-2"></div>
-					<div id="seller-download" class="text-center d-flex justify-content-center">
+					<div id="seller-download" class="d-flex justify-content-center text-center">
 						<div class="seller-download-main">
-							<div class="seller-download-h4">
-								<h4 class="h4">다운로드 </h4>
+							<div class="seller-download-h4 mb-2">
+								<h4 class="h4">다운로드</h4>
+								<img class="download-img img-thumbnail" alt="excel"
+									src="/images/utilities/excel_download.png"
+									style="width: 60px; height: 60px"></img>
 							</div>
-							<div class="download-icon pt-2">
-							<a href=""><img class="download-img img-thumbnail" alt="excel" src="/images/utilities/excel_download.png" style="width: 60px; height:60px"></img></a>
-							<br><p class="m-0">excel</p>
+
+							<div>
+								<table class="table download-table">
+									<thead class="download- border">
+										<tr>
+											<td>정렬</td>
+											<td>링크</td>
+										</tr>
+									</thead>
+									<tbody class="border">
+										<tr>
+											<td><p class="m-0">매출</p></td>
+											<td><a href=""><img class="border-0" alt="매출"
+													src="/images/utilities/download.png"
+													style="width: 25px; height: 25px"></img></a></td>
+										</tr>
+										<tr>
+											<td>수량</td>
+											<td><a href=""><img class="border-0" alt="수량"
+													src="/images/utilities/download.png"
+													style="width: 25px; height: 25px"></img></a></td>
+										</tr>
+										<tr>
+											<td>일자</td>
+											<td><a href=""><img class="border-0" alt="일자"
+													src="/images/utilities/download.png"
+													style="width: 25px; height: 25px"></img></a></td>
+										</tr>
+									</tbody>
+								</table>
 							</div>
 						</div>
 					</div>
 
 					<div id="total-statistics" class="ssja-main-width text-center">
 						<div class="text-center mb-3">
-							<h5 class="h5">총 합계</h5>
+							<h5 class="h5">누적 통계</h5>
 						</div>						
 						<table id="ssja-vendor-datas" class="table">
 							<tr>
 								<th class="w-25">a</th>
 								<th class="w-25">b</th>							
-								<th class="w-25">c</th>
-								<th class="w-25">d</th>								
+								<th class="w-25">c</th>							
 							</tr>
 							<tr>
 								<td>111,111</td>
 								<td>111</td>
 								<td>1,111</td>
-								<td>11,111</td>
 							</tr>
 						</table>
 					</div>
@@ -392,7 +431,7 @@ th{
 						<div class="d-flex flex-row align-items-center justify-content-center container">
 							<div id="MyPage_content_container" class="px-5 pt-5 pb-1">
 								<div class="text-center mb-3">
-									<h5 class="h5">최근 일주일 간 매출 데이터</h5>
+									<h5 class="h5 chart-title">최근 일주일 간 매출 데이터</h5>
 									<h5 class="h5 years"></h5>
 								</div>
 								<div class="d-flex show-chart">

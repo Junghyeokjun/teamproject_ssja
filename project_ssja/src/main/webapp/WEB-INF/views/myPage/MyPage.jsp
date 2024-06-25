@@ -175,9 +175,11 @@ transform: translate(-50%, -50%);
         				&lt;
         				<sec:authorize access="isAuthenticated()">
         					<sec:authentication property="principal.userInfo" var="vendorMember"/>
-        				</sec:authorize>
+        				</sec:authorize>        				
         				<input type="hidden" id="vendorData" value="${vendorMember.m_No}">
         				${vendorMember.m_Name}
+        				
+        				<input type="hidden" id="auth" value="">
         				&gt;</h1>      			
         		</div>
         		<a id="cart_link" hidden="hidden"></a>

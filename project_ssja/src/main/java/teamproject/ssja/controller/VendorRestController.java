@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
+import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.ProductCategoryGroupDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.VendorSalesDto;
@@ -119,5 +120,30 @@ public class VendorRestController {
 			e.printStackTrace(); // 예외 스택 트레이스를 콘솔에 출력
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ArrayList<VendorSalesDto>());
 		}
+	}
+	
+	@GetMapping("/total/{vno}")
+	public ResponseEntity<VendorSalesDto> getTotalData(@PathVariable("vno") long vno){
+		try {			
+			VendorSalesDto totalData = vendorService.getTotalSalesData(vno);
+			return ResponseEntity.ok(totalData);
+		} catch (Exception e) {
+			e.printStackTrace(); // 예외 스택 트레이스를 콘솔에 출력
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new VendorSalesDto());
+		} 
+	}
+	
+	// 판매자 검색
+	@GetMapping("/search/QnA")
+	public ResponseEntity<List<BoardDto>> getSearchQnaList(Criteria criteria, 
+			@RequestParam("option") String option, 
+			@RequestParam("keyword") String keyword){
+		try {
+			List<BoardDto> totalData = vendorService.getQnaSearchLists(criteria, option, keyword);
+			return ResponseEntity.ok(totalData);
+		} catch (Exception e) {
+			e.printStackTrace(); // 예외 스택 트레이스를 콘솔에 출력
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ArrayList<BoardDto>());
+		} 
 	}
 }

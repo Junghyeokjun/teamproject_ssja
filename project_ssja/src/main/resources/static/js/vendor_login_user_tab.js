@@ -29,6 +29,13 @@
                 window.location.href = "/board/list/20";
             }).appendTo($login_user_div);
 
+        $("<button>").text("판매 관리")
+        .css('white-space', 'nowrap')
+        .on('click', function(e) {
+        	e.preventDefault();
+            window.location.href = "/vendor";
+        }).appendTo($login_user_div);
+        
         let csrf_token = $("meta[name='_csrf']").attr("content");
         $("<form>").attr({ 'action': '/logout', 'method': 'post' })
         .append(

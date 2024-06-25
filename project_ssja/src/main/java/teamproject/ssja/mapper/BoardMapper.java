@@ -35,7 +35,7 @@ public interface BoardMapper {
 	BoardCategoryDto selectBC(long bcno);
 	
 	long selectTotalCount(long bcno);
-	long selectSearchTotalCount(long bcno,String option, String keyword);
+	long selectSearchTotalCount(long bcno, String option, String keyword);
 	List<BoardDto> selectListWithPaging(Criteria criteria);
 
 	//커뮤니티용 게시글들을 가져오는 메서드
