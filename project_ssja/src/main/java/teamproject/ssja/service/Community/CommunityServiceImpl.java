@@ -4,12 +4,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.slf4j.Slf4j;
@@ -152,21 +154,33 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 	@Override
-	public String updateTempBoardImg(long bno, MultipartFile file) {
-		String fileName="Temp_"+bno+".png";
-		File targetFile=new File(absolutePath+"/"+fileName);
-		if(file==null || file.isEmpty()) {
-			
-			return "null";
-		}
-		try{
-			FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(targetFile));
-        }catch (IOException ioException){
-            log.error(ioException.toString(),ioException);
-            return "null";
-        }
+	public String updateTempBoardImg(List<String> allList,List<String> realList,long bno) {
+		File targetFile=null;
+		boolean banner=true;
 		
-		return path+"/"+fileName;
+		if(boardMapper.selectBoardImg(bno)==0) {
+			boardMapper.insertBoardImg(new BoardImgsDto(0,bno,path+"/temp.png"));
+		}
+		
+		for (String filePath : allList) {
+			if(realList.contains(filePath)) {
+				if(banner) {
+					boardMapper.updateBoardImg(new BoardImgsDto(0, bno, filePath));
+					banner=false;
+				}
+			}else {
+				targetFile=new File(filePath.replace(path, absolutePath));
+				if(targetFile.exists()) {
+					targetFile.delete();
+				}
+			}
+		}
+		if(realList.get(0).equals("temp")) {
+			boardMapper.updateBoardImg(new BoardImgsDto(0, bno, path+"/temp.png"));
+			return "temp";
+		}
+		
+		return "imgae";
 	}
 
 	@Override
@@ -223,13 +237,16 @@ public class CommunityServiceImpl implements CommunityService {
 
 
 	@Override
-	public boolean deleteTempBoardImg(long randomNum) {
-		String fileName="Temp_"+randomNum+".png";
-		File file= new File(absolutePath+"/"+fileName);
-		if(file.exists()) {
-			file.delete();
+	public boolean deleteTempBoardImg(List<String> fileNames) {
+		File file=null;
+		for (String fileName : fileNames) {
+			fileName=fileName.replace(path, absolutePath);
+			file=new File(fileName);
+			if(file.exists()) {
+				file.delete();
+			}
 		}
-		return false;
+		return true;
 	}
 
 
@@ -321,7 +338,24 @@ public class CommunityServiceImpl implements CommunityService {
 		return categoryMapper.selectPC(pcno);
 	}
 
+	@Override
+	public String updateEditorImage(MultiValueMap<String, MultipartFile> multiValueMap) {
+		MultipartFile fileload = multiValueMap.get("upload").get(0);
+		String fileName = fileload.getOriginalFilename();
 
+		int index = fileName.lastIndexOf(".");
+		String ext = fileName.substring(index+1);
+		Random ran = new Random(System.currentTimeMillis());
+		fileName = System.currentTimeMillis()+"_"+(int)(ran.nextDouble()*10000)+"."+ext;
 
+		File targetFile = new File(absolutePath+ File.separator + fileName);
+		try {
+			FileCopyUtils.copy(fileload.getInputStream(), new FileOutputStream(targetFile));
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return path+ File.separator + fileName;
+	}
 
 }

@@ -28,6 +28,7 @@
   <script src="/js/footer.js">
 
   </script>
+
    <meta name="_csrf" content="${_csrf.token}"/>
   <meta name="_csrf_header" content="${_csrf.headerName}"/>
   <link href="/css/footerstyle.css?after" rel="stylesheet">
@@ -97,8 +98,11 @@
       border-radius: 10px;
       overflow: hidden;
     }
-
-
+    /* editor */
+    .image img {
+        max-width: 100%;
+        object-fit: cover;
+    }
 
   </style>
   <script>
@@ -226,21 +230,28 @@
 
       //게시글 삭제 메서드
       let deletePost=function(){
-        $.ajax({
-          type : 'DELETE',
-          url : '/community/content/img/'+bno_val,
-          async : false,
-          beforeSend: function(xhr) {
-              xhr.setRequestHeader(header, token);
-          },
-          dataType : 'text',
-            
-          success : function(result) {
-          },    
-          error : function(request, status, error) {
-            alert(error);
-          }
+        var imgList=[];
+        
+        $("#content img").each(function(idx, item){
+          imgList.push(item.getAttribute("src"));
         })
+        $.ajax({
+          type: 'POST',
+          url: '/community/tempImg',
+          beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+          },
+          dataType: 'text',
+          data: {
+            list: imgList
+          },
+          success: function (data) {
+
+          },
+          error: function (e) {
+            alert("error:" + e);
+          }
+        });
 
         $.ajax({
           type : 'DELETE',
@@ -568,10 +579,11 @@
           $("#update_re_btn").attr("rno",this.getAttribute("rno"));
 
         })
-        if(pro_no.val()!=0){
+      if(pro_no.val()!=0){
         getProduct(pro_no.val());
-        }
-      })
+      }
+
+    })
 
   </script>
 </head>
@@ -639,10 +651,8 @@
           </div>
         </div>  
         <input type="hidden" value="${content.img_path}">
-        <c:if test='${!content.img_path.equals("/images/board_content/temp.png")}'>
-          <img src="${content.img_path}" alt="" class="w-75 d-inline-block mb-5 ">
-        </c:if>
-        <div class="w-75 mb-3">
+
+        <div id="content" class="w-75 mb-3">
           ${content.bcontent}
         </div>
         <div class="w-75 d-flex justify-content-between align-items-end mt-4 mb-2 ">
