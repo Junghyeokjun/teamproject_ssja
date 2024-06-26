@@ -21,6 +21,9 @@ public interface ProductCategoryMapper {
 	// 대분류 카테고리 개수
 	long selectPCMainCount();
 	
+	// 카테고리 넘버로 이름을 가져오는 함수
+	String selectPC(long pcno);
+	
 	
 	//
 	// 관리자가 진행하는 부분

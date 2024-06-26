@@ -60,7 +60,8 @@
     resultType="teamproject.ssja.dto.product.ProductItemDto">
    SELECT a.*
     FROM (
-     SELECT p.*, ROW_NUMBER() OVER (ORDER BY 
+     SELECT p.*, nvl((SELECT avg(b.b_eval) FROM board b WHERE b.pro_no = p.pro_no),0) AS RATING_AVG,
+      ROW_NUMBER() OVER (ORDER BY 
      <choose>
            <when test="selectedCondition == null or selectedCondition == ''">
                pro_sellcount desc

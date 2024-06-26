@@ -81,10 +81,6 @@ body {
 	background-color: #f7f0e8;
 }
 
-#logo_img {
-	width: 3.5em;
-	height: 3em;
-}
 </style>
 <style>
 #icon_div  img {
@@ -230,7 +226,12 @@ body {
 		<div id="third_footer"></div>
 	</footer>	
 </body>
-<sec:authorize access="isAuthenticated()">
+ <sec:authorize access="isAuthenticated()">
+	 
+	 <sec:authorize access="hasRole('ROLE_VENDOR')">
+        <input type="hidden" id="isVendorCheck" value="1">
+    </sec:authorize>
+	 
   <script src="/js/login_user_tab.js"> </script>
   <script src="/js/user_cart_tab.js"> </script>
 </sec:authorize>

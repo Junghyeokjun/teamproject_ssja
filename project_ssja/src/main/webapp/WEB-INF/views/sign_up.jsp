@@ -27,6 +27,36 @@
         font-family: "Noto Sans KR", sans-serif;
         background-color: #f7f0e8;
     }
+ 
+    input[type="text"], input[type="password"] {
+     height:2.5em;
+    margin-top:0.5em;
+    margin-botton:0.5em;
+    margin-left:0.5em;
+    }
+    input[type="button"] {
+    height:2.3em;
+    background:black;
+    color:white;
+    border-radius:5px;
+    min-width:3.5rem;
+    }
+    td{
+    font-weight:bold;
+    }
+    #signup_maincontainer{
+    margin-top:200px;
+    margin-bottom:200px;
+    }
+    #complete_container{
+    margin:80px;
+    }
+    #complete_container > input, #complete_container > a > input{
+    font-weight:bold;
+    font-size:1.3rem;
+    width:10rem;
+    height:4rem;
+    }
    </style>
    <script>
         //csrf토큰 변수
@@ -342,7 +372,7 @@
    </script>
 </head>
 <body>
-    <div class="d-flex align-items-center justify-content-center flex-column">
+    <div class="d-flex align-items-center justify-content-center flex-column" id="signup_maincontainer">
         <!-- 홈화면링크 -->
         <a id="logo_toHome" href=""><img src="/images/utilities/big_logo.png" alt=""></a>
         <!-- 실제 적용시 method post로 변경  -->
@@ -398,7 +428,7 @@
                 <tr>
                     <td>인증번호</td>
                     <td>
-                        <input type="text" size="11" id="auth_num" placeholder="인증번호를 입력해주세요"> 
+                        <input type="text" size="11" id="auth_num" placeholder="인증번호를 입력해주세요" "> 
                         <input type="button" value="전송" id="send">
                         <input type="button" value="인증" id="auth" disabled="disabled">
                     </td>
@@ -446,7 +476,7 @@
                 
             </table>
             
-            <div class="text-center mt-3">
+            <div class="text-center " id="complete_container">
                 <input type="submit" class="btn btn-dark me-3" id="sign_up" value="회원가입">
                 <a href="${pageContext.request.contextPath}/"><input type="button" class="btn" value="취소" style="background-color: #bec1c4; color: white;"></a> 
                 <!-- 홈화면링크 -->

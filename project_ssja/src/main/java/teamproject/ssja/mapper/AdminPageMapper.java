@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.MembersDto;
@@ -49,7 +49,7 @@ public interface AdminPageMapper {
 
 	int deleteCoupon(CouponDTO couponDto);
 	
-	 CouponDTO read(int c_no); // read 쿼리 메서드
+	 CouponDTO readCoupon(int c_no); // read 쿼리 메서드
 
 	  void updateCoupon(CouponDTO couponDto); // updateCoupon 쿼리 메서드
 
@@ -58,6 +58,9 @@ public interface AdminPageMapper {
 		List<Map<String, Object>> getMonthlySalesList();
 		
 		List<Map<String, Object>> getYearlySalesList();
+		
+		void deleteExpiredCoupon();// 스케쥴러 시간 만료기간 초과된 쿠폰 삭제
+
 
 		ProfitDto getSalesDataByDate();
 		
@@ -76,5 +79,34 @@ public interface AdminPageMapper {
 		List<QnaBoardDto> getQnaListWithPaging(Criteria cri);
 
 		List<QnaSearchDto> getQnaSearchList(String type, String keyword);
+		
+		QnaBoardDto readQna(int qnaId);
+		
+		void updateQna(QnaBoardDto qnaBoardDto);
+
+		int deleteQna(QnaBoardDto qnaBoardDto);	
+		
+		List<Map<String, Object>> dailyVisitCountsList();
+
+		void renewYsterdayProfit();//스케줄러 전날 매출 insert
+		
+		//방문자 수 쿼리
+		@Update("UPDATE visitor_count SET visit_count = visit_count + 1 WHERE TRUNC(visit_date) = TRUNC(sysdate)")
+		void addVisitCount();
+
+
+		ProductDto readProducts(int productsId);
+
+		void updateProducts(ProductDto productDto);
+
+		void deleteMember(MembersDto membersDto);
+		
+
+		List<ProfitDto> totalDailyProfitData();
+		List<ProfitDto> totalMonthlyProfitData();
+		List<ProfitDto> totalYearlyProfitData();
+		
+		List<Long> getListMemberNo();
+		void insertCouponToMembers(List<Long> list);
 
 }

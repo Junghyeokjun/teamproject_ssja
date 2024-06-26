@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.BoardIsLikedDto;
 import teamproject.ssja.dto.ReplysDto;
 import teamproject.ssja.dto.community.CommunityBoardDto;
-import teamproject.ssja.mapper.BoardMapper;
 
 
 @Slf4j
@@ -21,13 +20,13 @@ class CommunityServiceImplTest {
 	@Autowired
 	CommunityService communityService;
 	
-	@Disabled
+	//@Disabled
 	@Test
 	void notNullTest() {
 		assertNotNull(communityService);
 	}
 	
-	@Disabled
+	//@Disabled
 	@Test
 	void selectCommunityTest() {
 		
@@ -35,7 +34,7 @@ class CommunityServiceImplTest {
 			log.info(dto.toString());
 		}
 	}
-	@Disabled
+	//@Disabled
 	@Test
 	void selectBestCommunityTest() {
 		
@@ -44,7 +43,7 @@ class CommunityServiceImplTest {
 		}
 	}
 
-	@Disabled
+	//@Disabled
 	@Test
 	void selectCommunityContentTest() {
 		
@@ -52,7 +51,7 @@ class CommunityServiceImplTest {
 		
 	}
 	
-	@Disabled
+	//@Disabled
 	@Test
 	void selectCommunityPartReplyTest() {
 		
@@ -62,31 +61,31 @@ class CommunityServiceImplTest {
 		
 	}
 	
-	@Disabled
+	//@Disabled
 	@Test
 	void selectCommunityReplyTotalTest() {
 		log.info(communityService.getReplyTotal(11620)+"");
 	}
 	
-	@Disabled
+	//@Disabled
 	@Test
 	void insertCommunityReplyTest() {
 		log.info(communityService.insertReply(new ReplysDto(0, 11620, 21, "test", "test", null, 0, 0, 0, 0))+"");
 	}
 	
-	@Disabled
+	//@Disabled
 	@Test
 	void selcetCommunityBoardLikedTotalTest() {
 		log.info(communityService.getBoardLikedTotal(11620)+"");
 	}
 	
-	@Disabled
+	//@Disabled
 	@Test
 	void insertCommunityBoardLikedTest() {
 		log.info(communityService.insertBoardLiked(new BoardIsLikedDto(11620, 26))+"");
 	}
 	@Disabled
-	@Test
+	//@Test
 	void selcetCommunityBoardLikedTest() {
 		log.info(communityService.getBoardLiked(new BoardIsLikedDto(11620, 21))+"");
 	}

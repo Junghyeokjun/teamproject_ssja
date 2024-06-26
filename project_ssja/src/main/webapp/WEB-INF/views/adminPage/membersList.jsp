@@ -34,16 +34,15 @@
 <link href="/css/board.css?after" rel="stylesheet">
 <link rel="stylesheet"
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
-	<style>
-    /* 추가된 CSS 스타일 */
-    #memberstable td {
-        white-space: nowrap; /* 줄 바꿈 없이 한 줄에 표시 */
-    }
-    
-    #memberstable thead {
-        font-weight: bold; /* 열 제목을 굵은 글꼴로 설정 */
-    }
-    
+<style>
+/* 추가된 CSS 스타일 */
+#memberstable td {
+	white-space: nowrap; /* 줄 바꿈 없이 한 줄에 표시 */
+}
+
+#memberstable thead {
+	font-weight: bold; /* 열 제목을 굵은 글꼴로 설정 */
+}
 </style>
 </head>
 <body>
@@ -103,8 +102,8 @@
 						<option value="m_name">회원이름</option>
 						<option value="m_id">아이디</option>
 						<option value="m_grade">등급</option>
-					</select> <input type="text" name="keyword" value=""> <input
-						type="button" onclick="membersSearchList()"
+					</select> <input type="text" name="keyword" value="">
+					 <input type="button" onclick="membersSearchList()"
 						class="btn btn-outline-dark mr-2" value="검색">
 				</form>
 				<div class="table-responsive">
@@ -121,6 +120,7 @@
 								<td scope="col">휴대폰번호</td>
 								<td scope="col">포인트</td>
 								<td scope="col">닉네임</td>
+								<td scope="col"></td>								
 							</tr>
 						</thead>
 						<tbody class="table-group-divider">
@@ -129,15 +129,19 @@
 									<td>${member.m_NO}</td>
 									<td>${member.m_ID}</td>
 									<td>${member.m_NAME}</td>
-									<td>${member.m_ADDRESS1}</td>									
-									<td>
-									     <fmt:formatDate value="${member.m_BIRTH}" pattern="yyyy-MM-dd"/>
-									</td>
+									<td>${member.m_ADDRESS1}</td>
+									<td><fmt:formatDate value="${member.m_BIRTH}"
+											pattern="yyyy-MM-dd" /></td>
 									<td>${member.m_GRADE}</td>
 									<td>${member.m_EMAIL}</td>
 									<td>${member.m_PHONE}</td>
 									<td>${member.m_POINT}</td>
 									<td>${member.m_NICKNAME}</td>
+									<td><button type="button" class="btn btn-outline-success"
+											id="modifyMemberBtn">수정</button>
+										<button type="button" class="btn btn-outline-danger"
+											id="deleteMemberBtn">삭제</button>
+									</td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -174,11 +178,40 @@
 			</div>
 		</div>
 	</main>
+	<script>$('body').on('click', '#deleteMemberBtn', function() {
+	    var $row = $(this).closest('tr');
+	    var mId = $row.find('td:first').text();
+
+	    $.ajax({
+	        type: "POST",
+	        url: "/adminPage/removeMember",
+	        data: JSON.stringify({ m_NO: mId }),
+	        contentType: "application/json",
+	        success: function(response) {
+	            $row.remove();
+	        },
+	        error: function(xhr, status, error) {
+	            console.error('삭제 오류', error);
+	        }
+	    });
+	});
+	</script>
 	<footer>
 		<div id="first_footer" class="p-3"></div>
 		<div id="second_footer"></div>
 		<div id="third_footer"></div>
 	</footer>
+	
+	 <sec:authorize access="isAuthenticated()">
+	 
+	 <sec:authorize access="hasRole('ROLE_VENDOR')">
+        <input type="hidden" id="isVendorCheck" value="1">
+    </sec:authorize>
+	 
+  <script src="/js/login_user_tab.js"> </script>
+  <script src="/js/user_cart_tab.js"> </script>
+</sec:authorize>
+	
 </body>
 <script>
 	function membersSearchList() {

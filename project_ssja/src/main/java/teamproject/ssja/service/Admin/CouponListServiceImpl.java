@@ -3,6 +3,8 @@ package teamproject.ssja.service.Admin;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.userinfo.CouponDTO;
 import teamproject.ssja.mapper.AdminPageMapper;
@@ -27,27 +29,32 @@ public class CouponListServiceImpl implements CouponListService {
 		return adminPageMapper.getCouponListWithPaging(cri);
 	}
 
+	@Transactional
 	@Override
 	public int addCoupon(CouponDTO couponDto) {
 		log.info("addCoupon()..");
-		return adminPageMapper.insertCoupon(couponDto);
+		try {
+			int result = adminPageMapper.insertCoupon(couponDto);
+	    	List<Long> list = adminPageMapper.getListMemberNo();
+	    	adminPageMapper.insertCouponToMembers(list);
+	    	return result;
+				
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
 		
 	}
 
-//	@Override
-//	public int modifyCoupon(CouponDTO couponDto) {
-//		log.info("modifyCoupon()..");
-//		return adminPageMapper.updateCoupon(couponDto);
-//		
-//	}
     @Override
 	public CouponDTO getCouponById(int couponId) {
-        return adminPageMapper.read(couponId); // read 쿼리 실행
+        return adminPageMapper.readCoupon(couponId); // read 쿼리 실행
     }
 
+    @Transactional
     @Override
     public void modifyCoupon(CouponDTO couponDto) {
     	adminPageMapper.updateCoupon(couponDto); // updateCoupon 쿼리 실행
+    	
     }
     
     @Override

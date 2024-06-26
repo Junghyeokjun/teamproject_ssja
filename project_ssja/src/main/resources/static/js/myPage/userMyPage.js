@@ -638,7 +638,7 @@
 	        		let $content_orders = $("<div>").addClass("d-flex flex-row justify-content-evenly align-items-center py-1 px-2")
 	        		.css({'border-top':'1px solid #ccc','border-bottom':'1px solid #ccc'}).append(
 	        				$("<div>").addClass('d-flex flex-row').css('width','50%').append(
-	        				$("<img>").attr('src',item.pro_bannerimg).css({'width':'15%',"height":'auto'})		
+	        				$("<img>").attr('src',item.pro_bannerimg).css({'width':'15%',"height":'auto','margin-right':'0.8rem'})		
 	        				,$("<div>").addClass(" d-flex flex-column").append(
 	        						$("<span>").text('상품번호 : '+item.pro_no),
 	        						$("<span>").text(item.pro_name).attr('id','span_porductName'),
@@ -646,7 +646,6 @@
 	        	        	$("<span>").css('width','20%').text(item.wish_date.split(' ')[0]),		
 	        	        	$("<span>").css('width','20%').text(formatNumber(item.pro_price) )	,
 	        	        	$("<button>").addClass('btn btn-dark').text('삭제').on('click',function(event){
-	        	        		event.preventDefault();
 	        	        		  event.stopPropagation();
 	        	        		  deleteWish(item.pro_no);
 	        	        		  getTotalInfo_wish(totalInfo_pageNum);

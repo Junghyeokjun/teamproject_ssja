@@ -50,6 +50,12 @@
         ]]>
 	</select>
 	
+	<!-- 해당 하는 카테고리 출력 -->
+	<select id="selectPC" parameterType="long" resultType="String">    
+    	<![CDATA[
+             	SELECT P_C_NAME FROM PRODUCT_CATEGORY where P_C_NO = #{pcno}
+        ]]>
+	</select>
 
 	<!-- 관리자 영역  -->
 

@@ -28,6 +28,7 @@
   <script src="/js/footer.js">
 
   </script>
+
    <meta name="_csrf" content="${_csrf.token}"/>
   <meta name="_csrf_header" content="${_csrf.headerName}"/>
   <link href="/css/footerstyle.css?after" rel="stylesheet">
@@ -49,15 +50,11 @@
       background-color: #f7f0e8;
     }
 
-    #logo_img {
-      width: 3.5em;
-      height: 3em;
-      width:90%;
-    }
+
     
     /* 연관상품부분 */
     #product_link{
-      width: 250px;
+      width: 100%;
       height: 100px;
       display:inline-block;
       text-decoration: none;
@@ -73,7 +70,7 @@
       height: 100px;
     }
     #orders_product_Info{
-      width: 200px; 
+      width: 100%;
       height: 100px;
       overflow: hidden; 
       text-overflow: ellipsis; 
@@ -83,19 +80,29 @@
     #pro_bizname{
       font-weight: bold;
     }
+    #pro_category, #pro_wish{
+      color: black;
+    }
     #pro_name{
       color: black; 
       text-decoration: none; 
       font-weight: bold;
       word-break: keep-all;
-      width: 138px;
-      height: 60px;
+      height: 30px;
       margin-top: 5px;
       white-space:normal;
       overflow: hidden;
-
+      text-overflow: ellipsis;
     }
-
+    #none_reply,#insert_reply_content,#insert_re_reply_content,.reply_wrap{
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    /* editor */
+    .image img {
+        max-width: 100%;
+        object-fit: cover;
+    }
 
   </style>
   <script>
@@ -133,10 +140,12 @@
           async : false,
           dataType : 'json',  
           success : function(result) {
-            $("#product_link").attr("href","/product_detail?PRO_NO="+result.pro_NO);
-            $("#pro_img").attr("src",result.pro_BANNERIMG);
-            $("#pro_bizname").text(result.pro_BIZNAME);
-            $("#pro_name").text(result.pro_NAME);
+            $("#product_link").attr("href","/product_detail?PRO_NO="+result.product.pro_NO);
+            $("#pro_img").attr("src",result.product.pro_BANNERIMG);
+            $("#pro_bizname").text(result.product.pro_BIZNAME);
+            $("#pro_name").text(result.product.pro_NAME);
+            $("#pro_category").text(result.pcname);
+            $("#pro_wish").text(result.product.pro_WISH);
           },    
           error : function(request, status, error) {
             alert(error);
@@ -221,21 +230,28 @@
 
       //게시글 삭제 메서드
       let deletePost=function(){
-        $.ajax({
-          type : 'DELETE',
-          url : '/community/content/img/'+bno_val,
-          async : false,
-          beforeSend: function(xhr) {
-              xhr.setRequestHeader(header, token);
-          },
-          dataType : 'text',
-            
-          success : function(result) {
-          },    
-          error : function(request, status, error) {
-            alert(error);
-          }
+        var imgList=[];
+        
+        $("#content img").each(function(idx, item){
+          imgList.push(item.getAttribute("src"));
         })
+        $.ajax({
+          type: 'POST',
+          url: '/community/tempImg',
+          beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+          },
+          dataType: 'text',
+          data: {
+            list: imgList
+          },
+          success: function (data) {
+
+          },
+          error: function (e) {
+            alert("error:" + e);
+          }
+        });
 
         $.ajax({
           type : 'DELETE',
@@ -279,9 +295,9 @@
               result.forEach(function(e, idx){
                 var reply_wrap1;
                 if(e.rindent<3){
-                  reply_wrap1=$('<div class="my-2" style="margin-left:'+(16+e.rindent*30)+'px; margin-right: 16px; box-sizing: content-box; border: 1px solid #BBB;" group="'+e.rgroup+'" indent="'+e.rindent+'" step="'+e.rstep+'"></div>')
+                  reply_wrap1=$('<div class="my-2 reply_wrap" style="margin-left:'+(16+e.rindent*30)+'px; margin-right: 16px; box-sizing: content-box; border: 1px solid #BBB;" group="'+e.rgroup+'" indent="'+e.rindent+'" step="'+e.rstep+'"></div>')
                 }else{
-                  reply_wrap1=$('<div class="my-2" style="margin-left: 106px; margin-right: 16px; box-sizing: content-box; border: 1px solid #BBB;" group="'+e.rgroup+'" indent="'+e.rindent+'" step="'+e.rstep+'"></div>')
+                  reply_wrap1=$('<div class="my-2 reply_wrap" style="margin-left: 106px; margin-right: 16px; box-sizing: content-box; border: 1px solid #BBB;" group="'+e.rgroup+'" indent="'+e.rindent+'" step="'+e.rstep+'"></div>')
                 }
                 var reply_wrap2=$('<div class="px-2 d-flex justify-content-between" style="background-color: #EEE;">');
                 
@@ -293,8 +309,8 @@
 
                   }
                   //삭제버튼 이벤트 추가예정
-                if(m_no_val== e.rmno){
-                  $('<span>'+e.rdate+' |<button class="delete_reply_btn"  style="border-color: transparent; background-color :transparent" rno="'+e.rno+'">삭제</button> |<button class="update_reply_btn"  style="border-color: transparent; background-color :transparent" rno="'+e.rno+'">수정</button></span>').appendTo(reply_wrap2);
+                if(m_no_val== e.rmno || m_auth_val=='ROLE_ADMIN'){
+                    $('<span>'+e.rdate+' |<button class="delete_reply_btn"  style="border-color: transparent; background-color :transparent" rno="'+e.rno+'">삭제</button> |<button class="update_reply_btn"  style="border-color: transparent; background-color :transparent" rno="'+e.rno+'">수정</button></span>').appendTo(reply_wrap2);
                 }else{
                   $('<span>'+e.rdate+'</span>').appendTo(reply_wrap2);
                 }
@@ -563,10 +579,11 @@
           $("#update_re_btn").attr("rno",this.getAttribute("rno"));
 
         })
-        if(pro_no.val()!=0){
+      if(pro_no.val()!=0){
         getProduct(pro_no.val());
-        }
-      })
+      }
+
+    })
 
   </script>
 </head>
@@ -588,7 +605,7 @@
         </form>
         <button id="search_icon"></button>
         <a id="cart_link"><img id="cart_img"></a>
-        <a id="user_link"><img id="login_img"></a>
+        <a id="user_link" href="/login"><img id="login_img"></a>
       </div>
 
     </div>
@@ -634,34 +651,39 @@
           </div>
         </div>  
         <input type="hidden" value="${content.img_path}">
-        <c:if test='${!content.img_path.equals("/images/board_content/temp.png")}'>
-          <img src="${content.img_path}" alt="" class="w-75 d-inline-block mb-5 ">
-        </c:if>
-        <div class="w-75 mb-3">
+
+        <div id="content" class="w-75 mb-3">
           ${content.bcontent}
         </div>
-          <div class="w-75 d-flex justify-content-between align-items-end mt-4 mb-2 ">
-            <span style="width: 250px;">
-              <c:if test="${content.prono != null}">
-                <a href="" id="product_link">
-                  <div class="product" >
-                    <div class="d-flex flex-row align-items-center" >
-                      <img src="" id="pro_img"> 
-                      <div class="d-flex flex-column justify-content-between" id="orders_product_Info" >
-                        <span class="fs-5" id="pro_name"></span>
-                        <span class="fs-6 ps-2" id="pro_bizname"></span>
-                      </div>
+        <div class="w-75 d-flex justify-content-between align-items-end mt-4 mb-2 ">
+            <c:if test="${content.prono != null}">
+              <a href="" id="product_link">
+                <div class="product" >
+                  <div class="d-flex flex-row align-items-center" >
+                    <img src="" id="pro_img"> 
+                    <div class="d-flex flex-column justify-content-between" id="orders_product_Info" >
+                      <span class="d-flex justify-content-between ">
+                        <span class="fs-6 pt-2 ps-2 " id="pro_bizname"></span>
+                        <span class="fs-6 pt-2 pe-2" >
+                          <span id="pro_wish" style="color: rgb(240, 101, 117);"></span>
+                          <img src="/images/utilities/wish_icon.png" style="width: 1.5em; height: 1.5em ;">
+                        </span>
+                      </span>
+                      <span class="fs-6 ps-2" id="pro_category"></span>
+                      <span class="fs-5" id="pro_name"></span>
+
                     </div>
                   </div>
-                </a>
-              </c:if>
-            </span>
+                </div>
+              </a>
+            </c:if>
+        </div>
+          <div class="w-75 d-flex justify-content-center align-items-end mt-4 mb-2  ">
+            
             <span class="border d-inline-flex flex-column align-items-center mb-3" id="like_btn" style="border-radius: 10px ; height: 86px;">
               <img src="/images/utilities/like.png" alt="" style="width: 60px;height: 60px;">
               <span class="like">${content.blike}</span>
             </span>
-
-            <span style="width: 250px;"></span>
           </div>
           
 
@@ -687,7 +709,7 @@
               <c:if test="${principal.userInfo.m_No == content.bmno and not (principal.userInfo.auth eq 'ROLE_ADMIN')}">
                 <button class="btn btn-outline-primary" id="update_btn" >수정하기</button>
                 <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">삭제하기</button>
-              </c:if>
+              </c:if> 
           </span>
         </div>
         
@@ -744,6 +766,11 @@
       </div>
     </div>
   </div>
+
+   <sec:authorize access="isAuthenticated()">
+  <script src="/js/login_user_tab.js"> </script>
+  <script src="/js/user_cart_tab.js"> </script>
+</sec:authorize>
 
 </body>
 </html>

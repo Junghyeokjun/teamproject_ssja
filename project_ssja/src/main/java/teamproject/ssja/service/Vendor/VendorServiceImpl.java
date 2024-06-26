@@ -2,7 +2,9 @@ package teamproject.ssja.service.Vendor;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import teamproject.ssja.dto.vendor.TotalVendorInfoDto;
 import teamproject.ssja.dto.vendor.VendorEtcInfoDTO;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
 import teamproject.ssja.dto.vendor.VendorItemCondition;
+import teamproject.ssja.dto.vendor.VendorProfitDTO;
 import teamproject.ssja.mapper.VendorMapper;
 import teamproject.ssja.page.Criteria;
 
@@ -214,6 +217,14 @@ public class VendorServiceImpl implements VendorService{
 	}
 
 	@Override
+	public Map<String, List<VendorProfitDTO>> getDataForExcel(Long vno, String condition) {
+		Map<String, List<VendorProfitDTO>> data = new HashMap<>();
+		data.put("day", vendorMapper.getProfitStatistic(vno, "YY-MM-DD", condition));
+		data.put("month", vendorMapper.getProfitStatistic(vno, "YYYY-MM", condition));
+		data.put("year", vendorMapper.getProfitStatistic(vno, "YYYY", condition));
+		
+		return data;
+	}
 	public List<VendorSalesDto> getDaySalesData(StatisticVO statisticVO) {
 		// TODO Auto-generated method stub
 		return vendorMapper.selectVendorSalesInDay(statisticVO);

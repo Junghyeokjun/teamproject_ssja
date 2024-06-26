@@ -23,7 +23,7 @@
    <meta name="_csrf" content="${_csrf.token}"/>
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
   <link href="/css/footerstyle.css?after" rel="stylesheet">
-  <link href="/css/barstyle.css?after" rel="stylesheet">
+  <link href="/css/barstyle_admin.css?after" rel="stylesheet">
 
   <link rel="stylesheet" href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
 
@@ -58,7 +58,7 @@ justify-centent:center;
         </form>
         <button id="search_icon"></button>
         <a id="cart_link"><img id="cart_img"></a>
-        <a id="user_link"><img id="login_img"></a>
+        <a id="user_link" href="/login"><img id="login_img"></a>
       </div>
 
     </div>
@@ -71,20 +71,41 @@ justify-centent:center;
   <div id="side_bar"> 
     <div id="side_links" class="w-100"></div>
 </div>
+<div id="select_AdminPage" class="d-flex flex-column">
+		<div id="select_mp_top" class="text-center">관리자</div>
+		<div id="select_content">
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc" onclick="location.href='/adminPage'">SSJA 현황</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc" onclick="location.href='/adminPage/membersList'">회원 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc" onclick="location.href='/adminPage/productsList'">상품 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc" onclick="location.href='/adminPage/purchasesList'">주문 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc" onclick="location.href='/adminPage/couponsList'">쿠폰 관리</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc" onclick="location.href='/adminPage/notice'">공지사항 관리</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc" onclick="location.href='/adminPage/qnasList'">고객 문의 목록</button>
+			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
+				style="border: 1px solid #cccccc" onclick="location.href='/adminPage/salesList'">매출 현황</button>
+		</div>
+	</div>
   <main>
     <div id="main_container" style="min-height:400px;" >
     <div id="notice_managing_div">
     
      <div id="adimnPage_notic_title" class=" my-5 py-5" style="background:#ccc;">
      <h2 style="margin-left:2em;font-weight:bold;">관리자 - 공지사항 관리</h2></div>
-     <div id="adimnPage_notic_classify" class="py-3 d-flex flex-row justify-content-evenly" 
-     style="border-bottom:1px solid balck;border-top:1px solid balck;text-align:center;">
+     <div id="adimnPage_notic_classify" class="p-2 d-flex flex-row align-items-center justify-content-evenly" 
+     style="border-bottom:1px solid black;border-top:1px solid black;text-align:center;">
      	<span style="width:8%;">NO</span>
      	<span style="width:30%;">제목</span>
      	<span style="width:18%;">작성자</span>
      	<span style="width:26%;">날짜</span>
      	<span style="width:8%;">조회 수</span>
-     	<span style="width:18%;">삭제</span>
+     	<span style="width:8%;">삭제</span>
      </div>
      <div id="adimnPage_notic_content"></div>
     

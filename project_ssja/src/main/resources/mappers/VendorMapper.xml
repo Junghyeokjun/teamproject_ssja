@@ -228,6 +228,40 @@
 			rownum &lt;= 5
 	</select>
 	
+
+	
+	<select id="getProfitStatistic" resultType="teamproject.ssja.dto.vendor.VendorProfitDTO">
+
+	SELECT TO_CHAR(p.pur_date, '${dateCondition}') AS order_date,
+		SUM(p.pur_tot) AS total_sales,
+		od.pro_no,
+		pr.pro_name,
+		SUM(od.o_quantity) AS quantity
+	FROM purchase p
+	JOIN orders od ON p.pur_no = od.pur_no
+	JOIN product pr ON od.pro_no = pr.pro_no
+	WHERE pr.v_no = ${vno}
+	GROUP BY TO_CHAR(p.pur_date, '${dateCondition}'), od.pro_no, pr.pro_name
+
+	UNION ALL
+
+	SELECT 'Total' AS order_date,
+		SUM(p.pur_tot) AS total_sales,
+		NULL AS pro_no,
+		v.v_bizname AS pro_name,
+		SUM(od.o_quantity) AS quantity
+	FROM purchase p
+	JOIN orders od ON p.pur_no = od.pur_no
+	JOIN product pr ON od.pro_no = pr.pro_no
+	JOIN vendor v ON pr.v_no = v.v_no
+	WHERE v.v_no = ${vno}
+	GROUP BY v.v_bizname
+	ORDER BY ${condition}
+
+	
+	</select>
+	
+	
 	
 <!-- 통계 -->
  	<!-- 판매자 총계. 변수 생성을 최대한 줄이기 위해 기존 변수를 일부 활용. -->

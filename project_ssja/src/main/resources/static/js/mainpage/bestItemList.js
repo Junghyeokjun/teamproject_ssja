@@ -55,18 +55,20 @@ let getListBestToServer = function (bestPageNum) {
                 .append($("<p>").text(e.pro_NAME));
                 
                 let $item_bizname_dv = $("<div>").addClass("item-bizname-div")
-                    .text(e.pro_BIZNAME + " 확인용 상품번호: " + e.pro_NO)
+                    .text(e.pro_BIZNAME)
                     .css({ "font-weight": "bold", "font-size": "0.9em", "margin-bottom": "0.5em" }); 
 
                 let $item_price_dv = $("<div>").addClass("item-price-div")
                     .text(formatNumber(e.pro_PRICE) + "원")
                     .css({ "margin-left": "auto", "margin-right": "1em" });
 
+                console.log(e.rating_avg.toFixed(2) );
+                
                 let $item_review_wish_dv = $("<div>").addClass("d-flex flex-row justify-content-between")
                 .attr('id', 'item-review-wish-div')
                     .append(
                         $("<div>").append($("<img>").attr("src", "/images/utilities/star_icon.jpg")
-                        		.css("width", "1.5em"), $("<span>").text(e.rating_avg)),
+                        		.css("width", "1.5em"), $("<span>").text()),
                         		
                         $("<div>").append($("<span>").text(e.pro_WISH).css("color", "#f06575"),
                         		

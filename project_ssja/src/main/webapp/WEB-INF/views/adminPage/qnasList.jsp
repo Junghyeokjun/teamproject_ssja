@@ -35,16 +35,15 @@
 <link href="/css/board.css?after" rel="stylesheet">
 <link rel="stylesheet"
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
-	<style>
-    /* 추가된 CSS 스타일 */
-    #qnastable td {
-        white-space: nowrap; /* 줄 바꿈 없이 한 줄에 표시 */
-    }
-    
-    #qnastable thead {
-        font-weight: bold; /* 열 제목을 굵은 글꼴로 설정 */
-    }
-    
+<style>
+/* 추가된 CSS 스타일 */
+#qnastable td {
+	white-space: nowrap; /* 줄 바꿈 없이 한 줄에 표시 */
+}
+
+#qnastable thead {
+	font-weight: bold; /* 열 제목을 굵은 글꼴로 설정 */
+}
 </style>
 </head>
 <body>
@@ -98,21 +97,21 @@
 					<h2 id="AdminPageTitle">문의 목록</h2>
 				</div>
 				<br>
-			  <form name="qnas-search-form" autocomplete="off">
+				<form name="qnas-search-form" autocomplete="off">
 					<select name="type">
 						<option selected value="">선택</option>
 						<option value="M_NO">회원번호</option>
 						<option value="B_TITLE">제목</option>
-						<option value="B_CONTENT">내용</option>						
+						<option value="B_CONTENT">내용</option>
 					</select> <input type="text" name="keyword" value=""> <input
 						type="button" onclick="qnasSearchList()"
 						class="btn btn-outline-dark mr-2" value="검색">
-				</form>  
+				</form>
 				<div class="table-responsive">
-					<table class="table" id="qnastable"
-						style="text-align: center;">
+					<table class="table" id="qnastable" style="text-align: center;">
 						<thead>
 							<tr>
+								<td scope="col">글번호</td>
 								<td scope="col">회원번호</td>
 								<td scope="col">작성자</td>
 								<td scope="col">제목</td>
@@ -123,11 +122,17 @@
 						<tbody class="table-group-divider">
 							<c:forEach var="qna" items="${qnas}">
 								<tr>
+									<td>${qna.getB_NO()}</td>
 									<td>${qna.getM_NO()}</td>
 									<td>${qna.getB_WRITER()}</td>
 									<td>${qna.getB_TITLE()}</td>
 									<td>${qna.getB_CONTENT()}</td>
-									<td>${qna.getB_DATE()}</td>
+									<td>${qna.getB_DATE()}
+										<button type="button" class="btn btn-outline-success"
+											id="modifyQnaBtn">수정</button>
+										<button type="button" class="btn btn-outline-danger"
+											id="deleteQnaBtn">삭제</button>
+									</td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -152,8 +157,7 @@
 										</c:otherwise>
 									</c:choose>
 								</c:forEach>
-								<c:if
-									test="${qnapageMaker.next && qnapageMaker.endPage > 0}">
+								<c:if test="${qnapageMaker.next && qnapageMaker.endPage > 0}">
 									<li class="page-item"><a class="page-link ch-col"
 										href="${pageContext.request.contextPath}/adminPage/qnasList${qnapageMaker.makeQuery(qnapageMaker.endPage+1)}">></a></li>
 								</c:if>
@@ -163,37 +167,157 @@
 				</div>
 			</div>
 		</div>
+		<!-- 모달 창 -->
+		<div class="modal fade" id="editQnaModal" tabindex="-1" role="dialog"
+			aria-labelledby="editQnaModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="editQnaModalLabel">문의 수정</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form id="editQnaForm">
+							<div class="form-group">
+								<label for="editWriter">작성자</label> <input type="text"
+									class="form-control" id="editWriter" name="editWriter" readonly>
+							</div>
+							<div class="form-group">
+								<label for="editTitle">제목</label> <input type="text"
+									class="form-control" id="editTitle" name="editTitle">
+							</div>
+							<div class="form-group">
+								<label for="editContent">내용</label>
+								<textarea class="form-control" id="editContent"
+									name="editContent"></textarea>
+							</div>
+							<input type="hidden" id="editQnaId" name="editQnaId">
+							<button type="submit" class="btn btn-primary">저장</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</main>
 	<footer>
 		<div id="first_footer" class="p-3"></div>
 		<div id="second_footer"></div>
 		<div id="third_footer"></div>
 	</footer>
+	
+	 <sec:authorize access="isAuthenticated()">
+	 
+	 <sec:authorize access="hasRole('ROLE_VENDOR')">
+        <input type="hidden" id="isVendorCheck" value="1">
+    </sec:authorize>
+	 
+  <script src="/js/login_user_tab.js"> </script>
+  <script src="/js/user_cart_tab.js"> </script>
+</sec:authorize>
+	
 </body>
- <script>
-	function qnasSearchList() {
-		$.ajax({
-			type : 'GET',
-			url : "/adminPage/qnasSearchList",
-			data : $("form[name=qnas-search-form]").serialize(),
-			success : function(result) {
-				console.log(result);
-				$('#qnastable > tbody').empty();
-				if (result.length >= 1) {
-					$("#paging_dv").empty();
-					result.forEach(function(qna) {
-						var str = '<tr>';
-						str += "<td>" + qna.m_NO + "</td>";
-						str += "<td>" + qna.b_WRITER + "</td>";
-						str += "<td>" + qna.b_TITLE + "</td>";
-						str += "<td>" + qna.b_CONTENT + "</td>";
-						str += "<td>" + qna.b_DATE + "</td>";
-						str += "</tr>";
-						$('#qnastable > tbody').append(str);
-					});
+<script>
+$(document).ready(function() {
+	  $('body').on('click', '#modifyQnaBtn', function() {
+	    var $btn = $(this); // 클릭된 버튼을 변수에 저장
+	    var $row = $btn.closest('tr'); // 클릭된 버튼의 부모 tr 요소 가져오기
+
+	    // 테이블에서 해당 열의 정보 가져오기
+	    var qnaId = $row.find('td:eq(0)').text(); // 글번호
+	    var writer = $row.find('td:eq(2)').text(); // 작성자
+	    var title = $row.find('td:eq(3)').text(); // 제목
+	    var content = $row.find('td:eq(4)').text(); // 내용
+
+	    // 모달 창에 정보 채우기
+	    $('#editQnaModal').find('#editWriter').val(writer);
+	    $('#editQnaModal').find('#editTitle').val(title);
+	    $('#editQnaModal').find('#editContent').val(content);
+	    $('#editQnaModal').find('#editQnaId').val(qnaId);
+
+	    // 모달 창 띄우기
+	    $('#editQnaModal').modal('show');
+	  });
+	});
+</script>
+<script>
+$(document).ready(function() {
+	  $('#editQnaForm').submit(function(event) {
+	    event.preventDefault(); // 폼의 기본 동작 방지
+
+	    var formData = {
+	      b_NO: $('#editQnaId').val(),
+	      b_WRITER: $('#editWriter').val(),
+	      b_TITLE: $('#editTitle').val(),
+	      b_CONTENT: $('#editContent').val()
+	    };
+
+	    var csrfToken = $('meta[name="_csrf"]').attr('content'); // CSRF 토큰 가져오기
+	    var csrfHeader = $('meta[name="_csrf_header"]').attr('content'); // CSRF 헤더 이름 가져오기
+
+	    // AJAX를 이용한 문의 수정 요청
+	    $.ajax({
+	      type: 'POST',
+	      url: '/adminPage/modifyQna',
+	      data: JSON.stringify(formData), // JSON 형식으로 데이터 전송
+	      contentType: 'application/json', // 요청 데이터 타입 지정
+	      beforeSend: function(xhr) {
+	        xhr.setRequestHeader(csrfHeader, csrfToken); // CSRF 토큰을 헤더에 포함
+	      },
+	      success: function(response) {
+	        console.log('문의 수정 성공');
+	        // 모달 창 닫기
+	        $('#editQnaModal').modal('hide');
+	        // 테이블에서 해당 행 업데이트
+	        var $row = $('#qnastable').find('td:contains(' + formData.b_NO + ')').closest('tr');
+	        $row.find('td:eq(2)').text(formData.b_WRITER);
+	        $row.find('td:eq(3)').text(formData.b_TITLE);
+	        $row.find('td:eq(4)').text(formData.b_CONTENT);
+	      },
+	      error: function(xhr, status, error) {
+	        console.error('문의 수정 오류', error);
+	        // 오류 처리 로직 추가
+	      }
+	    });
+	  });
+	});
+
+</script>
+<script>
+	$(document).ready(function() {
+		$('body').on('click', '#deleteQnaBtn', function() {
+			var $btn = $(this); // 클릭된 버튼을 변수에 저장
+			var qnaId = $btn.closest('tr').find('td:first').text(); // 테이블에서 글번호 가져오기
+			var csrfToken = $('meta[name="_csrf"]').attr('content'); // CSRF 토큰 가져오기
+			var csrfHeader = $('meta[name="_csrf_header"]').attr('content'); // CSRF 헤더 이름 가져오기
+
+			// AJAX를 이용한 문의 삭제 요청
+			$.ajax({
+				type : "POST",
+				url : "/adminPage/removeQna",
+				data : JSON.stringify({
+					b_NO : qnaId
+				}), // JSON 형식으로 데이터 전송
+				contentType : "application/json", // 요청 데이터 타입 지정
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader(csrfHeader, csrfToken); // CSRF 토큰을 헤더에 포함
+				},
+				success : function(response) {
+					console.log('문의 삭제 성공');
+					// 삭제 성공 시 테이블에서 해당 행 삭제
+					$btn.closest('tr').remove();
+				},
+				error : function(xhr, status, error) {
+					console.error('문의 삭제 오류', error);
+					// 오류 처리 로직 추가
 				}
-			}
+			});
 		});
-	}
-</script> 
+	});
+</script>
+
+
 </html>

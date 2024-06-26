@@ -56,7 +56,7 @@ WHERE TRUNC(m_date) =  TRUNC(sysdate)
 
 	<select id="getMemberListTotalCount" resultType="long">    
     <![CDATA[
-              	SELECT count(*) FROM Members 
+              	SELECT count(*) FROM Members WHERE M_DELETEDATE IS NULL
         ]]>
 	</select>
 
@@ -67,7 +67,7 @@ WHERE TRUNC(m_date) =  TRUNC(sysdate)
 			    select
 			        rownum rnum , A.*
 			    from 
-			    (SELECT  * FROM Members order by M_NO) A 
+			    (SELECT * FROM Members WHERE M_DELETEDATE IS NULL ORDER BY M_NO) A 
 		    	where rownum <= #{pageNum} * #{amount} 
 		    )
 			where rnum > (#{pageNum}-1) * #{amount}
@@ -95,23 +95,41 @@ WHERE TRUNC(m_date) =  TRUNC(sysdate)
 
 	<select id="getMemberSearchList"  parameterType="string"   resultMap="MembersSearchListMap">    
 
-	SELECT  * FROM Members              
-                where                
+	SELECT * FROM Members WHERE M_DELETEDATE IS NULL                
                <choose>
                <when test="#{type} != null and type.equals('m_name')">
-                m_name = '${keyword}'
+                and m_name = '${keyword}'
                </when>
                 <when test="#{type} != null and type.equals('m_id')">
-                m_id = '${keyword}'
+                and m_id = '${keyword}'
                </when>
                 <when test="#{type} != null and type.equals('m_grade')">
-                m_grade = '${keyword}'
+                and m_grade = '${keyword}'
                </when>
-               </choose> 
-                   
+               </choose>          
                
-	</select>	
+	</select>		
 	
+	<update id="updateMember" parameterType="MembersDto">
+			 <![CDATA[	
+        UPDATE Members
+        SET M_NAME = #{M_NAME}, M_ADDRESS1 = #{M_ADDRESS1}, M_GRADE = #{M_GRADE},
+            M_EMAIL = #{M_EMAIL}, M_PHONE = #{M_PHONE}, M_POINT = #{M_POINT}, M_NICKNAME = #{M_NICKNAME}
+        WHERE M_NO = #{M_NO}
+        ]]>
+    </update>
+	
+	
+	
+	<!-- 참조 무결성 제약 조건을 유지하기 위해 삭제 대신 m_deletedate를 sysdate로 처리  -->
+	<update id="deleteMember" parameterType="MembersDto">
+		 <![CDATA[
+		 UPDATE members 
+			SET m_deletedate = sysdate
+			WHERE M_NO = #{M_NO}
+        ]]>
+	</update>
+				
 	<resultMap id="ProductsListMap" type="ProductDto">
 		<id property="PRO_NO" column="PRO_NO" />
 		<result property="V_NO" column="V_NO" />
@@ -178,6 +196,24 @@ WHERE TRUNC(m_date) =  TRUNC(sysdate)
                         
                </choose>                          
 	</select>	
+	
+	<select id="readProducts" resultMap="ProductsListMap">
+    	<![CDATA[
+        	select * from product where PRO_NO = #{PRO_NO}
+        ]]>
+	</select>
+	
+	<update id="updateProducts" parameterType="ProductDto">
+    <![CDATA[
+        UPDATE product
+        SET
+        PRO_PRICE = #{PRO_PRICE},
+        PRO_QUANTITY = #{PRO_QUANTITY},
+        PRO_BIZNAME = #{PRO_BIZNAME},
+        PRO_NAME = #{PRO_NAME}
+        WHERE PRO_NO = #{PRO_NO}
+    ]]>
+</update>
 	
 	<resultMap id="PurchasesListMap" type="PurchaseDto">
 		<id property="PUR_NO" column="PUR_NO" />
@@ -279,7 +315,7 @@ WHERE TRUNC(m_date) =  TRUNC(sysdate)
 
 	</insert>
 	
-	<select id="read" resultMap="CouponsListMap">
+	<select id="readCoupon" resultMap="CouponsListMap">
     	<![CDATA[
         	select * from coupon where c_no=#{c_no}
         ]]>
@@ -296,6 +332,8 @@ WHERE TRUNC(m_date) =  TRUNC(sysdate)
         	delete from coupon where c_no = #{c_no}
         ]]>
 	</delete>
+	
+	
 	
  <resultMap id="SalesListMap" type="ProfitDto">
 		<result property="P_DATE" column="P_DATE" />
@@ -350,9 +388,7 @@ ORDER BY
     Year
 
         ]]>
-	</select>
-	
-	
+	</select>	
 	
  <select id="getSalesDataByDate"  resultType="MAP">
     <![CDATA[
@@ -361,6 +397,17 @@ FROM purchase
 WHERE TO_CHAR(pur_date, 'YY/MM/DD') = TO_CHAR(sysdate, 'YY/MM/DD')
     ]]>
 </select> 
+
+<select id="dailyVisitCountsList" resultType="MAP">    
+    <![CDATA[
+
+SELECT VISIT_DATE, VISIT_COUNT
+FROM visitor_count
+WHERE VISIT_DATE >= TRUNC(SYSDATE) - 7
+  AND VISIT_DATE < TRUNC(SYSDATE) + 1
+ORDER BY VISIT_DATE
+        ]]>
+	</select>
 
 <resultMap id="qnasListMap" type="QnaBoardDto">
 		<id property="B_NO" column="B_NO" />
@@ -426,11 +473,53 @@ SELECT * FROM board where  B_C_NO=20
                 <when test="#{type} != null and type.equals('B_CONTENT')">
                  and B_CONTENT LIKE '%${keyword}%'
                </when>
-               </choose> 
-                   
+               </choose>                  
                
 	</select>	
- 
+	
+	<select id="readQna" resultMap="qnasListMap">
+    	<![CDATA[
+        	select * from board where B_C_NO=20 and B_NO = #{B_NO}
+        ]]>
+	</select>
+	
+	 <update id="updateQna" parameterType="QnaBoardDto">
+		<![CDATA[
+        	update board set B_WRITER=#{B_WRITER}, B_TITLE=#{B_TITLE},B_CONTENT=#{B_CONTENT} where B_NO=#{B_NO}
+        ]]>
+	</update>
+
+	<delete id="deleteQna" parameterType="QnaBoardDto">
+		 <![CDATA[
+        	delete FROM board where B_C_NO=20 and B_NO = #{B_NO}
+        ]]>
+	</delete>
+	
+ <select id="totalDailyProfitData" resultType="ProfitDto">
+  SELECT TO_CHAR(P_DATE, 'YYYY-MM-DD') AS P_DATE, SUM(p_price) AS P_PRICE
+FROM   profit GROUP BY   TO_CHAR(P_DATE, 'YYYY-MM-DD') ORDER BY   P_DATE desc
+ </select>
+	 <select id="totalMonthlyProfitData" resultType="ProfitDto">
+ SELECT TO_CHAR(P_DATE, 'YYYY-MM') AS P_DATE, SUM(p_price) AS P_PRICE
+FROM   profit GROUP BY   TO_CHAR(P_DATE, 'YYYY-MM') ORDER BY   P_DATE desc
+ </select>
+  <select id="totalYearlyProfitData" resultType="ProfitDto">
+  SELECT TO_CHAR(P_DATE, 'YYYY') AS P_DATE, SUM(p_price) AS P_PRICE
+FROM   profit GROUP BY   TO_CHAR(P_DATE, 'YYYY') ORDER BY   P_DATE desc
+ </select>
+	
+	<select id="getListMemberNo" resultType="long">
+	SELECT m_no FROM members
+	</select>
+	
+	
+      <update id="insertCouponToMembers" parameterType="java.util.List">
+    <foreach collection="list" item="m_no" separator=" " open="INSERT ALL" close="SELECT * FROM DUAL">
+        INTO ownedcoupon (m_no, c_no)
+        VALUES (#{m_no}, c_seq.currval)
+    </foreach>
+</update>
+	
 	
 	
 	</mapper>

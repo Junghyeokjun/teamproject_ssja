@@ -15,7 +15,7 @@
             <if test='conditionName != null and conditionName != ""'>, ${conditionName}</if>
         ) AS rnum FROM (  SELECT p.*,
             (SELECT COUNT(b.pro_no) FROM board b WHERE b.pro_no = p.pro_no) AS REVIEW_COUNT,
-            (SELECT avg(b.b_eval) FROM board b WHERE b.pro_no = p.pro_no) AS RATING_AVG
+            nvl((SELECT avg(b.b_eval) FROM board b WHERE b.pro_no = p.pro_no),0) AS RATING_AVG
             FROM product p
             <where>
                 <if test="category != null and category != ''">
@@ -45,9 +45,9 @@
 	
 	<select id="bestItemsList" parameterType="int" resultType="teamproject.ssja.dto.product.ProductItemDto">
  		SELECT a.*,(select count (b.pro_no) from board b where a.pro_no=b.pro_no) as review_count,
- 		(SELECT AVG(b.b_eval)   FROM board b  WHERE b.pro_no = a.pro_no) AS RATING_AVG
+ 		nvl((SELECT AVG(b.b_eval)   FROM board b  WHERE b.pro_no = a.pro_no),0) AS RATING_AVG
 		FROM ( SELECT pro_no,  pro_price,  pro_bannerimg,  pro_wish,  pro_name, pro_sellcount, pro_bizname,
-        ROW_NUMBER() OVER ( ORDER BY pro_sellcount DESC, pro_wish DESC ) AS rnum FROM product) a WHERE rnum between #{page}*8+1 and #{page}*8+8
+        ROW_NUMBER() OVER ( ORDER BY pro_sellcount DESC, pro_wish desc ) AS rnum FROM product) a WHERE rnum between #{page}*8 - 7 and #{page}*8
 	</select>
 	
 
@@ -64,7 +64,7 @@
 	</select>
 	
 	<select id="getCategoryItems" resultType="teamproject.ssja.dto.product.ProductItemDto">
-select a.*, (SELECT AVG(b.b_eval)   FROM board b  WHERE b.pro_no = a.pro_no) AS rating_avg
+select a.*, nvl((SELECT AVG(b.b_eval)   FROM board b  WHERE b.pro_no = a.pro_no),0) AS rating_avg
  from (select p.*,   ROW_NUMBER() OVER (ORDER BY p.pro_hit DESC) AS rnum 
 			FROM product p where p_c_no between #{categoryNum}*10 and #{categoryNum}*10 + 9) a 
 			where rnum between #{pageNum}*8+1 and #{pageNum}*8+8	

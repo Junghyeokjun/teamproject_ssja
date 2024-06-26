@@ -81,9 +81,9 @@ $(document).ready(function () {
   let $cartLink = $("#cart_link").attr("href", "/myPage/cart");//카트 이미지 버튼 링크
   let $cartImgPath = $("#cart_img").attr("src", "/images/utilities/cartShop.png");//카트 이미지 경로
   let $loginImgPath = $("#login_img").attr("src", "/images/utilities/login.png");//로그인 이미지 경로
-
-  let $userLink = $("#user_link").attr("href", "/myPage");//로그인 이미지 버튼 링크
-
+  
+  
+	
  
   $searchForm.submit(function(event){
       let search_keyword = $searchIn.val();

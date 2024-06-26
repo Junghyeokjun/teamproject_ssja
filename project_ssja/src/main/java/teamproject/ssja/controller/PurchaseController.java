@@ -7,9 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,7 +39,7 @@ public class PurchaseController {
 //		return mv;
 //	}
 	@RequestMapping("")
-	public ModelAndView purchase(ModelAndView mv ,int quantity,long productNo, @AuthenticationPrincipal CustomPrincipal user) {
+	public ModelAndView purchase(ModelAndView mv ,int quantity,long productNo) {
 		long mno= InfoProvider.getM_NO();
 		List<ProductDto> dtos=new ArrayList<>();
 
@@ -53,6 +51,7 @@ public class PurchaseController {
 		mv.setViewName("purchase");
 		return mv;
 	}
+	
 	@PostMapping("/")
 	public ModelAndView purchaseCart(ModelAndView mv,@RequestParam("deleteList") List<Integer> list) {
 		long mno= InfoProvider.getM_NO();

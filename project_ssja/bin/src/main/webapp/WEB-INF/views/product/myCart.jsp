@@ -251,7 +251,7 @@ color:#aaa;
         </form>
         <button id="search_icon"></button>
         <a id="cart_link"><img id="cart_img"></a>
-        <a id="user_link"><img id="login_img"></a>
+        <a id="user_link" href="/login"><img id="login_img"></a>
       </div>
 
     </div>
@@ -425,7 +425,7 @@ let itemCartPageRender = function(pageNum){
 							var form = document.createElement("form");
 							form.setAttribute("id", "dynamicForm");
 							form.setAttribute("method", "POST");
-							form.setAttribute("action", '/purchase/'+$("#mno").val());
+							form.setAttribute("action", '/purchase/');
 							
 							// CSRF 토큰을 저장할 hidden input 요소 추가
 							var csrfInput = document.createElement("input");

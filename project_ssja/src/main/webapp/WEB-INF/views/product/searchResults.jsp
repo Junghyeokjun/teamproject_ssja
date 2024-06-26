@@ -155,6 +155,7 @@ color:#aaa;
 		<button id="select_hot">인기 순</button>
 		<button id="select_rowPrice">저렴 순</button>
 		<button id="select_wish">위시 순</button>
+		<button id="select_rating">평점 순</button>
 		<button id="select_new">신상품 순</button>
 		</div>
     </div>
@@ -173,12 +174,15 @@ color:#aaa;
     <div id="second_footer"></div>
     <div id="third_footer"></div>
   </footer>
-    <sec:authorize access="isAuthenticated()">
+ <sec:authorize access="isAuthenticated()">
+	 
+	 <sec:authorize access="hasRole('ROLE_VENDOR')">
+        <input type="hidden" id="isVendorCheck" value="1">
+    </sec:authorize>
+	 
   <script src="/js/login_user_tab.js"> </script>
-    <script src="/js/user_cart_tab.js"> </script>
-  
+  <script src="/js/user_cart_tab.js"> </script>
 </sec:authorize>
-
 </body>
 <script src="/js/product/searchResultItems.js"></script>
 </html>

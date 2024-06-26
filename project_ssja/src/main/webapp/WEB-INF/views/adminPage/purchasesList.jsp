@@ -103,8 +103,9 @@
 						<option selected value="">선택</option>
 						<option value="PUR_NO">주문번호</option>
 						<option value="M_NO">회원번호</option>
-					</select> <input type="text" class="form-control border w-50" name="keyword" value=""> <input
-						type="button" onclick="purchasesSearchList()"
+					</select>
+					 <input type="text"  name="keyword" value="">
+					  <input 	type="button" onclick="purchasesSearchList()"
 						class="btn btn-outline-dark mr-2" value="검색">
 				</form>
 				<div class="table-responsive">
@@ -176,6 +177,17 @@
 		<div id="second_footer"></div>
 		<div id="third_footer"></div>
 	</footer>
+	
+	 <sec:authorize access="isAuthenticated()">
+	 
+	 <sec:authorize access="hasRole('ROLE_VENDOR')">
+        <input type="hidden" id="isVendorCheck" value="1">
+    </sec:authorize>
+	 
+  <script src="/js/login_user_tab.js"> </script>
+  <script src="/js/user_cart_tab.js"> </script>
+</sec:authorize>
+	
 </body>
 <script>
 	function purchasesSearchList() {

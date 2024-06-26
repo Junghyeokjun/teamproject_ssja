@@ -166,7 +166,7 @@
 				<div class="modal-body">
 					<!-- 쿠폰 발급 폼이 들어갈 곳 -->
 					<form id="newCouponForm"
-						action="${pageContext.request.contextPath}/adminPage/write"
+						action="${pageContext.request.contextPath}/adminPage/writeCoupon"
 						method="post">
 						<div class="mb-3">
 							<label for="couponName" class="form-label">쿠폰 이름</label> <input
@@ -204,7 +204,7 @@
 				<div class="modal-body">
 					<!-- 쿠폰 수정 폼이 들어갈 곳 -->
 					<form id="editCouponForm"
-						action="${pageContext.request.contextPath}/adminPage/modify"
+						action="${pageContext.request.contextPath}/adminPage/modifyCoupon"
 						method="post">
 						<input type="hidden" id="editCouponId" name="c_no">
 						<div class="mb-3">
@@ -280,7 +280,7 @@
 								// AJAX를 통해 쿠폰 정보 가져오기
 								$.ajax({
 									type : "GET",
-									url : "/adminPage/modify",
+									url : "/adminPage/modifyCoupon",
 									data : {
 										c_no : couponId
 									},
@@ -365,7 +365,7 @@
 								// AJAX를 이용한 쿠폰 삭제 요청
 								$.ajax({
 									type : "POST",
-									url : "/adminPage/remove",
+									url : "/adminPage/removeCoupon",
 									data : JSON.stringify({
 										c_no : couponId
 									}), // JSON 형식으로 데이터 전송
@@ -389,5 +389,17 @@
 		<div id="second_footer"></div>
 		<div id="third_footer"></div>
 	</footer>
+	
+	
+	 <sec:authorize access="isAuthenticated()">
+	 
+	 <sec:authorize access="hasRole('ROLE_VENDOR')">
+        <input type="hidden" id="isVendorCheck" value="1">
+    </sec:authorize>
+	 
+  <script src="/js/login_user_tab.js"> </script>
+  <script src="/js/user_cart_tab.js"> </script>
+</sec:authorize>
+	
 </body>
 </html>

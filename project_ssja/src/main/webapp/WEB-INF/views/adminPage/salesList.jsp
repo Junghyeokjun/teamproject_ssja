@@ -87,7 +87,7 @@
 				<div id="AdminPage_content_name">
 					<h2 id="AdminPageTitle">매출 현황</h2>
 				</div>
-
+			
 				<div id="adminInfo_dv3" class="my-3 mx-3"
 					style="display: flex; flex-wrap: nowrap; justify-content: center;">
 					<div style="flex: 1; margin-right: 10px; text-align: center;">
@@ -107,13 +107,14 @@
 						<canvas id="yearlySalesChart" width="50" height="50"></canvas>
 					</div>
 				</div>
-
-
-
+				<div style="display: flex; justify-content: flex-end; margin-right:3em;">
+					<!-- 매출엑셀버튼 -->
+				<button type="button" id="salesListUp" class="btn " style="margin-left:auto;color:white;background-color:#95857F;">
+					다운로드 .xsl <img src="/images/utilities/excel_icon.png" alt="Excel 아이콘" onclick="">
+				</button>
+				</div>
 			</div>
-
 		</div>
-
 		<script>
         document.addEventListener('DOMContentLoaded', function() {
             var dailySalesString = '${dailySales}';
@@ -279,5 +280,27 @@
 		<div id="second_footer"></div>
 		<div id="third_footer"></div>
 	</footer>
+	
+	 <sec:authorize access="isAuthenticated()">
+	 
+	 <sec:authorize access="hasRole('ROLE_VENDOR')">
+        <input type="hidden" id="isVendorCheck" value="1">
+    </sec:authorize>
+	 
+  <script src="/js/login_user_tab.js"> </script>
+  <script src="/js/user_cart_tab.js"> </script>
+</sec:authorize>
+	
+	<script>
+	$("#salesListUp").on('click', function(){
+		downloadExcel();
+	});
+	
+	function downloadExcel() {
+	    var downloadUrl = "/adminPage/download/profit";
+	    
+	    window.open(downloadUrl, "_blank");
+	}
+	</script>
 </body>
 </html>

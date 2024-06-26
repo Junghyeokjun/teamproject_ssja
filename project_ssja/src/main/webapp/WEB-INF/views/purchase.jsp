@@ -365,6 +365,8 @@
         full_amount_val=Number(full_amount_val)+Number(amount.innerHTML);
         discount_val=Math.ceil(full_amount_val/100*coupon_discount);
         result_price_val=full_amount_val-discount_val;
+        use_point=0;
+        point.val(0);
         amountSet();
       })
       
@@ -379,6 +381,8 @@
         full_amount_val=Number(full_amount_val)-Number(amount.innerHTML);
         discount_val=Math.ceil(full_amount_val/100*coupon_discount);
         result_price_val=full_amount_val-discount_val;
+        use_point=0;
+        point.val(0);
         amountSet();
       })
 
@@ -560,12 +564,16 @@
 	          <img src="${product.PRO_BANNERIMG}" alt="" class="me-2" style="width: 150px;height: 150px; float: left;">
 	          <div class="m-2 pt-3 fs-5"><span class="product_name">${product.PRO_NAME}</span></div>
 	          <!-- <div class="m-2 fs-4"><span>옵션 :</span><span id="product_opt">네이비블루</span></div> -->
-	          <div class="m-2 fs-5"><span>금액:</span><span class="product_price">${product.PRO_PRICE}</span>원 <br><span>수량:</span> <span class="product_pcs">${product.PRO_QUANTITY}</span>개</div>
-            <div class="btn-group" role="group" aria-label="Basic example">
-              <button type="button" class="btn btn-primary pcs_plus">1개추가</button>
-              <button type="button" class="btn btn-secondary pcs_minus">1개감소</button>
-              <button type="button" class="btn btn-danger pro_rm">빼기</button>
+	          <div class="m-2 fs-5">
+              <span><span>금액:</span><span class="product_price">${product.PRO_PRICE}</span>원</span> 
+              <button type="button" class="btn btn-danger pro_rm" style="float: right;">빼기</button><br>
+              <span><span>수량:</span><span class="product_pcs">${product.PRO_QUANTITY}</span>개</span>
+              <button type="button" class="btn btn-primary pcs_plus ms-3">1개추가</button>
+              <button type="button" class="btn btn-secondary pcs_minus ms-2">1개감소</button>
             </div>
+            <!-- <div class="btn-group" role="group" aria-label="Basic example">
+
+            </div> -->
           </div>
         </c:forEach>
         
@@ -615,6 +623,11 @@
     <div id="third_footer"></div>
   </footer>
 <sec:authorize access="isAuthenticated()">
+
+<sec:authorize access="hasRole('ROLE_VENDOR')">
+        <input type="hidden" id="isVendorCheck" value="1">
+    </sec:authorize>
+
   <script src="/js/login_user_tab.js"> </script>
   <script src="/js/user_cart_tab.js"> </script>
 </sec:authorize>

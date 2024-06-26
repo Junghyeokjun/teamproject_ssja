@@ -1,8 +1,8 @@
 package teamproject.ssja.userinfotest;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.assertj.core.api.Assertions;
+import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +26,12 @@ public class encodeTest {
 		String password = passwordEncoder.encode(as);
 		
 		assertNotNull(password);
-		Assertions.assertThat(password).isNotEqualTo(passwordEncoder.encode(as));
-
+		assertThat(password).isNotEqualTo(passwordEncoder.encode(as));
+		String encoded = passwordEncoder.encode(as);
+		String checkNum = "1234";
+		boolean resultMatch=passwordEncoder.matches(checkNum, encoded);
+		log.info("result {}", resultMatch);
+		assertThat(resultMatch).isEqualTo(true);
 		log.info("pw {}",password);
 		
 	}

@@ -12,5 +12,8 @@ public interface MemberListService {
 	List<MembersDto> getMemberListWithPaging(Criteria cri);
 	//검색리스트
 	List<MembersSearchDto> getMemberSearchList(String type, String keyword);
+	void removeMember(MembersDto membersDto);
+	
 
+	
 }
