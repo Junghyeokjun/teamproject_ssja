@@ -18,7 +18,7 @@ import teamproject.ssja.exception.UnMatchedPasswordException;
 import teamproject.ssja.mapper.LoginMapper;
 import teamproject.ssja.mapper.MyPageMapper;
 @Slf4j
-@Service
+@Service("customUserDetail")
 public class CustomUserDetailsService implements UserDetailsService  {
 
 	@Autowired
