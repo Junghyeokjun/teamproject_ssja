@@ -397,8 +397,6 @@ color:black;
             This is a toast message.
         </div>
     </div>
-			
-			
 			<section class="bg-light border-top py-4" id="product_detail_section">
 				<div class="container">
 					<div class="row gx-4">

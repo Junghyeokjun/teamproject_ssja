@@ -320,8 +320,13 @@
 					</div> 
 				</c:when>
 				<c:otherwise>
-					<div class="d-flex justify-content-end p-1">
-						<a href="${pageContext.request.contextPath}/vendor/question/write_view/${bc.bcno}" class="btn btn-primary btn-tuning">글 작성</a>
+					<div class="d-flex justify-content-between p-1">
+						<div class="d-flex align-items-center">
+							<h5 id="searchTotalText" class="h5 m-0">검색 결과 : </h5>
+						</div>
+						<div>
+							<a href="${pageContext.request.contextPath}/vendor/question/write_view/${bc.bcno}" class="btn btn-primary btn-tuning">글 작성</a>
+						</div>
 					</div>
 					<table class="table table-hover" style="text-align: center;">
 						<thead class="table-secondary">
@@ -343,24 +348,24 @@
 							</c:forEach>
 						</tbody>
 					</table>
-					<div>
+					<div id="paging-or-comment">
 						<nav aria-label="Page navigation example">
 							<ul class="pagination ch-col justify-content-center">
 								<c:if test="${pageMaker.prev}">
 									<li class="page-item"><a class="page-link ch-col"
-										href="${pageContext.request.contextPath}${category}${pageMaker.makeQuery(pageMaker.startPage-1)}"><</a></li>
+										href="${pageContext.request.contextPath}/vendor/question/${category}${pageMaker.makeQuery(pageMaker.startPage-1)}"><</a></li>
 								</c:if>
 								<c:forEach var="idx" begin="${pageMaker.startPage}"
 									end="${pageMaker.endPage}">
 									<c:choose>
 										<c:when test="${pageMaker.criteria.pageNum == idx}">
 											<li class="page-item active"><a class="page-link"
-												href="${pageContext.request.contextPath}${category}${pageMaker.makeQuery(idx)}">${idx}</a>
+												href="${pageContext.request.contextPath}/vendor/question/${category}${pageMaker.makeQuery(idx)}">${idx}</a>
 											</li>
 										</c:when>
 										<c:when test="${pageMaker.criteria.pageNum != idx}">
 											<li class="page-item"><a class="page-link"
-												href="${pageContext.request.contextPath}${category}${pageMaker.makeQuery(idx)}">${idx}</a></li>
+												href="${pageContext.request.contextPath}/vendor/question/${category}${pageMaker.makeQuery(idx)}">${idx}</a></li>
 										</c:when>
 										<c:otherwise>
 										</c:otherwise>
@@ -368,7 +373,7 @@
 								</c:forEach>
 								<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
 									<li class="page-item"><a class="page-link ch-col"
-										href="${pageContext.request.contextPath}${category}${pageMaker.makeQuery(pageMaker.endPage+1)}">></a></li>
+										href="${pageContext.request.contextPath}/vendor/question/${category}${pageMaker.makeQuery(pageMaker.endPage+1)}">></a></li>
 								</c:if>
 							</ul>
 						</nav>
@@ -381,10 +386,9 @@
 								<option value="title">제목</option>
 								<option value="content">내용</option>
 								<option value="title_and_content">제목 + 내용</option>
-								<option value="writer">작성자</option>
 							</select> 
 							<input type="text" class="form-control border w-50" name="keyword" > 
-							<input type="submit" class="btn btn-outline-dark mr-2" value="검색">
+							<input type="button" id="vendor-searchBtn" class="btn btn-dark" value="검색">
 						</form>
 					</div>
 				</c:otherwise>
@@ -416,24 +420,192 @@
 
 
 	$(document).ready(function(){
-		$(document).on('submit', '#qnas-search-form', function(e){
+		let searchTotalText = $('#searchTotalText');
+		
+		searchTotalText.css('display', 'none');
+
+		let option = $('select[name="type"]').val();
+		let keyword = $('input[name="keyword"]').val();
+		let pageNum = '${pageMaker.criteria.pageNum}';
+		let amount = '${pageMaker.criteria.amount}';
+		let bmno = '${vendorMember.m_No}';
+
+		console.log('keyword :' + keyword);
+		console.log('option :' + option);
+
+		$('select[name="type"]').change(function(){
+			option = $(this).val();			
+			console.log('option :' + option);
+		});
+
+		$('input[name="keyword"]').on('input', function(){
+			keyword = $(this).val();
+			console.log('keyword :' + keyword);
+		});
+
+		function searchForm(option, keyword, pageNum, amount){
+			if(pageNum == '' || pageNum == 'NaN'){
+				pageNum = $('.page-item.active').children().first().text();
+			}
+
+			if(amount == '' || amount == 'NaN'){
+				amount = 10;
+			}
+
+			$.ajax({
+				type:"GET",
+				url: "/api/vendor/search/QnA",
+				data: {
+					'option' : option,
+					'keyword' : keyword,
+					'pageNum' : pageNum,
+					'amount' : amount,
+					'bmno' : bmno,
+					'bcno' : 20
+				},
+				success: function(response){
+					searchTotalText.css('display', 'block');
+					let total = response.pageVO.total;
+					searchTotalText.text('검색 결과 : ' + total);
+					$('tbody').empty();
+
+					if($('.no-search-datas').length > 0){
+						$('.no-search-datas').empty();
+					}
+
+					if(total == 0){
+						let div = $('<div>').addClass('no-search-datas text-center').append(
+							$('<h3>').addClass('h3 text-muted mb-4').text('검색 결과가 없습니다. 검색어를 다르게 입력하세요.')
+						);
+						$('#paging-or-comment').append(div);
+					}else{
+						for(let i = 0 ; i < response.totalData.length ; i++){
+							let board = response.totalData[i];
+							let tr = $('<tr>').append($('<td>').text(board.bno))
+										.append($('<td>').append($('<a>').attr('id','board_title').attr('href','${pageContext.request.contextPath}/vendor/question/content_view/' + board.bbcno + '?bno=' + board.bno).text(board.btitle)))
+										.append($('<td>').text(board.bdate));
+							$('tbody').append(tr);
+						}
+					}
+					
+
+					let pagingUl = $('.pagination.ch-col.justify-content-center');
+					pagingUl.empty();
+
+					let pageMaker = response.pageVO;
+
+					if(pageMaker.prev){
+						pagingUl.append(
+							$('<li>').addClass('page-item').append(
+								$('<a>').addClass('page-link ch-col').text('<')
+							)
+						)
+					}
+
+					for(let i = pageMaker.startPage; i <= pageMaker.endPage; i++){
+						if(pageMaker.criteria.pageNum == i){
+							pagingUl.append(
+								$('<li>').addClass('page-item active').append(
+									$('<a>').addClass('page-link').text(i)
+								)
+							);
+						}else if(pageMaker.criteria.pageNum != i){
+							pagingUl.append(
+								$('<li>').addClass('page-item').append(
+									$('<a>').addClass('page-link').text(i)
+								)
+							);
+						}
+					}
+
+					if(pageMaker.next && pageMaker.endPage > 0){
+						pagingUl.append(
+							$('<li>').addClass('page-item').append(
+								$('<a>').addClass('page-link ch-col').text('>')
+							)
+						)
+					}
+				},					
+				error: function(e){
+					console.log(e);
+				}
+			});
+		}
+
+		$(document).on('click', '#vendor-searchBtn', function(e){
 			e.preventDefault();
-
-			let option = '';
-			let keyword = '';
-			let pageNum = '${pageMaker.criteria.pageNum}';
-			let amount = '${pageMaker.criteria.amount}';
-			let bmno = '${vendorMember.m_No}'
-
-			console.log(pageNum + " + " + amount + " + " + bmno);
 			if($('.form-select').val() == ''){
 				alert('검색 옵션을 선택하지 않았습니다. 옵션을 선택하십시오.');
 				return;
 			}else if(bmno == ''){
 				alert('판매자 정보가 없습니다.');
 				return;
+			}else if(keyword == ''){
+				alert('검색어를 입력하시기 바랍니다.');
+				return;
+			}else{				
+				// 첫 페이지로 무조건 이동시키도록
+				searchForm(option, keyword, 1, amount);
 			}
 		});
+
+		$(document).on('click','.page-link', function(e){
+			e.preventDefault();
+			if($(this).attr('href') == null || $('.page-link').attr('href') == '' ){
+				if($('.form-select').val() == ''){
+					alert('검색 옵션을 선택하지 않았습니다. 옵션을 선택하십시오.');
+					return;
+				}else if(bmno == ''){
+					alert('판매자 정보가 없습니다.');
+					return;
+				}else if(keyword == ""){
+					alert('검색어를 입력하시기 바랍니다.');
+					return;
+				}else{
+					pageNum = $(this).text();
+					searchForm(option, keyword, pageNum, amount);
+				}
+			}else{
+				window.location.href = $(this).attr('href');
+			}			
+		});
+
+		$(document).on('click','.page-link.ch-col', function(e){
+			e.preventDefault();
+			if($('.page-item.active').children().first().attr('href') == null || $('.page-item.active').children().first().attr('href') == ''){
+				if($(this).text() == '>'){
+					if($('.form-select').val() == ''){
+					alert('검색 옵션을 선택하지 않았습니다. 옵션을 선택하십시오.');
+					return;
+					}else if(bmno == ''){
+						alert('판매자 정보가 없습니다.');
+						return;
+					}else if(keyword == ""){
+						alert('검색어를 입력하시기 바랍니다.');
+						return;
+					}else{
+						pageNum = Number($('.page-item.active').children().first().text()) + 1;
+						searchForm(option, keyword, pageNum, amount);
+					}
+				}else{
+					if($('.form-select').val() == ''){
+					alert('검색 옵션을 선택하지 않았습니다. 옵션을 선택하십시오.');
+					return;
+					}else if(bmno == ''){
+						alert('판매자 정보가 없습니다.');
+						return;
+					}else if(keyword == ""){
+						alert('검색어를 입력하시기 바랍니다.');
+						return;
+					}else{
+						pageNum = Number($('.page-item.active').children().first().text()) - 1;
+						searchForm(option, keyword, pageNum, amount);
+					}
+				}	
+			}else{
+				window.location.href = $(this).attr('href');
+			}	
+		});		
 	});
 </script>
 

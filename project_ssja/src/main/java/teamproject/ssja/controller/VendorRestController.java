@@ -19,10 +19,12 @@ import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.ProductCategoryGroupDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.VendorSalesDto;
+import teamproject.ssja.dto.VendorSearchDatasVO;
 import teamproject.ssja.dto.vendor.TotalVendorInfoDto;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
 import teamproject.ssja.dto.vendor.VendorItemCondition;
 import teamproject.ssja.page.Criteria;
+import teamproject.ssja.page.PageVO;
 import teamproject.ssja.service.Product.ProductCategoryService;
 import teamproject.ssja.service.Vendor.VendorService;
 
@@ -135,15 +137,17 @@ public class VendorRestController {
 	
 	// 판매자 검색
 	@GetMapping("/search/QnA")
-	public ResponseEntity<List<BoardDto>> getSearchQnaList(Criteria criteria, 
+	public ResponseEntity<VendorSearchDatasVO> getSearchQnaList(Criteria criteria, 
 			@RequestParam("option") String option, 
 			@RequestParam("keyword") String keyword){
 		try {
 			List<BoardDto> totalData = vendorService.getQnaSearchLists(criteria, option, keyword);
-			return ResponseEntity.ok(totalData);
+			PageVO pageVO = new PageVO(vendorService.getQnaSearchCounts(criteria, option, keyword), criteria); 
+			VendorSearchDatasVO vendorSearchDatasVO = new VendorSearchDatasVO(totalData, pageVO);
+			return ResponseEntity.ok(vendorSearchDatasVO);
 		} catch (Exception e) {
 			e.printStackTrace(); // 예외 스택 트레이스를 콘솔에 출력
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ArrayList<BoardDto>());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new VendorSearchDatasVO());
 		} 
 	}
 }

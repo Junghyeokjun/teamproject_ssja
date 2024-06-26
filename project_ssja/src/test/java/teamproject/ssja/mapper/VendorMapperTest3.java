@@ -114,9 +114,17 @@ class VendorMapperTest3 {
 		Criteria criteria = new Criteria();
 		criteria.setBcno(20);
 		criteria.setBmno(1);
-		for(BoardDto dto : vendorMapper.selectSearchVendorQnas(criteria, "title", "test")) {
+		for(BoardDto dto : vendorMapper.selectSearchVendorQnas(criteria, "title", "Test")) {
 			log.info("" + dto);
 		}
 	}
-
+	
+	@Test
+	void testSelectSearchVendorQnaCount() {
+		Criteria criteria = new Criteria();
+		criteria.setBcno(20);
+		criteria.setBmno(1);
+		
+		log.info("검색 결과 개수 : " + vendorMapper.selectSearchVendorQnaCount(criteria,"title", "Test"));
+	}
 }

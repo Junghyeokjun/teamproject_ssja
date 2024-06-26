@@ -465,7 +465,13 @@ main, footer {
 </sec:authorize>
 
 <script type="text/javascript">
-	$(document).ready(function(){		
+	// 보통 페이지를 닫기 전에 사용자에게 중요한 경고 메시지를 보여주는 등의 용도로 사용
+	// 해당 페이지 return 반영은 나중에. 현재는 return 값이 없으면 작동을 안하는데, return 값을 넣어도 text가 기본 브라우저 텍스트로만 나옴
+	$(window).on('beforeunload', function() {
+		return "내용이 손실될 수 있습니다.";
+	});
+
+	$(document).ready(function(){
 		$.ajax({
 			type : "POST",
 			url : "/api/vendor/vendorInfo",
@@ -487,7 +493,7 @@ main, footer {
 		// option:selected를 사용하지 않으면 값이 출력되지 않는 상황이 발생. 
 		// 이후로도 안되면, 다른 방식을 찾아봄.
 		
-		$('#mainCategory').on('change',function(){	
+		$('#mainCategory').on('change',function(callback){	
 			let $mainCategoryValue = $('#mainCategory option:selected').val();
 			console.log("$mainCategoryValue : " + $mainCategoryValue);
 			$.ajax({
@@ -513,7 +519,8 @@ main, footer {
 				}
 			});
 		}); 
-		
+
+
 		let bannerFile = $('#bannerFile');
 		let coverFile = $('#coverFile');
 		let explainFile = $('#explainFile');
@@ -714,7 +721,7 @@ main, footer {
 
 			// 상품명 값 변경
 			formData.delete($('#proName').attr('name'));
-			formData.append($('#proName').attr('name'), "[" + $('#subCategory').val() + "]" + $('#proName').val());
+			formData.append($('#proName').attr('name'), "[" + $('#subCategory option:selected').text() + "]" + $('#proName').val());
 
 			// 기존 키에 대한 값을 삭제.
 			formData.delete($('#coverFile').attr('name'));
@@ -733,13 +740,6 @@ main, footer {
 			selectedExplainFiles.forEach(value => {
 				formData.append($('#explainFile').attr('name'), value);
 			});
-
-			for(let pair of formData.entries()){
-				console.log(pair[0] + ", " + pair[1]);
-				if(pair[0].includes('[]') && Array.isArray(pair[0])){
-					console.log(pair[0] + "의 개수 : " + pair[0].length);
-				}
-			}
 
 			if($("#subCategory").val()=="" || $("#subCategory").val()==null){
 				alert("1차 분류를 선택한 후, 2차 분류를 선택하십시오.");
@@ -765,12 +765,28 @@ main, footer {
 			}else if( Number($("#proQuantity").val()) < 0 ){
 				alert("상품 수량은 음수가 될 수 없습니다.");
 				return;
-			}else if( !Number.isInteger(Number($("#proPrice").val()))){
+			}else if( !Number.isInteger(Number($("#proQuantity").val()))){
 				alert("상품 수량에 소수는 입력하시면 안됩니다.");
 				return;
 			}else{
 				// 위 제약조건에 해당되지 않는 나머지 경우에 한해, 로직을 실행한다.	
-				this.submit();
+				let addProduct = confirm("상품 등록을 계속 진행합니다.");
+				if(confirm){
+					// 수정 후 확인을 위한, formData 데이터 확인
+					// 데이터가 제대로 들어가고 있으므로 다시 주석처리
+					// for(let pair of formData.entries()){
+					// 	console.log(pair[0] + ", " + pair[1]);						
+					// }
+					
+					// 여전히, 상품 등록 시 상품명 텍스트가 해당 요소의 val()값을 반영하고 있으므로 이를 val()을 수정하여 반영함
+					// 파일은 잘 들어가는데 말이지......... 기존 데이터 수정해주고 반영해야 반영되려나보다.
+					$('#proName').val("[" + $('#subCategory option:selected').text() + "]" + $('#proName').val());
+					
+					this.submit();
+				}else{
+					alert("등록을 취소했습니다.");
+					return;
+				}				
 			}
 		});
 

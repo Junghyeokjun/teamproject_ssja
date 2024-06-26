@@ -335,6 +335,9 @@
 				<div class="main_whitespace p-5 my-2">
 					<h1 class="h3 text-center ">상품 목록</h1>
 				</div>
+				<div>
+					
+				</div>
 				<div id="main_container">
 					<div>
 						<hr class="border border-2 opacity-75">
@@ -387,19 +390,7 @@
 									</tr>
 								</c:forEach>
 							</tbody>
-						</table>
-						<div class="my-4">
-							<%-- <form name="products-search-form" autocomplete="off">
-								<select name="type">
-									<option selected value="">선택</option>
-									<option value="PRO_NO">상품번호</option>		
-									<option value="PRO_BIZNAME">사업자이름</option>														
-								</select>
-								 <input type="text" name="keyword" value=""> <input
-									type="button" onclick="productsSearchList()"
-									class="btn btn-outline-primary mr-2" value="검색">
-							</form> --%>
-						</div>
+						</table>						
 						<div id="paging_dv">				
 							<nav aria-label="Page navigation example">
 								<ul class="pagination ch-col justify-content-center">
@@ -426,6 +417,20 @@
 									</c:if>
 								</ul>
 							</nav>
+						</div>
+						<div class="my-4">
+							<div class="d-flex justify-content-center">
+								<form id="qnas-search-form" class="w-50 input-group" autocomplete="off">
+									<select class="form-select border" name="type">
+										<option selected value="">선택</option>
+										<option value="proNo">상품번호</option>
+										<option value="proName">상품명</option>
+										<option value="proCategory">카테고리</option>
+									</select>
+									<input type="text" class="form-control border w-50" name="keyword" > 
+									<input type="button" id="vendor-searchBtn" class="btn btn-dark" value="검색">
+								</form>
+							</div>
 						</div>
 						<div class="main_whitespace p-5 my-2"></div>				
 					</div> 

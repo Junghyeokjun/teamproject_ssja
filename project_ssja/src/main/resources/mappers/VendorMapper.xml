@@ -147,6 +147,29 @@
    		 ]]>
 	</select>
 	
+	<!-- 판매자 검색 결과 총 개수 -->
+	<select id="selectSearchVendorQnaCount" resultType="java.lang.Long">
+		 <![CDATA[
+		 SELECT COUNT(*)
+    	 FROM (
+    	 SELECT  * FROM board where b_c_no=#{criteria.bcno} and m_no=#{criteria.bmno} and 
+		 ]]>	    
+		<choose>     
+	        <when test="#{option} != null and option.equals('title')">
+	         B_TITLE like '%${keyword}%'
+	        </when> 
+	        <when test="#{option} != null and option.equals('content')">
+	         B_CONTENT like '%${keyword}%'
+	        </when> 
+	        <when test="#{option} != null and option.equals('title_and_content')">
+	         (B_TITLE like '%${keyword}%' or B_CONTENT like '%${keyword}%')
+	        </when> 
+       	</choose>
+         <![CDATA[
+		 )
+   		 ]]>
+	</select>	
+	
 	<select id="selectVendorQnaCount" resultType="java.lang.Long">
 		<![CDATA[
 			select count(*) from board where b_c_no=#{bcno} and m_no=#{bmno}

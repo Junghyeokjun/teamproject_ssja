@@ -42,10 +42,15 @@ public interface VendorService {
 	// 판매자의 문의 데이터 가져오기
 	public List<BoardDto> getQnaLists(Criteria criteria, Long bcno, Long bmno);
 	
-	public List<BoardDto> getQnaSearchLists(Criteria criteria, String option, String keyword);
 	
 	public long getQnaCounts(Criteria criteria);
 	
+	
+	// 문의 검색 데이터
+	public List<BoardDto> getQnaSearchLists(Criteria criteria, String option, String keyword);
+	
+	// 문의 검색 총 개수
+	public long getQnaSearchCounts(Criteria criteria, String option, String keyword);
 	
 	public List<ProductDto> getProductList(Criteria criteria, Long vno);
 	

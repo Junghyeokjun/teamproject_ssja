@@ -54,6 +54,10 @@ public interface VendorMapper {
 	// 문의 목록 검색 기능
 	List<BoardDto> selectSearchVendorQnas(Criteria criteria, String option, String keyword);
 	
+	// 문의 검색 목록 개수 
+	long selectSearchVendorQnaCount(Criteria criteria, String option, String keyword);
+	
+	
 	// 판매자 자신의 총 문의 개수 가져오기
 	long selectVendorQnaCount(Criteria criteria);
 	

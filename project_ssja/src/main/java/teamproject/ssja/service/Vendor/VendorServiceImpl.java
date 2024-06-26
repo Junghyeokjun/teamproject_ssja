@@ -32,6 +32,8 @@ public class VendorServiceImpl implements VendorService{
 	
 	// 파일을 저장할 디렉터리 경로
 	private String productImgDir = System.getProperty("user.dir") + "/src/main/resources/static/images/";
+	// 배포 시 경로에 문제가 있다면, 이는 아래 부분에 작성하도록 하기
+	// private String productImgDir = "";	
 			
 	// 폴더명
 	private String bannerDir = "product_banner";
@@ -43,6 +45,7 @@ public class VendorServiceImpl implements VendorService{
 		return vendorMapper.selectVendor(mNo);
 	}
 
+	// 배너
 	@Override
 	public void addProduct(ProductDto productDto, MultipartFile bannerFile) {
 		// System.getProperty("user.dir") : 현재 작업 디렉토리를 반환하는 Java 시스템 프로퍼티
@@ -61,8 +64,11 @@ public class VendorServiceImpl implements VendorService{
 		// 파일 처리
 		fileTransferTo(bannerFileDir, bannerFile, 1);
 		
+		// /images/ 가져오기 
+		String extracted = productImgDir.substring(productImgDir.length() - 8);
+		
 		// /images/product_banner/파일명.확장자
-		productDto.setPRO_BANNERIMG(bannerDir.replace("/images/", "") + "/" + ssjaFileNameFormat(bannerFile.getOriginalFilename(),1));
+		productDto.setPRO_BANNERIMG(extracted + bannerDir + "/" + ssjaFileNameFormat(bannerFile.getOriginalFilename(),1));
 		vendorMapper.insertProduct(productDto);
 	}
 
@@ -97,7 +103,7 @@ public class VendorServiceImpl implements VendorService{
 		log.info(coverFile.size() + "개의 커버 파일이 있음");
 		
 		for(int i=0; i < coverFile.size(); i++) {
-			fileTransferTo(coverFileDir, coverFile.get(i), i);
+			fileTransferTo(coverFileDir, coverFile.get(i), i+1);
 			ProductImgDto pImgDto = new ProductImgDto();
 			pImgDto.setPNo(pro_no);
 			pImgDto.setPiPath(coverDir + "/" + ssjaFileNameFormat(coverFile.get(i).getOriginalFilename(),i+1));
@@ -105,7 +111,7 @@ public class VendorServiceImpl implements VendorService{
 		}
 		
 		for(int i=0; i< explainFile.size(); i++) {
-			fileTransferTo(explainFileDir, explainFile.get(i), i);
+			fileTransferTo(explainFileDir, explainFile.get(i), i+1);
 			ProductImgDto pImgDto = new ProductImgDto();
 			pImgDto.setPNo(pro_no);
 			pImgDto.setPiPath(explainDir + "/" + ssjaFileNameFormat(explainFile.get(i).getOriginalFilename(),i+1));
@@ -145,7 +151,7 @@ public class VendorServiceImpl implements VendorService{
 	void fileTransferTo(String fileDir, MultipartFile file, int i) {		
 		try {
 			String originalFileName = file.getOriginalFilename();
-			String formatBannerfileName = ssjaFileNameFormat(originalFileName, 1);
+			String formatBannerfileName = ssjaFileNameFormat(originalFileName, i);
 
 			String filePath = fileDir + "/" + formatBannerfileName; 
 			log.info("filePath : " + filePath);
@@ -234,5 +240,11 @@ public class VendorServiceImpl implements VendorService{
 	@Override
 	public List<BoardDto> getQnaSearchLists(Criteria criteria, String option, String keyword) {
 		return vendorMapper.selectSearchVendorQnas(criteria, option, keyword);
+	}
+
+	@Override
+	public long getQnaSearchCounts(Criteria criteria, String option, String keyword) {
+		// TODO Auto-generated method stub
+		return vendorMapper.selectSearchVendorQnaCount(criteria, option, keyword);
 	}
 }
