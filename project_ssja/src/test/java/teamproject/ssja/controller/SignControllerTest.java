@@ -55,6 +55,36 @@ class SignControllerTest {
 		mockMvc.perform(MockMvcRequestBuilders.get("/sign/quantityCheck?proNo=1&quantity=3"))
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andDo(print());	}
+	
+	@Disabled
+	@Test
+	void testSignUpBeforePage() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get("/sign/sign_up_before"))
+			   .andExpect(MockMvcResultMatchers.status().isOk())
+			   .andDo(print());	}
+
+	@Disabled
+	@Test
+	void testSignUpPage() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get("/sign/sign_up"))
+			   .andExpect(MockMvcResultMatchers.status().isOk())
+			   .andDo(print());	}
+
+	@Disabled
+	@Test
+	void testTermsModifyPage() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get("/sign/terms_modify"))
+			   .andExpect(MockMvcResultMatchers.status().isOk())
+			   .andDo(print());	}
+
+	@Test
+	void testTermsModify() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.post("/sign/terms_modify")
+				.content(mapper.writeValueAsString(input))
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+			   .andExpect(MockMvcResultMatchers.status().isOk())
+			   .andDo(print());	}
 
 //	차후 수정
 //	@Test
