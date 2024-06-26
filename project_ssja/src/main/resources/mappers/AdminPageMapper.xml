@@ -508,7 +508,20 @@ FROM   profit GROUP BY   TO_CHAR(P_DATE, 'YYYY') ORDER BY   P_DATE desc
         VALUES (#{m_no}, c_seq.currval)
     </foreach>
 </update>
-	
-	
+
+<insert id="renewYesterdayProfit">
+INSERT INTO profit (p_date, p_price)
+SELECT 
+    TRUNC(SYSDATE) - 1 AS date_column,
+    SUM(pur_tot) AS total_purchase
+FROM 
+    purchase
+WHERE 
+     TRUNC(pur_date) = TRUNC(SYSDATE) - 1
+</insert>	
+
+<delete id="deleteExpiredCoupon" >
+DELETE from coupon where TRUNC(c_duedate) &lt; TRUNC(sysdate) - 1
+</delete>
 	
 	</mapper>

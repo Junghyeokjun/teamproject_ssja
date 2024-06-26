@@ -64,7 +64,6 @@ public class MyPageUserInfoService implements MyPageService {
 		log.info("EnrollDelDate {}", EnrollDelDate);
 
 		return EnrollDelDate;
-
 	}
 
 	@Override
@@ -145,8 +144,8 @@ public class MyPageUserInfoService implements MyPageService {
 
 			long id = InfoProvider.getM_NO();
 			String username = InfoProvider.userId();
-			// myPageMapper.renewRoleToVnedor(username);
-			return myPageMapper.getVendoInfo(id);
+			myPageMapper.renewRoleToVnedor(username);
+			return myPageMapper.getVendorInfo(id);
 
 		} catch (Exception e) {
 			throw new RuntimeException(e);

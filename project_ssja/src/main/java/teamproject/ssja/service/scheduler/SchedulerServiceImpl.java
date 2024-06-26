@@ -19,7 +19,7 @@ public  class SchedulerServiceImpl implements SchedulerService{
 
 	@Override
 	public void statisticProfit() {
-		adminMapper.renewYsterdayProfit();
+		adminMapper.renewYesterdayProfit();
 	}
 
 

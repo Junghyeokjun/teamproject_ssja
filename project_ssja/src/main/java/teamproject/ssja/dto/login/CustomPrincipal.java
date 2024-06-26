@@ -11,10 +11,12 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import teamproject.ssja.dto.userinfo.UserInfoDTO;
 
 @Getter
 @Setter
+@ToString
 public class CustomPrincipal implements UserDetails, OAuth2User {
 //세션, 소셜 로그인 인터페이스 2개를 다 구현한 통합 스프링 시큐리티 Authentication에 담을 구현체입니다.
     
