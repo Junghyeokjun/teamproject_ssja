@@ -56,7 +56,7 @@ WHERE TRUNC(m_date) =  TRUNC(sysdate)
 
 	<select id="getMemberListTotalCount" resultType="long">    
     <![CDATA[
-              	SELECT count(*) FROM Members 
+              	SELECT count(*) FROM Members WHERE M_DELETEDATE IS NULL
         ]]>
 	</select>
 
@@ -67,7 +67,7 @@ WHERE TRUNC(m_date) =  TRUNC(sysdate)
 			    select
 			        rownum rnum , A.*
 			    from 
-			    (SELECT  * FROM Members order by M_NO) A 
+			    (SELECT * FROM Members WHERE M_DELETEDATE IS NULL ORDER BY M_NO) A 
 		    	where rownum <= #{pageNum} * #{amount} 
 		    )
 			where rnum > (#{pageNum}-1) * #{amount}
@@ -95,21 +95,32 @@ WHERE TRUNC(m_date) =  TRUNC(sysdate)
 
 	<select id="getMemberSearchList"  parameterType="string"   resultMap="MembersSearchListMap">    
 
-	SELECT  * FROM Members              
-                where                
+	SELECT * FROM Members WHERE M_DELETEDATE IS NULL                
                <choose>
                <when test="#{type} != null and type.equals('m_name')">
-                m_name = '${keyword}'
+                and m_name = '${keyword}'
                </when>
                 <when test="#{type} != null and type.equals('m_id')">
-                m_id = '${keyword}'
+                and m_id = '${keyword}'
                </when>
                 <when test="#{type} != null and type.equals('m_grade')">
-                m_grade = '${keyword}'
+                and m_grade = '${keyword}'
                </when>
                </choose>          
                
 	</select>		
+	
+	<update id="updateMember" parameterType="MembersDto">
+			 <![CDATA[	
+        UPDATE Members
+        SET M_NAME = #{M_NAME}, M_ADDRESS1 = #{M_ADDRESS1}, M_GRADE = #{M_GRADE},
+            M_EMAIL = #{M_EMAIL}, M_PHONE = #{M_PHONE}, M_POINT = #{M_POINT}, M_NICKNAME = #{M_NICKNAME}
+        WHERE M_NO = #{M_NO}
+        ]]>
+    </update>
+	
+	
+	
 	<!-- 참조 무결성 제약 조건을 유지하기 위해 삭제 대신 m_deletedate를 sysdate로 처리  -->
 	<update id="deleteMember" parameterType="MembersDto">
 		 <![CDATA[
