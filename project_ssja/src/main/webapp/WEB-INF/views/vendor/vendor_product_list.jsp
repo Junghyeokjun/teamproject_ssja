@@ -335,9 +335,6 @@
 				<div class="main_whitespace p-5 my-2">
 					<h1 class="h3 text-center ">상품 목록</h1>
 				</div>
-				<div>
-					
-				</div>
 				<div id="main_container">
 					<div>
 						<hr class="border border-2 opacity-75">
@@ -372,25 +369,31 @@
 								<tr class="table-secondary">
 									<td>상품번호</td>
 									<td>상품이름</td>
-									<td>가격</td>
-									<td>수량</td>
-									<td>위시 수</td>
-									<td>판매 수</td>
 								</tr>
 							</thead>
 							<tbody>
 								<c:forEach var="product" items="${products}">
 									<tr>
 										<td>${product.getPRO_NO()}</td>
-										<td>${product.getPRO_NAME()}</td>
-										<td>${product.getPRO_PRICE()}</td>
-										<td>${product.getPRO_QUANTITY()}</td>
-										<td>${product.getPRO_WISH()}</td>
-										<td>${product.getPRO_SELLCOUNT()}</td>
+										<td><a href="${pageContext.request.contextPath}/vendor/product/modify_view?proNo=${product.getPRO_NO()}" class="product-pro-name link-opacity-50-hover link-underline-opacity-0">${product.getPRO_NAME()}</a></td>
 									</tr>
 								</c:forEach>
 							</tbody>
-						</table>						
+						</table>
+						<%-- <div class="my-4">
+							<div class="d-flex justify-content-center">
+								<form id="qnas-search-form" class="w-50 input-group" autocomplete="off">
+									<select class="form-select border" name="type">
+										<option selected value="">선택</option>
+										<option value="title">제목</option>
+										<option value="content">내용</option>
+										<option value="title_and_content">제목 + 내용</option>
+									</select> 
+									<input type="text" class="form-control border w-50" name="keyword" > 
+									<input type="button" id="vendor-searchBtn" class="btn btn-dark" value="검색">
+								</form>
+							</div>
+						</div> --%>
 						<div id="paging_dv">				
 							<nav aria-label="Page navigation example">
 								<ul class="pagination ch-col justify-content-center">
@@ -417,21 +420,7 @@
 									</c:if>
 								</ul>
 							</nav>
-						</div>
-						<div class="my-4">
-							<div class="d-flex justify-content-center">
-								<form id="qnas-search-form" class="w-50 input-group" autocomplete="off">
-									<select class="form-select border" name="type">
-										<option selected value="">선택</option>
-										<option value="proNo">상품번호</option>
-										<option value="proName">상품명</option>
-										<option value="proCategory">카테고리</option>
-									</select>
-									<input type="text" class="form-control border w-50" name="keyword" > 
-									<input type="button" id="vendor-searchBtn" class="btn btn-dark" value="검색">
-								</form>
-							</div>
-						</div>
+						</div>						
 						<div class="main_whitespace p-5 my-2"></div>				
 					</div> 
 				</div>
@@ -444,89 +433,214 @@
 		<div id="third_footer"></div>
 	</footer>
 </body>
- <sec:authorize access="isAuthenticated()">
-	 
-	 <sec:authorize access="hasRole('ROLE_VENDOR')">
-        <input type="hidden" id="isVendorCheck" value="1">
-    </sec:authorize>
-	 
-  <script src="/js/login_user_tab.js"> </script>
+<sec:authorize access="isAuthenticated()">
+	<script src="/js/vendor_login_user_tab.js"> </script>
 </sec:authorize>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    // select_content div 내의 모든 버튼을 가져옵니다.
-    var buttons = document.querySelectorAll('#select_content button');
-    
-    // 각 버튼에 클릭 이벤트를 추가합니다.
-    buttons.forEach(function(button) {
-        button.addEventListener('click', function() {
-            // 클릭한 버튼의 ID를 가져옵니다.
-            var buttonId = button.getAttribute('id');
+	$(document).ready(function(){
+		// 제목 클릭 시 미리보기 구현 
+ 		$(document).on('click','.product-pro-name',function(){
+			$('#productModal').modal('show');
+		});
+		
+		// 취소 버튼 클릭 시 
+ 		$(document).on('click', '[data-dismiss="modal"]', function() {
+ 			$('#productModal').modal('hide');
+ 		});
 
-            // 모든 콘텐츠 div를 숨깁니다.
-            var contentDivs = document.querySelectorAll('#main_container > div');
-            contentDivs.forEach(function(div) {
-                div.style.display = 'none';
-            });
+		
+		
+		// 아래 코드는 Qna 문의에서 가져온 코드들.
+		// 추후 수정 반영할 부분
+		
+/* 		let searchTotalText = $('#searchTotalText');
+		
+		searchTotalText.css('display', 'none');
 
-            // 클릭한 버튼에 대응하는 콘텐츠 div를 표시합니다.
-            if (buttonId === 'adminPage_membersInfo_Select') {
-                // 회원목록 버튼이 클릭되면 membersList() 메서드를 호출합니다.
-                membersList();
-            } else if (buttonId === 'adminPage_productsInfo_Select') {
-                // 상품목록 버튼이 클릭되면 productsList() 메서드를 호출합니다.
-                productsList();
-            } else if (buttonId === 'adminPage_purchasesInfo_Select') {
-                // 상품목록 버튼이 클릭되면 ordersList() 메서드를 호출합니다.
-                purchasesList();
-            }
-            // 필요한 경우 다른 버튼에 대한 조건을 추가합니다.
-        });
-    });
+		let option = $('select[name="type"]').val();
+		let keyword = $('input[name="keyword"]').val();
+		let pageNum = '${pageMaker.criteria.pageNum}';
+		let amount = '${pageMaker.criteria.amount}';
+		let bmno = '${vendorMember.m_No}';
 
-    // membersList() 메서드
-    function membersList() {
-        // membersList 페이지로 이동합니다.
-        window.location.href = '${pageContext.request.contextPath}/adminPage/membersList';
-    }
+		console.log('keyword :' + keyword);
+		console.log('option :' + option);
 
-    // productsList() 메서드
-    function productsList() {
-        // productsList 페이지로 이동합니다.
-        window.location.href = '${pageContext.request.contextPath}/adminPage/productsList';
-    }
-    
-    // ordersList() 메서드
-	function purchasesList() {
-		// ordersList 페이지로 이동합니다.
-		window.location.href = '${pageContext.request.contextPath}/adminPage/purchasesList';
-	}
-});
-function productsSearchList() {
-    $.ajax({
-        type: 'GET',
-        url: "/adminPage/productsSearchList",
-        data: $("form[name=products-search-form]").serialize(),
-        success: function(result) {
-			console.log(result);
-            $('#productstable > tbody').empty();
-            if (result.length >= 1) {
-            	$("#paging_dv").empty();
-                result.forEach(function(product) {
-                    var str = '<tr>';
-                    str += "<td>" + product.pro_NO + "</td>";
-                    str += "<td>" + product.pro_NAME + "</td>";
-                    str += "<td>" + product.pro_PRICE + "</td>";
-                    str += "<td>" + product.pro_QUANTITY + "</td>";
-                    str += "<td>" + product.pro_WISH + "</td>";
-                    str += "<td>" + product.pro_SELLCOUNT + "</td>";             
-                    str += "</tr>";
-                    $('#productstable > tbody').append(str);
-                });
-            }
-        }
-    });
-}
+		$('select[name="type"]').change(function(){
+			option = $(this).val();			
+			console.log('option :' + option);
+		});
+
+		$('input[name="keyword"]').on('input', function(){
+			keyword = $(this).val();
+			console.log('keyword :' + keyword);
+		});
+
+		function searchForm(option, keyword, pageNum, amount){
+			if(pageNum == '' || pageNum == 'NaN'){
+				pageNum = $('.page-item.active').children().first().text();
+			}
+
+			if(amount == '' || amount == 'NaN'){
+				amount = 10;
+			}
+
+			$.ajax({
+				type:"GET",
+				url: "/api/vendor/search/QnA",
+				data: {
+					'option' : option,
+					'keyword' : keyword,
+					'pageNum' : pageNum,
+					'amount' : amount,
+					'bmno' : bmno,
+					'bcno' : 20
+				},
+				success: function(response){
+					searchTotalText.css('display', 'block');
+					let total = response.pageVO.total;
+					searchTotalText.text('검색 결과 : ' + total);
+					$('tbody').empty();
+
+					if($('.no-search-datas').length > 0){
+						$('.no-search-datas').empty();
+					}
+
+					if(total == 0){
+						let div = $('<div>').addClass('no-search-datas text-center').append(
+							$('<h3>').addClass('h3 text-muted mb-4').text('검색 결과가 없습니다. 검색어를 다르게 입력하세요.')
+						);
+						$('#paging-or-comment').append(div);
+					}else{
+						for(let i = 0 ; i < response.totalData.length ; i++){
+							let board = response.totalData[i];
+							let tr = $('<tr>').append($('<td>').text(board.bno))
+										.append($('<td>').append($('<a>').attr('id','board_title').attr('href','${pageContext.request.contextPath}/vendor/question/content_view/' + board.bbcno + '?bno=' + board.bno).text(board.btitle)))
+										.append($('<td>').text(board.bdate));
+							$('tbody').append(tr);
+						}
+					}
+					
+
+					let pagingUl = $('.pagination.ch-col.justify-content-center');
+					pagingUl.empty();
+
+					let pageMaker = response.pageVO;
+
+					if(pageMaker.prev){
+						pagingUl.append(
+							$('<li>').addClass('page-item').append(
+								$('<a>').addClass('page-link ch-col').text('<')
+							)
+						)
+					}
+
+					for(let i = pageMaker.startPage; i <= pageMaker.endPage; i++){
+						if(pageMaker.criteria.pageNum == i){
+							pagingUl.append(
+								$('<li>').addClass('page-item active').append(
+									$('<a>').addClass('page-link').text(i)
+								)
+							);
+						}else if(pageMaker.criteria.pageNum != i){
+							pagingUl.append(
+								$('<li>').addClass('page-item').append(
+									$('<a>').addClass('page-link').text(i)
+								)
+							);
+						}
+					}
+
+					if(pageMaker.next && pageMaker.endPage > 0){
+						pagingUl.append(
+							$('<li>').addClass('page-item').append(
+								$('<a>').addClass('page-link ch-col').text('>')
+							)
+						)
+					}
+				},					
+				error: function(e){
+					console.log(e);
+				}
+			});
+		}
+
+		$(document).on('click', '#vendor-searchBtn', function(e){
+			e.preventDefault();
+			if($('.form-select').val() == ''){
+				alert('검색 옵션을 선택하지 않았습니다. 옵션을 선택하십시오.');
+				return;
+			}else if(bmno == ''){
+				alert('판매자 정보가 없습니다.');
+				return;
+			}else if(keyword == ''){
+				alert('검색어를 입력하시기 바랍니다.');
+				return;
+			}else{				
+				// 첫 페이지로 무조건 이동시키도록
+				searchForm(option, keyword, 1, amount);
+			}
+		});
+
+		$(document).on('click','.page-link', function(e){
+			e.preventDefault();
+			if($(this).attr('href') == null || $('.page-link').attr('href') == '' ){
+				if($('.form-select').val() == ''){
+					alert('검색 옵션을 선택하지 않았습니다. 옵션을 선택하십시오.');
+					return;
+				}else if(bmno == ''){
+					alert('판매자 정보가 없습니다.');
+					return;
+				}else if(keyword == ""){
+					alert('검색어를 입력하시기 바랍니다.');
+					return;
+				}else{
+					pageNum = $(this).text();
+					searchForm(option, keyword, pageNum, amount);
+				}
+			}else{
+				window.location.href = $(this).attr('href');
+			}			
+		});
+
+		$(document).on('click','.page-link.ch-col', function(e){
+			e.preventDefault();
+			if($('.page-item.active').children().first().attr('href') == null || $('.page-item.active').children().first().attr('href') == ''){
+				if($(this).text() == '>'){
+					if($('.form-select').val() == ''){
+					alert('검색 옵션을 선택하지 않았습니다. 옵션을 선택하십시오.');
+					return;
+					}else if(bmno == ''){
+						alert('판매자 정보가 없습니다.');
+						return;
+					}else if(keyword == ""){
+						alert('검색어를 입력하시기 바랍니다.');
+						return;
+					}else{
+						pageNum = Number($('.page-item.active').children().first().text()) + 1;
+						searchForm(option, keyword, pageNum, amount);
+					}
+				}else{
+					if($('.form-select').val() == ''){
+					alert('검색 옵션을 선택하지 않았습니다. 옵션을 선택하십시오.');
+					return;
+					}else if(bmno == ''){
+						alert('판매자 정보가 없습니다.');
+						return;
+					}else if(keyword == ""){
+						alert('검색어를 입력하시기 바랍니다.');
+						return;
+					}else{
+						pageNum = Number($('.page-item.active').children().first().text()) - 1;
+						searchForm(option, keyword, pageNum, amount);
+					}
+				}	
+			}else{
+				window.location.href = $(this).attr('href');
+			}	
+		}); */		
+	});
+
 </script>
 
 </html>

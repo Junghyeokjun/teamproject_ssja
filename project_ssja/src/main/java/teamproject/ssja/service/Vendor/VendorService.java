@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.ProductDto;
+import teamproject.ssja.dto.ProductImgDto;
 import teamproject.ssja.dto.StatisticVO;
 import teamproject.ssja.dto.VendorSalesDto;
 import teamproject.ssja.dto.vendor.TotalVendorInfoDto;
@@ -39,6 +40,11 @@ public interface VendorService {
 	// 이미지 파일명 변경하기(DB 연동 아님)
 	public String ssjaFileNameFormat(String originalFileName, int num);
 	
+	// 상품 수정할 데이터를 보여주는 것
+	public ProductDto getThisProduct(long proNo); 
+	
+	// 상품 수정
+	public void modifyProduct(ProductDto productDto);	
 	
 	
 	// 판매자의 문의 데이터 가져오기

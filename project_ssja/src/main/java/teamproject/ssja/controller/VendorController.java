@@ -41,6 +41,7 @@ import teamproject.ssja.page.PageVO;
 import teamproject.ssja.service.Admin.ProductListService;
 import teamproject.ssja.service.Board.BoardService;
 import teamproject.ssja.service.Product.ProductCategoryService;
+import teamproject.ssja.service.Product.ProductDetailService;
 import teamproject.ssja.service.Vendor.VendorService;
 
 @Slf4j
@@ -62,6 +63,9 @@ public class VendorController {
 	@Autowired
 	ProductListService productListService;
 
+	@Autowired
+	ProductDetailService productDetailService;
+	
 	@GetMapping("")
 	public String vendorHome() {
 		return "/vendor/vendor_view";
@@ -141,6 +145,14 @@ public class VendorController {
 			return "/login";
 		}
 	}
+	
+	@GetMapping("/product/modify_view")
+	public String showModifyView(@RequestParam("proNo") long proNo, Model model) {
+		
+		model.addAttribute("pcMains", productCategoryService.getPCMain());
+		model.addAttribute("product",productDetailService.get(proNo));
+		return "/vendor/vendor_modify_product";
+	}
 
 	@GetMapping("/question/{category}")
 	public String showQnaList(@AuthenticationPrincipal CustomPrincipal principal, Model model, Criteria criteria,
@@ -181,7 +193,7 @@ public class VendorController {
 		log.info("addOne()..");
 		// 관리자 영역. 추후 수정이 필요하거나, 수정하지 않아도 됨.
 		boardService.addBoard(boardDto);
-		return "redirect:/vendor/question/" + boardDto.getBbcno();
+		return "redirect:/vendor/question/20";
 	}
 
 	@PostMapping("/question/modify_view")
@@ -194,15 +206,15 @@ public class VendorController {
 	@PostMapping("/question/modify")
 	public String modify(BoardDto boardDto) {
 		boardService.modifyBoard(boardDto);
-		return "redirect:/vendor/question/" + boardDto.getBbcno();
+		return "redirect:/vendor/question/20" ;
 	}
 
-	@GetMapping("/delete")
+	@GetMapping("/question/delete")
 	@PostMapping("/question/delete")
 	public String removeOne(BoardDto boardDto) {
 		log.info("removeOne()..");
 		boardService.removeBoard(boardDto);
-		return "redirect:/vendor/question/" + boardDto.getBbcno();
+		return "redirect:/vendor/question/20" ;
 	}
 
 	@GetMapping("/info/{bizname}")
@@ -317,4 +329,6 @@ public class VendorController {
 	        }
 	    }
 	}
-	}
+	
+	
+}

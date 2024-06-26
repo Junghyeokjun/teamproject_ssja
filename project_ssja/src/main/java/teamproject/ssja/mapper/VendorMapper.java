@@ -44,9 +44,16 @@ public interface VendorMapper {
 	
 	// 상품 정보 집어넣기
 	int insertProduct(ProductDto product);
+
+	// 특정 상품 정보 가져오기 
+	ProductDto selectUpdateProductData(long proNo);
 	
 	// 상품 이미지 경로 집어넣기
-	int insertProductImgs(ProductImgDto productImg); 
+	int insertProductImgs(ProductImgDto productImg);
+
+	int updateProduct(ProductDto productDto);
+	
+	/* int updateProductImgs(ProductImgDto productImgDto); */
 	//////
 	
 	// 판매자 자신의 문의 목록 가져오기
@@ -57,6 +64,9 @@ public interface VendorMapper {
 	
 	// 문의 검색 목록 개수 
 	long selectSearchVendorQnaCount(Criteria criteria, String option, String keyword);
+	
+	
+	
 	
 	
 	// 판매자 자신의 총 문의 개수 가져오기

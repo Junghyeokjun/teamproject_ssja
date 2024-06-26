@@ -98,6 +98,42 @@
 		]]>
 	</insert>
 	
+	<select id="selectUpdateProductData" resultMap="ProductsListMap">
+		<![CDATA[
+			select * from Product where PRO_NO = #{proNo} 
+		]]>
+	</select>
+
+<!-- 이미지 데이터 가져오기 -->
+<!-- 	
+	<select id="selectUpdateProductImgsData" resultMap="ProductImgsMap">
+		<![CDATA[
+			select * from product_imgs where PRO_NO = #{proNo} 
+		]]>
+	</select>
+ -->
+ 
+<!-- 판매자의 상품 수정. 상품명과 가격만 수정 가능하게 함. -->	
+	<update id="updateProduct" parameterType="ProductDto">
+		<![CDATA[
+			UPDATE product
+			SET P_C_NO = #{P_C_NO} 
+			AND PRO_PRICE = #{PRO_PRICE}
+			AND PRO_NAME = #{PRO_NAME}
+			WHERE PRO_NO = #{PRO_NO}
+		]]>
+	</update>
+
+<!-- 이미지 교체 작업 -->
+<!-- 	
+	<update id="updateProductImgs" parameterType="ProductImgDto">
+		<![CDATA[
+			UPDATE product_imgs
+			SET PRO_IMG_PATH = #{piPath}
+			WHERE PRO_IMG_NO = #{piNo} AND PRO_NO = #{pNo}
+		]]>
+	</update> 
+--> 
 <!-- 문의 -->	
 	<!-- 페이징은 기본으로 깔고 가기 -->
 	<select id="selectVendorQnas" resultMap="BoardDtoMap">

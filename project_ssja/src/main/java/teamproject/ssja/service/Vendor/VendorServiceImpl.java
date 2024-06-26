@@ -258,4 +258,16 @@ public class VendorServiceImpl implements VendorService{
 		// TODO Auto-generated method stub
 		return vendorMapper.selectSearchVendorQnaCount(criteria, option, keyword);
 	}
+
+	@Override
+	public ProductDto getThisProduct(long proNo) {
+		// TODO Auto-generated method stub
+		return vendorMapper.selectUpdateProductData(proNo);
+	}
+
+	@Override
+	public void modifyProduct(ProductDto productDto) {
+		// TODO Auto-generated method stub
+		vendorMapper.updateProduct(productDto);
+	}
 }
