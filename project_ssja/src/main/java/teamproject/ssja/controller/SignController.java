@@ -1,6 +1,5 @@
 package teamproject.ssja.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,9 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import teamproject.ssja.LoginChecker;
 import teamproject.ssja.dto.MembersDto;
-import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.email.MailDTO;
 import teamproject.ssja.service.mypage.MailService;
 import teamproject.ssja.service.signup.SignUpService;
@@ -59,6 +56,7 @@ public class SignController {
 	
 	@PostMapping("/signUp")
 	public ModelAndView signUp(MembersDto member,String email, String domain ,ModelAndView mv) {
+		System.out.println(member);
 //		패스워드 엔코더 추가후
 //		member.setM_PW(passwordEncoder.encode(member.getM_PW()));
 		member.setM_EMAIL(email+"@"+domain);

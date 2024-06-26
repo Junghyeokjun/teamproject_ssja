@@ -13,7 +13,7 @@ import teamproject.ssja.service.user.CustomUserDetailsService;
 
 @SpringBootTest
 @Slf4j
-@WithUserDetails(value="test1", userDetailsServiceBeanName = "customUserDetail")
+@WithUserDetails(value="test", userDetailsServiceBeanName = "customUserDetail")
 public class MyPageTest {
 	
 	 MockMvc mockMvc;
@@ -23,7 +23,7 @@ public class MyPageTest {
 	 
 	 @Test
 	 void mockTest() throws Exception {
-		 mockMvc.perform(get("/mayPage"));
+		 mockMvc.perform(get("/myPage"));
 	 }
 	
 
