@@ -79,7 +79,10 @@ class SignControllerTest {
 
 	@Test
 	void testTermsModify() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.post("/sign/terms_modify")
+		
+        String responseJson = "{\"id\":\"minnseong\",\"pwd\":\"1234\"}";
+		
+        mockMvc.perform(MockMvcRequestBuilders.post("/sign/terms_modify")
 				.content(mapper.writeValueAsString(input))
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
