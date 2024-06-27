@@ -23,46 +23,50 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 @AutoConfigureMockMvc
 public class LikeControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-    @MockBean
-    private BoardService boardService;
+	@Autowired
+	private MockMvc mockMvc;
+	@MockBean
+	private BoardService boardService;
 
-	/*
-	 * @Test
-	 * 
-	 * @WithUserDetails(value="test1", userDetailsServiceBeanName =
-	 * "customUserDetail") void testToggleLike_Success() throws Exception {
-	 * 
-	 * LikesVO likesVO = new LikesVO();
-	 * 
-	 * when(boardService.modifyGetBoardLikes("1", "1")).thenReturn(likesVO);
-	 * 
-	 * mockMvc.perform(MockMvcRequestBuilders.post("/api/likes/btoggle/1")
-	 * .param("no1","1") .param("mno","1") .with(csrf())
-	 * .contentType(MediaType.APPLICATION_JSON) .accept(MediaType.APPLICATION_JSON))
-	 * .andExpect(MockMvcResultMatchers.status().isOk())
-	 * .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(
-	 * MediaType.APPLICATION_JSON))
-	 * .andExpect(MockMvcResultMatchers.jsonPath("$.likeCount", is(10))); // Replace
-	 * 10 with the expected value }
-	 * 
-	 * @Test
-	 * 
-	 * @WithUserDetails(value="test1", userDetailsServiceBeanName =
-	 * "customUserDetail") void testToggleLike_Exception() throws Exception {
-	 * 
-	 * String data = "{\"liked\": true}"; MockHttpServletResponse response =
-	 * mockMvc.perform(MockMvcRequestBuilders.post("/api/likes/btoggle/1")
-	 * .with(csrf()) .param("no1","1") .param("mno","1")
-	 * .contentType(MediaType.APPLICATION_JSON) .accept(MediaType.APPLICATION_JSON))
-	 * 
-	 * .andExpect(MockMvcResultMatchers.status().isBadRequest())
-	 * .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(
-	 * MediaType.APPLICATION_JSON)) .andExpect(MockMvcResultMatchers.jsonPath("$",
-	 * is(0))) // Replace 0 with the expected value .andReturn().getResponse();
-	 * 
-	 * // Check if redirect occurred if (response.getStatus() == 302) {
-	 * System.out.println("Redirect URL: " + response.getHeader("Location")); } }
-	 */
+	@Test
+	@WithUserDetails(value = "test1", userDetailsServiceBeanName = "customUserDetail")
+	void testToggleLike_Success() throws Exception {
+		LikesVO likesVO = new LikesVO();
+		String bno = "1";
+		when(boardService.modifyGetBoardLikes("1", "1")).thenReturn(likesVO);
+		mockMvc.perform(MockMvcRequestBuilders.post("/api/likes/btoggle/{bno}",bno)
+				.param("bno", "1").param("mno", "1")
+				.with(csrf())
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+				//.andExpect(MockMvcResultMatchers.jsonPath("$.likeCount").value(10)); // Replace 10 with the expected value
+	}
+
+	@Test
+
+	@WithUserDetails(value = "test1", userDetailsServiceBeanName = "customUserDetail")
+	void testToggleLike_Exception() throws Exception {
+
+		String data = "{\"liked\": true}";
+		String bno = "1";
+		MockHttpServletResponse response = mockMvc
+				.perform(MockMvcRequestBuilders.post("/api/likes/btoggle/{bno}",bno)
+				.with(csrf())
+				.param("bno", "1")
+				.param("mno", "1")
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isBadRequest())
+				.andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.jsonPath("$", is(0))) // Replace 0 with the expected value
+				.andReturn().getResponse();
+
+		// Check if redirect occurred
+		if (response.getStatus() == 302) {
+			System.out.println("Redirect URL: " + response.getHeader("Location"));
+		}
+	}
+
 }

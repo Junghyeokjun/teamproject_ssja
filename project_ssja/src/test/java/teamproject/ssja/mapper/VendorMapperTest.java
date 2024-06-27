@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ProductImgDto;
+import teamproject.ssja.dto.StatisticVO;
 import teamproject.ssja.dto.VendorSalesDto;
 import teamproject.ssja.dto.vendor.VendorProfitDTO;
 import teamproject.ssja.page.Criteria;
@@ -106,5 +107,69 @@ class VendorMapperTest {
 		Assertions.assertThat(dataTotal.size()).isEqualTo(3);
 		
 	}
+	
+	@Test
+	void testSelectVendorSalesInDay() {
+		StatisticVO statisticVO = new StatisticVO(1, "2024-06");
+		for(VendorSalesDto dto : vendorMapper.selectVendorSalesInDay(statisticVO)) {
+			log.info("dto : " + dto);
+		}
+	}
 
+	@Test
+	void testSelectVendorSalesInMonth() {
+		StatisticVO statisticVO = new StatisticVO(1, "2024");
+		for(VendorSalesDto dto : vendorMapper.selectVendorSalesInMonth(statisticVO)) {
+			log.info("dto : " + dto);
+		}
+	}
+
+	@Test
+	void testSelectVendorSalesInYear() {
+		StatisticVO statisticVO = new StatisticVO(1, "2024");
+		for(VendorSalesDto dto : vendorMapper.selectVendorSalesInYear(statisticVO)) {
+			log.info("dto : " + dto);
+		}
+	}
+	
+	@Test
+	void testSelectVendorSalesTotal() {
+		log.info("1번 판매자 totals : " + vendorMapper.selectVendorSalesTotal(1));
+	}
+	
+	@Test
+	void testSelectSearchVendorQnas() {
+		Criteria criteria = new Criteria();
+		criteria.setBcno(20);
+		criteria.setBmno(1);
+		for(BoardDto dto : vendorMapper.selectSearchVendorQnas(criteria, "title", "Test")) {
+			log.info("" + dto);
+		}
+	}
+	
+	@Test
+	void testSelectSearchVendorQnaCount() {
+		Criteria criteria = new Criteria();
+		criteria.setBcno(20);
+		criteria.setBmno(1);
+		
+		log.info("검색 결과 개수 : " + vendorMapper.selectSearchVendorQnaCount(criteria,"title", "Test"));
+	}
+	
+	@Test
+	void testSelectVendorSearchProductsCount() {
+		Criteria criteria = new Criteria();
+		criteria.setVno(1);
+		log.info("검색 결과 개수 : " + vendorMapper.selectVendorSearchProductsCount(criteria, "proPcName", "가구") );
+	}
+
+	@Test
+	void testSelectVendorSearchProducts() {
+		Criteria criteria = new Criteria();
+		criteria.setVno(1);
+		
+		for(ProductDto dto : vendorMapper.selectVendorSearchProducts(criteria, "proPcName", "가구")) {
+			log.info("" + dto);
+		}
+	}
 }
