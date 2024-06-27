@@ -3,6 +3,7 @@ package teamproject.ssja.mapper;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Update;
 
@@ -88,7 +89,7 @@ public interface AdminPageMapper {
 		
 		List<Map<String, Object>> dailyVisitCountsList();
 
-		void renewYsterdayProfit();//스케줄러 전날 매출 insert
+		void renewYesterdayProfit();//스케줄러 전날 매출 insert
 		
 		//방문자 수 쿼리
 		@Update("UPDATE visitor_count SET visit_count = visit_count + 1 WHERE TRUNC(visit_date) = TRUNC(sysdate)")

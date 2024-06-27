@@ -43,6 +43,7 @@
 				<button type="toggle-button" class="top_btn" id="top_btn"></button>
 				<a id="logo_toHome" href=""><img id="logo_img"
 					src="/images/utilities/logoSSJA.png"></a>
+					<a id="user_link" href="/login" style="margin-left:auto;"><img id="login_img" ></a>
 			</div>
 		</div>
 		<nav id="total_bar"></nav>
@@ -111,10 +112,10 @@
 											<td><fmt:formatDate value="${coupon.c_startdate}"
 													pattern="yyyy-MM-dd" />~<fmt:formatDate
 													value="${coupon.c_duedate}" pattern="yyyy-MM-dd" />
-												<button type="button" class="btn btn-outline-success"
-													id="modifyCouponBtn">수정</button>
+												<button type="button" class="btn btn-outline-dark"
+													id="modifyCouponBtn" style="margin-left:1rem;">수정</button>
 												<button type="button" class="btn btn-outline-danger"
-													id="deleteCouponBtn">삭제</button></td>
+													id="deleteCouponBtn" style="margin-left:1rem;">삭제</button></td>
 										</tr>
 									</c:forEach>
 								</tbody>

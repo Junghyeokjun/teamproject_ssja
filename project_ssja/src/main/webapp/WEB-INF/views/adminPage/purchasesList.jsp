@@ -54,6 +54,7 @@
 				<button type="toggle-button" class="top_btn" id="top_btn"></button>
 				<a id="logo_toHome" href=""><img id="logo_img"
 					src="/images/utilities/logoSSJA.png"></a>
+					<a id="user_link" href="/login" style="margin-left:auto;"><img id="login_img" ></a>
 			</div>
 		</div>
 		<nav id="total_bar"></nav>

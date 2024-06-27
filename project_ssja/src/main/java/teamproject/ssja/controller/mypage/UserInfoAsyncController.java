@@ -46,10 +46,13 @@ public class UserInfoAsyncController {
 	
 	@Autowired
 	MyPageService myPageService;
+	
 	@Autowired
 	CustomUserDetailsService userService;
+	
 	@Autowired
 	PasswordEncoder passwordEncoder;
+	
 	@Autowired
 	MailService mailService;
 	
@@ -76,7 +79,7 @@ public class UserInfoAsyncController {
 
 	@PostMapping("/address")
 	public ResponseEntity<AddressForm> changAddress(@AuthenticationPrincipal CustomPrincipal userDetails,
-											@RequestBody AddressForm addressForm,HttpServletRequest request, HttpServletResponse response) {
+											@RequestBody AddressForm addressForm) {
 		
 		long userId = userDetails.getMemberNum();
 		

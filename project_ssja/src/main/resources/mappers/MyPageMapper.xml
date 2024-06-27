@@ -86,6 +86,15 @@ update members set m_email = #{email} where m_id = #{userId}
     <result property="PRO_BANNERIMG" column="PRO_BANNERIMG"/>
     <result property="totalCount" column="total"/>
     </resultMap>
+    
+    <resultMap id="vendorInfoMap" type="teamproject.ssja.dto.vendor.VendorInfoDTO">
+    <id property="v_no" column="v_no"/>
+    <result property="v_license" column="v_license"/>
+    <result property="v_FAX" column="v_fax"/>
+    <result property="v_bizName" column="v_bizname"/>
+    <result property="v_account" column="v_account"/>
+
+    </resultMap>
 
 
 <select id="getPurchaseData" parameterType="Map" resultMap="orderResultMap">
@@ -116,6 +125,9 @@ select count(*) from purchase where m_no =#{id}
 insert into vendor values (v_seq.nextval, #{id},#{v_bizName},#{v_account},#{v_license},#{v_FAX})
 </insert>
 
+<select id="getVendorInfo" resultMap="vendorInfoMap">
+select * from vendor where m_no = #{id}
+</select>
 
 
 	<select id="getMyCartItems" parameterType="Map" resultType="teamproject.ssja.dto.userinfo.CartItemsDTO">

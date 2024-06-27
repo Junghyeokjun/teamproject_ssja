@@ -190,6 +190,7 @@ public class CommunityServiceImpl implements CommunityService {
 		File file=null;
 		for (String fileName : fileNames) {
 			fileName=fileName.replace(path, absolutePath);
+
 			file=new File(fileName);
 			if(file.exists()) {
 				file.delete();

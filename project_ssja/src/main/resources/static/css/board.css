@@ -137,3 +137,22 @@ a{
 	border-radius: 0.375em 0.375em 0 0;
 	background-color: #d7d8da;
 }
+
+#memberid_td{
+white-space: nowrap;    
+    overflow: hidden;        
+    text-overflow: ellipsis;   
+    width: 15rem;               
+}
+#memberemail_td{
+white-space: nowrap;    
+    overflow: hidden;        
+    text-overflow: ellipsis;   
+    width: 22rem;;               
+}
+#memberaddress_td{
+white-space: nowrap;    
+    overflow: hidden;        
+    text-overflow: ellipsis;   
+    width: 10rem;               
+}

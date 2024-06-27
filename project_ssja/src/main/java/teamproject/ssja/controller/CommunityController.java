@@ -74,9 +74,7 @@ public class CommunityController {
 	//커뮤니티 게시글 내용 수정화면
 	@GetMapping("/content/modify")
 	public ModelAndView modify(ModelAndView mv,@RequestParam("bno") long bno) {
-		System.out.println(1234);
 		mv.addObject("content", communityService.getContent(bno));
-		mv.addObject("reply_total", communityService.getReplyTotal(bno));
 		mv.setViewName("community/community_content_modify");
 		return mv;
 	}
@@ -202,7 +200,7 @@ public class CommunityController {
 
 		return communityService.getContent(bno);
 	}
-	//커뮤니티 게시글을 삭제하는 부분
+	//커뮤니티 게시글을 입력하는 부분
 	@PostMapping("/post")
 	public long insertPost(@RequestBody Map<String, Object> data){
 		System.out.println(data);
@@ -229,10 +227,6 @@ public class CommunityController {
 	public Map<String,Object> search(int pageNum, int amount,String option, String keyword){
 		Map<String, Object> data= new HashMap<String, Object>();
 
-		System.out.println(pageNum);
-		System.out.println(amount);
-		System.out.println(option);
-		System.out.println(keyword);
 		CommunityPage page= new CommunityPage(pageNum , communityService.getCommunitySearchTotal(option, keyword));
 		data.put("page", page);
 		data.put("postList", communityService.getSearchPost(pageNum, amount,option,keyword));

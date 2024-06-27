@@ -1,12 +1,14 @@
 package teamproject.ssja.dto.product;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class SearchForm {
 	
 	private String keyword;

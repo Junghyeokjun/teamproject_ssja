@@ -64,7 +64,6 @@ public class MyPageUserInfoService implements MyPageService {
 		log.info("EnrollDelDate {}", EnrollDelDate);
 
 		return EnrollDelDate;
-
 	}
 
 	@Override
@@ -103,6 +102,7 @@ public class MyPageUserInfoService implements MyPageService {
 		params.put("id", id);
 		params.put("pageNum", Long.valueOf(pageNum));
 		List<OrderInfoDTO> orderList = myPageMapper.getPurchaseData(params);
+		if(orderList.isEmpty() || orderList == null) {return null;}
 
 		int total = orderList.get(0).getList().get(0).getTotalCount();
 		MyPageOrdersDTO orderDTO = new MyPageOrdersDTO(total, pageNum);
@@ -145,8 +145,8 @@ public class MyPageUserInfoService implements MyPageService {
 
 			long id = InfoProvider.getM_NO();
 			String username = InfoProvider.userId();
-			// myPageMapper.renewRoleToVnedor(username);
-			return myPageMapper.getVendoInfo(id);
+			myPageMapper.renewRoleToVnedor(username);
+			return myPageMapper.getVendorInfo(id);
 
 		} catch (Exception e) {
 			throw new RuntimeException(e);

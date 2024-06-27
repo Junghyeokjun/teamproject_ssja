@@ -232,8 +232,8 @@ let getVendorInfo = function(){
 		success :function(data){
 			console.log(data);
 			$('<span>').text('판매자 번호 : ' + data.v_no).appendTo('#vendorInfo_div');
-			$('<span>').text('사업자 명: ' + data.v_name).appendTo('#vendorInfo_div');
-			$('<span>').text('사업자 번호 : ' + data.v_nlicense).appendTo('#vendorInfo_div');
+			$('<span>').text('사업자 명: ' + data.v_bizName).appendTo('#vendorInfo_div');
+			$('<span>').text('사업자 번호 : ' + data.v_license).appendTo('#vendorInfo_div');
 			
 			},
 			error:function(e){

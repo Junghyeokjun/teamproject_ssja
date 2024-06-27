@@ -43,10 +43,9 @@ public interface MyPageMapper {
 	
 	void enrollVendor(VendorInfoDTO vendorInfo);
 	
-	@Select("select v_no, v_bizname, v_account, v_license, v_fax from vendor where m_no = #{id}")
-	VendorInfoDTO getVendoInfo(long id);
+	VendorInfoDTO getVendorInfo(long id);
 	
-	@Update("update authority set auth='ROLE_VENDOR where M_ID = #{username}")
+	@Update("update authority set auth='ROLE_VENDOR' where M_ID = #{username}")
 	void renewRoleToVnedor(String username);
 	
 	@Select("SELECT count(v_no) from VENDOR where M_NO = #{id}")

@@ -43,6 +43,7 @@
 #memberstable thead {
 	font-weight: bold; /* 열 제목을 굵은 글꼴로 설정 */
 }
+
 </style>
 </head>
 <body>
@@ -52,6 +53,7 @@
 				<button type="toggle-button" class="top_btn" id="top_btn"></button>
 				<a id="logo_toHome" href=""><img id="logo_img"
 					src="/images/utilities/logoSSJA.png"></a>
+					<a id="user_link" href="/login" style="margin-left:auto;"><img id="login_img" ></a>
 			</div>
 		</div>
 		<nav id="total_bar"></nav>
@@ -127,17 +129,17 @@
 							<c:forEach var="member" items="${members}">
 								<tr>
 									<td>${member.m_NO}</td>
-									<td>${member.m_ID}</td>
+									<td id="memeberid_td">${member.m_ID}</td>
 									<td>${member.m_NAME}</td>
-									<td>${member.m_ADDRESS1}</td>
+									<td id="memberaddress_td">${member.m_ADDRESS1}</td>
 									<td><fmt:formatDate value="${member.m_BIRTH}"
 											pattern="yyyy-MM-dd" /></td>
 									<td>${member.m_GRADE}</td>
-									<td>${member.m_EMAIL}</td>
+									<td id="memberemail_td">${member.m_EMAIL}</td>
 									<td>${member.m_PHONE}</td>
 									<td>${member.m_POINT}</td>
 									<td>${member.m_NICKNAME}</td>
-									<td><button type="button" class="btn btn-outline-success"
+									<td><button type="button" class="btn btn-outline-dark"
 											id="modifyMemberBtn">수정</button>
 										<button type="button" class="btn btn-outline-danger"
 											id="deleteMemberBtn">삭제</button>

@@ -1,5 +1,6 @@
 package teamproject.ssja.controller;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import java.util.HashMap;
@@ -55,35 +56,72 @@ class SignControllerTest {
 		mockMvc.perform(MockMvcRequestBuilders.get("/sign/quantityCheck?proNo=1&quantity=3"))
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andDo(print());	}
+	
+	@Disabled
+	@Test
+	void testSignUpBeforePage() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get("/sign/sign_up_before"))
+			   .andExpect(MockMvcResultMatchers.status().isOk())
+			   .andDo(print());	}
+
+	@Disabled
+	@Test
+	void testSignUpPage() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get("/sign/sign_up"))
+			   .andExpect(MockMvcResultMatchers.status().isOk())
+			   .andDo(print());	}
+
+	@Disabled
+	@Test
+	void testTermsModifyPage() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get("/sign/terms_modify"))
+			   .andExpect(MockMvcResultMatchers.status().isOk())
+			   .andDo(print());	}
+
+	@Disabled
+	@Test
+	void testTermsModify() throws Exception {
+		
+        String responseJson = "{\"term1\":\"필수약관\",\"term2\":\"선택약관\"}";
+		
+        mockMvc.perform(MockMvcRequestBuilders.post("/sign/terms_modify")
+				.content(responseJson)
+				.contentType(MediaType.APPLICATION_JSON)
+				.with(csrf())
+				.accept(MediaType.APPLICATION_JSON))
+			   .andExpect(MockMvcResultMatchers.status().isOk())
+			   .andDo(print());	}
 
 //	차후 수정
 //	@Test
 //	void testSignUpCheck() throws Exception {
 //	    Map<String, String> input = new HashMap<>();
 //	    input.put("M_NO", "1");
-//	    input.put("M_ID", "test1");
+//	    input.put("M_ID", "test12");
 //	    input.put("M_PW", "test1");
-//	    input.put("M_NAME", "test1");
+//	    input.put("M_NAME", "test12");
 //	    input.put("M_ADDRESS1", "test1");
 //	    input.put("M_ADDRESS2", "test1");
 //	    input.put("M_ZIPCODE", "11111");
-//	    input.put("M_BIRTH", "000000");
+//	    input.put("M_BIRTH", "010101");
 //	    input.put("M_GRADE", "null");
 //	    input.put("M_EMAIL", "null");	    
 //	    input.put("M_POINT", "null");	    
 //	    input.put("M_DATE", "null");	    
 //	    input.put("M_PHONE", "01034561234");
+//	    input.put("M_NICKNAME", "test21");
 //	    input.put("email", "test");
 //	    input.put("domain", "google.com");
 //	    
 //	    ObjectMapper mapper=new ObjectMapper();
-//	    System.out.println(mapper.writeValueAsString(input));
-//		mockMvc.perform(MockMvcRequestBuilders.post("/testrest/signUp")
+//		mockMvc.perform(MockMvcRequestBuilders.post("/sign/signUp")
 //						.content(mapper.writeValueAsString(input))
 //						.contentType(MediaType.APPLICATION_JSON)
-//						.accept(MediaType.APPLICATION_JSON))
+//						.accept(MediaType.APPLICATION_JSON)
+//						.with(csrf()))
 //			   .andExpect(MockMvcResultMatchers.status().isOk())
-//			   .andDo(print());	}
+//			   .andDo(print());
+//	    }
 
 
 

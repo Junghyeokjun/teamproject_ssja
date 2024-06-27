@@ -44,6 +44,10 @@
 #qnastable thead {
 	font-weight: bold; /* 열 제목을 굵은 글꼴로 설정 */
 }
+#qna_content_tablebody > tr{
+cursor:pointer;
+background-color:#eee;
+}
 </style>
 </head>
 <body>
@@ -53,6 +57,7 @@
 				<button type="toggle-button" class="top_btn" id="top_btn"></button>
 				<a id="logo_toHome" href=""><img id="logo_img"
 					src="/images/utilities/logoSSJA.png"></a>
+					<a id="user_link" href="/login" style="margin-left:auto;"><img id="login_img" ></a>
 			</div>
 		</div>
 		<nav id="total_bar"></nav>
@@ -119,16 +124,16 @@
 								<td scope="col">날짜</td>
 							</tr>
 						</thead>
-						<tbody class="table-group-divider">
+						<tbody class="table-group-divider" id="qna_content_tablebody">
 							<c:forEach var="qna" items="${qnas}">
-								<tr>
+								<tr id="qna_tr_${qna.getB_NO() }">
 									<td>${qna.getB_NO()}</td>
 									<td>${qna.getM_NO()}</td>
 									<td>${qna.getB_WRITER()}</td>
 									<td>${qna.getB_TITLE()}</td>
 									<td>${qna.getB_CONTENT()}</td>
 									<td>${qna.getB_DATE()}
-										<button type="button" class="btn btn-outline-success"
+										<button type="button" class="btn btn-outline-dark"
 											id="modifyQnaBtn">수정</button>
 										<button type="button" class="btn btn-outline-danger"
 											id="deleteQnaBtn">삭제</button>
@@ -240,6 +245,11 @@ $(document).ready(function() {
 
 	    // 모달 창 띄우기
 	    $('#editQnaModal').modal('show');
+	  });
+	  
+	  $("#qna_content_tablebody > tr").on('click', function(){
+		 let boardQnANumber = $(this).attr('id').split('_')[2];
+		 window.location.href = '/board/content_view/20?bno=' + boardQnANumber;
 	  });
 	});
 </script>

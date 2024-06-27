@@ -34,9 +34,9 @@ public class ProductReseachRestController {
 		ProductWithConditionDTO items = new ProductWithConditionDTO(conditionItems);
 		items.setItemList(productService.getProductList(conditionItems));
 		log.warn("productCondition is {}", productCondition);
-		
 		return ResponseEntity.ok().body(items);
 	}
+	
 	
 	@GetMapping("/best-mainpage")
 	ResponseEntity<List<ProductItemDto>> mainPageBestItems(@RequestParam int page){

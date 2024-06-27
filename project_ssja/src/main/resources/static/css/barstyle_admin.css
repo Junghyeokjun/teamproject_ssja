@@ -151,7 +151,7 @@ nav {
   display: none;
   color: black;
   position: fixed;
-  top: 181px;
+  top: 125px;
   left: 0;
   z-index: 999;
   padding: 0;
@@ -499,7 +499,7 @@ background-color: #eee;
 #select_AdminPage {
 	z-index: 900;
 	position: fixed;
-	top: 30%;
+	top: 20%;
 	left: 5%;
 	width: 12%;
 }
@@ -674,3 +674,35 @@ height:auto;
   background-size: 100%; 
   box-sizing: border-box; 
 }
+
+#adminPage_Info_Select{
+	height:3.2rem;
+	text-align:center;
+}
+
+
+#userlink {
+    position: relative;
+    display: inline-block;
+}
+
+#login_user_div {
+    display: none;
+    position: absolute;
+    top: 75%;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 1000;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+#login_user_div button{
+background:white;
+padding:15px;
+text-align:center;
+border:none;
+}
+
+
