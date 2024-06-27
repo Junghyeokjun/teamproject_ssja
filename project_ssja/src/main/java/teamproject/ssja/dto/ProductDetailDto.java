@@ -43,5 +43,21 @@ public class ProductDetailDto {
 	String M_ZIPCODE;
 	String M_EMAIL;
 	String M_PHONE;
-	String B_WRITER;	
+	String B_WRITER;
+	
+	private String PRO_DATE;
+	
+	public String getPRO_NAMEStr() {
+		int endIndex = PRO_NAME.indexOf(']');
+		
+		 // ']' 이후의 문자열 추출
+        String result;
+        if (endIndex != -1) {
+            result = PRO_NAME.substring(endIndex + 1).trim(); // 공백 제거를 위해 trim() 사용
+        } else {
+            result = PRO_NAME; // ']'가 없으면 전체 문자열 반환
+        }
+
+		return result;
+	}
 }

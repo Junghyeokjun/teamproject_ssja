@@ -67,6 +67,60 @@
 	</select>
 
 
+
+	<!-- 상품 검색 결과를 보여주기 위한 목록 -->
+	<select id="selectVendorSearchProducts" resultMap="ProductsListMap">
+		 <![CDATA[
+			select * from 
+        	(
+			    select
+			        rownum rnum , A.*
+			    from 
+			    (SELECT * FROM Product where v_no=#{criteria.vno} and 
+		 ]]>	    
+		<choose>     
+	        <when test="#{option} != null and option.equals('proNo')">
+	         PRO_NO like '%${keyword}%'
+	        </when> 
+	        <when test="#{option} != null and option.equals('proName')">
+	         PRO_NAME like '%${keyword}%'
+	        </when> 
+	        <when test="#{option} != null and option.equals('proPcName')">
+	         SUBSTR
+	         (PRO_NAME, 
+	          INSTR(PRO_NAME, '[', 1, 1) + 1, INSTR(PRO_NAME, ']', 1, 1) - INSTR(PRO_NAME, '[', 1, 1) - 1)	          
+ 			 like '%${keyword}%'
+	        </when> 
+       	</choose>
+         <![CDATA[			    
+			    order by PRO_NO desc) A 
+		    	where rownum <= #{criteria.pageNum} * #{criteria.amount} 
+		    )
+			where rnum > (#{criteria.pageNum}-1) * #{criteria.amount}
+   		 ]]>
+	</select>
+
+	<!-- 상품 검색 데이터 총 수량 -->
+	<select id="selectVendorSearchProductsCount" resultType="java.lang.Long">
+		<![CDATA[
+			select count(*) from Product where v_no=#{criteria.vno} and 
+		 ]]>	    
+		<choose>     
+	        <when test="#{option} != null and option.equals('proNo')">
+	         PRO_NO like '%${keyword}%'
+	        </when> 
+	        <when test="#{option} != null and option.equals('proName')">
+	         PRO_NAME like '%${keyword}%'
+	        </when> 
+	        <when test="#{option} != null and option.equals('proPcName')">
+	         SUBSTR
+	         (PRO_NAME, 
+	          INSTR(PRO_NAME, '[', 1, 1) + 1, INSTR(PRO_NAME, ']', 1, 1) - INSTR(PRO_NAME, '[', 1, 1) - 1)	          
+ 			 like '%${keyword}%'
+	        </when> 
+       	</choose>
+	</select>
+
 	<select id="selectVendorProductsCount" resultType="java.lang.Long">
 		<![CDATA[
 			select count(*) from Product where v_no=#{vno}
@@ -117,9 +171,9 @@
 	<update id="updateProduct" parameterType="ProductDto">
 		<![CDATA[
 			UPDATE product
-			SET P_C_NO = #{P_C_NO} 
-			AND PRO_PRICE = #{PRO_PRICE}
-			AND PRO_NAME = #{PRO_NAME}
+			SET P_C_NO = #{P_C_NO},
+				PRO_PRICE = #{PRO_PRICE},
+				PRO_NAME = #{PRO_NAME}
 			WHERE PRO_NO = #{PRO_NO}
 		]]>
 	</update>
@@ -187,8 +241,7 @@
 	<select id="selectSearchVendorQnaCount" resultType="java.lang.Long">
 		 <![CDATA[
 		 SELECT COUNT(*)
-    	 FROM (
-    	 SELECT  * FROM board where b_c_no=#{criteria.bcno} and m_no=#{criteria.bmno} and 
+    	 FROM board where b_c_no=#{criteria.bcno} and m_no=#{criteria.bmno} and 
 		 ]]>	    
 		<choose>     
 	        <when test="#{option} != null and option.equals('title')">
@@ -201,9 +254,6 @@
 	         (B_TITLE like '%${keyword}%' or B_CONTENT like '%${keyword}%')
 	        </when> 
        	</choose>
-         <![CDATA[
-		 )
-   		 ]]>
 	</select>	
 	
 	<select id="selectVendorQnaCount" resultType="java.lang.Long">

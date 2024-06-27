@@ -24,6 +24,7 @@ import teamproject.ssja.dto.vendor.TotalVendorInfoDto;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
 import teamproject.ssja.dto.vendor.VendorItemCondition;
 import teamproject.ssja.page.Criteria;
+import teamproject.ssja.page.Page10VO;
 import teamproject.ssja.page.PageVO;
 import teamproject.ssja.service.Product.ProductCategoryService;
 import teamproject.ssja.service.Vendor.VendorService;
@@ -144,6 +145,22 @@ public class VendorRestController {
 			List<BoardDto> totalData = vendorService.getQnaSearchLists(criteria, option, keyword);
 			PageVO pageVO = new PageVO(vendorService.getQnaSearchCounts(criteria, option, keyword), criteria); 
 			VendorSearchDatasVO vendorSearchDatasVO = new VendorSearchDatasVO(totalData, pageVO);
+			return ResponseEntity.ok(vendorSearchDatasVO);
+		} catch (Exception e) {
+			e.printStackTrace(); // 예외 스택 트레이스를 콘솔에 출력
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new VendorSearchDatasVO());
+		} 
+	}
+	
+	// 판매자 검색
+	@GetMapping("/search/product")
+	public ResponseEntity<VendorSearchDatasVO> getSearchProductList(Criteria criteria, 
+			@RequestParam("option") String option, 
+			@RequestParam("keyword") String keyword){
+		try {
+			List<ProductDto> totalDataPro = vendorService.getSearchProducts(criteria, option, keyword);
+			Page10VO page10VO = new Page10VO(vendorService.getSearchProductsCount(criteria, option, keyword), criteria); 
+			VendorSearchDatasVO vendorSearchDatasVO = new VendorSearchDatasVO(totalDataPro,page10VO);
 			return ResponseEntity.ok(vendorSearchDatasVO);
 		} catch (Exception e) {
 			e.printStackTrace(); // 예외 스택 트레이스를 콘솔에 출력

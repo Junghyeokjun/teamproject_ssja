@@ -334,19 +334,21 @@ main, footer {
  -->
 				<main>
 					<div class="main_whitespace p-5 my-2">
-						<h1 class="h2 text-center mb-5">상품 수정</h1>
+						<h1 class="h2 text-center mb-5">${product.getPRO_NAME()}</h1>
 						<h3 class="h5 text-center"><span>상품 정보 조회 가능</span></h3>
 						<h3 class="h5 text-center"><span>상품 카테고리, 상품명, 상품 가격 수정 가능</span></h3>
+						<h3 class="h5 text-center"><span>해당 상품 등록 일자 : ${product.getPRO_DATE()}</span></h3>
 					</div>
 					<div id="main_container"
 						class="d-flex flex-row align-items-center justify-content-center">
-						<div id="MyPage_content_container" class="border p-5">
+						<div class="border p-5 text-center w-75">
 							<form id="productAdd"
-								action="${pageContext.request.contextPath}/vendor/product/modify"
-								method="post" autocomplete="off" encType="multipart/form-data">
+								action="${pageContext.request.contextPath}/vendor/product/modify/${product.getV_NO()}"
+								method="post" autocomplete="off" >
 								<sec:csrfInput />
-								<input type="hidden" name="V_NO" readonly="readonly"> <input
-									type="hidden" name="PRO_BIZNAME" readonly="readonly">
+								<input type="hidden" name="PRO_NO" readonly="readonly" value="${product.getPRO_NO()}">
+								<input type="hidden" name="V_NO" readonly="readonly" value="${product.getV_NO()})"> <input
+									type="hidden" name="PRO_BIZNAME" readonly="readonly" value="${product.getPRO_BIZNAME()}">
 								<div id="ProductCategory" class="p-2 input-group w-100">
 									<label class="mx-2 m-auto input-group-text">1차 분류</label>
 									<!-- 상품 카테고리를 해당 페이지에 뿌려줘야 함 : 한 자리 수 -->
@@ -368,12 +370,12 @@ main, footer {
 								<div class="p-2 input-group w-100">
 									<label class="mx-2 m-auto input-group-text" for="gdsName">상품명</label>
 									<input type="text" id="proName" name="PRO_NAME"
-										class="border form-control mx-2" value="${product.getPRO_NAME()}"/>
+										class="border form-control mx-2" value="${product.getPRO_NAMEStr()}"/>
 								</div>
 
 								<div class="p-2 input-group w-100">
 									<label class="mx-2 m-auto input-group-text" for="gdsPrice">상품가격</label>
-									<input type="text" id="proPrice" name="PRO_PRICE"
+									<input type="number" id="proPrice" name="PRO_PRICE"
 										class="border form-control mx-2" value="${product.getPRO_PRICE()}"/>
 								</div>
 
@@ -385,15 +387,16 @@ main, footer {
 								
 								<div class="p-2 input-group w-100">
 									<label class="mx-2 m-auto input-group-text" for="gdsStock">Wish</label>
-									<input type="number" id="proQuantity" name="PRO_WISH"
+									<input type="number" id="proWish" name="PRO_WISH"
 										class="border form-control mx-2 bg-secondary text-light" readonly="readonly" value="${product.getPRO_WISH()}"/>
 								</div>
 								
-								<div class="p-2 input-group w-100">
+								<div class="p-2 input-group w-100 mb-3">
 									<label class="mx-2 m-auto input-group-text" for="gdsStock">판매량</label>
-									<input type="number" id="proQuantity" name="PRO_SELLCOUNT"
+									<input type="number" id="proSellCount" name="PRO_SELLCOUNT"
 										class="border form-control mx-2 bg-secondary text-light" readonly="readonly" value="${product.getPRO_SELLCOUNT()}"/>
-								</div>	
+								</div>								
+								
 								<!-- <div
 									class="input-group mt-2 p-2 w-100 border-secondary d-flex align-items-center border-top">
 									<label class="mx-2 m-auto input-group-text">배너 이미지</label>
@@ -443,9 +446,11 @@ main, footer {
 									</div>
 								</div> -->
 								<div
-									class="p-2 w-100 border-secondary border-top d-flex justify-content-end">
-									<input type="submit" id="register_Btn" value="수정"
-										class="btn btn-primary btn-tuning border mx-2"> <input
+									class="p-2 pt-4 w-100 border-secondary border-top d-flex justify-content-center">									
+										<input type="submit" id="register_Btn" value="수정"
+										class="btn btn-primary btn-tuning border mx-2"> 
+									<div class="px-3"></div>										
+									<input
 										type="button" id="cancel_Btn"
 										class="btn btn-danger btn-tuning border mx-2" value="취소">
 								</div>
@@ -498,8 +503,8 @@ main, footer {
 				console.log("판매자 정보 가져오기 성공");
 				$("input[name='V_NO']").val(response.v_no);
 				$("input[name='PRO_BIZNAME']").val(response.v_bizName);
-				console.log( "V_NO VAL : " + response.v_no );
-				console.log( "BIZNAME VAL : " + response.v_bizName);
+				/* console.log( "V_NO VAL : " + response.v_no );
+				console.log( "BIZNAME VAL : " + response.v_bizName); */
 			},
 			error : function(xhr, status, error) {
 				console.log("판매자 정보 가져오기 실패");
@@ -741,24 +746,6 @@ main, footer {
 			formData.delete($('#proName').attr('name'));
 			formData.append($('#proName').attr('name'), "[" + $('#subCategory option:selected').text() + "]" + $('#proName').val());
 
-			// 기존 키에 대한 값을 삭제.
-			formData.delete($('#coverFile').attr('name'));
-
-			// 새로운 값을 배열로 추가.
-			// 각 파일을 formData.append를 통해 동일한 키에 추가하면, 서버 측에서 이를 배열 형태로 처리할 수 있다. 
-			// 이는 FormData 객체의 내부 동작이다. 따라서 기본 파일 업로드로 진행할 경우에는 별도의 배열 처리를 개발자가 하지 않아도 됨.
-			selectedCoverFiles.forEach(value => {
-				formData.append($('#coverFile').attr('name'), value);
-			});
-
-			// 기존 키에 대한 값을 삭제.
-			formData.delete($('#explainFile').attr('name'));
-
-			// 새로운 값을 배열로 추가.
-			selectedExplainFiles.forEach(value => {
-				formData.append($('#explainFile').attr('name'), value);
-			});
-
 			if($("#subCategory").val()=="" || $("#subCategory").val()==null){
 				alert("1차 분류를 선택한 후, 2차 분류를 선택하십시오.");
 				return;
@@ -788,7 +775,7 @@ main, footer {
 				return;
 			}else{
 				// 위 제약조건에 해당되지 않는 나머지 경우에 한해, 로직을 실행한다.	
-				let addProduct = confirm("상품 등록을 계속 진행합니다.");
+				let addProduct = confirm("상품 정보 수정을 계속 진행합니다.");
 				if(confirm){
 					// 수정 후 확인을 위한, formData 데이터 확인
 					// 데이터가 제대로 들어가고 있으므로 다시 주석처리
@@ -798,22 +785,19 @@ main, footer {
 					
 					// 여전히, 상품 등록 시 상품명 텍스트가 해당 요소의 val()값을 반영하고 있으므로 이를 val()을 수정하여 반영함
 					// 파일은 잘 들어가는데 말이지......... 기존 데이터 수정해주고 반영해야 반영되려나보다.
-					$('#proName').val("[" + $('#subCategory option:selected').text() + "]" + $('#proName').val());
-					
+					$('#proName').val("[" + $('#subCategory option:selected').text() + "]" + $('#proName').val());	
+
 					this.submit();
 				}else{
-					alert("등록을 취소했습니다.");
+					alert("정보 수정을 취소했습니다.");
 					return;
 				}				
 			}
 		});
 
+		let vnono = "${product.getV_NO()}"
 		$("#cancel_Btn").on("click",function(){
-			if (confirm("취소하시겠습니까?")){
-				window.location.href = "/vendor";
-			}else{
-				return;
-			}			
+			window.location.href = "/vendor/product/list/" + vnono;	
 		});
 	}); 
 </script>

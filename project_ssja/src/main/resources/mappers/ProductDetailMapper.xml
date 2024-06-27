@@ -25,12 +25,13 @@
 		<result property="M_ZIPCODE" column="M_ZIPCODE" />
 		<result property="M_EMAIL" column="M_EMAIL" />
 		<result property="M_PHONE" column="M_PHONE" />
+		<result property="PRO_DATE" column="PRO_DATE"/>
 	</resultMap>
 
 	<select id="read" resultMap="ProductDetailMap">
 	    <![CDATA[		
 	   SELECT  P.PRO_NO, V.V_NO, P.PRO_NAME, P.PRO_PRICE, P.PRO_QUANTITY, P.PRO_BANNERIMG, 
-        P.PRO_WISH, P.PRO_SELLCOUNT, P.PRO_HIT, P.PRO_BIZNAME, M.M_EMAIL, M.M_NO, 
+        P.PRO_WISH, P.PRO_SELLCOUNT, P.PRO_HIT, P.PRO_BIZNAME, P.PRO_DATE, M.M_EMAIL, M.M_NO, 
         V.V_BIZNAME, V.V_LICENSE, M.M_NAME, M.M_ADDRESS1, M.M_ADDRESS2, 
         M.M_ZIPCODE, M.M_EMAIL, M.M_PHONE
 		FROM PRODUCT P

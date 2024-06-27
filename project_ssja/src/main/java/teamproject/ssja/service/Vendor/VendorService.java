@@ -42,11 +42,15 @@ public interface VendorService {
 	
 	// 상품 수정할 데이터를 보여주는 것
 	public ProductDto getThisProduct(long proNo); 
+
+	// 상품 검색 목록 및 개수
+	public List<ProductDto> getSearchProducts(Criteria criteria, String option, String keyword);
+	
+	public long getSearchProductsCount(Criteria criteria, String option, String keyword);
 	
 	// 상품 수정
 	public void modifyProduct(ProductDto productDto);	
-	
-	
+
 	// 판매자의 문의 데이터 가져오기
 	public List<BoardDto> getQnaLists(Criteria criteria, Long bcno, Long bmno);
 	

@@ -360,9 +360,13 @@
 			<c:otherwise>
 				<div class="main_whitespace p-5 my-2">
 					<h1 class="h3 text-center ">상품 목록</h1>
-				</div>
-				<div id="main_container"
-					class="d-flex flex-row align-items-center justify-content-center">
+				</div>				
+				<div id="main_container">
+					<div class="d-flex justify-content-start p-1">
+						<div class="d-flex align-items-center">
+							<h5 id="searchTotalText" class="h5 m-0">검색 결과 : </h5>
+						</div>
+					</div>
 					 <div id="content_dv_productsInfo" class="flex-grow-1" >
 						<table class="table table-hover" id="productstable" style="text-align: center;">
 							<thead>
@@ -379,21 +383,7 @@
 									</tr>
 								</c:forEach>
 							</tbody>
-						</table>
-						<%-- <div class="my-4">
-							<div class="d-flex justify-content-center">
-								<form id="qnas-search-form" class="w-50 input-group" autocomplete="off">
-									<select class="form-select border" name="type">
-										<option selected value="">선택</option>
-										<option value="title">제목</option>
-										<option value="content">내용</option>
-										<option value="title_and_content">제목 + 내용</option>
-									</select> 
-									<input type="text" class="form-control border w-50" name="keyword" > 
-									<input type="button" id="vendor-searchBtn" class="btn btn-dark" value="검색">
-								</form>
-							</div>
-						</div> --%>
+						</table>						
 						<div id="paging_dv">				
 							<nav aria-label="Page navigation example">
 								<ul class="pagination ch-col justify-content-center">
@@ -420,7 +410,21 @@
 									</c:if>
 								</ul>
 							</nav>
-						</div>						
+						</div>	
+						<div class="my-4">
+							<div class="d-flex justify-content-center">
+								<form id="qnas-search-form" class="w-50 input-group" autocomplete="off">
+									<select class="form-select border" name="type">
+										<option selected value="">선택</option>
+										<option value="proNo">상품번호</option>
+										<option value="proName">상품명</option>
+										<option value="proPcName">카테고리명</option>
+									</select> 
+									<input type="text" class="form-control border w-50" name="keyword" > 
+									<input type="button" id="vendor-searchBtn" class="btn btn-dark" value="검색">
+								</form>
+							</div>
+						</div>					
 						<div class="main_whitespace p-5 my-2"></div>				
 					</div> 
 				</div>
@@ -453,7 +457,7 @@
 		// 아래 코드는 Qna 문의에서 가져온 코드들.
 		// 추후 수정 반영할 부분
 		
-/* 		let searchTotalText = $('#searchTotalText');
+ 		let searchTotalText = $('#searchTotalText');
 		
 		searchTotalText.css('display', 'none');
 
@@ -461,7 +465,7 @@
 		let keyword = $('input[name="keyword"]').val();
 		let pageNum = '${pageMaker.criteria.pageNum}';
 		let amount = '${pageMaker.criteria.amount}';
-		let bmno = '${vendorMember.m_No}';
+		let vno = '${vno}';
 
 		console.log('keyword :' + keyword);
 		console.log('option :' + option);
@@ -487,18 +491,17 @@
 
 			$.ajax({
 				type:"GET",
-				url: "/api/vendor/search/QnA",
+				url: "/api/vendor/search/product",
 				data: {
 					'option' : option,
 					'keyword' : keyword,
 					'pageNum' : pageNum,
 					'amount' : amount,
-					'bmno' : bmno,
-					'bcno' : 20
+					'vno' : vno,					
 				},
 				success: function(response){
 					searchTotalText.css('display', 'block');
-					let total = response.pageVO.total;
+					let total = response.page10VO.total;
 					searchTotalText.text('검색 결과 : ' + total);
 					$('tbody').empty();
 
@@ -511,21 +514,20 @@
 							$('<h3>').addClass('h3 text-muted mb-4').text('검색 결과가 없습니다. 검색어를 다르게 입력하세요.')
 						);
 						$('#paging-or-comment').append(div);
-					}else{
-						for(let i = 0 ; i < response.totalData.length ; i++){
-							let board = response.totalData[i];
-							let tr = $('<tr>').append($('<td>').text(board.bno))
-										.append($('<td>').append($('<a>').attr('id','board_title').attr('href','${pageContext.request.contextPath}/vendor/question/content_view/' + board.bbcno + '?bno=' + board.bno).text(board.btitle)))
-										.append($('<td>').text(board.bdate));
+					}else{						
+						for(let i = 0 ; i < response.totalDataPro.length ; i++){
+							let product = response.totalDataPro[i];
+							console.log("product.PRO_NO : " + product.PRO_NO);
+							let tr = $('<tr>').append($('<td>').text(product.PRO_NO))
+										.append($('<td>').append($('<a>').addClass('product-pro-name link-opacity-50-hover link-underline-opacity-0').attr('id','board_title').attr('href','${pageContext.request.contextPath}/vendor/product/modify_view?proNo=' + product.PRO_NO).text(product.PRO_NAME)));
 							$('tbody').append(tr);
 						}
-					}
-					
+					}					
 
 					let pagingUl = $('.pagination.ch-col.justify-content-center');
 					pagingUl.empty();
 
-					let pageMaker = response.pageVO;
+					let pageMaker = response.page10VO;
 
 					if(pageMaker.prev){
 						pagingUl.append(
@@ -570,7 +572,7 @@
 			if($('.form-select').val() == ''){
 				alert('검색 옵션을 선택하지 않았습니다. 옵션을 선택하십시오.');
 				return;
-			}else if(bmno == ''){
+			}else if(vno == ''){
 				alert('판매자 정보가 없습니다.');
 				return;
 			}else if(keyword == ''){
@@ -588,7 +590,7 @@
 				if($('.form-select').val() == ''){
 					alert('검색 옵션을 선택하지 않았습니다. 옵션을 선택하십시오.');
 					return;
-				}else if(bmno == ''){
+				}else if(vno == ''){
 					alert('판매자 정보가 없습니다.');
 					return;
 				}else if(keyword == ""){
@@ -610,7 +612,7 @@
 					if($('.form-select').val() == ''){
 					alert('검색 옵션을 선택하지 않았습니다. 옵션을 선택하십시오.');
 					return;
-					}else if(bmno == ''){
+					}else if(vno == ''){
 						alert('판매자 정보가 없습니다.');
 						return;
 					}else if(keyword == ""){
@@ -624,7 +626,7 @@
 					if($('.form-select').val() == ''){
 					alert('검색 옵션을 선택하지 않았습니다. 옵션을 선택하십시오.');
 					return;
-					}else if(bmno == ''){
+					}else if(vno == ''){
 						alert('판매자 정보가 없습니다.');
 						return;
 					}else if(keyword == ""){
@@ -638,7 +640,7 @@
 			}else{
 				window.location.href = $(this).attr('href');
 			}	
-		}); */		
+		}); 	
 	});
 
 </script>

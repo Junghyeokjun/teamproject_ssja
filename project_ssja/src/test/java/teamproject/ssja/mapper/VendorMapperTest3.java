@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.BoardDto;
+import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.StatisticVO;
 import teamproject.ssja.dto.VendorSalesDto;
 import teamproject.ssja.page.Criteria;
@@ -126,5 +127,22 @@ class VendorMapperTest3 {
 		criteria.setBmno(1);
 		
 		log.info("검색 결과 개수 : " + vendorMapper.selectSearchVendorQnaCount(criteria,"title", "Test"));
+	}
+	
+	@Test
+	void testSelectVendorSearchProductsCount() {
+		Criteria criteria = new Criteria();
+		criteria.setVno(1);
+		log.info("검색 결과 개수 : " + vendorMapper.selectVendorSearchProductsCount(criteria, "proPcName", "가구") );
+	}
+
+	@Test
+	void testSelectVendorSearchProducts() {
+		Criteria criteria = new Criteria();
+		criteria.setVno(1);
+		
+		for(ProductDto dto : vendorMapper.selectVendorSearchProducts(criteria, "proPcName", "가구")) {
+			log.info("" + dto);
+		}
 	}
 }
