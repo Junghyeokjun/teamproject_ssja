@@ -5,7 +5,7 @@ $(window).on('scroll resize', function() {
 	      let userLinkPosition = $('#user_link').offset();
 	      
 	      $('#login_user_div').css({
-	          'left': userLinkPosition.left,
+	          'left': userLinkPosition.left
 	      });
 	  });
   

@@ -102,6 +102,7 @@ public class MyPageUserInfoService implements MyPageService {
 		params.put("id", id);
 		params.put("pageNum", Long.valueOf(pageNum));
 		List<OrderInfoDTO> orderList = myPageMapper.getPurchaseData(params);
+		if(orderList.isEmpty() || orderList == null) {return null;}
 
 		int total = orderList.get(0).getList().get(0).getTotalCount();
 		MyPageOrdersDTO orderDTO = new MyPageOrdersDTO(total, pageNum);

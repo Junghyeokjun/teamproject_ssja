@@ -371,7 +371,7 @@ th{
 					<div id="seller-download" class="d-flex justify-content-center text-center">
 						<div class="seller-download-main">
 							<div class="seller-download-h4 mb-2">
-								<h4 class="h4">다운로드</h4>
+								<h4 class="h4">통계 다운로드</h4>
 								<img class="download-img img-thumbnail" alt="excel"
 									src="/images/utilities/excel_download.png"
 									style="width: 60px; height: 60px"></img>
@@ -387,20 +387,20 @@ th{
 									</thead>
 									<tbody class="border">
 										<tr>
-											<td><p class="m-0">매출</p></td>
-											<td><a href=""><img class="border-0" alt="매출"
+											<td><p class="m-0">매출.xsl</p></td>
+											<td><a href=""><img class="border-0" alt="매출" id="down_data_profit"
 													src="/images/utilities/download.png"
 													style="width: 25px; height: 25px"></img></a></td>
 										</tr>
 										<tr>
-											<td>수량</td>
-											<td><a href=""><img class="border-0" alt="수량"
+											<td>수량.xsl</td>
+											<td><a href=""><img class="border-0" alt="수량" id="down_data_quantity"
 													src="/images/utilities/download.png"
 													style="width: 25px; height: 25px"></img></a></td>
 										</tr>
 										<tr>
-											<td>일자</td>
-											<td><a href=""><img class="border-0" alt="일자"
+											<td>일자.xsl</td>
+											<td><a href=""><img class="border-0" alt="일자" id="down_data_date"
 													src="/images/utilities/download.png"
 													style="width: 25px; height: 25px"></img></a></td>
 										</tr>
@@ -488,8 +488,34 @@ th{
         select_dv.toggle();
     });
 
+    let vnoData = $("#vendorData").val();
+$("#down_data_quantity").on('click', function(){
+	downloadExcel();
+});
 
+function downloadExcel() {
+	let downloadUrl = "/vendor/down/statistic?vno=" + vnoData+"&condition=quantity desc";
+    
+    window.open(downloadUrl, "_blank");
+}
+$("#down_data_profit").on('click', function(){
+	downloadExcel();
+});
 
+function downloadExcel() {
+	let downloadUrl = "/vendor/down/statistic?vno=" +vnoData +"&condition=total_sales desc";
+    
+    window.open(downloadUrl, "_blank");
+}
+$("#down_data_date").on('click', function(){
+	downloadExcel();
+});
+
+function downloadExcel() {
+    let downloadUrl = "/vendor/down/statistic?vno=" + vnoData+"&condition=order_date desc";
+    
+    window.open(downloadUrl, "_blank");
+}
 </script>
 
 </html>

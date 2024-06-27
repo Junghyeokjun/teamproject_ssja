@@ -44,6 +44,25 @@
 #productstable thead {
 	font-weight: bold; /* 열 제목을 굵은 글꼴로 설정 */
 }
+#product_banner_img{
+height:6rem;
+width:7rem;
+border-radius:4px;
+}
+#product_info_dv{
+margin-right:0;
+}
+#item_info_div > span{
+    white-space: nowrap;      
+    overflow: hidden;         
+    text-overflow: ellipsis;   
+    width: 15rem;               
+    display: inline-block;
+}
+#product_table_body > tr:hover{
+background-color:#eee;
+cursor:pointer;
+}
 </style>
 </head>
 <body>
@@ -53,6 +72,7 @@
 				<button type="toggle-button" class="top_btn" id="top_btn"></button>
 				<a id="logo_toHome" href=""><img id="logo_img"
 					src="/images/utilities/logoSSJA.png"></a>
+					<a id="user_link" href="/login" style="margin-left:auto;"><img id="login_img" ></a>
 			</div>
 		</div>
 		<nav id="total_bar"></nav>
@@ -111,26 +131,32 @@
 						<thead class="table">
 							<tr>
 								<td scope="col">상품번호</td>
-								<td scope="col">상품이름</td>
+								<td scope="col">상품</td>
 								<td scope="col">가격</td>
 								<td scope="col">수량</td>
 								<td scope="col">위시 수</td>
 								<td scope="col">판매 수</td>
-								<td scope="col">사업자이름</td>
 							</tr>
 						</thead>
-						<tbody class="table-group-divider">
+						<tbody class="table-group-divider" id="product_table_body">
 							<c:forEach var="product" items="${products}">
-								<tr>
-									<td>${product.getPRO_NO()}</td>
-									<td>${product.getPRO_NAME()}</td>
-									<td>${product.getPRO_PRICE()}</td>
-									<td>${product.getPRO_QUANTITY()}</td>
-									<td>${product.getPRO_WISH()}</td>
-									<td>${product.getPRO_SELLCOUNT()}</td>
-									<td>${product.getPRO_BIZNAME()}</td>
+								<tr id="product_content_${product.getPRO_NO()}" >
+									<td class="p-3 py-5">${product.getPRO_NO()}</td>
 									<td>
-										<button type="button" class="btn btn-outline-success"
+										<div class="d-flex flex-row py-2" id="product_info_dv">
+											<img id="product_banner_img" src="${product.getPRO_BANNERIMG()}">
+											<div id="item_info_div" class="d-flex flex-column align-items-start justify-content-center p-3">
+											<span>${product.getPRO_BIZNAME()}</span>
+											<span>${product.getPRO_NAME()}</span>
+											</div>
+										</div>
+									</td>
+									<td class="p-3 py-5">${product.getPRO_PRICE()}</td>
+									<td class="p-3 py-5">${product.getPRO_QUANTITY()}</td>
+									<td class="p-3 py-5">${product.getPRO_WISH()}</td>
+									<td class="p-3 py-5">${product.getPRO_SELLCOUNT()}</td>
+									<td class="p-3 py-5">
+										<button type="button" class="btn btn-outline-dark"
 											id="modifyProductBtn">수정</button>
 										<button type="button" class="btn btn-outline-danger"
 											id="deleteProductBtn">삭제</button>
@@ -272,6 +298,11 @@ function saveChanges() {
     });
 }
 
+$('#product_table_body > tr').on('click', function() {
+	let productNumvver = $(this).attr("id").split("_")[2];
+	console.log(productNumvver)
+	window.location.href='/product_detail?PRO_NO='+productNumvver;
+});
 
 
 </script>
@@ -289,7 +320,6 @@ function saveChanges() {
     </sec:authorize>
 	 
   <script src="/js/login_user_tab.js"> </script>
-  <script src="/js/user_cart_tab.js"> </script>
 </sec:authorize>
 </body>
 <script>
