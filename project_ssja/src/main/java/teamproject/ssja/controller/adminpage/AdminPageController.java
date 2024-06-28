@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -103,6 +104,20 @@ public class AdminPageController {
 		return ResponseEntity.ok(searchResults);
 	}
 	
+	@GetMapping("/modifyMember")
+	@ResponseBody
+	public MembersDto getMember(@RequestParam("M_NO") int M_NO) {
+		log.info("getMember()..");
+
+		return memberListService.getMemberId(M_NO);
+	}
+	
+	@PostMapping("/modifyMember")
+    public String modifyMember(@RequestBody MembersDto membersDto) {
+        log.info("modifyMember()..");
+        memberListService.modifyMember(membersDto); // 서비스 메서드를 호출하여 문의 글 수정 처리
+        return "redirect:/adminPage/membersList"; // 수정 후 목록 페이지로 리다이렉트
+    }	
 	
 	@PostMapping("/removeMember")
 	public String removeMember(@RequestBody MembersDto membersDto) {

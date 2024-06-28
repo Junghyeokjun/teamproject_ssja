@@ -35,15 +35,21 @@ public class MemberListServiceImpl implements MemberListService {
 
 		return adminPageMapper.getMemberSearchList(type,keyword);
 	}
+		
+	@Override
+	public MembersDto getMemberId(int memberId) {
+        return adminPageMapper.readMemberId(memberId); 
+	}
 
 	@Override
-	public void removeMember(MembersDto membersDto) {
-    	adminPageMapper.deleteMember(membersDto); 
-
-		
+	public void modifyMember(MembersDto membersDto) {
+    	adminPageMapper.updateMember(membersDto); 		
 	}
 	
-	
+	@Override
+	public void removeMember(MembersDto membersDto) {
+    	adminPageMapper.deleteMember(membersDto); 		
+	}	
 
 	
 }

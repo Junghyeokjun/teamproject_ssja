@@ -328,6 +328,32 @@ $(document).ready(function() {
 		});
 	});
 </script>
-
+<script>
+	function qnasSearchList() {
+		$.ajax({
+			type : 'GET',
+			url : "/adminPage/qnasSearchList",
+			data : $("form[name=qnas-search-form]").serialize(),
+			success : function(result) {
+				console.log(result);
+				$('#qnastable > tbody').empty();
+				if (result.length >= 1) {
+					$("#paging_dv").empty();
+					result.forEach(function(qna) {
+						var str = '<tr>';
+						str += "<td>" + qna.b_NO + "</td>";
+						str += "<td>" + qna.m_NO + "</td>";
+						str += "<td>" + qna.b_WRITER + "</td>";
+						str += "<td>" + qna.b_TITLE + "</td>";
+						str += "<td>" + qna.b_CONTENT + "</td>";
+						str += "<td>" + qna.b_DATE + "</td>";
+						str += "</tr>";
+						$('#qnastable > tbody').append(str);
+					});
+				}
+			}
+		});
+	}
+</script>	
 
 </html>

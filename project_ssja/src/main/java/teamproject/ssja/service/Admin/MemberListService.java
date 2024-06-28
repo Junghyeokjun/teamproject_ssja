@@ -12,7 +12,14 @@ public interface MemberListService {
 	List<MembersDto> getMemberListWithPaging(Criteria cri);
 	//검색리스트
 	List<MembersSearchDto> getMemberSearchList(String type, String keyword);
+	
+	MembersDto getMemberId(int m_NO);
+	void modifyMember(MembersDto membersDto);
+	
 	void removeMember(MembersDto membersDto);
+	
+	
+	
 	
 
 	

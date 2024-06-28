@@ -104,8 +104,8 @@
 						<option value="m_name">회원이름</option>
 						<option value="m_id">아이디</option>
 						<option value="m_grade">등급</option>
-					</select> <input type="text" name="keyword" value="">
-					 <input type="button" onclick="membersSearchList()"
+					</select> <input type="text" name="keyword" value=""> <input
+						type="button" onclick="membersSearchList()"
 						class="btn btn-outline-dark mr-2" value="검색">
 				</form>
 				<div class="table-responsive">
@@ -122,7 +122,7 @@
 								<td scope="col">휴대폰번호</td>
 								<td scope="col">포인트</td>
 								<td scope="col">닉네임</td>
-								<td scope="col"></td>								
+								<td scope="col"></td>
 							</tr>
 						</thead>
 						<tbody class="table-group-divider">
@@ -139,8 +139,9 @@
 									<td>${member.m_PHONE}</td>
 									<td>${member.m_POINT}</td>
 									<td>${member.m_NICKNAME}</td>
-									<td><button type="button" class="btn btn-outline-dark"
-											id="modifyMemberBtn">수정</button>
+									<td>
+										<button type="button" class="btn btn-outline-success"
+										id="modifyMemberBtn">수정</button>
 										<button type="button" class="btn btn-outline-danger"
 											id="deleteMemberBtn">삭제</button>
 									</td>
@@ -179,8 +180,163 @@
 				</div>
 			</div>
 		</div>
-	</main>
-	<script>$('body').on('click', '#deleteMemberBtn', function() {
+		<!-- 모달 창 -->
+		<div class="modal fade" id="editMemberModal" tabindex="-1" role="dialog"
+			aria-labelledby="editMemberModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="editMemberModalLabel">문의 수정</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form id="editMemberForm">							
+							<div class="form-group">
+								<label for="editId">아이디</label> <input type="text"
+									class="form-control" id="editId" name="editId">
+							</div>
+							<div class="form-group">
+								<label for="editName">이름</label> <input type="text"
+									class="form-control" id="editName" name="editName">
+							</div>							
+							<div class="form-group">
+								<label for="editADDRESS1">주소</label>
+								<textarea class="form-control" id="editADDRESS1"
+									name="editADDRESS1"></textarea>
+							</div>
+							<div class="form-group">
+								<label for="editBIRTH">생일</label>
+								<textarea class="form-control" id="editBIRTH"
+									name="editBIRTH"></textarea>
+							</div>
+							<div class="form-group">
+								<label for="editGRADE">주소</label>
+								<textarea class="form-control" id="editGRADE"
+									name="editGRADE"></textarea>
+							</div>
+							<div class="form-group">
+								<label for="editEMAIL">주소</label>
+								<textarea class="form-control" id="editEMAIL"
+									name="editEMAIL"></textarea>
+							</div>
+							<div class="form-group">
+								<label for="editADDRESS1">주소</label>
+								<textarea class="form-control" id="editPHONE"
+									name="editPHONE"></textarea>
+							</div>
+							<div class="form-group">
+								<label for="editPOINT">주소</label>
+								<textarea class="form-control" id="editPOINT"
+									name="editPOINT"></textarea>
+							</div>
+							<div class="form-group">
+								<label for="editNICKNAME">주소</label>
+								<textarea class="form-control" id="editNICKNAME"
+									name="editNICKNAME"></textarea>
+							</div>
+							<input type="hidden" id="editMemberId" name="editMemberId">
+							<button type="submit" class="btn btn-primary">저장</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+$(document).ready(function() {
+	  $('body').on('click', '#modifyMemberBtn', function() {
+	    var $btn = $(this); // 클릭된 버튼을 변수에 저장
+	    var $row = $btn.closest('tr'); // 클릭된 버튼의 부모 tr 요소 가져오기
+
+	    // 테이블에서 해당 열의 정보 가져오기
+	    var memberId = $row.find('td:eq(0)').text(); 
+	    var id = $row.find('td:eq(1)').text(); 
+	    var name = $row.find('td:eq(2)').text(); 
+	    var address1 = $row.find('td:eq(3)').text(); 
+	    var birth = $row.find('td:eq(4)').text(); 
+	    var grade = $row.find('td:eq(5)').text(); 
+	    var email = $row.find('td:eq(6)').text(); 
+	    var phone = $row.find('td:eq(7)').text(); 
+	    var point = $row.find('td:eq(8)').text(); 
+	    var nickname = $row.find('td:eq(9)').text(); 
+	   
+	    // 모달 창에 정보 채우기
+	   $('#editMemberModal').find('#editId').val(id);
+	   $('#editMemberModal').find('#editName').val(name);
+	   $('#editMemberModal').find('#editADDRESS1').val(address1);
+	   $('#editMemberModal').find('#editBIRTH').val(birth);
+	   $('#editMemberModal').find('#editGRADE').val(grade);
+	   $('#editMemberModal').find('#editEMAIL').val(email);
+	   $('#editMemberModal').find('#editPHONE').val(phone);
+	   $('#editMemberModal').find('#editPOINT').val(point);
+	   $('#editMemberModal').find('#editNICKNAME').val(nickname); 
+	   
+	   $('#editMemberModal').find('#editMemberId').val(memberId);
+
+	    // 모달 창 띄우기
+	    $('#editMemberModal').modal('show');
+	  });
+	});
+</script>
+		<script>
+$(document).ready(function() {
+	  $('#editMemberForm').submit(function(event) {
+	    event.preventDefault(); // 폼의 기본 동작 방지
+
+	    var formData = {
+	      m_NO: $('#editMemberId').val(),
+	      m_ID: $('#editId').val(),
+	      m_NAME: $('#editName').val(),
+	      m_ADDRESS1: $('#editADDRESS1').val(),
+	      m_BIRTH: $('#editBIRTH').val(),
+	      m_GRADE: $('#editGRADE').val(),
+	      m_EMAIL: $('#editEMAIL').val(),
+	      m_PHONE: $('#editPHONE').val(),
+	      m_POINT: $('#editPOINT').val(),
+	      m_NICKNAME: $('#editNICKNAME').val()
+	    };
+
+	    var csrfToken = $('meta[name="_csrf"]').attr('content'); // CSRF 토큰 가져오기
+	    var csrfHeader = $('meta[name="_csrf_header"]').attr('content'); // CSRF 헤더 이름 가져오기
+
+	    // AJAX를 이용한 문의 수정 요청
+	    $.ajax({
+	      type: 'POST',
+	      url: '/adminPage/modifyMember',
+	      data: JSON.stringify(formData), // JSON 형식으로 데이터 전송
+	      contentType: 'application/json', // 요청 데이터 타입 지정
+	      beforeSend: function(xhr) {
+	        xhr.setRequestHeader(csrfHeader, csrfToken); // CSRF 토큰을 헤더에 포함
+	      },
+	      success: function(response) {
+	        console.log('문의 수정 성공');
+	        // 모달 창 닫기
+	        $('#editMemberModal').modal('hide');
+	        // 테이블에서 해당 행 업데이트
+	        var $row = $('#memberstable').find('td:contains(' + formData.m_NO + ')').closest('tr');
+	        $row.find('td:eq(1)').text(formData.m_ID);
+	        $row.find('td:eq(2)').text(formData.m_NAME);
+	        $row.find('td:eq(3)').text(formData.m_ADDRESS1);
+	        $row.find('td:eq(3)').text(formData.m_BIRTH);
+	        $row.find('td:eq(3)').text(formData.m_GRADE);
+	        $row.find('td:eq(3)').text(formData.m_EMAIL);
+	        $row.find('td:eq(3)').text(formData.m_PHONE);
+	        $row.find('td:eq(3)').text(formData.m_POINT);
+	        $row.find('td:eq(3)').text(formData.m_NICKNAME);	        
+	      },
+	      error: function(xhr, status, error) {
+	        console.error('문의 수정 오류', error);
+	        // 오류 처리 로직 추가
+	      }
+	    });
+	  });
+	});
+
+</script>
+		<script>
+	$('body').on('click', '#deleteMemberBtn', function() {
 	    var $row = $(this).closest('tr');
 	    var mId = $row.find('td:first').text();
 
@@ -198,24 +354,7 @@
 	    });
 	});
 	</script>
-	<footer>
-		<div id="first_footer" class="p-3"></div>
-		<div id="second_footer"></div>
-		<div id="third_footer"></div>
-	</footer>
-	
-	 <sec:authorize access="isAuthenticated()">
-	 
-	 <sec:authorize access="hasRole('ROLE_VENDOR')">
-        <input type="hidden" id="isVendorCheck" value="1">
-    </sec:authorize>
-	 
-  <script src="/js/login_user_tab.js"> </script>
-  <script src="/js/user_cart_tab.js"> </script>
-</sec:authorize>
-	
-</body>
-<script>
+		<script>
 	function membersSearchList() {
 		$.ajax({
 			type : 'GET',
@@ -246,4 +385,26 @@
 		});
 	}
 </script>
+	</main>
+	<footer>
+		<div id="first_footer" class="p-3"></div>
+		<div id="second_footer"></div>
+		<div id="third_footer"></div>
+	</footer>
+
+	<sec:authorize access="isAuthenticated()">
+
+		<sec:authorize access="hasRole('ROLE_VENDOR')">
+			<input type="hidden" id="isVendorCheck" value="1">
+		</sec:authorize>
+
+		<script src="/js/login_user_tab.js">
+			
+		</script>
+		<script src="/js/user_cart_tab.js">
+			
+		</script>
+	</sec:authorize>
+
+</body>
 </html>

@@ -110,16 +110,29 @@ WHERE TRUNC(m_date) =  TRUNC(sysdate)
                
 	</select>		
 	
-	<update id="updateMember" parameterType="MembersDto">
+	<!-- <update id="updateMember" parameterType="MembersDto">
 			 <![CDATA[	
         UPDATE Members
         SET M_NAME = #{M_NAME}, M_ADDRESS1 = #{M_ADDRESS1}, M_GRADE = #{M_GRADE},
             M_EMAIL = #{M_EMAIL}, M_PHONE = #{M_PHONE}, M_POINT = #{M_POINT}, M_NICKNAME = #{M_NICKNAME}
         WHERE M_NO = #{M_NO}
         ]]>
-    </update>
+    </update> -->
+    
+    <select id="readMemberId" resultMap="MembersListMap">
+    	<![CDATA[
+        	select * from Members where M_NO = #{M_NO}
+        ]]>
+	</select>
 	
-	
+	 <update id="updateMember" parameterType="MembersDto">
+		<![CDATA[
+        	update Members 
+        	set M_ID = #{M_ID},M_NAME = #{M_NAME}, M_ADDRESS1 = #{M_ADDRESS1},
+        	M_GRADE = #{M_GRADE}, M_EMAIL = #{M_EMAIL}, M_PHONE = #{M_PHONE}, M_POINT = #{M_POINT}, M_NICKNAME = #{M_NICKNAME}
+   	        	where M_NO = #{M_NO}
+        ]]>
+	</update>	
 	
 	<!-- 참조 무결성 제약 조건을 유지하기 위해 삭제 대신 m_deletedate를 sysdate로 처리  -->
 	<update id="deleteMember" parameterType="MembersDto">

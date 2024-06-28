@@ -105,12 +105,17 @@ public interface AdminPageMapper {
 
 		void deleteMember(MembersDto membersDto);
 		
-
+		MembersDto readMemberId(int memberId);
+		
+		void updateMember(MembersDto membersDto);
+		
 		List<ProfitDto> totalDailyProfitData();
 		List<ProfitDto> totalMonthlyProfitData();
 		List<ProfitDto> totalYearlyProfitData();
 		
 		List<Long> getListMemberNo();
+		
 		void insertCouponToMembers(List<Long> list);
+
 
 }
