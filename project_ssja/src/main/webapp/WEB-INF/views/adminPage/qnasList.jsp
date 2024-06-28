@@ -47,6 +47,9 @@
 #qna_title_a{
 cursor:pointer;
 }
+#adminPage_Info_Select{
+padding:0;
+}
 </style>
 </head>
 <body>

@@ -35,6 +35,11 @@
 
 <link rel="stylesheet"
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
+<style>	
+	#adminPage_Info_Select{
+padding:0;
+}
+</style>
 </head>
 <body>
 	<header>

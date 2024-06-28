@@ -42,6 +42,9 @@ flex-direction:column;
 align-items:center;
 justify-centent:center;
 }
+#adminPage_Info_Select{
+padding:0;
+}
 
   </style>
 </head>
