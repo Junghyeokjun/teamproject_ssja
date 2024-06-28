@@ -70,7 +70,8 @@ public class AdminPageController {
 
 	@Autowired
 	VendorService vendorService;
-
+	
+	
 	@GetMapping("")
 	public String AdminPage(Model model) {
 
@@ -177,8 +178,7 @@ public class AdminPageController {
 
 		return "/adminPage/admin_write_product";
 	}
-	
-	
+		
 	// 파일 업로드
 	@PostMapping("/product/add")
 	public String addOne(MultipartFile bannerFile, 
@@ -190,18 +190,16 @@ public class AdminPageController {
 		
 		if(bannerFile.isEmpty() || coverFile.isEmpty() || explainFile.isEmpty()) {
 			vendorService.isEmpty(bannerFile, coverFile, explainFile, model);
-		}		
-		
+		}				
 		// 배너 이미지 처리 및 물품 추가
 		vendorService.addProduct(productDto, bannerFile);
 
 		// 물품 이미지들 처리 및 추가
 		vendorService.addProductImgs(coverFile, explainFile, vendorService.getProNum(productDto));
 
-		return "/adminPage/productsList";
+		return "redirect:/adminPage/productsList";
 	}
 	
-
 	@RequestMapping("/purchasesList")
 	public String purchasesList(Model model, Criteria criteria) {
 		log.info("purchasesList()..");

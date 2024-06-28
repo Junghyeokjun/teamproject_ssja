@@ -43,6 +43,9 @@
 #memberstable thead {
 	font-weight: bold; /* 열 제목을 굵은 글꼴로 설정 */
 }
+#adminPage_Info_Select{
+padding:0;
+}
 
 </style>
 </head>

@@ -19,6 +19,8 @@ public interface ProductListService {
 	void modifyProduct(ProductDto productDto);
 	
 	void removeProduct(ProductDto productDto);
+	
+	int addProduct(ProductDto productDto);
 
 
 }

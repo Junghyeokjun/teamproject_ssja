@@ -118,5 +118,6 @@ public interface AdminPageMapper {
 
 		void updateProduct(ProductDto productDto);
 
+		int insertAdminProduct(ProductDto productDto);
 
 }

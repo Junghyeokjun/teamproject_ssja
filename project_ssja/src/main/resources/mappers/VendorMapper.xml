@@ -137,7 +137,7 @@
 		  AND v_no = #{V_NO} 
 		  AND PRO_NAME = #{PRO_NAME}
 	</select>
-	
+<!--상품 정보 입력 -->	
 	<insert id="insertProduct" parameterType="ProductDto">
 		<![CDATA[
 			INSERT INTO product 
@@ -145,7 +145,7 @@
 			VALUES (PRO_SEQ.nextval, #{V_NO}, #{P_C_NO}, #{PRO_PRICE},#{PRO_QUANTITY}, #{PRO_BANNERIMG}, 0, #{PRO_SELLCOUNT}, 0, #{PRO_BIZNAME}, #{PRO_NAME}, sysdate)
 		]]>
 	</insert>
-	
+<!--상품 이미지 정보 입력 -->		
 	<insert id="insertProductImgs" parameterType="ProductImgDto">
 		<![CDATA[
 			INSERT INTO product_imgs(pro_img_no,pro_no,pro_img_path) VALUES (PRO_IMG_SEQ.nextval,#{pNo},#{piPath})

@@ -5,9 +5,14 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
+	
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+	let vendorData = "${principal.memberNum}";
+	console.log("vendorData : " + vendorData);
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SSJA</title>
@@ -66,6 +71,9 @@
 
 #product_title_a {
 	cursor: pointer;
+}
+#adminPage_Info_Select{
+padding:0;
 }
 /* #product_table_body > tr:hover{
 background-color:#eee;
@@ -134,7 +142,8 @@ cursor:pointer;
 						type="button" onclick="productsSearchList()"
 						class="btn btn-outline-dark mr-2" value="검색">
 					<button type="button" class="btn btn-dark ms-auto"
-						id="newProductBtn" >상품 등록</button>						
+						id="newProductBtn"  
+						onclick="window.location.href='/adminPage/product/write'">상품 등록</button>
 				</form>
 				<div class="table-responsive">
 					<table class="table" id="productstable" style="text-align: center;">
@@ -207,7 +216,7 @@ cursor:pointer;
 					</div>
 				</div>
 			</div>
-		</div>
+		</div>		
 		<!-- 모달 창 -->
 		<div class="modal fade" id="editProductModal" tabindex="-1"
 			role="dialog" aria-labelledby="editProductModalLabel"
@@ -261,15 +270,6 @@ cursor:pointer;
 		</script>
 	</sec:authorize>
 </body>
- <script>
-        function redirectToWriteProductPage() {
-            window.location.href = '/adminPage/product/write';
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('newProductBtn').addEventListener('click', redirectToWriteProductPage);
-        });
-    </script>
 <script>
 	$(document).ready(function() {
 		$('body').on('click', '#modifyProductBtn', function() {

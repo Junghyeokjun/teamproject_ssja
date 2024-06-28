@@ -36,6 +36,11 @@
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
 <script
 	src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+	<style>	
+	#adminPage_Info_Select{
+padding:0;
+}
+</style>
 </head>
 <body>
 	<header>

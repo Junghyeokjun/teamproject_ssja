@@ -63,10 +63,9 @@ body {
 	background-color: #f7f0e8;
 }
 
-header{
+header {
 	height: auto;
 }
-
 
 main, footer {
 	height: auto;
@@ -274,166 +273,157 @@ main, footer {
 </head>
 
 <body>
-	<sec:authorize access="isAuthenticated()">
-		<sec:authentication property="principal.auth" var="myAuth" />
-		<c:choose>			
-			<c:otherwise>
-				<header class="fixed-top">
-					<div id="title_bar">
-						<div class="py-2 px-1 d-flex justify-content-between" id="top-bar">
-							<div class="d-flex align-items-center">
-								<button type="toggle-button" class="top_btn"></button>
-								<a id="logo_toHome" href=""><img id="logo_img"
-									src="/images/utilities/logoSSJA.png"></a>
-							</div>
-							<div class="mx-5 my-2 d-flex ">
-								<h1 class="h1 vendorTitle">판매자 :&nbsp;</h1>								
-								<h1 class="h1 vendorNames">
-									&lt;
-									<sec:authorize access="isAuthenticated()">
-										<sec:authentication property="principal.userInfo"
-											var="vendorMember" />
-									</sec:authorize>
-									<input type="hidden" id="vendorData"
-										value="${vendorMember.m_No}"> ${vendorMember.m_Name}
-									&gt;
-								</h1>
-							</div>
-							<a id="user_link"><img id="login_img"></a>
-						</div>
-					</div>
-					<nav id="total_bar"></nav>
-				</header>
-				<div id="side_bar">
-					<div id="side_links" class="w-100"></div>
+	<header class="fixed-top">
+		<div id="title_bar">
+			<div class="py-2 px-1 d-flex justify-content-between" id="top-bar">
+				<div class="d-flex align-items-center">
+					<button type="toggle-button" class="top_btn"></button>
+					<a id="logo_toHome" href=""><img id="logo_img"
+						src="/images/utilities/logoSSJA.png"></a>
 				</div>
-				<main>
-					<div class="main_whitespace p-5 my-2">
-						<h1 class="h3 text-center ">상품 등록</h1>
+				<div class="mx-5 my-2 d-flex ">
+					<h1 class="h1 vendorTitle">판매자 :&nbsp;</h1>
+					<!-- 
+						땡땡땡땡 : 상호명
+						로그인 시 vendorDto에 담기는 vendor.vbizname 또한 가져오기						
+						그냥 조인을 쓴다면 vendorDto가 아니라 조인한 결과를 담는 다른 Dto가 필요할 것이다.
+					 -->
+					<h1 class="h1 vendorNames">
+						&lt;
+						<sec:authorize access="isAuthenticated()">
+							<sec:authentication property="principal.userInfo"
+								var="vendorMember" />
+						</sec:authorize>
+						<input type="hidden" id="vendorData" value="${vendorMember.m_No}">
+						${vendorMember.m_Name} &gt;
+					</h1>
+				</div>
+				<a id="user_link"><img id="login_img"></a>
+			</div>
+		</div>
+		<nav id="total_bar"></nav>
+	</header>
+	<div id="side_bar">
+		<div id="side_links" class="w-100"></div>
+	</div>
+	<main>
+		<div class="main_whitespace p-5 my-2">
+			<h1 class="h3 text-center ">상품 등록</h1>
+		</div>
+		<div id="main_container"
+			class="d-flex flex-row align-items-center justify-content-center">
+			<div id="MyPage_content_container" class="border p-5">
+				<form id="productAdd"
+					action="${pageContext.request.contextPath}/adminPage/product/add"
+					method="post" autocomplete="off" encType="multipart/form-data">
+					<sec:csrfInput />
+					<input type="hidden" name="V_NO" readonly="readonly"> <input
+						type="hidden" name="PRO_BIZNAME" readonly="readonly">
+					<div id="ProductCategory" class="p-2 input-group w-100">
+						<label class="mx-2 m-auto input-group-text">1차 분류</label> <select
+							id="mainCategory" class="form-select w-25 mx-2">
+							<option value=""></option>
+							<c:forEach var="proCate" items="${pcMains}">
+								<option value="${proCate.pcNum}">${proCate.pcSubName}</option>
+							</c:forEach>
+						</select>
 					</div>
-					<div id="main_container"
-						class="d-flex flex-row align-items-center justify-content-center">
-						<div id="MyPage_content_container" class="border p-5">
-							<form id="productAdd"
-								action="${pageContext.request.contextPath}/adminPage/product/add"
-								method="post" autocomplete="off" encType="multipart/form-data">
-								<sec:csrfInput />
-								<input type="hidden" name="V_NO" readonly="readonly"> <input
-									type="hidden" name="PRO_BIZNAME" readonly="readonly">
-								<div id="ProductCategory" class="p-2 input-group w-100">
-									<label class="mx-2 m-auto input-group-text">1차 분류</label>
-									<select id="mainCategory" class="form-select w-25 mx-2">
-										<option value=""></option>
-										<c:forEach var="proCate" items="${pcMains}">
-											<option value="${proCate.pcNum}">${proCate.pcSubName}</option>
-										</c:forEach>
-									</select>
-								</div>
-								<div id="ProductCategory2" class="p-2 input-group w-100">
-									<label class="mx-2 m-auto input-group-text">2차 분류</label>
-									<select id="subCategory" class="form-select w-25 mx-2"
-										name="P_C_NO">
-									</select>
-								</div>
+					<div id="ProductCategory2" class="p-2 input-group w-100">
+						<label class="mx-2 m-auto input-group-text">2차 분류</label> <select
+							id="subCategory" class="form-select w-25 mx-2" name="P_C_NO">
+						</select>
+					</div>
 
-								<div class="p-2 input-group w-100">
-									<label class="mx-2 m-auto input-group-text" for="gdsName">상품명</label>
-									<input type="text" id="proName" name="PRO_NAME"
-										class="border form-control mx-2" />
-								</div>
+					<div class="p-2 input-group w-100">
+						<label class="mx-2 m-auto input-group-text" for="gdsName">상품명</label>
+						<input type="text" id="proName" name="PRO_NAME"
+							class="border form-control mx-2" />
+					</div>
 
-								<div class="p-2 input-group w-100">
-									<label class="mx-2 m-auto input-group-text" for="gdsPrice">상품가격</label>
-									<input type="number" id="proPrice" name="PRO_PRICE"
-										class="border form-control mx-2" />
-								</div>
+					<div class="p-2 input-group w-100">
+						<label class="mx-2 m-auto input-group-text" for="gdsPrice">상품가격</label>
+						<input type="number" id="proPrice" name="PRO_PRICE"
+							class="border form-control mx-2" />
+					</div>
 
-								<div class="p-2 input-group w-100">
-									<label class="mx-2 m-auto input-group-text" for="gdsStock">상품수량</label>
-									<input type="number" id="proQuantity" name="PRO_QUANTITY"
-										class="border form-control mx-2" />
-								</div>
+					<div class="p-2 input-group w-100">
+						<label class="mx-2 m-auto input-group-text" for="gdsStock">상품수량</label>
+						<input type="number" id="proQuantity" name="PRO_QUANTITY"
+							class="border form-control mx-2" />
+					</div>
 
-								<div
-									class="input-group mt-2 p-2 w-100 border-secondary d-flex align-items-center border-top">
-									<label class="mx-2 m-auto input-group-text">배너 이미지</label>
-									<div
-										class="file-container_ form-control custom-primary m-2 d-flex align-items-center">
-										<input id="bannerFileText" class="file-upload-name_"
-											placeholder="파일을 선택하세요" disabled="disabled"> <label
-											for="bannerFile">올리기</label> <input type="file"
-											id="bannerFile" class="upload-image_" name="bannerFile">
-									</div>
-								</div>
-								<div
-									class="input-group mt-2 p-2 w-100 border-secondary d-flex align-items-center border-top">
-									<label class="mx-2 m-auto input-group-text">커버 이미지</label>
-									<div
-										class="file-container_ form-control custom-primary m-2 d-flex align-items-center">
-										<input id="coverFileText" class="file-upload-name_"
-											placeholder="파일을 선택하세요" disabled="disabled"> <label
-											for="coverFile">올리기</label> <input type="file" id="coverFile"
-											class="upload-images_" multiple="multiple" name="coverFile">
-									</div>
-								</div>
-								<div class="input-group w-100 p-2">
-									<label class="mx-2 m-auto input-group-text"></label>
-									<div class="form-control m-2 p-0 " style="height: auto">
-										<ul id="uploadedCoverFiles" class=" w-100 list-group">
-										</ul>
-									</div>
-								</div>
-								<div
-									class="input-group mt-2 p-2 w-100 border-secondary d-flex align-items-center border-top">
-									<label class="mx-2 m-auto input-group-text">설명 이미지</label>
-									<div
-										class="file-container_ form-control custom-primary m-2 d-flex align-items-center">
-										<input id="explainFileText" class="file-upload-name_"
-											placeholder="파일을 선택하세요" disabled="disabled"> <label
-											for="explainFile">올리기</label> <input type="file"
-											id="explainFile" class="upload-images_" multiple="multiple"
-											name="explainFile">
-									</div>
-								</div>
-								<div class="input-group w-100 p-2">
-									<label class="mx-2 m-auto input-group-text"></label>
-									<div class="form-control m-2 p-0 " style="height: auto">
-										<ul id="uploadedExplainFiles" class=" w-100 list-group">
-										</ul>
-									</div>
-								</div>
-								<div
-									class="p-2 w-100 border-secondary border-top d-flex justify-content-end">
-									<input type="submit" id="register_Btn" value="등록"
-										class="btn btn-primary btn-tuning border mx-2"> <input
-										type="button" id="cancel_Btn"
-										class="btn btn-danger btn-tuning border mx-2" value="취소">
-								</div>
-							</form>
+					<div
+						class="input-group mt-2 p-2 w-100 border-secondary d-flex align-items-center border-top">
+						<label class="mx-2 m-auto input-group-text">배너 이미지</label>
+						<div
+							class="file-container_ form-control custom-primary m-2 d-flex align-items-center">
+							<input id="bannerFileText" class="file-upload-name_"
+								placeholder="파일을 선택하세요" disabled="disabled"> <label
+								for="bannerFile">올리기</label> <input type="file" id="bannerFile"
+								class="upload-image_" name="bannerFile">
 						</div>
 					</div>
-					<div class="main_whitespace p-5 my-2"></div>
-				</main>
-				<footer>
-					<div id="first_footer" class="p-3"></div>
-					<div id="second_footer"></div>
-					<div id="third_footer"></div>
-				</footer>
-			</c:otherwise>
-		</c:choose>
-	</sec:authorize>
-
+					<div
+						class="input-group mt-2 p-2 w-100 border-secondary d-flex align-items-center border-top">
+						<label class="mx-2 m-auto input-group-text">커버 이미지</label>
+						<div
+							class="file-container_ form-control custom-primary m-2 d-flex align-items-center">
+							<input id="coverFileText" class="file-upload-name_"
+								placeholder="파일을 선택하세요" disabled="disabled"> <label
+								for="coverFile">올리기</label> <input type="file" id="coverFile"
+								class="upload-images_" multiple="multiple" name="coverFile">
+						</div>
+					</div>
+					<div class="input-group w-100 p-2">
+						<label class="mx-2 m-auto input-group-text"></label>
+						<div class="form-control m-2 p-0 " style="height: auto">
+							<ul id="uploadedCoverFiles" class=" w-100 list-group">
+							</ul>
+						</div>
+					</div>
+					<div
+						class="input-group mt-2 p-2 w-100 border-secondary d-flex align-items-center border-top">
+						<label class="mx-2 m-auto input-group-text">설명 이미지</label>
+						<div
+							class="file-container_ form-control custom-primary m-2 d-flex align-items-center">
+							<input id="explainFileText" class="file-upload-name_"
+								placeholder="파일을 선택하세요" disabled="disabled"> <label
+								for="explainFile">올리기</label> <input type="file"
+								id="explainFile" class="upload-images_" multiple="multiple"
+								name="explainFile">
+						</div>
+					</div>
+					<div class="input-group w-100 p-2">
+						<label class="mx-2 m-auto input-group-text"></label>
+						<div class="form-control m-2 p-0 " style="height: auto">
+							<ul id="uploadedExplainFiles" class=" w-100 list-group">
+							</ul>
+						</div>
+					</div>
+					<div
+						class="p-2 w-100 border-secondary border-top d-flex justify-content-end">
+						<input type="submit" id="register_Btn" value="등록"
+							class="btn btn-primary btn-tuning border mx-2"> <input
+							type="button" id="cancel_Btn"
+							class="btn btn-danger btn-tuning border mx-2" value="취소">
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="main_whitespace p-5 my-2"></div>
+	</main>
+	<footer>
+		<div id="first_footer" class="p-3"></div>
+		<div id="second_footer"></div>
+		<div id="third_footer"></div>
+	</footer>
 </body>
-
- <sec:authorize access="isAuthenticated()">
-	 
-	 <sec:authorize access="hasRole('ROLE_VENDOR')">
-        <input type="hidden" id="isVendorCheck" value="1">
-    </sec:authorize>
-	 
-  <script src="/js/login_user_tab.js"> </script>
+<sec:authorize access="isAuthenticated()">
+	<sec:authorize access="hasRole('ROLE_VENDOR')">
+		<input type="hidden" id="isVendorCheck" value="1">
+	</sec:authorize>
+	<script src="/js/login_user_tab.js"> </script>
 </sec:authorize>
-
 <script type="text/javascript">
 	// 보통 페이지를 닫기 전에 사용자에게 중요한 경고 메시지를 보여주는 등의 용도로 사용
 	// 해당 페이지 return 반영은 나중에. 현재는 return 값이 없으면 작동을 안하는데, return 값을 넣어도 text가 기본 브라우저 텍스트로만 나옴
@@ -457,11 +447,6 @@ main, footer {
 				console.log("판매자 정보 가져오기 실패");
 			}
 		})
-		// 메인 카테고리 작업 중
-		
-		// 선택된 메인 카테고리 값
-		// option:selected를 사용하지 않으면 값이 출력되지 않는 상황이 발생. 
-		// 이후로도 안되면, 다른 방식을 찾아봄.
 		
 		$('#mainCategory').on('change',function(callback){	
 			let $mainCategoryValue = $('#mainCategory option:selected').val();
@@ -489,8 +474,6 @@ main, footer {
 				}
 			});
 		}); 
-
-
 		let bannerFile = $('#bannerFile');
 		let coverFile = $('#coverFile');
 		let explainFile = $('#explainFile');
@@ -526,6 +509,7 @@ main, footer {
 		        $('#bannerFileText').after(bannerDeleteButton);
 		        selectedBannerFiles.push(file);
 		    } else {
+		    	// 이외의 경우에는 취소로 받아들이고 경고창을 띄우겠음.
 		    	alert("배너 이미지 업로드가 취소되었습니다. 다시 올려주세요.");
 		    	$(this).siblings('#bannerFileText').val('파일을 선택하세요');
 				if($(this).children($('#BnDelBtn')).length !== 0){
@@ -562,6 +546,9 @@ main, footer {
 		function getMultiFiles(files, ul, text, delbtntext, selectFiles){
 			for (let i = 0; i < files.length; i++) {
 					let file = files[i];
+
+					// 이미지 타입에 맞는가, 맞지 않는가를 확인
+					// 정규식을 사용하여 MIME 타입이 image/로 시작하는지 확인
 					if (!fileImageOnly(file)) {				
 						return; // 전체 로직 종료
 					}
@@ -731,15 +718,7 @@ main, footer {
 			}else{
 				// 위 제약조건에 해당되지 않는 나머지 경우에 한해, 로직을 실행한다.	
 				let addProduct = confirm("상품 등록을 계속 진행합니다.");
-				if(confirm){
-					// 수정 후 확인을 위한, formData 데이터 확인
-					// 데이터가 제대로 들어가고 있으므로 다시 주석처리
-					// for(let pair of formData.entries()){
-					// 	console.log(pair[0] + ", " + pair[1]);						
-					// }
-					
-					// 여전히, 상품 등록 시 상품명 텍스트가 해당 요소의 val()값을 반영하고 있으므로 이를 val()을 수정하여 반영함
-					// 파일은 잘 들어가는데 말이지......... 기존 데이터 수정해주고 반영해야 반영되려나보다.
+				if(confirm){					
 					$('#proName').val("[" + $('#subCategory option:selected').text() + "]" + $('#proName').val());
 					
 					this.submit();
