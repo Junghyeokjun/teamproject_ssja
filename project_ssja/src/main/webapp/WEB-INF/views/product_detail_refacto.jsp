@@ -252,6 +252,7 @@ color:black;
 	
 	<input type="hidden" id="product_number_dv" value="${productData.pro_no }">
 	<input type="hidden" id="product_orgin_price_dv" value="${productData.pro_price }">
+	<input type="hidden" id="product_orgin_quantity_dv" value="${productData.pro_quantity}">
 	
 		<div id="title_bar" class=" fixed-top">
 			<div class="py-2 px-1" id="top-bar">
@@ -789,6 +790,17 @@ color:black;
 	        }
 	        $("#quantity").val(quantity_val - 1);
 	        updateTotal($('#quantity').val()); // 이 부분에서 괄호 사용 수정
+	    });
+	    
+	    $(document).ready(function() {
+	    let nowQuantity = $('#product_orgin_quantity_dv').val();
+	    console.log(nowQuantity)
+	    if(nowQuantity === '0' || parseInt(nowQuantity) === 0){
+	    	$('#cart_btn').prop('disabled', true);
+	    	$('#purchase_btn').prop('disabled', true);
+	    	$('#cart_btn2').prop('disabled', true);
+	    	$('#purchaseBtn2').prop('disabled', true);
+	    }
 	    });
 	</script>
 	

@@ -129,6 +129,13 @@
         ) i 
         ON z.pro_no = i.pro_no
 </select>
+
+
+<update id="deleteStateItem" >
+	update product set pro_quantity = 0, pro_bannerimg = '/images/utilities/non_exist_item.png', 
+	pro_wish=0, pro_sellcount=0, pro_hit=0 where pro_no = #{productNum}
+</update>
+
 <resultMap id="productMap" type="teamproject.ssja.dto.product.ProductDetailTotalInfoDTO">
     <id property="pro_no" column="pro_no"/>
     <result property="v_no" column="v_no"/>
