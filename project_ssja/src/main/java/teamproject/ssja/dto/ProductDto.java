@@ -1,5 +1,7 @@
 package teamproject.ssja.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 //이름            널?       유형            
 //------------- -------- ------------- 
 //PRO_NO        NOT NULL NUMBER(20)    
@@ -26,19 +28,46 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class ProductDto {
-	private long PRO_NO;
-	private long V_NO;   
-	private long P_C_NO;  
-	private long PRO_PRICE;   
-	private long PRO_QUANTITY;   
-	private String PRO_BANNERIMG;
-	private long PRO_WISH;
-	private long PRO_SELLCOUNT;
-	private long PRO_HIT;
-	private String PRO_BIZNAME;
-	private String PRO_NAME; 
-	private String PRO_DATE; 
-	private long avgeval;
-	private Integer countrv;
+    @JsonProperty("PRO_NO")
+    private long PRO_NO;
+
+    @JsonProperty("V_NO")
+    private long V_NO;
+
+    @JsonProperty("P_C_NO")
+    private long P_C_NO;
+
+    @JsonProperty("PRO_PRICE")
+    private long PRO_PRICE;
+
+    @JsonProperty("PRO_QUANTITY")
+    private long PRO_QUANTITY;
+
+    @JsonProperty("PRO_BANNERIMG")
+    private String PRO_BANNERIMG;
+
+    @JsonProperty("PRO_WISH")
+    private long PRO_WISH;
+
+    @JsonProperty("PRO_SELLCOUNT")
+    private long PRO_SELLCOUNT;
+
+    @JsonProperty("PRO_HIT")
+    private long PRO_HIT;
+
+    @JsonProperty("PRO_BIZNAME")
+    private String PRO_BIZNAME;
+
+    @JsonProperty("PRO_NAME")
+    private String PRO_NAME;
+
+    @JsonProperty("PRO_DATE")
+    private String PRO_DATE;
+
+    @JsonProperty("avgeval")
+    private long avgeval;
+
+    @JsonProperty("countrv")
+    private Integer countrv;
 	
 }

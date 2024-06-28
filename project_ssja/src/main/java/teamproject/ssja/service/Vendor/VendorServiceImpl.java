@@ -270,4 +270,14 @@ public class VendorServiceImpl implements VendorService{
 		// TODO Auto-generated method stub
 		vendorMapper.updateProduct(productDto);
 	}
+
+	@Override
+	public List<ProductDto> getSearchProducts(Criteria criteria, String option, String keyword) {
+		return vendorMapper.selectVendorSearchProducts(criteria, option, keyword);
+	}
+
+	@Override
+	public long getSearchProductsCount(Criteria criteria, String option, String keyword) {
+		return vendorMapper.selectVendorSearchProductsCount(criteria, option, keyword);
+	}
 }
