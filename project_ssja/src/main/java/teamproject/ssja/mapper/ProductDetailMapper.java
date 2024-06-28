@@ -38,5 +38,8 @@ public interface ProductDetailMapper {
 	
 	@Update("update product set pro_hit = pro_hit + 1 where pro_no = #{productNum}")
 	void addCountViewProduct(Long productNum);
+	
+	//상품 삭제상태로 하는 
+	void deleteStateItem(Long productNum);
 }
 
