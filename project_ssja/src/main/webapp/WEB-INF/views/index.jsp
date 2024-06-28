@@ -116,6 +116,7 @@ cursor:pointer;
       <div id="home_user_bar"> </div>
       <div id="sub_bar"></div>
     </nav>
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
   </header>
 
   <div id="side_bar"> 
