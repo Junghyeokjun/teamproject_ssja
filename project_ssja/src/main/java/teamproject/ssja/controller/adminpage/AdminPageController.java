@@ -1,26 +1,20 @@
 package teamproject.ssja.controller.adminpage;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.MembersDto;
@@ -40,6 +34,8 @@ import teamproject.ssja.service.Admin.ProductListService;
 import teamproject.ssja.service.Admin.PurchaseListService;
 import teamproject.ssja.service.Admin.QnaListService;
 import teamproject.ssja.service.Admin.SalesListService;
+import teamproject.ssja.service.Product.ProductCategoryService;
+import teamproject.ssja.service.Vendor.VendorService;
 
 import java.text.ParseException;
 
@@ -68,6 +64,12 @@ public class AdminPageController {
 
 	@Autowired
 	private QnaListService qnaListService;
+	
+	@Autowired
+	ProductCategoryService productCategoryService;
+
+	@Autowired
+	VendorService vendorService;
 
 	@GetMapping("")
 	public String AdminPage(Model model) {
@@ -115,8 +117,8 @@ public class AdminPageController {
 	@PostMapping("/modifyMember")
     public String modifyMember(@RequestBody MembersDto membersDto) {
         log.info("modifyMember()..");
-        memberListService.modifyMember(membersDto); // 서비스 메서드를 호출하여 문의 글 수정 처리
-        return "redirect:/adminPage/membersList"; // 수정 후 목록 페이지로 리다이렉트
+        memberListService.modifyMember(membersDto); 
+        return "redirect:/adminPage/membersList"; 
     }	
 	
 	@PostMapping("/removeMember")
@@ -124,8 +126,7 @@ public class AdminPageController {
 		log.info("removeMember()..");
 		memberListService.removeMember(membersDto);
 		return "redirect:/adminPage/membersList";
-	}
-	
+	}	
 
 	@RequestMapping("/productsList")
 	public String productsList(Model model, Criteria criteria) {
@@ -146,22 +147,60 @@ public class AdminPageController {
 		return ResponseEntity.ok(searchResults);
 	}
 	
-	@GetMapping("/modifyProducts")
+	@GetMapping("/modifyProduct")
 	@ResponseBody
-	public ProductDto getProducts(@RequestParam("PRO_NO") int PRO_NO) {
-		log.info("getProducts()..");
+	public ProductDto getProduct(@RequestParam("PRO_NO") int PRO_NO) {
+		log.info("getProduct()..");
 
-		return productListService.getProductsId(PRO_NO);
+		return productListService.getProductId(PRO_NO);
 	}
-
-	@PostMapping("/modifyProducts")
-    public String modifyProducts(@RequestBody ProductDto productDto) {
-        log.info("modifyProducts()..");
-
-        productListService.modifyProducts(productDto); 
-
+	
+	@PostMapping("/modifyProduct")
+    public String modifyProduct(@RequestBody  ProductDto productDto) {
+        log.info("modifyProduct()..");
+        productListService.modifyProduct(productDto); 
         return "redirect:/adminPage/productsList"; 
     }	
+	
+	@PostMapping("/removeProduct")
+	public String removeProduct(@RequestBody ProductDto productDto) {
+		log.info("removeProduct()..");
+		productListService.removeProduct(productDto);
+		return "redirect:/adminPage/productsList";
+	}
+	
+	@GetMapping("/product/write")
+	public String writeProduct(Model model) {
+		log.info("writeProduct()..");
+		// 카테고리
+		model.addAttribute("pcMains", productCategoryService.getPCMain());
+
+		return "/adminPage/admin_write_product";
+	}
+	
+	
+	// 파일 업로드
+	@PostMapping("/product/add")
+	public String addOne(MultipartFile bannerFile, 
+						 List<MultipartFile> coverFile, 
+						 List<MultipartFile> explainFile,
+						 ProductDto productDto,
+						 Model model) {
+		log.info("addOne()..");	
+		
+		if(bannerFile.isEmpty() || coverFile.isEmpty() || explainFile.isEmpty()) {
+			vendorService.isEmpty(bannerFile, coverFile, explainFile, model);
+		}		
+		
+		// 배너 이미지 처리 및 물품 추가
+		vendorService.addProduct(productDto, bannerFile);
+
+		// 물품 이미지들 처리 및 추가
+		vendorService.addProductImgs(coverFile, explainFile, vendorService.getProNum(productDto));
+
+		return "/adminPage/productsList";
+	}
+	
 
 	@RequestMapping("/purchasesList")
 	public String purchasesList(Model model, Criteria criteria) {

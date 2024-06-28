@@ -44,9 +44,8 @@
 #qnastable thead {
 	font-weight: bold; /* 열 제목을 굵은 글꼴로 설정 */
 }
-#qna_content_tablebody > tr{
+#qna_title_a{
 cursor:pointer;
-background-color:#eee;
 }
 </style>
 </head>
@@ -130,7 +129,7 @@ background-color:#eee;
 									<td>${qna.getB_NO()}</td>
 									<td>${qna.getM_NO()}</td>
 									<td>${qna.getB_WRITER()}</td>
-									<td>${qna.getB_TITLE()}</td>
+									<td><a  id="qna_title_a"  href="/board/content_view/20?bno=${qna.getB_NO() }">${qna.getB_TITLE()}</a></td>
 									<td>${qna.getB_CONTENT()}</td>
 									<td>${qna.getB_DATE()}
 										<button type="button" class="btn btn-outline-dark"
@@ -227,7 +226,9 @@ background-color:#eee;
 </body>
 <script>
 $(document).ready(function() {
-	  $('body').on('click', '#modifyQnaBtn', function() {
+	  $('body').on('click', '#modifyQnaBtn', function(event) {
+		    event.stopPropagation();
+
 	    var $btn = $(this); // 클릭된 버튼을 변수에 저장
 	    var $row = $btn.closest('tr'); // 클릭된 버튼의 부모 tr 요소 가져오기
 
@@ -246,17 +247,12 @@ $(document).ready(function() {
 	    // 모달 창 띄우기
 	    $('#editQnaModal').modal('show');
 	  });
-	  
-	  $("#qna_content_tablebody > tr").on('click', function(){
-		 let boardQnANumber = $(this).attr('id').split('_')[2];
-		 window.location.href = '/board/content_view/20?bno=' + boardQnANumber;
-	  });
 	});
 </script>
 <script>
 $(document).ready(function() {
 	  $('#editQnaForm').submit(function(event) {
-	    event.preventDefault(); // 폼의 기본 동작 방지
+	    event.stopPropagation();
 
 	    var formData = {
 	      b_NO: $('#editQnaId').val(),
@@ -298,7 +294,9 @@ $(document).ready(function() {
 </script>
 <script>
 	$(document).ready(function() {
-		$('body').on('click', '#deleteQnaBtn', function() {
+		$('body').on('click', '#deleteQnaBtn', function(event) {
+		    event.stopPropagation();
+
 			var $btn = $(this); // 클릭된 버튼을 변수에 저장
 			var qnaId = $btn.closest('tr').find('td:first').text(); // 테이블에서 글번호 가져오기
 			var csrfToken = $('meta[name="_csrf"]').attr('content'); // CSRF 토큰 가져오기

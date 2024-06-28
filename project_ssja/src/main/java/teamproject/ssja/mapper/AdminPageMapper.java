@@ -98,11 +98,6 @@ public interface AdminPageMapper {
 		@Insert("Insert into visitor_count values (trunc(sysdate) + 1, 0)")
 		void enrollTomorrowV();
 
-
-		ProductDto readProducts(int productsId);
-
-		void updateProducts(ProductDto productDto);
-
 		void deleteMember(MembersDto membersDto);
 		
 		MembersDto readMemberId(int memberId);
@@ -116,6 +111,12 @@ public interface AdminPageMapper {
 		List<Long> getListMemberNo();
 		
 		void insertCouponToMembers(List<Long> list);
+
+		void deleteProduct(ProductDto productDto);
+
+		ProductDto readProductId(int productId);
+
+		void updateProduct(ProductDto productDto);
 
 
 }

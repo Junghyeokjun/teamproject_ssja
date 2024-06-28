@@ -213,27 +213,27 @@
 									name="editBIRTH"></textarea>
 							</div>
 							<div class="form-group">
-								<label for="editGRADE">주소</label>
+								<label for="editGRADE">등급</label>
 								<textarea class="form-control" id="editGRADE"
 									name="editGRADE"></textarea>
 							</div>
 							<div class="form-group">
-								<label for="editEMAIL">주소</label>
+								<label for="editEMAIL">이메일</label>
 								<textarea class="form-control" id="editEMAIL"
 									name="editEMAIL"></textarea>
 							</div>
 							<div class="form-group">
-								<label for="editADDRESS1">주소</label>
+								<label for="editADDRESS1">휴대폰번호</label>
 								<textarea class="form-control" id="editPHONE"
 									name="editPHONE"></textarea>
 							</div>
 							<div class="form-group">
-								<label for="editPOINT">주소</label>
+								<label for="editPOINT">포인트</label>
 								<textarea class="form-control" id="editPOINT"
 									name="editPOINT"></textarea>
 							</div>
 							<div class="form-group">
-								<label for="editNICKNAME">주소</label>
+								<label for="editNICKNAME">닉네임</label>
 								<textarea class="form-control" id="editNICKNAME"
 									name="editNICKNAME"></textarea>
 							</div>
@@ -319,12 +319,12 @@ $(document).ready(function() {
 	        $row.find('td:eq(1)').text(formData.m_ID);
 	        $row.find('td:eq(2)').text(formData.m_NAME);
 	        $row.find('td:eq(3)').text(formData.m_ADDRESS1);
-	        $row.find('td:eq(3)').text(formData.m_BIRTH);
-	        $row.find('td:eq(3)').text(formData.m_GRADE);
-	        $row.find('td:eq(3)').text(formData.m_EMAIL);
-	        $row.find('td:eq(3)').text(formData.m_PHONE);
-	        $row.find('td:eq(3)').text(formData.m_POINT);
-	        $row.find('td:eq(3)').text(formData.m_NICKNAME);	        
+	        $row.find('td:eq(4)').text(formData.m_BIRTH);
+	        $row.find('td:eq(5)').text(formData.m_GRADE);
+	        $row.find('td:eq(6)').text(formData.m_EMAIL);
+	        $row.find('td:eq(7)').text(formData.m_PHONE);
+	        $row.find('td:eq(8)').text(formData.m_POINT);
+	        $row.find('td:eq(9)').text(formData.m_NICKNAME);	        
 	      },
 	      error: function(xhr, status, error) {
 	        console.error('문의 수정 오류', error);

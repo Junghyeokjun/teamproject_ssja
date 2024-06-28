@@ -37,13 +37,18 @@ public class ProductListServiceImpl implements ProductListService {
 	}
 
 	@Override
-	public ProductDto getProductsId(int productsId) {
-        return adminPageMapper.readProducts(productsId); 
-
+	public ProductDto getProductId(int productId) {
+        return adminPageMapper.readProductId(productId); 
 	}
 
 	@Override
-	public void modifyProducts(ProductDto productDto) {
-    	adminPageMapper.updateProducts(productDto); 		
+	public void modifyProduct(ProductDto productDto) {
+        adminPageMapper.updateProduct(productDto); 		
+	}	
+	
+	@Override
+	public void removeProduct(ProductDto productDto) {
+    	adminPageMapper.deleteProduct(productDto); 		
 	}
+	
 }

@@ -142,6 +142,7 @@ public class VendorController {
 	@GetMapping("/product/modify_view")
 	public String ShowThisProduct(@RequestParam("proNo")long proNo, Model model) {
 		model.addAttribute("product", productDetailService.get(proNo));
+		model.addAttribute("pcMains", productCategoryService.getPCMain());
 		return "/vendor/vendor_modify_product";
 	}
 	
