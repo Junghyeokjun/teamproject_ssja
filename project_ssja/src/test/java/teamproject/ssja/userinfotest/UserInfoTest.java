@@ -80,26 +80,12 @@ public class UserInfoTest {
 		 * Assertions.assertThat(EnrollDelDate).isEqualTo(deletedate);
 		 */
 	}
-	@Disabled
-	@Test
-	@DisplayName("탈퇴 신청 날짜 등록 유저 삭제테스트")
-	void deleteEnrolledUserTest() {
-		myPageService.deleteEnrolled();
-		
-	}
+	
 	//@Disabled
 	@Test
 	@DisplayName("탈퇴 유보 기간 지난 유저 삭제 프로세스 테스트")
 	void deleteEnrolledUserProcessTest() {
-		List<String> enrolledDeleteUsers = myPageService.findDeleteEnrolledUsers();
-		
-		log.info("asdas {} ",enrolledDeleteUsers);
-		if(enrolledDeleteUsers.size() > 0) {
-			log.info("리스트 있음 실행도미 길이 {} ",enrolledDeleteUsers.size());
-			myPageService.deleteEnrolledUsersAuth(enrolledDeleteUsers);
-			
-			myPageService.deleteEnrolled();
-		}
+		myPageService.deleteUserProcess();
 	}
 	//@Disabled
 	@Test

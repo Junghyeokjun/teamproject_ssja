@@ -4,4 +4,5 @@ public interface SchedulerService {
 
 	void deleteExpiredCoupon();
 	void statisticProfit();
+	void enrollTomorrowV();
 }

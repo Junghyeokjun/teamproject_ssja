@@ -2,6 +2,7 @@ package teamproject.ssja.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Update;
 
@@ -65,4 +66,7 @@ public interface ReplyMapper {
 	@Update("insert into board values (b_seq.nextval, #{id}, 30, #{writer},concat('review',#{proNum}) ,"
 			+ "#{content}, sysdate, 0, 0 ,#{eval}, #{proNum})")
 	void applyReview(ReviewForm form);
+	
+	@Insert("insert into points values (pt_seq.nextval, #{id}, 1, 1000, '리뷰 포인트', sysdate)")
+	void reviewGiftPoint(long id);
 } 

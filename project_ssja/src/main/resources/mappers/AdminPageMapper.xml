@@ -532,7 +532,7 @@ WHERE
 </insert>	
 
 <delete id="deleteExpiredCoupon" >
-DELETE from coupon where TRUNC(c_duedate) &lt; TRUNC(sysdate) - 1
+DELETE from coupon where c_duedate &lt; sysdate
 </delete>
 	
 	</mapper>

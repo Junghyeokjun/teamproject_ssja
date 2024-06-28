@@ -66,23 +66,20 @@ public class MyPageUserInfoService implements MyPageService {
 		return EnrollDelDate;
 	}
 
+	
+	@Transactional
 	@Override
-	public void deleteEnrolled() {
-		// TODO Auto-generated method stub
-		myPageMapper.deleteEnrolled();
-
-	}
-
-	@Override
-	public List<String> findDeleteEnrolledUsers() {
+	public void deleteUserProcess() {
+		try {
+			
 		List<String> enrolledDeleteUsers = myPageMapper.findDeleteEnrolledUsers();
-		return enrolledDeleteUsers;
-	}
-
-	@Override
-	public void deleteEnrolledUsersAuth(List<String> enrolledDeleteUsers) {
-		myPageMapper.deleteEnrolledUsersAuth(enrolledDeleteUsers);
-
+		if(!enrolledDeleteUsers.isEmpty()) {
+			myPageMapper.deleteEnrolledUsersAuth(enrolledDeleteUsers);
+			myPageMapper.deleteEnrolled();
+		}
+		} catch (Exception e) {
+			throw new RuntimeException();
+		}
 	}
 
 	@Override
@@ -214,5 +211,7 @@ public class MyPageUserInfoService implements MyPageService {
 		data.setObjectList(list);
 		return data;
 	}
+
+
 
 }

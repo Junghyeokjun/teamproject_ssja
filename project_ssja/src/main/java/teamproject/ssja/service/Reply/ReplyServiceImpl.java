@@ -92,6 +92,7 @@ public class ReplyServiceImpl implements ReplyService {
 		Long id = InfoProvider.getM_NO();
 		form.setId(id);
 		replyMapper.applyReview(form);
+		replyMapper.reviewGiftPoint(form.getId());
 	}
 
 }

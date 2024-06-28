@@ -18,11 +18,10 @@ public interface MyPageService {
 	UserInfoDTO getUserInfo(long username);
 	void changeAddress(AddressForm addressForm);
 	String deleteUserEnroll(long userId);
-	void deleteEnrolled();
-	List<String> findDeleteEnrolledUsers();
-	
-	void deleteEnrolledUsersAuth(List<String> enrolledDeleteUsers);
+
 	void modifyUserEmail(String email, String username);
+	
+	void deleteUserProcess();
 	
 	MyPageOrdersDTO getPurchaseData(long id, int PageNum);
 	

@@ -94,6 +94,9 @@ public interface AdminPageMapper {
 		//방문자 수 쿼리
 		@Update("UPDATE visitor_count SET visit_count = visit_count + 1 WHERE TRUNC(visit_date) = TRUNC(sysdate)")
 		void addVisitCount();
+		//내일 방문자 컬럼 추가 퀄리
+		@Insert("Insert into visitor_count values (trunc(sysdate) + 1, 0)")
+		void enrollTomorrowV();
 
 
 		ProductDto readProducts(int productsId);
