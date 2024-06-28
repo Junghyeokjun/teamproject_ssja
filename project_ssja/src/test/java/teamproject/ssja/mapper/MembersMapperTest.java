@@ -27,20 +27,37 @@ class MembersMapperTest {
 	@Autowired
 	MembersMapper membersMapper;
 
-	//@Disabled
+	
+	@Test
+	void insertMnameTest() {
+		assertThrows(DuplicateKeyException.class, () ->{
+			MembersDto member= new MembersDto(0,"testUser1","testUser1","testUser1","수원시","팔달구",
+				"21231",Date.valueOf("2024-06-25"),null,"user@gmail.com","01023451234",0,null,"tam");
+		
+		int result=membersMapper.insertMember(member);
+		log.info(result+"");
+		});
+	}
+
+	
+	@Test
+	void updatePwTest() {
+		String pw=(new BCryptPasswordEncoder()).encode("1234");
+		membersMapper.updatePw("test", pw);
+	}
+	
+	
 	@Test
 	void test() {
 		assertNotNull(membersMapper);
 	}
 
-	//@Disabled
 	@Test
 	void SelectMidTest() {
 		String mid=membersMapper.getMid("testUser1");
 		log.info(mid);
 	}
 	
-	//@Disabled
 	@Test
 	void SelectMnameTest() {
 		String mName=membersMapper.getMNickName("tam");
@@ -54,40 +71,18 @@ class MembersMapperTest {
 		log.info(quantity+"");
 	}
 	
-	//@Disabled
 	@Test
 	void SelectMEmailTest() {
 		String mEmail=membersMapper.getMEmail("user@gmail.com");
 		log.info(mEmail);
 	}
-	//@Disabled
 	@Test
 	void SelectEmailTest() {
 		String mEmail=membersMapper.selectEmail("test");
 		log.info(mEmail);
 	}
 	
-	//@Disabled
-	@Test
-	void insertMnameTest() {
-		assertThrows(DuplicateKeyException.class, () ->{
-			MembersDto member= new MembersDto(0,"testUser1","testUser1","testUser1","수원시","팔달구",
-				"21231",Date.valueOf("2024-06-25"),null,"user@gmail.com","01023451234",0,null,"tam");
-		
-		int result=membersMapper.insertMember(member);
-		log.info(result+"");
-		});
-	}
-
 	
-	//@Disabled
-	@Test
-	void updatePwTest() {
-		String pw=(new BCryptPasswordEncoder()).encode("1234");
-		membersMapper.updatePw("test", pw);
-	}
-	
-	//@Disabled
 	@Test
 	void subPointTest() {
 		System.out.println(membersMapper.subPoint(21,1000));
