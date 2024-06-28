@@ -429,7 +429,7 @@ th{
 					</div>
 					<div id="main_container">						
 						<div class="d-flex flex-row align-items-center justify-content-center container">
-							<div id="MyPage_content_container" class="px-5 pt-5 pb-1">
+							<div id="MyPage_content_container" class="px-5 pt-3 pb-1">
 								<div class="text-center mb-3">
 									<h5 class="h5 chart-title">최근 일주일 간 매출 데이터</h5>
 									<h5 class="h5 years"></h5>
