@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ProductImgDto;
+import teamproject.ssja.dto.StatisticVO;
 import teamproject.ssja.dto.VendorSalesDto;
 import teamproject.ssja.dto.vendor.VendorProfitDTO;
 import teamproject.ssja.page.Criteria;
@@ -31,13 +32,11 @@ class VendorMapperTest {
 	@Autowired
 	VendorService vendorService;
 
-	@Disabled
 	@Test
 	void testSelectVendor() {
 		log.info("vendor : " + vendorMapper.selectVendor(25));		
 	}
 
-	@Disabled
 	@Test
 	void testSelectVendorProducts() {
 		Criteria criteria = new Criteria();
@@ -48,24 +47,14 @@ class VendorMapperTest {
 	}
 
 
-	@Disabled
 	@Test
 	void testInsertProductImgs() {
 		vendorMapper.insertProductImgs(new ProductImgDto(1, 3013, "3"));
 	}
 
-	@Disabled
 	@Test
 	void testSelectVendorSalesInWeek() {
-		
-		// 메서드 수정 전, 전체 판매자의 최근 일주일 매출
-//		for(VendorSalesDto dto : vendorMapper.selectVendorSalesInWeek()) {
-//			log.info("dto : " + dto);
-//		}
-//		// 판매자 1번의 목록
-//		for(VendorSalesDto dto : vendorMapper.selectVendorSalesInWeek(1)) {
-//			log.info("dto : " + dto);
-//		}
+
 		
 		// 판매자 25번의 목록
 		for(VendorSalesDto dto : vendorMapper.selectVendorSalesInWeek(25)) {
@@ -73,7 +62,6 @@ class VendorMapperTest {
 		}
 	}
 	
-	@Disabled
 	@Test
 	void testSelectVendorQnas() {
 		Criteria criteria = new Criteria();
@@ -105,6 +93,47 @@ class VendorMapperTest {
 		log.info("yearly {} ",dataTotal.get("year"));
 		Assertions.assertThat(dataTotal.size()).isEqualTo(3);
 		
+	}
+	
+
+	@Test
+	void testSelectVendorSalesInMonth() {
+		StatisticVO statisticVO = new StatisticVO(1, "2024");
+		for(VendorSalesDto dto : vendorMapper.selectVendorSalesInMonth(statisticVO)) {
+			log.info("dto : " + dto);
+		}
+	}
+
+	@Test
+	void testSelectVendorSalesInYear() {
+		StatisticVO statisticVO = new StatisticVO(1, "2024");
+		for(VendorSalesDto dto : vendorMapper.selectVendorSalesInYear(statisticVO)) {
+			log.info("dto : " + dto);
+		}
+	}
+	
+	@Test
+	void testSelectVendorSalesTotal() {
+		
+		log.info("1번 판매자 totals : " + vendorMapper.selectVendorSalesTotal(1));
+	}
+	@Test
+	void testSelectSearchVendorQnas() {
+		Criteria criteria = new Criteria();
+		criteria.setBcno(20);
+		criteria.setBmno(1);
+		for(BoardDto dto : vendorMapper.selectSearchVendorQnas(criteria, "title", "Test")) {
+			log.info("" + dto);
+		}
+	}
+	
+	@Test
+	void testSelectSearchVendorQnaCount() {
+		Criteria criteria = new Criteria();
+		criteria.setBcno(20);
+		criteria.setBmno(1);
+		
+		log.info("검색 결과 개수 : " + vendorMapper.selectSearchVendorQnaCount(criteria,"title", "Test"));
 	}
 
 }

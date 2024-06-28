@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -20,23 +21,20 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithUserDetails(value="test1", userDetailsServiceBeanName = "customUserDetail")
 class PurchaseTest {
 
 	@Autowired
 	private MockMvc mockMvc;
 	
-	
-
-	@Disabled
 	@Test
 	void testPurchasePage() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/purchase")
 			   .param("quantity", "1")
 			   .param("productNo", "1958"))
 			   .andExpect(MockMvcResultMatchers.status().isOk())
-			   .andDo(print());	}
-
-	@Disabled
+			   .andDo(print());	
+		}
 	@Test
 	void testCartPurchasePage() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.post("/purchase/")
@@ -46,7 +44,12 @@ class PurchaseTest {
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andDo(print());	}
 
-	@Disabled
+	@Test
+	void testPurchaseCompletePage() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get("/purchase/complete")
+			   .param("price", "11111"))
+			   .andExpect(MockMvcResultMatchers.status().isOk())
+			   .andDo(print());	}
 	@Test
 	void testPurchase() throws Exception {		
 		
@@ -75,11 +78,4 @@ class PurchaseTest {
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andDo(print());	}
 
-//	@Disabled
-	@Test
-	void testPurchaseCompletePage() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get("/purchase/complete")
-			   .param("price", "11111"))
-			   .andExpect(MockMvcResultMatchers.status().isOk())
-			   .andDo(print());	}
 }

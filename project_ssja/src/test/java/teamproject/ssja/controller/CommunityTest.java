@@ -22,42 +22,30 @@ class CommunityTest {
 
 	@Autowired
 	private MockMvc mockMvc;
-	
-	
-
-	@Disabled
 	@Test
 	void testCommunityPreviewPage() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/community"))
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andDo(print());	
 		}
-
-	@Disabled
 	@Test
 	void testCommunityMainPage() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/community/main"))
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andDo(print());	
 		}
-
-	@Disabled
 	@Test
 	void testCommunityContentPage() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/community/content/11968"))
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andDo(print());	
 		}
-
-	@Disabled
 	@Test
 	void testCommunityinsertPage() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/community/content/insert"))
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andDo(print());	
 		}
-
-	@Disabled
 	@Test
 	void testDeleteTempImg() throws Exception {
 		
@@ -70,7 +58,6 @@ class CommunityTest {
 			   .andDo(print());	
         }
 
-	@Disabled
 	@Test
 	void testModifyContent() throws Exception {
         
@@ -85,7 +72,6 @@ class CommunityTest {
 			   .andDo(print());	
         }
 
-	@Disabled
 	@Test
 	void testCommunityGetReply() throws Exception {
 				
@@ -100,13 +86,12 @@ class CommunityTest {
 			   .andDo(print());	
 		}
 
-	@Disabled
 	@Test
 	void testCommunityInsertReply() throws Exception {
 		
 		String responseJson = "{\"rbno\":\"11923\",\"rmno\":\"21\",\"rwriter\":\"test\",\"rcontent\":\"흠\",\"rgroup\":\"0\",\"rstep\":\"0\",\"rindent\":\"0\"}";
 		
-		mockMvc.perform(MockMvcRequestBuilders.put("/community/reply")
+		mockMvc.perform(MockMvcRequestBuilders.post("/community/reply")
 			   .content(responseJson)
 			   .contentType(MediaType.APPLICATION_JSON)
 			   .with(csrf())
@@ -115,7 +100,6 @@ class CommunityTest {
 			   .andDo(print());	
 		}
 
-	@Disabled
 	@Test
 	void testCommunityUpdateReply() throws Exception {
 		
@@ -130,19 +114,8 @@ class CommunityTest {
 			   .andDo(print());	
 		}
 	
-	@Disabled
-	@Test
-	void testCommunityDelteReply() throws Exception {
-		
-		
-		mockMvc.perform(MockMvcRequestBuilders.delete("/community/reply/587")
-			   .with(csrf())
-			   .accept(MediaType.APPLICATION_JSON))
-			   .andExpect(MockMvcResultMatchers.status().isOk())
-			   .andDo(print());	
-		}
 
-	@Disabled
+
 	@Test
 	void testCommunityGetReplyTotal() throws Exception {
 			
@@ -152,7 +125,6 @@ class CommunityTest {
 			   .andDo(print());	
 		}
 
-	@Disabled
 	@Test
 	void testCommunityGetBoardLiked() throws Exception {
 			
@@ -162,7 +134,6 @@ class CommunityTest {
 			   .andDo(print());	
 		}
 
-	@Disabled
 	@Test
 	void testCommunityInsertBoardLiked() throws Exception {
 		
@@ -178,7 +149,6 @@ class CommunityTest {
 		}
 	
 
-	@Disabled
 	@Test
 	void testCommunityGetBoardISLiked() throws Exception {
 			
@@ -189,7 +159,6 @@ class CommunityTest {
 			   .andDo(print());	
 		}
 	
-	@Disabled
 	@Test
 	void testCommunityGetPost() throws Exception {
 		
@@ -200,7 +169,6 @@ class CommunityTest {
 			   .andDo(print());	
 		}
 
-	@Disabled
 	@Test
 	void testCommunityInsertPost() throws Exception {
         
@@ -216,7 +184,6 @@ class CommunityTest {
 		}
 	
 
-	@Disabled
 	@Test
 	void testCommunityDeletePost() throws Exception {
         
@@ -229,7 +196,6 @@ class CommunityTest {
 		}
 
 
-	@Disabled
 	@Test
 	void testCommunityGetBestPost() throws Exception {
 		
@@ -240,7 +206,6 @@ class CommunityTest {
 			   .andDo(print());	
 		}
 
-	@Disabled
 	@Test
 	void testCommunityGetSearchPost() throws Exception {
 		
@@ -253,7 +218,6 @@ class CommunityTest {
 			   .andDo(print());	
 		}
 
-	@Disabled
 	@Test
 	void testCommunityGetProduct() throws Exception {
 		
@@ -262,7 +226,6 @@ class CommunityTest {
 			   .andDo(print());	
 		}
 
-	@Disabled
 	@Test
 	void testCommunityGetProducts() throws Exception {
 		
@@ -273,7 +236,6 @@ class CommunityTest {
 		}
 
 
-	@Disabled
 	@Test
 	void testCommunityInsertProduct() throws Exception {
         String responseJson = "{\"bno\":\"11880\",\"proNo\":\"1956\"}";
@@ -287,8 +249,6 @@ class CommunityTest {
 			   .andDo(print());	
 		}
 
-	
-	@Disabled
 	@Test
 	void testTermsModify() throws Exception {
 		

@@ -28,57 +28,47 @@ class SignControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 	
-	
-
-	@Disabled
 	@Test
 	void testIdCheck() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/sign/idCheck?id=testUser1"))
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andDo(print());	}
 	
-	@Disabled
 	@Test
 	void testNameCheck() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/sign/nickNameCheck?nickName=testUser1"))
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andDo(print());	}
 
-	@Disabled
 	@Test
 	void testEmailCheck() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/sign/emailCheck?email=user@naver.com"))
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andDo(print());	}
-	@Disabled
 	@Test
 	void testQuantityCheck() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/sign/quantityCheck?proNo=1&quantity=3"))
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andDo(print());	}
 	
-	@Disabled
 	@Test
 	void testSignUpBeforePage() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/sign/sign_up_before"))
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andDo(print());	}
 
-	@Disabled
 	@Test
 	void testSignUpPage() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/sign/sign_up"))
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andDo(print());	}
 
-	@Disabled
 	@Test
 	void testTermsModifyPage() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/sign/terms_modify"))
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andDo(print());	}
 
-	@Disabled
 	@Test
 	void testTermsModify() throws Exception {
 		

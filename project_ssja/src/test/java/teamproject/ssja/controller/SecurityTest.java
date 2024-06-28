@@ -41,15 +41,11 @@ public class SecurityTest {
 	 MockMvc mockMvc;
 	 @Autowired
 	 CustomUserDetailsService customUserDetailsService;
-
 	 @Test
 		void testUnAuthorizedUser() throws Exception {
-		
-			
 		        mockMvc.perform(get("/myPage")
 						 .with(SecurityMockMvcRequestPostProcessors.csrf()))
 						.andExpect(status().isFound());//로그인 페이지 리다이렉트에 대한 302체크
-		        
 		}
 	 
 	 @Test

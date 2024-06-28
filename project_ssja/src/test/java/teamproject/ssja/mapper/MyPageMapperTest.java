@@ -32,14 +32,12 @@ class MyPageMapperTest {
 	@Autowired
 	BoardMapper boardMapper;
 	
-	////@Disabled
 	@Test
 	@DisplayName("총 개수 장바구니 테스트")
 	void getTotalTest() {
 		int num = myPageMapper.getTotalCartItems(1);
 		Assertions.assertThat(num).isNotEqualTo(0);
 	}
-	////@Disabled
 	@Test
 	@DisplayName("장바구니 데이터 테스트")
 	void getItemsTest() {
@@ -52,7 +50,6 @@ class MyPageMapperTest {
 			log.info("item {}", c);
 		}
 	}
-	////@Disabled
 	@Test
 	@DisplayName("장바구니 사유품 삭제 테스트")
 	void testDeleteItemFromCart() {
