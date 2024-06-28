@@ -215,7 +215,7 @@ transform: translate(-50%, -50%);
 			</c:if>
 			
 			 <c:if test="${yourAuth == 'ROLE_VENDOR'}"><!--  판매자 권한일 경우 대체 되는 버튼 -->
-		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc" id="mange_yoursell">판매 관리</button>
+		        <button class="MyPage_btn w-100" style="border:1px solid #cccccc" id="mange_yoursell" >판매 관리</button>
 		        </c:if>
 		        
 			 <c:if test="${yourAuth == 'ROLE_ADMIN'}"><!--  판매자 권한일 경우 대체 되는 버튼 -->

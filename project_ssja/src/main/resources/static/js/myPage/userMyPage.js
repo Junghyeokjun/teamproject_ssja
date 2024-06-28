@@ -485,7 +485,9 @@
     $("vendor_apply").on('click', function(){
     	window.location.href="/vender/list/20";
     })
-    
+    $("#mange_yoursell").on('click',function(){
+    	window.location.href="/vendor";
+    })    
     	let getTotalInfo_order = function(totalInfo_pageNum) {
     	console.log(totalInfo_pageNum)
 	    $.ajax({
