@@ -45,10 +45,8 @@ public class LikeControllerTest {
 	}
 
 	@Test
-
 	@WithUserDetails(value = "test1", userDetailsServiceBeanName = "customUserDetail")
 	void testToggleLike_Exception() throws Exception {
-
 		String data = "{\"liked\": true}";
 		String bno = "1";
 		MockHttpServletResponse response = mockMvc

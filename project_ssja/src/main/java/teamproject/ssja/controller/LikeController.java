@@ -48,6 +48,11 @@ public class LikeController {
 	// LikesVO likes) {
 	public ResponseEntity<LikesVO> toggleLike(@PathVariable Long bno, @RequestParam("bno") String no1,
 			@RequestParam("mno") String mno) {
+		if (no1 == null || no1.isEmpty() || mno == null || mno.isEmpty()) {
+	        // bno와 mno가 유효하지 않은 경우 400 Bad Request 반환
+	        return ResponseEntity.badRequest().build();
+	    }
+		
 		try {
 			LikesVO currentLikes = boardService.modifyGetBoardLikes(no1, mno);
 			log.info("Current likes: " + currentLikes);
