@@ -1,8 +1,13 @@
 package teamproject.ssja.service.Admin;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import teamproject.ssja.dto.MembersDto;
+import teamproject.ssja.dto.PurchaseDto;
+import teamproject.ssja.dto.QnaBoardDto;
 import teamproject.ssja.mapper.AdminPageMapper;
 
 @Service
@@ -26,11 +31,16 @@ public class AdminInfoListService {
 	public int getDailyQnaCount() {
 		return adminPageMapper.getDailyQnaCount();
 	}
-	
-	
 
-	
-	
-	
+	public List<PurchaseDto> getDailyPurList() {
+		return adminPageMapper.getDailyPurList();
+	}
 
+	public  List<MembersDto> getDailyMList() {
+		return  adminPageMapper.getDailyMList();
+	}
+
+	public  List<QnaBoardDto> getDailyQnaList() {
+		return  adminPageMapper.getDailyQnaList();
+	}
 }

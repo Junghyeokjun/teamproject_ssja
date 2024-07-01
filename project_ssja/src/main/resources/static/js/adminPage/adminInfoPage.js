@@ -30,17 +30,7 @@
         let modal = new bootstrap.Modal(document.getElementById('totalInfoModal'));
         let condition = 'd';
 		
-		
-		  function openCenteredWindow(url, width, height) {
-	            const screenWidth = $(window).width();
-	            const screenHeight = $(window).height();
-
-	            const left = (screenWidth / 2) - (width / 2);
-	            const top = (screenHeight / 2) - (height / 2);
-
-	            window.open(url, '_blank', 'width=' + width + ',height=' + height + ',top=' + top + ',left=' + left);
-	        }
-		
+     
 
 	let myPageUserInfo = function() {
 		
@@ -57,143 +47,146 @@
 						let $h2title = $("<h2>").attr('id','myPageTitle').text("회원 정보");
 						let $myPageContent = $("#MyPage_content_container").removeClass().empty();
 						let $myPageTitle = $("#MyPage_content_name");
-						$myPageTitle.empty().append($h2title);
-						// 탈퇴 유보 기간에 속할 경우 보여질 부분
-						/*
-						 * if(userInfo.m_deletedate !== null){
-						 * 
-						 * return }
-						 */
+						$myPageTitle.empty().append($h2title);						
 
-						if(data.m_deletedate !== null){
-							let deleteDate = new Date(data.m_deletedate);
-							deleteDate.setDate(deleteDate.getDate() - 7);
-							let yy = deleteDate.getFullYear(); 
-							let mm = ('0' + (deleteDate.getMonth() + 1)).slice(-2);
-							let dd = ('0' + deleteDate.getDate()).slice(-2);
-							let deleteDateForm = yy + '-' + mm+'-'+dd;
-							$("<div>").addClass("w-100 p-5 d-flex flex-column justify-content-center align-items-center").css({'height':'400px','background-color':'#ccc'}).append(
-									
-									$("<h3>").addClass('text-center my-4')
-									.html('탈퇴 신청 일 : ' + deleteDateForm +"<br> 탈퇴 유보 종료일 : " + data.m_deletedate),
-									
-							$("<h4>").addClass('text-center')
-							.html('현재 회원님께서는 탈퇴 유보 기간입니다. <br> 현재는 유보 기간으로서 탈퇴 취소가가능합니다.')	,
-							
-							$("<div>").append(
-							$("<button>").addClass('my-5 btn btn-dark')
-							.css({'width':'250px','height':'5em','border-radius':'3px'})
-							.on('click', function(){
-								$.ajax({
-									type : "patch",
-									beforeSend : function(xhr) {
-										xhr.setRequestHeader(header, token);
-									},
-									url : "/user/delete/cancel", 
-									success : function(data) {
-										console.log(data);
-										alert('회원 탈퇴를 취소하셨습니다. \n 앞으로 정상회원으로 저희 서비스를 재이용 가능합니다.');
-										location.reload();
-									},
-									error : function(xhr ,status, e){
-										console.log("error!! : "+e + " status : " + status);
-									}
-								})
-								
-							}).text('탈퇴 취소')
-							)
-							).appendTo($myPageContent);
-							return 
-						}
+//						if(data.m_deletedate !== null){
+//							let deleteDate = new Date(data.m_deletedate);
+//							deleteDate.setDate(deleteDate.getDate() - 7);
+//							let yy = deleteDate.getFullYear(); 
+//							let mm = ('0' + (deleteDate.getMonth() + 1)).slice(-2);
+//							let dd = ('0' + deleteDate.getDate()).slice(-2);
+//							let deleteDateForm = yy + '-' + mm+'-'+dd;
+//							$("<div>").addClass("w-100 p-5 d-flex flex-column justify-content-center align-items-center").css({'height':'400px','background-color':'#ccc'}).append(
+//									
+//									$("<h3>").addClass('text-center my-4')
+//									.html('탈퇴 신청 일 : ' + deleteDateForm +"<br> 탈퇴 유보 종료일 : " + data.m_deletedate),
+//									
+//							$("<h4>").addClass('text-center')
+//							.html('현재 회원님께서는 탈퇴 유보 기간입니다. <br> 현재는 유보 기간으로서 탈퇴 취소가가능합니다.')	,
+//							
+//							$("<div>").append(
+//							$("<button>").addClass('my-5 btn btn-dark')
+//							.css({'width':'250px','height':'5em','border-radius':'3px'})
+//							.on('click', function(){
+//								$.ajax({
+//									type : "patch",
+//									beforeSend : function(xhr) {
+//										xhr.setRequestHeader(header, token);
+//									},
+//									url : "/user/delete/cancel", 
+//									success : function(data) {
+//										console.log(data);
+//										alert('회원 탈퇴를 취소하셨습니다. \n 앞으로 정상회원으로 저희 서비스를 재이용 가능합니다.');
+//										location.reload();
+//									},
+//									error : function(xhr ,status, e){
+//										console.log("error!! : "+e + " status : " + status);
+//									}
+//								})
+//								
+//							}).text('탈퇴 취소')
+//							)
+//							).appendTo($myPageContent);
+//							return 
+//						}
 						
-												
+						
+//						let $userInfo_dv1 = $("<div>").attr("id",
+//								"userInfo_dv1").addClass("w-100 my-3 mx-3");
+//						let $userInfo_name = $("<h2>").css("font-weight",
+//								"bold").text(userInfo.m_NickName);
+//						let $userInfo_txt1 = $("<span>").text('님의 등급은');
+//						let $userInfo_grade = $("<h2>").css("font-weight",
+//								"bold").text(userInfo.m_Grade);
+//						let $userInfo_txt2 = $("<span>").text('입니다.');
+//
+//						$userInfo_dv1.css({'margin-top':'2em','margin-bottom':'2em'}).append($userInfo_name, $userInfo_txt1,
+//								$userInfo_grade, $userInfo_txt2);
 
-						$userInfo_dv1.css({'margin-top':'2em','margin-bottom':'2em'}).append($userInfo_name, $userInfo_txt1,
-								$userInfo_grade, $userInfo_txt2);
-
-//						let $adminInfo_dv2 = $("<div>").attr("id",
-//								"adminInfo_dv2").addClass(" my-3 mx-3").css(
+//						let $userInfo_dv2 = $("<div>").attr("id",
+//								"userInfo_dv2").addClass(" my-3 mx-3").css(
 //								"background-color", "#eee");
-//						
-//						let $userInfo_orders = $("<div>").attr("id",
-//								"userInfo_orders").append($("<h4>").text("구매"),
-//								$("<span>").text(userInfo.countPurchase)).on('click',function(){
-//									if($("#totalInfoModalLabel").text() === '나의 구매'){
-//										modal.show();
-//										return false;
-//									}
-//									$("#totalInfoModalLabel").text('나의 구매');
-//									totalInfo_pageNum=1;
-//									getTotalInfo_order(totalInfo_pageNum);
-//									   modal.show();
-//								});
-//						let $userInfo_wishs = $("<div>").attr("id",
-//								"userInfo_wishs").append(
-//								$("<h4>").text("위시리스트"),
-//								$("<span>").text(userInfo.countWish)).on('click',function(){
-//									if($("#totalInfoModalLabel").text() === '나의 위시리스트'){
-//										modal.show();
-//										return false;
-//									}
-//									$("#totalInfoModalLabel").text('나의 위시리스트');
-//									totalInfo_pageNum=1;
-//									getTotalInfo_wish(totalInfo_pageNum);
-//									   modal.show();
-//								});
 						
-//						let $userInfo_points = $("<div>").attr("id",
-//								"userInfo_points").append(
-//								$("<h4>").text("포인트"),
-//								$("<span>").attr('id','span_tot_point').text(userInfo.m_Point)).on('click',function(){
-//									if($("#totalInfoModalLabel").text() === '나의 포인트'){
-//										modal.show();
-//										return false;
-//									}
-//									$("#totalInfoModalLabel").text('나의 포인트');
-//									totalInfo_pageNum=1;
-//									getTotalInfo_point(totalInfo_pageNum);
-//									   modal.show();
-//								});
-//						
-//						let $userInfo_coupons = $("<div>").attr("id",
-//								"userInfo_coupons").append(
-//								$("<h4>").text("쿠폰"),
-//								$("<span>").text(userInfo.countCoupon)).on('click',function(){
-//									if($("#totalInfoModalLabel").text() === '나의 쿠폰'){
-//										modal.show();
-//										return false;
-//									}
-//									$("#totalInfoModalLabel").text('나의 쿠폰');
-//									totalInfo_pageNum=1;
-//									getTotalInfo_coupon(totalInfo_pageNum, condition);
-//									modal.show();
-//								});
+						let $userInfo_orders = $("<div>").attr("id",
+								"userInfo_orders").append($("<h4>").text("구매"),
+								$("<span>").text(userInfo.countPurchase)).on('click',function(){
+									if($("#totalInfoModalLabel").text() === '나의 구매'){
+										modal.show();
+										return false;
+									}
+									$("#totalInfoModalLabel").text('나의 구매');
+									totalInfo_pageNum=1;
+									getTotalInfo_order(totalInfo_pageNum);
+									   modal.show();
+								});
+						
+						let $userInfo_wishs = $("<div>").attr("id",
+								"userInfo_wishs").append(
+								$("<h4>").text("위시리스트"),
+								$("<span>").text(userInfo.countWish)).on('click',function(){
+									if($("#totalInfoModalLabel").text() === '나의 위시리스트'){
+										modal.show();
+										return false;
+									}
+									$("#totalInfoModalLabel").text('나의 위시리스트');
+									totalInfo_pageNum=1;
+									getTotalInfo_wish(totalInfo_pageNum);
+									   modal.show();
+								});
+						
+						let $userInfo_points = $("<div>").attr("id",
+								"userInfo_points").append(
+								$("<h4>").text("포인트"),
+								$("<span>").attr('id','span_tot_point').text(userInfo.m_Point)).on('click',function(){
+									if($("#totalInfoModalLabel").text() === '나의 포인트'){
+										modal.show();
+										return false;
+									}
+									$("#totalInfoModalLabel").text('나의 포인트');
+									totalInfo_pageNum=1;
+									getTotalInfo_point(totalInfo_pageNum);
+									   modal.show();
+								});
+						
+						let $userInfo_coupons = $("<div>").attr("id",
+								"userInfo_coupons").append(
+								$("<h4>").text("쿠폰"),
+								$("<span>").text(userInfo.countCoupon)).on('click',function(){
+									if($("#totalInfoModalLabel").text() === '나의 쿠폰'){
+										modal.show();
+										return false;
+									}
+									$("#totalInfoModalLabel").text('나의 쿠폰');
+									totalInfo_pageNum=1;
+									getTotalInfo_coupon(totalInfo_pageNum, condition);
+									modal.show();
+								});
 
 						$userInfo_dv2.append($userInfo_orders, $userInfo_wishs,
 								$userInfo_points, $userInfo_coupons);
 						
-//						$userInfo_dv2.children("div").hover(function() {
-//						    $(this).css("cursor", "pointer");
-//						},
-//						function(){
-//						    $(this).css("cursor", "auto");
-//						})
+						$userInfo_dv2.children("div").hover(function() {
+						    $(this).css("cursor", "pointer");
+						},
+						function(){
+						    $(this).css("cursor", "auto");
+						})
 
-//						let $password_title = $("<h4>").addClass("mx-5 my-3")
-//								.text("비밀 번호 ");
-//						let $modify_password = $("<a>").attr("href",
-//								"/myPage/password/change")
-//								.addClass("btn btn-dark").text("변경하기").on('click',function(){
-//									if(userInfo.auth === 'social'){
-//										  let reject = confirm("소셜 로그인 유저는 비밀번호를 변경하실 수 없습니다. \n 회원으로 로그인하시겠습니까?");
-//										  if(reject){
-//											 
-//											$(this).attr('href','/login');
-//										 	 }else{
-//											  return false;
-//										 	 }
-//							    	}
-//								});
+						let $password_title = $("<h4>").addClass("mx-5 my-3")
+								.text("비밀 번호 ");
+						let $modify_password = $("<a>").attr("href",
+								"/myPage/password/change")
+								.addClass("btn btn-dark").text("변경하기").on('click',function(){
+									if(userInfo.auth === 'social'){
+										  let reject = confirm("소셜 로그인 유저는 비밀번호를 변경하실 수 없습니다. \n 회원으로 로그인하시겠습니까?");
+										  if(reject){
+											 
+											$(this).attr('href','/login');
+										 	 }else{
+											  return false;
+										 	 }
+							    	}
+								});
 						
 						let $userInfo_dv3 = $("<div>")
 								.attr("id", "userInfo_dv3")
@@ -359,52 +352,52 @@
 	};
 
 
-	let change_address = function() {
-		
-		if($("#extra_address").val() == null || $("#extra_address").val() == ""){
-			alert("상세주소를 입력해주세요.");
-			return;
-		}
-		let address_data = {
-			zip_code : $("#zip_code").val(),
-			address : $("#address").val(),
-			extra_address : $("#extra_address").val()
-		};
-
-		$.ajax({
-			type : "post",
-			beforeSend : function(xhr) {
-				xhr.setRequestHeader(header, token);
-			},
-			data : JSON.stringify(address_data),
-			contentType : "application/json",
-			url : "/user/address",
-			dataType : "json",
-			success : function(data){
-				alert('주소가 변경되었습니다');
-				myPageUserInfo();
-			}
-		})
-	}
+//	let change_address = function() {
+//		
+//		if($("#extra_address").val() == null || $("#extra_address").val() == ""){
+//			alert("상세주소를 입력해주세요.");
+//			return;
+//		}
+//		let address_data = {
+//			zip_code : $("#zip_code").val(),
+//			address : $("#address").val(),
+//			extra_address : $("#extra_address").val()
+//		};
+//
+//		$.ajax({
+//			type : "post",
+//			beforeSend : function(xhr) {
+//				xhr.setRequestHeader(header, token);
+//			},
+//			data : JSON.stringify(address_data),
+//			contentType : "application/json",
+//			url : "/user/address",
+//			dataType : "json",
+//			success : function(data){
+//				alert('주소가 변경되었습니다');
+//				myPageUserInfo();
+//			}
+//		})
+//	}
 	
-	let request_email_auth = function() {
-	    $.ajax({
-	        type: "post",
-	        beforeSend : function(xhr) {
-				xhr.setRequestHeader(header, token);
-			},
-			  data: JSON.stringify({'receiver': $("#modi_email_input").val()}),
-	        contentType: "application/json",
-	        url: "/user/email/auth",
-	        success: function(data) {
-	        	console.log(email_auth_code);
-	        	
-	            alert('해당 이메일로 인증번호를 전송하였습니다. \n 인증을 완료해주세요.');
-	            email_auth_code = data.authNum;
-	            console.log(email_auth_code);
-	        }
-	    });
-	};
+//	let request_email_auth = function() {
+//	    $.ajax({
+//	        type: "post",
+//	        beforeSend : function(xhr) {
+//				xhr.setRequestHeader(header, token);
+//			},
+//			  data: JSON.stringify({'receiver': $("#modi_email_input").val()}),
+//	        contentType: "application/json",
+//	        url: "/user/email/auth",
+//	        success: function(data) {
+//	        	console.log(email_auth_code);
+//	        	
+//	            alert('해당 이메일로 인증번호를 전송하였습니다. \n 인증을 완료해주세요.');
+//	            email_auth_code = data.authNum;
+//	            console.log(email_auth_code);
+//	        }
+//	    });
+//	};
 	let request_email_change = function() {
 	    $.ajax({
 	        type: "PATCH",
@@ -488,6 +481,7 @@
     	window.location.href="/vender/list/20";
     })
     
+    //1번째 칸
     	let getTotalInfo_order = function(totalInfo_pageNum) {
     	console.log(totalInfo_pageNum)
 	    $.ajax({
@@ -527,6 +521,7 @@
 	    })
     };
     
+    //4번째 칸
     let getTotalInfo_coupon= function(totalInfo_pageNum, condition) {
     	console.log(totalInfo_pageNum)
 	    $.ajax({
@@ -575,7 +570,7 @@
 	        }
 	    })
     };
-    
+  //3번째 칸
     let getTotalInfo_point = function(totalInfo_pageNum) {
     	console.log(totalInfo_pageNum)
 	    $.ajax({
@@ -615,7 +610,7 @@
 	        }
 	    })
     };
-    
+  //2번째 칸
     let getTotalInfo_wish= function(totalInfo_pageNum) {
     	console.log(totalInfo_pageNum)
 	    $.ajax({
@@ -640,7 +635,7 @@
 	        		let $content_orders = $("<div>").addClass("d-flex flex-row justify-content-evenly align-items-center py-1 px-2")
 	        		.css({'border-top':'1px solid #ccc','border-bottom':'1px solid #ccc'}).append(
 	        				$("<div>").addClass('d-flex flex-row').css('width','50%').append(
-	        				$("<img>").attr('src',item.pro_bannerimg).css({'width':'15%',"height":'auto'})		
+	        				$("<img>").attr('src',item.pro_bannerimg).css({'width':'15%',"height":'auto','margin-right':'0.8rem'})		
 	        				,$("<div>").addClass(" d-flex flex-column").append(
 	        						$("<span>").text('상품번호 : '+item.pro_no),
 	        						$("<span>").text(item.pro_name).attr('id','span_porductName'),
@@ -648,7 +643,6 @@
 	        	        	$("<span>").css('width','20%').text(item.wish_date.split(' ')[0]),		
 	        	        	$("<span>").css('width','20%').text(formatNumber(item.pro_price) )	,
 	        	        	$("<button>").addClass('btn btn-dark').text('삭제').on('click',function(event){
-	        	        		event.preventDefault();
 	        	        		  event.stopPropagation();
 	        	        		  deleteWish(item.pro_no);
 	        	        		  getTotalInfo_wish(totalInfo_pageNum);
@@ -671,7 +665,7 @@
     
     
     
-    
+    //1번째 칸  
     let pageModal = function(next, prev, pageNum,startPage, endPage, total, callback, number){
     	$("#totlaInfoTooter").empty();
     	let $paging_dv = $("<div>").attr('id','paging_modal_dv').appendTo("#totlaInfoTooter")

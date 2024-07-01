@@ -21,6 +21,7 @@ import teamproject.ssja.dto.MembersDto;
 import teamproject.ssja.dto.MembersSearchDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ProductsSearchDto;
+import teamproject.ssja.dto.PurchaseDto;
 import teamproject.ssja.dto.PurchaseSearchDto;
 import teamproject.ssja.dto.QnaBoardDto;
 import teamproject.ssja.dto.QnaSearchDto;
@@ -79,6 +80,13 @@ public class AdminPageController {
 		model.addAttribute("dailyPurcount", adminInfoListService.getDailyPurcount());
 		model.addAttribute("dailyMCount", adminInfoListService.getDailyMcount());
 		model.addAttribute("dailyQnaCount", adminInfoListService.getDailyQnaCount());
+		
+		
+//		model.addAttribute("dailyPurLists", adminInfoListService.getDailyPurList());
+//		model.addAttribute("dailyMLists", adminInfoListService.getDailyMList());
+//		model.addAttribute("dailyQnaLists", adminInfoListService.getDailyQnaList());
+		 
+		
 		List<Map<String, Object>> dailySales = salesListService.getDailySales();
 		model.addAttribute("dailySales", dailySales);
 		List<Map<String, Object>> dailyMCounts = salesListService.dailyMCounts();
@@ -88,6 +96,24 @@ public class AdminPageController {
 
 		return "/adminPage/AdminPage";
 	}
+	
+	@GetMapping("/dailyPurList")
+    @ResponseBody
+    public List<PurchaseDto> getDailyPurList() {
+        return adminInfoListService.getDailyPurList();
+    }
+
+    @GetMapping("/dailyMList")
+    @ResponseBody
+    public List<MembersDto> getDailyMList() {
+        return adminInfoListService.getDailyMList();
+    }
+
+    @GetMapping("/dailyQnaList")
+    @ResponseBody
+    public List<QnaBoardDto> getDailyQnaList() {
+        return adminInfoListService.getDailyQnaList();
+    }
 
 	@GetMapping("/membersList")
 	public String membersList(Model model, Criteria criteria) {

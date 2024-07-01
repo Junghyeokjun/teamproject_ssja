@@ -120,4 +120,11 @@ public interface AdminPageMapper {
 
 		int insertAdminProduct(ProductDto productDto);
 
+		//일일 조회 리스트들
+		List<PurchaseDto> getDailyPurList();
+
+		List<MembersDto> getDailyMList();
+
+		List<QnaBoardDto> getDailyQnaList();
+
 }

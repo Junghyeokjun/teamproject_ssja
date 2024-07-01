@@ -1,9 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="teamproject.ssja.mapper.AdminPageMapper">
+
+	<!-- 일일주문내역 -->	
+	<select id="getDailyPurList" resultType="PurchaseDto">
+	    <![CDATA[		
+	   SELECT *
+		FROM purchase
+		WHERE TRUNC(pur_date) =  TRUNC(sysdate)
+	     ]]>
+	</select>
 	
+		<!-- 일일가입자내역 -->		
+	<select id="getDailyMList" resultType="MembersDto">
+	    <![CDATA[		
+	   SELECT *
+FROM members
+WHERE TRUNC(m_date) =  TRUNC(sysdate)
+	     ]]>
+	</select>	
+	
+		<!-- 일일문의내역 -->		
+	<select id="getDailyQnaList" resultType="QnaBoardDto">
+	    <![CDATA[		
+	   SELECT *
+	   FROM board 
+	   where b_c_no=20 and TRUNC(b_date) =  TRUNC(sysdate)
+	     ]]>
+	</select>
+		
 	<select id="getDailyPrice" resultType="int">
 	    <![CDATA[		
 	    SELECT NVL(sum(p_price), 0) as Daily_price
@@ -26,8 +52,7 @@
 FROM members
 WHERE TRUNC(m_date) =  TRUNC(sysdate)
 	     ]]>
-	</select>
-	
+	</select>	
 	
 	<select id="getDailyQnaCount" resultType="int">
 	    <![CDATA[		
@@ -36,7 +61,7 @@ WHERE TRUNC(m_date) =  TRUNC(sysdate)
 	   where b_c_no=20 and TRUNC(b_date) =  TRUNC(sysdate)
 	     ]]>
 	</select>
-
+	
 	<resultMap id="MembersListMap" type="MembersDto">
 		<id property="M_NO" column="M_NO" />
 		<result property="M_ID" column="M_ID" />
@@ -67,7 +92,7 @@ WHERE TRUNC(m_date) =  TRUNC(sysdate)
 			    select
 			        rownum rnum , A.*
 			    from 
-			    (SELECT * FROM Members WHERE M_DELETEDATE IS NULL ORDER BY M_NO) A 
+			    (SELECT * FROM Members WHERE M_DELETEDATE IS NULL ORDER BY M_NO desc) A 
 		    	where rownum <= #{pageNum} * #{amount} 
 		    )
 			where rnum > (#{pageNum}-1) * #{amount}
