@@ -124,6 +124,7 @@ padding:0;
 								<td scope="col">제목</td>
 								<td scope="col">내용</td>
 								<td scope="col">날짜</td>
+								<td scope="col"></td>
 							</tr>
 						</thead>
 						<tbody class="table-group-divider" id="qna_content_tablebody">
@@ -134,8 +135,8 @@ padding:0;
 									<td>${qna.getB_WRITER()}</td>
 									<td><a  id="qna_title_a"  href="/board/content_view/20?bno=${qna.getB_NO() }">${qna.getB_TITLE()}</a></td>
 									<td>${qna.getB_CONTENT()}</td>
-									<td>${qna.getB_DATE()}
-										<button type="button" class="btn btn-outline-dark"
+									<td>${qna.getB_DATE()}</td>
+									<td><button type="button" class="btn btn-outline-dark"
 											id="modifyQnaBtn">수정</button>
 										<button type="button" class="btn btn-outline-danger"
 											id="deleteQnaBtn">삭제</button>
