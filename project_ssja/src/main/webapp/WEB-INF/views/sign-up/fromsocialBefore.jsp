@@ -31,6 +31,7 @@
     body {
       font-family: 'fonts', NanumSquare;
       background-color: #f7f0e8;
+      margin-100px;
     }
 
     textarea{

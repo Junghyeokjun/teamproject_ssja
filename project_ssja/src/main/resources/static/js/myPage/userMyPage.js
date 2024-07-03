@@ -99,8 +99,9 @@
 						
 						let $userInfo_dv1 = $("<div>").attr("id",
 								"userInfo_dv1").addClass("w-100 my-3 mx-3");
-						let $userInfo_name = $("<h2>").css("font-weight",
-								"bold").text(userInfo.m_NickName);
+						let $userInfo_name = $("<a>").attr("href","/community/userinfo/"+userInfo.m_No)
+						.css({"font-weight":"bold","color":"black","font-size":"2rem"})
+						.text(userInfo.m_NickName);
 						let $userInfo_txt1 = $("<span>").text('님의 등급은');
 						let $userInfo_grade = $("<h2>").css("font-weight",
 								"bold").text(userInfo.m_Grade);
@@ -650,7 +651,7 @@
 	        	        	$("<button>").addClass('btn btn-dark').text('삭제').on('click',function(event){
 	        	        		  event.stopPropagation();
 	        	        		  deleteWish(item.pro_no);
-	        	        		  getTotalInfo_wish(totalInfo_pageNum);
+	        	        		 
 	        	        	})
 	        				 ).appendTo( $totalInfoContent);
 	        		
@@ -726,6 +727,7 @@
 	        url: "/wishlist?productNum=" + productNum,
 	        success: function(data) {
 	        	console.log(data);
+	        	 getTotalInfo_wish(totalInfo_pageNum);
 	        }
 		})
 	}
