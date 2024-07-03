@@ -35,9 +35,7 @@
 <script src="/js/footer.js">
 	
 </script>
-<script src="/js/board.js">
-	
-</script>
+
 <link href="/css/footerstyle.css?after" rel="stylesheet">
 <link href="/css/barstyle.css?after" rel="stylesheet">
 <link href="/css/board.css?after" rel="stylesheet">

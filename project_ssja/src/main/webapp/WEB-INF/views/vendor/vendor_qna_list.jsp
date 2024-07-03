@@ -488,12 +488,13 @@
 							let board = response.totalData[i];
 							let tr = $('<tr>').append($('<td>').text(board.bno))
 										.append($('<td>').append($('<a>').attr('id','board_title').attr('href','${pageContext.request.contextPath}/vendor/question/content_view/' + board.bbcno + '?bno=' + board.bno).text(board.btitle)))
-										.append($('<td>').text(board.bdate));
+										.append($('<td>').addClass('date_str').text(board.bdate));
 							$('tbody').append(tr);
 						}
-					}
-					
+					}				
 
+					formatDates();
+					
 					let pagingUl = $('.pagination.ch-col.justify-content-center');
 					pagingUl.empty();
 
