@@ -18,6 +18,7 @@ import teamproject.ssja.dto.PurchaseDto;
 import teamproject.ssja.dto.PurchaseSearchDto;
 import teamproject.ssja.dto.QnaBoardDto;
 import teamproject.ssja.dto.QnaSearchDto;
+import teamproject.ssja.dto.VendorDetailsDto;
 import teamproject.ssja.dto.userinfo.CouponDTO;
 import teamproject.ssja.page.Criteria;
 
@@ -56,6 +57,8 @@ public interface AdminPageMapper {
 	  void updateCoupon(CouponDTO couponDto); // updateCoupon 쿼리 메서드
 
 		List<Map<String, Object>> getDailySalesList();
+		
+		List<Map<String, Object>> getWeeklySalesList();
 
 		List<Map<String, Object>> getMonthlySalesList();
 		
@@ -127,5 +130,7 @@ public interface AdminPageMapper {
 		List<MembersDto> getDailyMList();
 
 		List<QnaBoardDto> getDailyQnaList();
+
+		List<VendorDetailsDto> getVendorsList();
 
 }

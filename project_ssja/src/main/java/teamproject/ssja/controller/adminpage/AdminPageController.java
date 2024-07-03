@@ -22,10 +22,10 @@ import teamproject.ssja.dto.MembersSearchDto;
 import teamproject.ssja.dto.OrderDetailsDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ProductsSearchDto;
-import teamproject.ssja.dto.PurchaseDto;
 import teamproject.ssja.dto.PurchaseSearchDto;
 import teamproject.ssja.dto.QnaBoardDto;
 import teamproject.ssja.dto.QnaSearchDto;
+import teamproject.ssja.dto.VendorDetailsDto;
 import teamproject.ssja.dto.userinfo.CouponDTO;
 import teamproject.ssja.page.Criteria;
 import teamproject.ssja.page.Page10VO;
@@ -81,13 +81,7 @@ public class AdminPageController {
 		model.addAttribute("dailyPurcount", adminInfoListService.getDailyPurcount());
 		model.addAttribute("dailyMCount", adminInfoListService.getDailyMcount());
 		model.addAttribute("dailyQnaCount", adminInfoListService.getDailyQnaCount());
-		
-		
-//		model.addAttribute("dailyPurLists", adminInfoListService.getDailyPurList());
-//		model.addAttribute("dailyMLists", adminInfoListService.getDailyMList());
-//		model.addAttribute("dailyQnaLists", adminInfoListService.getDailyQnaList());
-		 
-		
+				
 		List<Map<String, Object>> dailySales = salesListService.getDailySales();
 		model.addAttribute("dailySales", dailySales);
 		List<Map<String, Object>> dailyMCounts = salesListService.dailyMCounts();
@@ -114,6 +108,12 @@ public class AdminPageController {
     @ResponseBody
     public List<QnaBoardDto> getDailyQnaList() {
         return adminInfoListService.getDailyQnaList();
+    }
+    
+    @GetMapping("/vendorsList")
+    @ResponseBody
+    public List<VendorDetailsDto> getVendorsList() {
+        return memberListService.getVendorsList();
     }
 
 	@GetMapping("/membersList")
@@ -308,8 +308,8 @@ public class AdminPageController {
 	@GetMapping("/salesList")
 	public String getDailySales(Model model) {
 		log.info("salesList()..");
-		List<Map<String, Object>> dailySales = salesListService.getDailySales();
-		model.addAttribute("dailySales", dailySales);
+		List<Map<String, Object>> weeklySales = salesListService.getWeeklySales();
+		model.addAttribute("weeklySales",weeklySales);
 		List<Map<String, Object>> monthlySales = salesListService.getMonthlySales();
 		model.addAttribute("monthlySales", monthlySales);
 		List<Map<String, Object>> yearlySales = salesListService.getYearlySales();
