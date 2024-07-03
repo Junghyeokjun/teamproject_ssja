@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Select;
 
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.BoardForm;
+import teamproject.ssja.dto.NoticeSearchDto;
 import teamproject.ssja.page.Criteria;
 
 @Mapper
@@ -23,4 +24,6 @@ public interface NoticeBoardMapper {
 	
 	BoardDto getCurrentNotice(Long boardNum);
 	void renewNotice(BoardDto data);
+
+	List<NoticeSearchDto> getNoticeSearchList(String type, String keyword);
 } 

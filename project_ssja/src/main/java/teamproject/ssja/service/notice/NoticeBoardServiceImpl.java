@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.BoardDto;
+import teamproject.ssja.dto.NoticeSearchDto;
 import teamproject.ssja.mapper.NoticeBoardMapper;
 import teamproject.ssja.page.Criteria;
 
@@ -36,5 +37,11 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
 	public List<BoardDto> showListWithPaging(Criteria criteria) {
 		log.info("showListWithPaging()..");
 		return noticeBoardMapper.selectListWithPaging(criteria);
+	}
+
+	@Override
+	public List<NoticeSearchDto> getNoticeSearchList(String type, String keyword) {
+		log.info("getNoticeSearchList()..");
+		return noticeBoardMapper.getNoticeSearchList(type,keyword);
 	}
 }
