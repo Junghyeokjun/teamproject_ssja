@@ -19,6 +19,10 @@ public class SalesListService {
 	public List<Map<String, Object>> getDailySales() {
 		return adminPageMapper.getDailySalesList();
 	}
+	
+	public List<Map<String, Object>> getWeeklySales() {
+		return adminPageMapper.getWeeklySalesList();
+	}
 
 	public List<Map<String, Object>> getMonthlySales() {
 		return adminPageMapper.getMonthlySalesList();
@@ -49,6 +53,4 @@ public class SalesListService {
 		return data;
 	}
 	
-	
-
 }
