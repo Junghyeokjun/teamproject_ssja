@@ -98,10 +98,10 @@ padding:0;
 					style="display: flex; flex-wrap: nowrap; justify-content: center;">
 					<div style="flex: 1; margin-right: 10px; text-align: center;">
 						<h4 class="mx-5 my-3">
-							일일 매출
-							<p style="font-size: 0.8em; display: inline;">(최근일주일)</p>
+							주간 매출
+							<p style="font-size: 0.8em; display: inline;">(최근 4주차)</p>
 						</h4>
-						<canvas id="dailySalesChart" width="50" height="50"></canvas>
+						<canvas id="weeklySalesChart" width="50" height="50"></canvas>
 					</div>
 					<div
 						style="flex: 1; margin-left: 10px; margin-right: 10px; text-align: center;">
@@ -121,31 +121,34 @@ padding:0;
 				</div>
 			</div>
 		</div>
-		<script>
+<script>
         document.addEventListener('DOMContentLoaded', function() {
-            var dailySalesString = '${dailySales}';
-            console.log(dailySalesString); 
+            var weeklySalesString = '${weeklySales}';
+            console.log('Original string:', weeklySalesString); 
 
             // 1. 문자열에서 =를 :로 대체합니다.
-            dailySalesString = dailySalesString.replace(/=/g, ':');
+            weeklySalesString = weeklySalesString.replace(/=/g, ':');
 
             // 2. DAYSALES 키와 값을 적절히 변경합니다.
-            dailySalesString = dailySalesString.replace(/P_DATE:/g, '"P_DATE":"');
-            dailySalesString = dailySalesString.replace(/, P_PRICE:/g, '", "P_PRICE":');
-            
-            // 3. 최종적으로 문자열을 JSON 형식으로 변환합니다.
-            console.log(dailySalesString); 
+            weeklySalesString = weeklySalesString.replace(/WEEK:/g, '"WEEK":"');
+            weeklySalesString = weeklySalesString.replace(/, WEEKLYTOTALPAY:/g, '", "WEEKLYTOTALPAY":');
+
+            // 최종적으로 문자열을 JSON 형식으로 변환합니다.
+            console.log('Formatted string:', weeklySalesString);
 
             try {
                 // JSON 형식의 문자열을 JavaScript 객체로 파싱합니다.
-                var dailySales = JSON.parse(dailySalesString);
+                var weeklySales = JSON.parse(weeklySalesString);
+                console.log('Parsed dailySales:', weeklySales);
 
                 // 날짜와 매출 데이터 추출
-                var dates = dailySales.map(item => item.P_DATE.split(' ')[0]); // 날짜만 추출
-                var totalPays = dailySales.map(item => item.P_PRICE);
+                var dates = weeklySales.map(item => item.WEEK); // 날짜만 추출
+                var totalPays = weeklySales.map(item => item.WEEKLYTOTALPAY);
+                console.log('Dates:', dates);
+                console.log('Total Pays:', totalPays);
 
                 // Chart.js를 사용한 그래프 설정
-                var ctx = document.getElementById('dailySalesChart').getContext('2d');
+                var ctx = document.getElementById('weeklySalesChart').getContext('2d');
                 var myChart = new Chart(ctx, {
                     type: 'bar',
                     data: {
@@ -155,6 +158,21 @@ padding:0;
                             data: totalPays,
                             backgroundColor: "#8e5ea2"
                         }]
+                    },
+                    options: {
+                        scales: {
+                            xAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: '주차' // X 축 레이블 설정
+                                }
+                            }],
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true // Y 축 시작값을 0으로 설정
+                                }
+                            }]
+                        }
                     }
                 });
             } catch (error) {
@@ -262,23 +280,6 @@ padding:0;
          } 
      });
     </script>
-		<!-- <script>	      
-	            // AJAX 요청 보내기
-	            $.ajax({
-	                url: "/adminPage/salesData/",
-	                method: 'GET',
-	                success: function(data) {
-	                    console.log('Success:', data);
-	                    // 서버로부터 받은 데이터를 처리하는 로직을 여기에 작성하세요
-	                     $('#totalSales').text(data.DAYSALES);
-	                     $('#transactionCount').text(data.DAYSTOTALPAY);
-	                },
-	                error: function(xhr, status, error) {
-	                    console.error('Error:', error);
-	                }
-	            });
-	      
-	    </script> -->
 
 	</main>
 	<footer>

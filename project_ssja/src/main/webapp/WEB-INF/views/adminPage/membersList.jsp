@@ -102,7 +102,7 @@
 			class="d-flex flex-row align-items-center justify-content-center">
 			<div id="content_dv">
 				<div id="AdminPage_content_name">
-					<h2 id="AdminPageTitle">회원목록</h2>
+					<h2 id="AdminPageTitle">회원 목록</h2>
 				</div>
 				<br>
 				<form name="members-search-form" autocomplete="off">
@@ -114,6 +114,7 @@
 					</select> <input type="text" name="keyword" value=""> <input
 						type="button" onclick="membersSearchList()"
 						class="btn btn-outline-dark mr-2" value="검색">
+						<input type="button"  class="btn btn-outline-dark mr-2" value="판매회원목록" id="vendorMembersBtn">												
 				</form>
 				<div class="table-responsive">
 					<table class="table" id="memberstable" style="text-align: center;">
@@ -194,7 +195,7 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="editMemberModalLabel">문의 수정</h5>
+						<h5 class="modal-title" id="editMemberModalLabel">회원 정보 수정</h5>
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -247,6 +248,65 @@
 				</div>
 			</div>
 		</div>
+		<!-- 모달 -->
+    <div class="modal fade" id="vendorMembersListModal" tabindex="-1" aria-labelledby="vendorMembersModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="vendorMembersModalLabel">판매회원목록</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table" style="text-align: center;">
+                            <thead>
+                                <tr>
+                                    <th scope="col">판매회원번호</th>
+                                    <th scope="col">아이디</th>
+                                    <th scope="col">이름</th>
+                                    <th scope="col">사업체</th>
+                                    <th scope="col">사업자번호</th>
+                                </tr>
+                            </thead>
+                            <tbody id="vendorMembersTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    $('#vendorMembersBtn').on('click', function (event) {
+        $.ajax({
+            url: '/adminPage/vendorsList',
+            method: 'GET',
+            success: function (data) {
+                var modal = $('#vendorMembersListModal');
+                var tableBody = modal.find('#vendorMembersTableBody');
+                tableBody.empty(); // 기존 목록 초기화
+                
+               data.forEach(function (vendor) {
+                    var row = '<tr><td>' + vendor.v_no 
+                    + '</td><td>' + vendor.m_id 
+                    + '</td><td>' + vendor.m_name 
+                    + '</td><td>' + vendor.v_bizname 
+                    + '</td><td>' + vendor.v_license + '</td></tr>';
+                    tableBody.append(row);
+                }); 
+                modal.modal('show'); // 모달 열기
+            },
+            error: function () {
+                console.error('Failed to fetch order list.');
+            }
+        });
+    });
+    </script>
 		<script>
 			$(document).ready(function() {
 				$('body').on('click', '#modifyMemberBtn', function() {

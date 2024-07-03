@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%-- <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="sec"
@@ -22,6 +22,8 @@
 	crossorigin="anonymous">
 	
 </script>
+<meta name="_csrf" content="${_csrf.token}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="/js/barscript.js">
@@ -81,6 +83,59 @@ body {
 #icn_txt {
 	text-align: center;
 }
+</style> --%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSJA</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+	crossorigin="anonymous" />
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+	crossorigin="anonymous">
+	
+</script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script
+	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<meta name="_csrf" content="${_csrf.token}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<script src="/js/barscript_admin.js"></script>
+<script src="/js/footer.js"></script>
+<link href="/css/footerstyle.css?after" rel="stylesheet">
+<link href="/css/barstyle_admin.css?after" rel="stylesheet">
+<link href="/css/board.css?after" rel="stylesheet">
+<link rel="stylesheet"
+	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
+<style>
+/* 추가된 CSS 스타일 */
+#qnastable td {
+	white-space: nowrap; /* 줄 바꿈 없이 한 줄에 표시 */
+}
+
+#qnastable thead {
+	font-weight: bold; /* 열 제목을 굵은 글꼴로 설정 */
+}
+#qna_title_a{
+cursor:pointer;
+}
+#adminPage_Info_Select{
+padding:0;
+}
 </style>
 </head>
 
@@ -113,8 +168,17 @@ body {
 		<div id="main_container" style="margin: 0 auto;">
 			<br>
 			<h2>공지사항</h2>
+			<form name="notices-search-form" autocomplete="off">
+					<select name="type">
+						<option selected value="">선택</option>
+						<option value="b_title">제목</option>
+						<option value="b_content">내용</option>
+					</select> <input type="text" name="keyword" value=""> <input
+						type="button" onclick="noticeSearchList()"
+						class="btn btn-outline-dark mr-2" value="검색">
+				</form>
 			<div class="table-responsive">
-				<table class="table" style="text-align: center;">
+				<table class="table"  id="noticestable" style="text-align: center;">
 					<thead>
 						<tr>
 							<td scope="col">번호</td>
@@ -123,7 +187,7 @@ body {
 							<td scope="col">날짜</td>
 						</tr>
 					</thead>
-					<tbody class="table-group-divider">
+					<tbody class="table-group-divider" id="notice_content_tablebody">
 						<c:forEach var="notice" items="${notics}">
 							<tr>
 								<td>${notice.bno}</td>
@@ -136,7 +200,7 @@ body {
 						</c:forEach>
 					</tbody>
 				</table>
-				<div>
+					<div id="paging_dv">
 					<nav aria-label="Page navigation example">
 						<ul class="pagination ch-col justify-content-center">
 							<c:if test="${pageMaker.prev}">
@@ -183,4 +247,40 @@ body {
 </sec:authorize>
 	
 </body>
+<script>
+var contextPath = "${pageContext.request.contextPath}";
+
+	function noticeSearchList() {
+		$.ajax({
+			type : 'GET',
+			url : "/noticeSearchList",
+			data : $("form[name=notices-search-form]").serialize(),
+			success : function(result) {
+				console.log(result);
+				$('#noticestable > tbody').empty();
+				if (result.length >= 1) {
+					$("#paging_dv").empty();
+					result.forEach(function(notice) {
+						var str = '<tr>';
+						str += "<td>" + notice.bno + "</td>";
+						str += "<td><a href='" + contextPath + "/notice_view?bno=" + notice.bno + "' class='notice-link'>" + notice.btitle + "</a></td>";
+	                    str += "<td>" + notice.bwriter + "</td>";
+						str += "<td>" + notice.bdate + "</td>";						
+						str += "</tr>";
+						$('#noticestable > tbody').append(str);
+					});
+					// 클릭 이벤트 핸들러 추가
+					$('.notice-link').click(function (e) {
+						e.preventDefault(); // 기본 동작 방지
+						var url = $(this).attr('href');
+						console.log("Navigate to: " + url);
+						window.location.href = url;
+					});
+				} else {
+					$('#noticestable > tbody').append('<tr><td colspan="4">검색 결과가 없습니다.</td></tr>');
+				}				
+			}
+		});
+	}
+</script>	
 </html>

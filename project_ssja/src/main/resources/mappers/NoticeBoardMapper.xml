@@ -36,6 +36,38 @@
 			where rnum > (#{pageNum}-1) * #{amount}
         ]]>
 	</select>
+	
+	<!-- 게시글 검색맵 -->
+	<resultMap id="NoticeSearchDtoMap" type="NoticeSearchDto" >
+		<id property="bno" column="b_no"/>
+		<result property="bmno" column="m_no"/>
+		<result property="bbcno" column="b_c_no"/>
+		<result property="bwriter" column="b_writer"/>
+		<result property="btitle" column="b_title"/>
+		<result property="bcontent" column="b_content"/>
+		<result property="bdate" column="b_date"/>
+		<result property="blike" column="b_like"/>
+		<result property="bhit" column="b_hit"/>
+		<result property="beval" column="b_eval"/>
+		<result property="prono" column="pro_no"/>		
+		<result property="type" column="type" />
+		<result property="keyword" column="keyword" />		
+	</resultMap>
+	
+	<select id="getNoticeSearchList"  parameterType="string"  resultMap="NoticeSearchDtoMap">    
+
+SELECT  * FROM board where b_c_no= 10               
+<choose>
+               <when test="#{type} != null and type.equals('b_title')">
+                and b_title  LIKE '%${keyword}%'
+               </when>
+                <when test="#{type} != null and type.equals('b_content')">
+                and b_content  LIKE '%${keyword}%'
+               </when>
+               </choose>       
+               
+	</select>		
+	
 
 	<select id="selectTotalCount" resultType="long">
     	<![CDATA[

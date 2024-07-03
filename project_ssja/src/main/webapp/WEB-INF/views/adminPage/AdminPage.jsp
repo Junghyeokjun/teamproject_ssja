@@ -43,7 +43,6 @@
 /* 모달 중앙 정렬 */
 .modal-dialog {
     position: fixed;
-    top: 30%;
     left: 30%;
     transform: translate(-50%, -50%);
     max-width: 90%; /* 모달의 최대 너비 설정 */
@@ -100,7 +99,7 @@
 			class="d-flex flex-row align-items-center justify-content-center">
 			<div id="content_dv">
 				<div id="AdminPage_content_name">
-					<h2 id="AdminPageTitle">SSJA 현황</h2>
+					<h2 id="page_title">SSJA 현황</h2>
 				</div>
 				<div id=main_div>
 					<div id="AdminPage_content_container">
@@ -168,17 +167,18 @@
                         <tr>
                            <td scope="col">주문번호</td>
 								<td scope="col">회원번호</td>
-								<td scope="col">총 금액</td>
-								<td scope="col">결제수단</td>
-								<td scope="col">주문일자</td>
-								<td scope="col">주소</td>
-								<td scope="col">배송업체</td>
+								<td scope="col">상품명</td>
+								<td scope="col">주문수량</td>
                         </tr>
                     </thead>
                     <tbody id="orderCountTableBody">
-                        <!-- 여기에 데이터가 동적으로 추가됩니다 -->
                     </tbody>
                 </table>
+                <nav>
+                            <ul class="pagination" id="pagination">
+                                <!-- 페이징 버튼이 여기에 동적으로 추가됩니다 -->
+                            </ul>
+                        </nav>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
@@ -249,6 +249,96 @@
     </div>
 	</main>
 	<script>
+        $(document).ready(function() {
+            var pageSize = 10; // 한 페이지당 표시할 주문 수
+
+            $('#dailyPurcount').on('click', function (event) {
+                // 페이지 초기화
+                var currentPage = 1;
+
+                // 서버에서 주문 목록 데이터를 가져오는 API 호출 예시
+                fetchOrderList(currentPage);
+
+                // 페이지 번호 클릭 시 이벤트 처리
+                $('#pagination').on('click', 'li.page-item', function() {
+                    currentPage = $(this).data('page');
+                    fetchOrderList(currentPage);
+                });
+
+                function fetchOrderList(page) {
+                    $.ajax({
+                        url: '/adminPage/dailyPurList',  // API 엔드포인트 URL
+                        method: 'GET',
+                        data: {
+                            page: page,
+                            pageSize: pageSize
+                        },
+                        success: function (data) {
+                            var modal = $('#orderListModal');
+                            var tableBody = modal.find('#orderCountTableBody');
+                            var pagination = $('#pagination');
+                            tableBody.empty(); // 기존 목록 초기화
+
+                            // 주문 목록 테이블에 추가
+                            data.forEach(function (order) {
+                                var row = '<tr><td>' + order.o_NO 
+                                    + '</td><td>' + order.m_NO 
+                                    + '</td><td>' + order.pro_NAME 
+                                    + '</td><td>' + order.o_QUANTITY + '</td></tr>';
+                                tableBody.append(row);
+                            }); 
+
+                            // 페이징 버튼 생성
+                            renderPagination(page);
+
+                            modal.modal('show'); // 모달 열기
+                        },
+                        error: function () {
+                            console.error('Failed to fetch order list.');
+                        }
+                    });
+                }
+
+                // 페이징 버튼 생성 함수
+                function renderPagination(currentPage) {
+                    $.ajax({
+                        url: '/adminPage/dailyPurList', // 페이징 처리를 위한 API 호출 예시
+                        method: 'GET',
+                        data: {
+                            page: currentPage,
+                            pageSize: pageSize
+                        },
+                        success: function(data) {
+                            var pagination = $('#pagination');
+                            pagination.empty(); // 기존 페이징 초기화
+
+                            // 전체 페이지 수 계산
+                            var totalPages = Math.ceil(data.totalCount / pageSize);
+
+                            // 이전 버튼
+                            var prevButton = '<li class="page-item"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+                            pagination.append(prevButton);
+
+                            // 페이지 번호 버튼들
+                            for (var i = 1; i <= totalPages; i++) {
+                                var activeClass = (i === currentPage) ? 'active' : '';
+                                var pageButton = '<li class="page-item ' + activeClass + '" data-page="' + i + '"><a class="page-link" href="#">' + i + '</a></li>';
+                                pagination.append(pageButton);
+                            }
+
+                            // 다음 버튼
+                            var nextButton = '<li class="page-item"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
+                            pagination.append(nextButton);
+                        },
+                        error: function() {
+                            console.error('Failed to fetch pagination data.');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+	<!-- <script>
     // 주문 목록 클릭 시 모달에 데이터 동적으로 로드
     $('#dailyPurcount').on('click', function (event) {
         // 서버에서 주문 목록 데이터를 가져오는 API 호출 예시
@@ -260,25 +350,21 @@
                 var tableBody = modal.find('#orderCountTableBody');
                 tableBody.empty(); // 기존 목록 초기화
                 
-                //수정해야함
-                /* data.forEach(function (order) {
-                    var row = '<tr><td>' + order.orderNumber 
-                    + '</td><td>' + order.memberNumber 
-                    + '</td><td>' + order.totalAmount 
-                    + '</td><td>' + order.paymentMethod 
-                    + '</td><td>' + order.orderDate + '</td><td>' 
-                    + order.address + '</td><td>' 
-                    + order.deliveryCompany + '</td></tr>';
+               data.forEach(function (order) {
+                    var row = '<tr><td>' + order.o_NO 
+                    + '</td><td>' + order.m_NO 
+                    + '</td><td>' + order.pro_NAME 
+                    + '</td><td>' + order.o_QUANTITY + '</td></tr>';
                     tableBody.append(row);
-                }); */
+                }); 
                 modal.modal('show'); // 모달 열기
             },
             error: function () {
                 console.error('Failed to fetch order list.');
             }
         });
-    });
-
+    }); -->
+<script>
  // 문의 건수 클릭 시 모달에 데이터 동적으로 로드
     $('#dailyQnaCount').on('click', function (event) {
         $.ajax({
@@ -327,11 +413,10 @@
         });
     });
 </script>
-	
 	<script>
         document.addEventListener('DOMContentLoaded', function() {
             var dailySalesString = '${dailySales}';
-            console.log(dailySalesString); 
+            console.log('Original string:', dailySalesString); 
 
             // 1. 문자열에서 =를 :로 대체합니다.
             dailySalesString = dailySalesString.replace(/=/g, ':');
@@ -339,17 +424,37 @@
             // 2. DAYSALES 키와 값을 적절히 변경합니다.
             dailySalesString = dailySalesString.replace(/P_DATE:/g, '"P_DATE":"');
             dailySalesString = dailySalesString.replace(/, P_PRICE:/g, '", "P_PRICE":');
-            
-            // 3. 최종적으로 문자열을 JSON 형식으로 변환합니다.
-            console.log(dailySalesString); 
+
+            // 최종적으로 문자열을 JSON 형식으로 변환합니다.
+            console.log('Formatted string:', dailySalesString);
 
             try {
                 // JSON 형식의 문자열을 JavaScript 객체로 파싱합니다.
                 var dailySales = JSON.parse(dailySalesString);
+                console.log('Parsed dailySales:', dailySales);
 
                 // 날짜와 매출 데이터 추출
                 var dates = dailySales.map(item => item.P_DATE.split(' ')[0]); // 날짜만 추출
                 var totalPays = dailySales.map(item => item.P_PRICE);
+                console.log('Dates:', dates);
+                console.log('Total Pays:', totalPays);
+
+                // 최근 7일의 날짜 생성
+                var today = new Date();
+                var lastWeekDates = [];
+                for (var i = 6; i >= 0; i--) {
+                    var date = new Date(today);
+                    date.setDate(today.getDate() - i);
+                    var day = ('0' + date.getDate()).slice(-2);
+                    var month = ('0' + (date.getMonth() + 1)).slice(-2);
+                    lastWeekDates.push(month + '-' + day);
+                }
+
+                // 데이터가 비어있을 경우 기본값 설정
+                if (dates.length === 0) {
+                    dates = lastWeekDates;
+                    totalPays = new Array(7).fill(0);
+                }
 
                 // Chart.js를 사용한 그래프 설정
                 var ctx = document.getElementById('dailySalesChart').getContext('2d');
@@ -362,6 +467,26 @@
                             data: totalPays,
                             backgroundColor: "#8e5ea2"
                         }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true, // y축의 시작을 0으로 설정
+                                ticks: {
+                                    stepSize: 10000, // y축 간격을 10,000 단위로 설정
+                                    callback: function(value) {
+                                        return value.toLocaleString(); // 값에 쉼표 추가
+                                    }
+                                },
+                                min: 0, // y축 최소값 설정
+                                max: 100000 // y축 최대값 설정
+                            },
+                            x: {
+                                ticks: {
+                                    autoSkip: false // x축 레이블 자동 생략 비활성화
+                                }
+                            }
+                        }
                     }
                 });
             } catch (error) {
@@ -369,23 +494,46 @@
             }
         });
     </script>
-	<script>
+<script>
         document.addEventListener('DOMContentLoaded', function() {
             var dailyMCountsString = '${dailyMCounts}';
-            console.log(dailyMCountsString); 
+            console.log('Original string:', dailyMCountsString); 
 
-           dailyMCountsString = dailyMCountsString.replace(/\{([^=]+)=([^,]+),\s*([^=]+)=([^}]+)\}/g, '{"$1":$2,"$3":"$4"}');
-
-            // 3. 최종적으로 문자열을 JSON 형식으로 변환합니다.
-            console.log(dailyMCountsString); 
+            // 데이터를 JSON 형식으로 변환
+            dailyMCountsString = dailyMCountsString.replace(/\{([^=]+)=([^,]+),\s*([^=]+)=([^}]+)\}/g, '{"$1":$2,"$3":"$4"}');
+            console.log('Formatted string:', dailyMCountsString);
 
             try {
                 // JSON 형식의 문자열을 JavaScript 객체로 파싱합니다.
                 var dailyMCounts = JSON.parse(dailyMCountsString);
+                console.log('Parsed dailyMCounts:', dailyMCounts);
 
-                // 날짜와 매출 데이터 추출
-                var dates = dailyMCounts.map(item => item.M_DATE.split(' ')[0]); // 날짜만 추출
-                var totalMs = dailyMCounts.map(item => item.M_COUNT);
+                // 최근 7일의 날짜 생성
+                var today = new Date();
+                var lastWeekDates = [];
+                for (var i = 6; i >= 0; i--) {
+                    var date = new Date(today);
+                    date.setDate(today.getDate() - i);
+                    var day = ('0' + date.getDate()).slice(-2);
+                    var month = ('0' + (date.getMonth() + 1)).slice(-2);
+                    lastWeekDates.push(month + '-' + day);
+                }
+
+                // 날짜와 가입자 수 데이터를 맞추기 위해 초기화
+                var dateCountMap = {};
+                lastWeekDates.forEach(date => {
+                    dateCountMap[date] = 0;
+                });
+
+                // 데이터가 있는 날짜의 가입자 수로 업데이트
+                dailyMCounts.forEach(item => {
+                    var date = item.M_DATE.split(' ')[0];
+                    dateCountMap[date] = item.M_COUNT;
+                });
+
+                // 날짜와 가입자 수 데이터 추출
+                var dates = Object.keys(dateCountMap);
+                var totalMs = Object.values(dateCountMap);
 
                 // Chart.js를 사용한 그래프 설정
                 var ctx = document.getElementById('dailyMCountsChart').getContext('2d');
@@ -402,8 +550,8 @@
                     options: {
                         scales: {
                             y: {
-                            	max:10,
                                 beginAtZero: true,  // 축의 최소값을 0으로 설정
+                                max: 10,            // y축 최대값 설정
                                 ticks: {
                                     stepSize: 1,    // 간격을 1로 설정하여 정수 값만 표시
                                     precision: 0    // 정수 값만 표시하도록 설정
@@ -420,20 +568,42 @@
 	<script>
         document.addEventListener('DOMContentLoaded', function() {
             var dailyVCountsString = '${dailyVCounts}';
-            console.log(dailyVCounts); 
 
             dailyVCountsString = dailyVCountsString.replace(/\{([^=]+)=([^,]+),\s*([^=]+)=([^}]+)\}/g, '{"$1":$2,"$3":"$4"}');
 
             // 3. 최종적으로 문자열을 JSON 형식으로 변환합니다.
             console.log(dailyVCountsString); 
-
             try {
                 // JSON 형식의 문자열을 JavaScript 객체로 파싱합니다.
                 var dailyVCounts = JSON.parse(dailyVCountsString);
 
-                // 날짜와 매출 데이터 추출
-                var dates = dailyVCounts.map(item => item.VISIT_DATE.split(' ')[0]); // 날짜만 추출
-                var countVs = dailyVCounts.map(item => item.VISIT_COUNT);
+                // 날짜와 방문자 수 데이터 추출
+                var dates = [];
+                var countVs = [];
+
+                // 오늘을 기준으로 최근 7일의 날짜를 구합니다.
+                var today = new Date();
+                for (var i = 6; i >= 0; i--) {
+                    var date = new Date(today);
+                    date.setDate(today.getDate() - i);
+                    var formattedDate = formatDate(date); // 날짜 포맷을 MM-DD로 변환
+                    dates.push(formattedDate);
+
+                    // 해당 날짜에 데이터가 있는지 확인하고 있으면 countVs에 추가, 없으면 0으로 처리
+                    var found = false;
+                    dailyVCounts.forEach(item => {
+                        var visitDate = new Date(item.VISIT_DATE);
+                        if (date.getFullYear() === visitDate.getFullYear() &&
+                            date.getMonth() === visitDate.getMonth() &&
+                            date.getDate() === visitDate.getDate()) {
+                            countVs.push(item.VISIT_COUNT);
+                            found = true;
+                        }
+                    });
+                    if (!found) {
+                        countVs.push(0);
+                    }
+                }
 
                 // Chart.js를 사용한 그래프 설정
                 var ctx = document.getElementById('dailyVisitCountsChart').getContext('2d');
@@ -450,21 +620,40 @@
                     options: {
                         scales: {
                             y: {
-                            	max:10,
                                 beginAtZero: true,  // 축의 최소값을 0으로 설정
+                                max: 100,           // 축의 최대값 설정
                                 ticks: {
-                                    stepSize: 1,    // 간격을 1로 설정하여 정수 값만 표시
+                                    stepSize: 10,   // 간격을 10으로 설정
                                     precision: 0    // 정수 값만 표시하도록 설정
                                 }
                             }
                         }
                     }
                 });
+
             } catch (error) {
                 console.error('Error parsing JSON:', error);
             }
         });
+
+        // 날짜 포맷을 MM-DD 형식으로 변환하는 함수
+        function formatDate(date) {
+            var month = ('0' + (date.getMonth() + 1)).slice(-2);
+            var day = ('0' + date.getDate()).slice(-2);
+            return month + '-' + day;
+        }
     </script>
+    <script>
+    // Wait for the DOM content to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get the current year
+        var currentYear = new Date().getFullYear();
+        
+        // Update the title with the current year
+        document.getElementById('page_title').innerText = currentYear + '년 SSJA 현황';
+    });
+</script>
+    
 	<footer>
 		<div id="first_footer" class="p-3"></div>
 		<div id="second_footer"></div>
@@ -481,7 +670,5 @@
 		<script src="/js/login_user_tab.js"> </script>
 		<script src="/js/user_cart_tab.js"> </script>
 	</sec:authorize>
-
 </body>
-<!-- <script src="/js/adminPage/adminInfoPage.js"></script> -->
 </html>

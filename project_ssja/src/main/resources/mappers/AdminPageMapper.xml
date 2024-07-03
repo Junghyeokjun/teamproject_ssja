@@ -4,11 +4,24 @@
 <mapper namespace="teamproject.ssja.mapper.AdminPageMapper">
 
 	<!-- 일일주문내역 -->	
-	<select id="getDailyPurList" resultType="PurchaseDto">
+	<select id="getDailyPurList" resultType="OrderDetailsDto">
 	    <![CDATA[		
-	   SELECT *
-		FROM purchase
-		WHERE TRUNC(pur_date) =  TRUNC(sysdate)
+	   SELECT
+    o.O_NO,
+    pur.M_NO,
+    p.PRO_NAME,
+    o.O_QUANTITY    
+FROM
+    orders o
+JOIN
+    product p ON o.pro_no = p.pro_no
+JOIN
+    purchase pur ON o.pur_no = pur.pur_no
+
+WHERE TRUNC(pur_date) =  TRUNC(sysdate)
+
+ORDER BY
+    o.o_no desc
 	     ]]>
 	</select>
 	
@@ -18,6 +31,9 @@
 	   SELECT *
 FROM members
 WHERE TRUNC(m_date) =  TRUNC(sysdate)
+
+ORDER BY
+    m_no desc
 	     ]]>
 	</select>	
 	
@@ -27,6 +43,8 @@ WHERE TRUNC(m_date) =  TRUNC(sysdate)
 	   SELECT *
 	   FROM board 
 	   where b_c_no=20 and TRUNC(b_date) =  TRUNC(sysdate)
+	   ORDER BY
+    b_no desc
 	     ]]>
 	</select>
 		
@@ -40,9 +58,14 @@ WHERE TRUNC(m_date) =  TRUNC(sysdate)
 	
 	<select id="getDailyPurcount" resultType="int">
 	    <![CDATA[		
-	    SELECT count(*) as Daily_purcount
-		FROM purchase
-		WHERE TRUNC(pur_date) =  TRUNC(sysdate)
+	     SELECT
+    COUNT(*)
+FROM
+    orders o
+JOIN
+    purchase pur ON o.pur_no = pur.pur_no
+WHERE
+    TRUNC(pur.pur_date) = TRUNC(SYSDATE)
 	     ]]>
 	</select>
 	
@@ -59,6 +82,14 @@ WHERE TRUNC(m_date) =  TRUNC(sysdate)
 	   SELECT count(*) 
 	   FROM board 
 	   where b_c_no=20 and TRUNC(b_date) =  TRUNC(sysdate)
+	     ]]>
+	</select>
+	
+	<!-- 판매회원목록 -->		
+	<select id="getVendorsList" resultType="VendorDetailsDto">
+	    <![CDATA[		
+select v.v_no, m.m_id, m.m_name, v.v_bizname, v.v_license from members m,vendor v where m.m_no=v.m_no
+order by v.v_no desc
 	     ]]>
 	</select>
 	
@@ -376,11 +407,11 @@ WHERE TRUNC(m_date) =  TRUNC(sysdate)
 	<select id="dailyMCountsList" resultType="MAP">    
     <![CDATA[
 
-SELECT TO_CHAR(m_date, 'YYYY-MM-DD') AS m_date, count(*) AS m_count
+SELECT TO_CHAR(m_date, 'MM-DD') AS m_date, COUNT(*) AS m_count
 FROM members
 WHERE m_date >= TRUNC(SYSDATE) - 7
-  AND m_date < TRUNC(SYSDATE) + 1
-GROUP BY TO_CHAR(m_date, 'YYYY-MM-DD')
+  AND m_date < TRUNC(SYSDATE) +1 
+GROUP BY TO_CHAR(m_date, 'MM-DD')
 ORDER BY m_date
         ]]>
 	</select>
@@ -391,8 +422,24 @@ ORDER BY m_date
 SELECT TO_CHAR(p_date, 'MM-DD') AS p_date, p_price 
 FROM profit 
 WHERE p_date >= SYSDATE - 7
-AND p_date <= SYSDATE
+AND p_date <= SYSDATE +1
 ORDER BY p_date
+        ]]>
+	</select>
+	
+	<select id="getWeeklySalesList" resultType="MAP">    
+    <![CDATA[
+SELECT 
+    TO_CHAR(p_date, 'MM') || '-' || 
+    (1 + MOD(CEIL((EXTRACT(DAY FROM p_date) - 1) / 7.0) - 1, 4)) || '주차' AS week,
+    SUM(p_price) AS WeeklyTotalPay
+FROM 
+    profit
+GROUP BY
+    TO_CHAR(p_date, 'MM'),
+    1 + MOD(CEIL((EXTRACT(DAY FROM p_date) - 1) / 7.0) - 1, 4)
+ORDER BY 
+    TO_CHAR(p_date, 'MM')
         ]]>
 	</select>
 

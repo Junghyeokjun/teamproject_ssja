@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import teamproject.ssja.dto.MembersDto;
+import teamproject.ssja.dto.OrderDetailsDto;
 import teamproject.ssja.dto.PurchaseDto;
 import teamproject.ssja.dto.QnaBoardDto;
 import teamproject.ssja.mapper.AdminPageMapper;
@@ -32,7 +33,7 @@ public class AdminInfoListService {
 		return adminPageMapper.getDailyQnaCount();
 	}
 
-	public List<PurchaseDto> getDailyPurList() {
+	public List<OrderDetailsDto> getDailyPurList() {
 		return adminPageMapper.getDailyPurList();
 	}
 
