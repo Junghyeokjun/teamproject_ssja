@@ -26,8 +26,10 @@ import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.login.CustomPrincipal;
+import teamproject.ssja.dto.product.ProductDetailTotalInfoDTO;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
 import teamproject.ssja.page.Criteria;
+import teamproject.ssja.page.ListObjectPagingDTO;
 import teamproject.ssja.page.Page10VO;
 import teamproject.ssja.page.PageVO;
 import teamproject.ssja.service.Admin.ProductListService;
@@ -140,10 +142,13 @@ public class VendorController {
 	}
 
 	@GetMapping("/product/modify_view")
-	public String ShowThisProduct(@RequestParam("proNo")long proNo, Model model) {
+	public String ShowThisProduct(@RequestParam("proNo")long proNo, Model model, Criteria criteria) {
 		model.addAttribute("pcMains", productCategoryService.getPCMain());
 		model.addAttribute("product", productDetailService.get(proNo));
-		model.addAttribute("pcMains", productCategoryService.getPCMain());
+		
+		ListObjectPagingDTO reviewData = productDetailService.getItemsReview(proNo, criteria.getPageNum());
+		model.addAttribute("reviewData", reviewData);
+		
 		return "/vendor/vendor_modify_product";
 	}
 	

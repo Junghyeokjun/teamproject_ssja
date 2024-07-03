@@ -42,7 +42,6 @@ public class ProductDetailServiceImpl implements ProductDetailService {
 
 	@Override
 	public ListObjectPagingDTO getItemsReview(Long productNum, Integer pageNum) {
-		
 		List<ProductReviewDTO> list = productDetailMapper.getItemsReview(productNum, pageNum);
 		if(list.size() == 0) {
 			return null;

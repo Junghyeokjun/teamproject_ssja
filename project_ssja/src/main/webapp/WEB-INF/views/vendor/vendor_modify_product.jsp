@@ -265,6 +265,10 @@ main, footer {
 	font-size: 2em;
 }
 
+.yellowStar {
+	color: gold;
+}
+
 @media screen and (max-width: 860px) {
 	.vendorTitle {
 		display: none;
@@ -339,10 +343,9 @@ main, footer {
 						<h3 class="h5 text-center"><span>상품 카테고리, 상품명, 상품 가격 수정 가능</span></h3>
 						<h3 class="h5 text-center"><span>해당 상품 등록 일자 : ${product.getPRO_DATE()}</span></h3>
 					</div>
-					<div id="main_container"
-						class="d-flex flex-row align-items-center justify-content-center">
-						<div class="border p-5 text-center w-75">
-							<form id="productAdd"
+					<div id="main_container" class="d-flex flex-row align-items-center justify-content-center">
+						<div class="border p-5 text-center w-50 product-info">
+							<form id="productModify"
 								action="${pageContext.request.contextPath}/vendor/product/modify/${product.getV_NO()}"
 								method="post" autocomplete="off" >
 								<sec:csrfInput />
@@ -396,55 +399,7 @@ main, footer {
 									<input type="number" id="proSellCount" name="PRO_SELLCOUNT"
 										class="border form-control mx-2 bg-secondary text-light" readonly="readonly" value="${product.getPRO_SELLCOUNT()}"/>
 								</div>								
-								
-								<!-- <div
-									class="input-group mt-2 p-2 w-100 border-secondary d-flex align-items-center border-top">
-									<label class="mx-2 m-auto input-group-text">배너 이미지</label>
-									<div
-										class="file-container_ form-control custom-primary m-2 d-flex align-items-center">
-										<input id="bannerFileText" class="file-upload-name_"
-											placeholder="파일을 선택하세요" disabled="disabled"> <label
-											for="bannerFile">올리기</label> <input type="file"
-											id="bannerFile" class="upload-image_" name="bannerFile">
-									</div>
-								</div>
-								<div
-									class="input-group mt-2 p-2 w-100 border-secondary d-flex align-items-center border-top">
-									<label class="mx-2 m-auto input-group-text">커버 이미지</label>
-									<div
-										class="file-container_ form-control custom-primary m-2 d-flex align-items-center">
-										<input id="coverFileText" class="file-upload-name_"
-											placeholder="파일을 선택하세요" disabled="disabled"> <label
-											for="coverFile">올리기</label> <input type="file" id="coverFile"
-											class="upload-images_" multiple="multiple" name="coverFile">
-									</div>
-								</div>
-								<div class="input-group w-100 p-2">
-									<label class="mx-2 m-auto input-group-text"></label>
-									<div class="form-control m-2 p-0 " style="height: auto">
-										<ul id="uploadedCoverFiles" class=" w-100 list-group">
-										</ul>
-									</div>
-								</div>
-								<div
-									class="input-group mt-2 p-2 w-100 border-secondary d-flex align-items-center border-top">
-									<label class="mx-2 m-auto input-group-text">설명 이미지</label>
-									<div
-										class="file-container_ form-control custom-primary m-2 d-flex align-items-center">
-										<input id="explainFileText" class="file-upload-name_"
-											placeholder="파일을 선택하세요" disabled="disabled"> <label
-											for="explainFile">올리기</label> <input type="file"
-											id="explainFile" class="upload-images_" multiple="multiple"
-											name="explainFile">
-									</div>
-								</div>
-								<div class="input-group w-100 p-2">
-									<label class="mx-2 m-auto input-group-text"></label>
-									<div class="form-control m-2 p-0 " style="height: auto">
-										<ul id="uploadedExplainFiles" class=" w-100 list-group">
-										</ul>
-									</div>
-								</div> -->
+						
 								<div
 									class="p-2 pt-4 w-100 border-secondary border-top d-flex justify-content-center">									
 										<input type="submit" id="register_Btn" value="수정"
@@ -456,9 +411,59 @@ main, footer {
 								</div>
 							</form>
 						</div>
+						<div class="border p-5 text-center w-50 review">
+							<div>
+								리뷰
+							</div>
+							<div>
+								<hr class="border border-2 opacity-75">
+							</div>
+							<div class="mb-2"  id="product_review">
+								<div class="comment-body">
+									<c:choose>
+										<c:when test="${empty reviewData.objectList}">											
+											<div class="text-center">
+												<h2 class="h2 text-center">해당 상품의 리뷰가 없습니다.</h2>
+											</div>
+											<div>
+												<hr class="border border-2 opacity-75">
+											</div>
+										</c:when>
+										<c:otherwise>
+											<c:forEach var="review" items="${reviewData.objectList }"><!-- 리뷰 forEach문 -->
+												<div class="user-profile">												
+													<div class="user-info">
+														<span class="user-name">${review.b_writer }</span>
+														<!-- 별점 구현 -->
+														<span class="user-stars"> <c:forEach var="i"
+																begin="1" end="5">
+																<c:choose>
+																	<c:when test="${review.b_eval >= i }"><!-- 별이미지 반복 -->
+																		<i class="fa fa-star yellowStar" aria-hidden="true"></i>
+																	</c:when>
+																	<c:otherwise>	
+																		<i class="fa fa-star" aria-hidden="true"></i>
+																	</c:otherwise>
+																</c:choose>
+															</c:forEach> 
+														</span>
+		
+													</div>
+													<div class="ml-5" style="color:#aaa;">${review.b_date }</div>
+												</div>
+												<div class="user-comment" id="review_content_div">
+													${review.b_content }
+												</div>
+												<hr class="border border-2 opacity-75">																			
+											</c:forEach>
+										</c:otherwise>
+									</c:choose>		
+								</div>
+							</div>
+						</div>
 					</div>
-					<div class="main_whitespace p-5 my-2"></div>
 				</main>
+				<div class="main_whitespace p-5 bg-white border-0" ></div>
 				<footer>
 					<div id="first_footer" class="p-3"></div>
 					<div id="second_footer"></div>
@@ -495,6 +500,25 @@ main, footer {
 	});
 
 	$(document).ready(function(){
+		$('.review').height($('.product-info').height()); 
+
+	    function setActivePage() {
+	    	let pageLinks = document.querySelectorAll('.page-link');
+	        pageLinks.forEach(function(link) {
+	        	let pageNumber = parseInt(link.innerHTML); // 페이지 번호를 가져옵니다.
+	            if (pageNumber === currentPage) {
+	                link.classList.add('active'); // 현재 페이지에 active 클래스 추가
+	            } else {
+	                link.classList.remove('active'); // 현재 페이지가 아니면 active 클래스 제거
+	            }
+	        });
+	    }
+
+	    // 페이지 로드 시 초기화
+	    window.onload = function() {
+	        setActivePage();
+	    };
+		
 		$.ajax({
 			type : "POST",
 			url : "/api/vendor/vendorInfo",
@@ -509,7 +533,7 @@ main, footer {
 			error : function(xhr, status, error) {
 				console.log("판매자 정보 가져오기 실패");
 			}
-		})
+		});
 		// 메인 카테고리 작업 중
 		
 		// 선택된 메인 카테고리 값
@@ -737,7 +761,7 @@ main, footer {
 
 		console.log("proprice val 타입 : " + typeof $("#proPrice").val());
 
-		$('#productAdd').on('submit',function(e){
+		$('#productModify').on('submit',function(e){
 			e.preventDefault();
 			// 기존 submit 동작 중지
 			let formData = new FormData(this);
