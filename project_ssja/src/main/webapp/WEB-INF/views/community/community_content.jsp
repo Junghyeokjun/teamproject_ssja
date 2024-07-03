@@ -237,7 +237,6 @@
       }
 
       //게시글 삭제 메서드
-      //커밋테스트
       let deletePost=function(){
         var imgList=[1,2];
         
