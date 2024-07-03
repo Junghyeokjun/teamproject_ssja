@@ -225,6 +225,7 @@ public class VendorServiceImpl implements VendorService{
 		
 		return data;
 	}
+	
 	public List<VendorSalesDto> getDaySalesData(StatisticVO statisticVO) {
 		// TODO Auto-generated method stub
 		return vendorMapper.selectVendorSalesInDay(statisticVO);

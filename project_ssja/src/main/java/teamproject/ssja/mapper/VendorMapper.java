@@ -68,7 +68,7 @@ public interface VendorMapper {
 
 	List<VendorSalesDto> selectVendorSalesInWeek(long vno);
 
-	List<VendorProfitDTO> getProfitStatistic(Long vno, String string, String condition);
+	List<VendorProfitDTO> getProfitStatistic(Long vno, String dateCondition, String condition);
 
 	List<VendorSalesDto> selectVendorSalesInDay(StatisticVO statisticVO);
 
