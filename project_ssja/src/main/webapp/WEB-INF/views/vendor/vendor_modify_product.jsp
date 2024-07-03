@@ -50,7 +50,8 @@
 <link href="/css/board.css?after" rel="stylesheet">
 <link rel="stylesheet"
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
-
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <style>
 @font-face {
 	font-family: 'fonts';
@@ -265,6 +266,10 @@ main, footer {
 	font-size: 2em;
 }
 
+.yellowStar {
+	color: gold;
+}
+
 @media screen and (max-width: 860px) {
 	.vendorTitle {
 		display: none;
@@ -339,10 +344,9 @@ main, footer {
 						<h3 class="h5 text-center"><span>상품 카테고리, 상품명, 상품 가격 수정 가능</span></h3>
 						<h3 class="h5 text-center"><span>해당 상품 등록 일자 : ${product.getPRO_DATE()}</span></h3>
 					</div>
-					<div id="main_container"
-						class="d-flex flex-row align-items-center justify-content-center">
-						<div class="border p-5 text-center w-75">
-							<form id="productAdd"
+					<div id="main_container" class="d-flex flex-row align-items-center justify-content-center">
+						<div class="border p-5 text-center w-50 product-info">
+							<form id="productModify"
 								action="${pageContext.request.contextPath}/vendor/product/modify/${product.getV_NO()}"
 								method="post" autocomplete="off" >
 								<sec:csrfInput />
@@ -396,55 +400,7 @@ main, footer {
 									<input type="number" id="proSellCount" name="PRO_SELLCOUNT"
 										class="border form-control mx-2 bg-secondary text-light" readonly="readonly" value="${product.getPRO_SELLCOUNT()}"/>
 								</div>								
-								
-								<!-- <div
-									class="input-group mt-2 p-2 w-100 border-secondary d-flex align-items-center border-top">
-									<label class="mx-2 m-auto input-group-text">배너 이미지</label>
-									<div
-										class="file-container_ form-control custom-primary m-2 d-flex align-items-center">
-										<input id="bannerFileText" class="file-upload-name_"
-											placeholder="파일을 선택하세요" disabled="disabled"> <label
-											for="bannerFile">올리기</label> <input type="file"
-											id="bannerFile" class="upload-image_" name="bannerFile">
-									</div>
-								</div>
-								<div
-									class="input-group mt-2 p-2 w-100 border-secondary d-flex align-items-center border-top">
-									<label class="mx-2 m-auto input-group-text">커버 이미지</label>
-									<div
-										class="file-container_ form-control custom-primary m-2 d-flex align-items-center">
-										<input id="coverFileText" class="file-upload-name_"
-											placeholder="파일을 선택하세요" disabled="disabled"> <label
-											for="coverFile">올리기</label> <input type="file" id="coverFile"
-											class="upload-images_" multiple="multiple" name="coverFile">
-									</div>
-								</div>
-								<div class="input-group w-100 p-2">
-									<label class="mx-2 m-auto input-group-text"></label>
-									<div class="form-control m-2 p-0 " style="height: auto">
-										<ul id="uploadedCoverFiles" class=" w-100 list-group">
-										</ul>
-									</div>
-								</div>
-								<div
-									class="input-group mt-2 p-2 w-100 border-secondary d-flex align-items-center border-top">
-									<label class="mx-2 m-auto input-group-text">설명 이미지</label>
-									<div
-										class="file-container_ form-control custom-primary m-2 d-flex align-items-center">
-										<input id="explainFileText" class="file-upload-name_"
-											placeholder="파일을 선택하세요" disabled="disabled"> <label
-											for="explainFile">올리기</label> <input type="file"
-											id="explainFile" class="upload-images_" multiple="multiple"
-											name="explainFile">
-									</div>
-								</div>
-								<div class="input-group w-100 p-2">
-									<label class="mx-2 m-auto input-group-text"></label>
-									<div class="form-control m-2 p-0 " style="height: auto">
-										<ul id="uploadedExplainFiles" class=" w-100 list-group">
-										</ul>
-									</div>
-								</div> -->
+						
 								<div
 									class="p-2 pt-4 w-100 border-secondary border-top d-flex justify-content-center">									
 										<input type="submit" id="register_Btn" value="수정"
@@ -456,9 +412,66 @@ main, footer {
 								</div>
 							</form>
 						</div>
+						<div class="border p-5 text-center w-50 review" style="overflow-y: auto">
+							<div>
+								리뷰
+							</div>
+							<div>
+								<hr class="border border-2 opacity-75">
+							</div>
+							<div class="mb-2"  id="product_review">
+								<div class="comment-body">
+									<c:choose>
+										<c:when test="${empty reviewData.objectList}">											
+											<div class="text-center">
+												<h2 class="h2 text-center">해당 상품의 리뷰가 없습니다.</h2>
+											</div>
+											<div>
+												<hr class="border border-2 opacity-75">
+											</div>
+										</c:when>
+										<c:otherwise>
+											<c:forEach var="review" items="${reviewData.objectList }"><!-- 리뷰 forEach문 -->
+												<div class="d-flex justify-content-between">
+													<div class="user-profile">												
+														<div class="user-info">
+															<input type="hidden" class="review-no" value="${review.b_no}" disabled="disabled"/>
+															<span class="user-name">${review.b_writer }</span>
+															<!-- 별점 구현 -->
+															<span class="user-stars"> 
+																<c:forEach var="i" begin="1" end="5">
+																	<c:choose>
+																		<c:when test="${review.b_eval >= i }"><!-- 별이미지 반복 -->
+																			<i class="fa fa-star yellowStar" aria-hidden="true"></i>
+																		</c:when>
+																		<c:otherwise>	
+																			<i class="fa fa-star" aria-hidden="true"></i>
+																		</c:otherwise>
+																	</c:choose>
+																</c:forEach> 
+															</span>
+														</div>
+														<div class="ml-5" style="color:#aaa;">${review.b_date }</div>
+													</div>
+													<div class="user-comment" id="review_content_div">
+														${review.b_content }
+													</div>
+												</div>
+												<div class="review-reply-add" data-rbno="${review.b_no}">
+													<div class="add-button-area">
+
+													</div>
+												</div>												
+												<hr class="border border-2 opacity-75">																																									
+											</c:forEach>
+										</c:otherwise>
+									</c:choose>		
+								</div>
+							</div>
+						</div>
 					</div>
-					<div class="main_whitespace p-5 my-2"></div>
 				</main>
+				<div class="main_whitespace p-5 bg-white border-0" ></div>
 				<footer>
 					<div id="first_footer" class="p-3"></div>
 					<div id="second_footer"></div>
@@ -494,7 +507,154 @@ main, footer {
 		return "내용이 손실될 수 있습니다.";
 	});
 
+	// vendorData = memberNum
+	$('.scrollable-textarea').on('input', function() {
+		this.style.height = 'auto'; // 높이 초기화
+		this.style.height = (this.scrollHeight) + 'px'; // 스크롤 높이로 설정
+	});
+
+	function getReply(){
+		$('.review-no').each(function(index, element){
+			$.ajax({
+				type : "GET",
+				url : "/api/replys/list",
+				data : {'bno' :  $(element).val()},
+				success : function(response){
+					// 해당 리뷰 댓글 개수가 0이면
+					if(response.replys.length == 0){
+						let reviewReplyAdd = $('.review-reply-add');
+						if(reviewReplyAdd.data('rbno') == $(element).val()){
+							reviewReplyAdd.find('.add-button-area').append(
+								$('<button>').addClass('btn btn-success btn-format reply-write-form')
+											.attr('data-rbno', $(element).val())
+											.attr('data-rmno', vendorData)
+											.text('작성'));
+						}						
+					}else{
+						let writeReviewReply = makeWriteReviewReply($(element).parent().parent().parent().parent().find('.review-reply-add'))
+						reviewReplyAdd.append(writeReviewReply);
+					}
+				},
+				error : function(xhr, status, error) {
+					alert("답변 가져오기 실패");
+				}
+			});
+		});
+	}
+
+	function makeWriteReviewReply(element){
+		let writeReviewReply = $('<div>').addClass('write-review-reply');
+		let hr = $('<hr>').addClass('border border-1 opacity-75');
+		let dFlexBetween = $('<div>').addClass('d-flex justify-content-between');
+		let h5Title = $('<h5>').addClass('h5 m-1 p-1').text('답변');
+		let spanButton = $('<span>').addClass('mx-2 my-1');
+		let inputBtn = $('<button>').attr('id', 'inputReply').addClass('btn btn-primary btn-format').text('입력');
+		let borderRounded = $('<div>').addClass('border rounded');
+		let textarea =$('<textarea>').attr({
+			id: 'inputReplyCon',
+			class: 'form-control rounded-top scrollable-textarea',
+			name: 'rcontent',
+			'data-rbno': $(element).data('rbno'), // 리뷰 번호 설정
+			'data-rmno': vendorData, // 회원 번호 설정
+			placeholder: '판매자로서, 답변을 다실 수 있습니다.'
+		}).css({
+			'resize': 'none',
+			'overflow': 'hidden',
+			'height': 'auto'
+		});
+
+		// 요소들을 구조에 맞게 추가
+		spanButton.append(inputBtn);
+		dFlexBetween.append(h5Title).append(spanButton);
+		writeReviewReply.append(hr).append(dFlexBetween).append(borderRounded).append(textarea);
+
+		return writeReviewReply;
+	}
+
+
+
 	$(document).ready(function(){
+		$('.review').height($('.product-info').height()); 
+
+		getReply();
+
+		// 버튼마다 하나만 활성화되도록 하기 위한 변수
+		let eventInProgress = true;
+
+		$(document).on('click','.reply-write-form',function(){			
+			if (eventInProgress) {
+				return; // 다른 이벤트가 실행 중이면 클릭 무시
+			}
+
+			let writeReviewReply = makeWriteReviewReply(this);
+			
+			let thisReviewReply = $(this).parent().parent();
+
+			if($(this).text() == '작성'){
+				thisReviewReply.append(writeReviewReply);
+				$(this).text('취소');
+				return;
+			}else{
+				thisReviewReply.find('.write-review-reply').remove();
+				$(this).text('작성');
+				return;
+			}			
+
+			eventInProgress = false;
+		});
+
+		let rWriter = '${principal.userInfo.m_NickName}';
+
+		$(document).on('click', '#inputReply', function(e){
+			// 기본 동작을 막음.
+			// 이후 폼 제출이나 링크 이동은 따로 선언해서 이벤트를 진행
+			e.preventDefault();
+					
+			if(!isLoggedIn()){
+				// 로그인이 안된 상태에서 버튼을 클릭 시
+				alert('댓글을 달 수 없습니다. 로그인 페이지로 이동합니다.');
+				$(location).attr('href', '/login');
+				return;		
+			}else if($('#inputReplyCon').val().length <= 9){
+				// 10글자 미만으로 입력시
+				alert('10글자 이상 입력하시기 바랍니다.');
+				$('#inputReplyCon').val('');
+				return;		
+			} else{
+				// 나머지 경우에는 ajax를 통한 댓글 입력 실행.
+				console.log('useruser : ' + rWriter);
+				console.log('rbno : ' + rbno);
+				console.log('rmno : ' + rmno);
+				console.log('text : ' + $('#inputReplyCon').val());
+				$.ajax({
+					url: 'api/replys/add',
+					type : 'POST',
+					beforeSend : function(xhr) {
+						xhr.setRequestHeader(header, token);
+					},
+					data : {
+						'rbno' : rbno,
+						'rmno' : rmno,
+						'rwriter' : rWriter,
+						'rcontent' : $('#inputReplyCon').val()
+					},
+					success :  function(response){
+						console.log(response);
+						// 댓글 입력을 하고 나면 입력 데이터를 없애기.
+						$('#inputReplyCon').val('');
+					},
+					error : function(xhr, status, error){
+						alert('댓글 처리가 제대로 되지 않았습니다!');
+						console.log("error : " + error);
+						console.log("response : " + xhr.responseText);
+					}
+				});
+			}
+		});
+		
+		
+
+
 		$.ajax({
 			type : "POST",
 			url : "/api/vendor/vendorInfo",
@@ -509,7 +669,7 @@ main, footer {
 			error : function(xhr, status, error) {
 				console.log("판매자 정보 가져오기 실패");
 			}
-		})
+		});
 		// 메인 카테고리 작업 중
 		
 		// 선택된 메인 카테고리 값
@@ -737,7 +897,7 @@ main, footer {
 
 		console.log("proprice val 타입 : " + typeof $("#proPrice").val());
 
-		$('#productAdd').on('submit',function(e){
+		$('#productModify').on('submit',function(e){
 			e.preventDefault();
 			// 기존 submit 동작 중지
 			let formData = new FormData(this);

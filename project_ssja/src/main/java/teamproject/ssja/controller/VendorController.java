@@ -34,8 +34,10 @@ import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.login.CustomPrincipal;
-import teamproject.ssja.dto.vendor.VendorProfitDTO;
+import teamproject.ssja.dto.product.ProductDetailTotalInfoDTO;
+import teamproject.ssja.dto.vendor.VendorInfoDTO;
 import teamproject.ssja.page.Criteria;
+import teamproject.ssja.page.ListObjectPagingDTO;
 import teamproject.ssja.page.Page10VO;
 import teamproject.ssja.page.PageVO;
 import teamproject.ssja.service.Admin.ProductListService;
@@ -71,12 +73,6 @@ public class VendorController {
 		return "/vendor/vendor_view";
 	}
 	
-//	@PostMapping("/vendorInfo")
-//	public String getVendorInfo(@RequestParam("vendorData") long vendorNo, Model model) {
-//		model.addAttribute("vendorObj", vendorService.getVendor(vendorNo));
-//	}
-	
-
 	@GetMapping("/product/write")
 	public String writeProduct(Model model) {
 		log.info("writeProduct()..");
@@ -148,10 +144,13 @@ public class VendorController {
 	}
 
 	@GetMapping("/product/modify_view")
-	public String ShowThisProduct(@RequestParam("proNo")long proNo, Model model) {
+	public String ShowThisProduct(@RequestParam("proNo")long proNo, Model model, Criteria criteria) {
 		model.addAttribute("pcMains", productCategoryService.getPCMain());
 		model.addAttribute("product", productDetailService.get(proNo));
-		model.addAttribute("pcMains", productCategoryService.getPCMain());
+		
+		ListObjectPagingDTO reviewData = productDetailService.getItemsReview(proNo, criteria.getPageNum());
+		model.addAttribute("reviewData", reviewData);
+		
 		return "/vendor/vendor_modify_product";
 	}
 	
@@ -190,6 +189,7 @@ public class VendorController {
 	public String addOne(@AuthenticationPrincipal CustomPrincipal principal, BoardDto boardDto) {
 		log.info("addOne()..");		
 		// 관리자 영역. 추후 수정이 필요하거나, 수정하지 않아도 됨.
+		boardService.addBoard(boardDto);
 		return "redirect:/vendor/question/" + boardDto.getBbcno();
 	}
 
@@ -206,8 +206,7 @@ public class VendorController {
 		return "redirect:/vendor/question/20";
 	}
 
-	@GetMapping("/delete")
-	@PostMapping("/question/delete")
+	@GetMapping("/question/delete")
 	public String removeOne(BoardDto boardDto) {
 		log.info("removeOne()..");
 		boardService.removeBoard(boardDto);

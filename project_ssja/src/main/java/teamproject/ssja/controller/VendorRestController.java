@@ -41,6 +41,8 @@ public class VendorRestController {
 	@Autowired
 	private ProductCategoryService productCategoryService;
 
+	
+
 	// 판매자 정보 가져오기
 	// @RequestMapping(value = "/vendorInfo", method = RequestMethod.POST)
 	@PostMapping("/vendorInfo")
