@@ -80,7 +80,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	    http
 	    .addFilterBefore(sessionRenewFilter, SessionManagementFilter.class)
 	    .authorizeRequests()
-	    .antMatchers("/logout","/user","/myPage","/myPage/**","/userInfo","/user","/charge","/charge/**",
+	    .antMatchers("/logout","/user","/myPage","/myPage/**","/userInfo","/user","/charge","/charge/**","/vendor/info/**",
 	    		"/user/**","/wishlist","/wishlist/**","/sign-up","/sign-up/**","/wishlist","/purchase","/item_cart/**").hasAnyRole("USER","SOCIAL")
 	    .antMatchers("/vendor/","/vendor/**","/api/vendor/**").hasAnyRole("VENDOR")
 	    .anyRequest().permitAll();

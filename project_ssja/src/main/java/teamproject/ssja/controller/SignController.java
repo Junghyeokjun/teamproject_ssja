@@ -85,6 +85,7 @@ public class SignController {
 		 MailDTO mail=new MailDTO();
 		 mail.setReceiver(email);
 		 String randomNum=mailService.randomNumMail(mail);
+		 signUpService.resetPw(id,randomNum);
 		 
 		 return randomNum;
 		 		 
@@ -93,7 +94,6 @@ public class SignController {
 	 @PostMapping("/resetPw")
 	 public void resetPw(String id,String pw) {
 		 signUpService.resetPw(id,pw);
-		 
 		 		 
 	 }
 	 

@@ -36,6 +36,9 @@
     textarea{
         resize: none;
     }
+    body {
+    margin-100px;
+    }
     
    </style>
    

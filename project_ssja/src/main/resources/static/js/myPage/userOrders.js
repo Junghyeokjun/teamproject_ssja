@@ -181,22 +181,37 @@ $("#myPage_orderInfo_Select").on('click', function() {
 				    						    $("<span>").addClass("star").attr("value", "4"),
 				    						    $("<span>").addClass("star").attr("value", "5")	
 				    					),
-				    					$("<p>").text('별을 눌러주세요.').css({'color':'#ccc','margin-left':'120px'}).addClass("my-3"),
+				    					$("<p>").text('별을 눌러주세요.').css({'color':'#ccc','margin-left':'120px'}).addClass("my-1"),
 				    					$("<input>").attr({'type':'hidden','id':'review_eval','value':'1'}),
+				    					$("<input>").attr({"type":"file",'id':'review_image'}).css({'margin-left':'auto'}).addClass("my-2"),
 				    				$('<textarea>').attr('id','riview_content').attr('placeholder','리뷰를 적어주세요.')
-				    				.css({ 'width': '80%',  'height': '150px', 'overflow': 'auto', 'resize':'none',	'margin': 'auto' })		
+				    				.css({ 'width': '60%',  'height': '150px', 'overflow': 'auto', 'resize':'none',	'margin': 'auto' })		
 				    					),
 				    			
 				    			$("<div>").addClass('w-100 d-flex flex-row justify-content-center my-3').append(
 				    					$("<button>").text('등록').addClass('btn btn-dark')
-				    					.css({'width':'100px','height':'60px'}).on('click',function(){
-				    						if($("#riview_content").val().length >= 1000){
+				    					.css({'width':'100px','height':'40px'}).on('click',function(){
+				    						if($("#riview_content").val().length >= 400){
 				    							alert('리뷰가 너무 길어요.');
 				    							return false;
 				    						}
+				    						if($("#riview_content").val().length == 0){
+				    							alert('리뷰 내용을 적어주세요.');
+				    							return false;
+				    						}
 				    						let rv_content = $("#riview_content").val();
-				    						let rv_evalu = $("#review_eval").val()
-				    						apply_review(order.pro_NO, rv_content, rv_evalu);
+				    						let rv_evalu = $("#review_eval").val();
+				    						
+				    					
+				    						   if ($("#review_image")[0] && $("#review_image")[0].files.length > 0) {
+				    							   console.log($("#review_image")[0].files.length);
+				    							   console.log($("#review_image")[0].files);
+				    						        apply_review(order.pro_NO, rv_content, rv_evalu, $("#review_image")[0].files[0]);
+				    						    } else {
+				    						    	console.log("이미지 없음")
+				    						    	apply_review(order.pro_NO, rv_content, rv_evalu, null);
+				    						    }   
+				    						
 				    						modal.hide();
 				    						myPageOrderInfo(pageNum);
 				    					}))
@@ -286,20 +301,24 @@ $("#myPage_orderInfo_Select").on('click', function() {
 		});
 	} 
  
- let apply_review = function(proNum,reviewContent, reviewEval){
+ let apply_review = function(proNum,reviewContent, reviewEval,rv_image){
+	 
+
+	 let formData = new FormData();
+	    formData.append('proNum', proNum);
+	    formData.append('content', reviewContent);
+	    formData.append('eval', reviewEval);
+	    formData.append('rv_image', rv_image);
+     
 		 $.ajax({
 		        type: "post",
 		        beforeSend : function(xhr) {
 					xhr.setRequestHeader(header, token);
 				},
 				async:false,
-				data: JSON.stringify({
-					'proNum':proNum,
-					'content':reviewContent,
-					'eval':reviewEval
-				}),
-				dataType:"json",
-				contentType:"application/json",
+				 data: formData,
+			        processData: false,
+			        contentType: false,
 		        url: "/api/replys/apply",
 		        success: function(data) {
 		        	}
@@ -307,4 +326,5 @@ $("#myPage_orderInfo_Select").on('click', function() {
 	 
  }
  
+
  

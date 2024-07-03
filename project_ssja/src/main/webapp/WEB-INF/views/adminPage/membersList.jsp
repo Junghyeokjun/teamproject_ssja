@@ -51,6 +51,9 @@
 .hidden-column {
 	display: none;
 }
+#member_info_link, #memeberid_td, #membername_td:hover{
+cursor:pointer;
+}
 </style>
 </head>
 <body>
@@ -133,12 +136,12 @@
 								<td scope="col"></td>
 							</tr>
 						</thead>
-						<tbody class="table-group-divider">
+						<tbody class="table-group-divider" id="member_tbody">
 							<c:forEach var="member" items="${members}">
-								<tr>
-									<td>${member.m_NO}</td>
-									<td id="memeberid_td">${member.m_ID}</td>
-									<td>${member.m_NAME}</td>
+								<tr id="tr_member_${member.m_NO}">
+									<td id="member_info_link" onclick="redirectToMember(${member.m_NO})">${member.m_NO}</td>
+									<td id="memeberid_td" onclick="redirectToMember(${member.m_NO})">${member.m_ID}</td>
+									<td id="membername_td" onclick="redirectToMember(${member.m_NO})">${member.m_NAME}</td>
 									<td id="memberaddress_td">${member.m_ADDRESS1}</td>
 									<td><fmt:formatDate value="${member.m_BIRTH}"
 											pattern="yyyy-MM-dd" /></td>
@@ -452,6 +455,12 @@ $(document).ready(function() {
 					}
 				});
 			}
+			function redirectToMember(memberNo) {
+			    var url = '/community/userinfo/' + memberNo;
+			    window.location.href = url;
+			}
+
+			
 		</script>
 	</main>
 	<footer>
