@@ -143,6 +143,7 @@ public class VendorController {
 	public String ShowThisProduct(@RequestParam("proNo")long proNo, Model model) {
 		model.addAttribute("pcMains", productCategoryService.getPCMain());
 		model.addAttribute("product", productDetailService.get(proNo));
+		model.addAttribute("pcMains", productCategoryService.getPCMain());
 		return "/vendor/vendor_modify_product";
 	}
 	

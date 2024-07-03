@@ -14,9 +14,13 @@ public interface ProductListService {
 	//검색리스트
 	List<ProductsSearchDto> getProductsSearchList(String type, String keyword);
 	
-	ProductDto getProductsId(int PRO_NO);
-	void modifyProducts(ProductDto productDto);
+	ProductDto getProductId(int PRO_NO);
 
-//	int removeProducts(ProductDto productDto);
+	void modifyProduct(ProductDto productDto);
+	
+	void removeProduct(ProductDto productDto);
+	
+	int addProduct(ProductDto productDto);
+
 
 }

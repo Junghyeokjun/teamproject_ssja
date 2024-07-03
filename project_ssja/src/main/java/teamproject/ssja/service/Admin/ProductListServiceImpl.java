@@ -3,10 +3,13 @@ package teamproject.ssja.service.Admin;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.MembersDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ProductsSearchDto;
+import teamproject.ssja.dto.userinfo.CouponDTO;
 import teamproject.ssja.mapper.AdminPageMapper;
 import teamproject.ssja.page.Criteria;
 
@@ -37,13 +40,26 @@ public class ProductListServiceImpl implements ProductListService {
 	}
 
 	@Override
-	public ProductDto getProductsId(int productsId) {
-        return adminPageMapper.readProducts(productsId); 
-
+	public ProductDto getProductId(int productId) {
+        return adminPageMapper.readProductId(productId); 
 	}
 
 	@Override
-	public void modifyProducts(ProductDto productDto) {
-    	adminPageMapper.updateProducts(productDto); 		
+	public void modifyProduct(ProductDto productDto) {
+        adminPageMapper.updateProduct(productDto); 		
+	}	
+	
+	@Override
+	public void removeProduct(ProductDto productDto) {
+    	adminPageMapper.deleteProduct(productDto); 		
 	}
+
+	@Override
+	public int addProduct(ProductDto productDto) {
+		
+		return adminPageMapper.insertAdminProduct(productDto);
+	}
+
+	
+	
 }

@@ -5,9 +5,14 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
+	
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+	let vendorData = "${principal.memberNum}";
+	console.log("vendorData : " + vendorData);
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SSJA</title>
@@ -22,6 +27,7 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 	crossorigin="anonymous">
+	
 </script>
 
 <script
@@ -44,25 +50,35 @@
 #productstable thead {
 	font-weight: bold; /* 열 제목을 굵은 글꼴로 설정 */
 }
-#product_banner_img{
-height:6rem;
-width:7rem;
-border-radius:4px;
+
+#product_banner_img {
+	height: 6rem;
+	width: 7rem;
+	border-radius: 4px;
 }
-#product_info_dv{
-margin-right:0;
+
+#product_info_dv {
+	margin-right: 0;
 }
-#item_info_div > span{
-    white-space: nowrap;      
-    overflow: hidden;         
-    text-overflow: ellipsis;   
-    width: 15rem;               
-    display: inline-block;
+
+#item_info_div>span {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 15rem;
+	display: inline-block;
 }
-#product_table_body > tr:hover{
+
+#product_title_a {
+	cursor: pointer;
+}
+#adminPage_Info_Select{
+padding:0;
+}
+/* #product_table_body > tr:hover{
 background-color:#eee;
 cursor:pointer;
-}
+} */
 </style>
 </head>
 <body>
@@ -71,8 +87,8 @@ cursor:pointer;
 			<div class="py-2 px-1" id="top-bar">
 				<button type="toggle-button" class="top_btn" id="top_btn"></button>
 				<a id="logo_toHome" href=""><img id="logo_img"
-					src="/images/utilities/logoSSJA.png"></a>
-					<a id="user_link" href="/login" style="margin-left:auto;"><img id="login_img" ></a>
+					src="/images/utilities/logoSSJA.png"></a> <a id="user_link"
+					href="/login" style="margin-left: auto;"><img id="login_img"></a>
 			</div>
 		</div>
 		<nav id="total_bar"></nav>
@@ -125,6 +141,9 @@ cursor:pointer;
 					</select> <input type="text" name="keyword" value=""> <input
 						type="button" onclick="productsSearchList()"
 						class="btn btn-outline-dark mr-2" value="검색">
+					<button type="button" class="btn btn-dark ms-auto"
+						id="newProductBtn"  
+						onclick="window.location.href='/adminPage/product/write'">상품 등록</button>
 				</form>
 				<div class="table-responsive">
 					<table class="table" id="productstable" style="text-align: center;">
@@ -140,17 +159,19 @@ cursor:pointer;
 						</thead>
 						<tbody class="table-group-divider" id="product_table_body">
 							<c:forEach var="product" items="${products}">
-								<tr id="product_content_${product.getPRO_NO()}" >
+								<tr id="product_content_${product.getPRO_NO()}">
 									<td class="p-3 py-5">${product.getPRO_NO()}</td>
-									<td>
-										<div class="d-flex flex-row py-2" id="product_info_dv">
-											<img id="product_banner_img" src="${product.getPRO_BANNERIMG()}">
-											<div id="item_info_div" class="d-flex flex-column align-items-start justify-content-center p-3">
-											<span>${product.getPRO_BIZNAME()}</span>
-											<span>${product.getPRO_NAME()}</span>
+									<td><a id="#product_title_a"
+										href="/product_detail?PRO_NO=${product.getPRO_NO()}">
+											<div class="d-flex flex-row py-2" id="product_info_dv">
+												<img id="product_banner_img"
+													src="${product.getPRO_BANNERIMG()}">
+												<div id="item_info_div"
+													class="d-flex flex-column align-items-start justify-content-center p-3">
+													<span>${product.getPRO_BIZNAME()}</span> <span>${product.getPRO_NAME()}</span>
+												</div>
 											</div>
-										</div>
-									</td>
+									</a></td>
 									<td class="p-3 py-5">${product.getPRO_PRICE()}</td>
 									<td class="p-3 py-5">${product.getPRO_QUANTITY()}</td>
 									<td class="p-3 py-5">${product.getPRO_WISH()}</td>
@@ -195,133 +216,191 @@ cursor:pointer;
 					</div>
 				</div>
 			</div>
-		</div>
+		</div>		
 		<!-- 모달 창 -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">상품 수정</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- 상품 정보 수정 폼 -->
-                <form id="editForm">
-                    <div class="form-group">
-                        <label for="editProductName">상품 이름</label>
-                        <input type="text" class="form-control" id="editProductName" name="editProductName">
-                    </div>
-                    <div class="form-group">
-                        <label for="editProductPrice">가격</label>
-                        <input type="number" class="form-control" id="editProductPrice" name="editProductPrice">
-                    </div>
-                    <div class="form-group">
-                        <label for="editProductQuantity">수량</label>
-                        <input type="number" class="form-control" id="editProductQuantity" name="editProductQuantity">
-                    </div>
-                    <div class="form-group">
-                        <label for="editBusinessName">사업자 이름</label>
-                        <input type="text" class="form-control" id="editBusinessName" name="editBusinessName">
-                    </div>
-                    <input type="hidden" id="editProductId" name="editProductId">
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                <button type="button" class="btn btn-primary" onclick="saveChanges()">저장</button>
-            </div>
-        </div>
-    </div>
-</div>
-<script>
-$(document).ready(function() {
-    // 수정 버튼 클릭 시
-    $('#productstable').on('click', '#modifyProductBtn', function() {
-        // 선택한 행에서 상품 정보를 가져와 모달에 채움
-        var row = $(this).closest('tr');
-        var productId = row.find('td:eq(0)').text(); // 상품 번호
-        var productName = row.find('td:eq(1)').text(); // 상품 이름
-        var productPrice = row.find('td:eq(2)').text(); // 가격
-        var productQuantity = row.find('td:eq(3)').text(); // 수량
-        var businessName = row.find('td:eq(6)').text(); // 사업자 이름
-
-        // 모달에 값 채우기
-        $('#editProductId').val(productId);
-        $('#editProductName').val(productName);
-        $('#editProductPrice').val(productPrice);
-        $('#editProductQuantity').val(productQuantity);
-        $('#editBusinessName').val(businessName);
-
-        // 모달 띄우기
-        $('#editModal').modal('show');
-    });
-
-    // 저장 버튼 클릭 시
-    $('#editModal').on('click', '#saveChangesBtn', function() {
-        // 수정된 상품 정보를 서버로 전송하는 함수 호출
-        saveChanges();
-    });
-});
-
-function saveChanges() {
-    // 수정된 정보를 가져와 서버로 전송하는 로직 구현
-    var editedProductId = $('#editProductId').val();
-    var editedProductName = $('#editProductName').val();
-    var editedProductPrice = $('#editProductPrice').val();
-    var editedProductQuantity = $('#editProductQuantity').val();
-    var editedBusinessName = $('#editBusinessName').val();
-
-    // AJAX를 사용하여 서버로 데이터 전송
-    $.ajax({
-        type: 'POST',
-        url: '/adminPage/modifyProducts', // 수정된 정보를 처리할 서버의 URL
-        contentType: 'application/json', // 요청의 데이터 타입 지정
-        data: JSON.stringify({
-            productId: editedProductId,
-            productName: editedProductName,
-            productPrice: editedProductPrice,
-            productQuantity: editedProductQuantity,
-            businessName: editedBusinessName
-        }),
-        success: function(response) {
-            // 서버로부터의 응답 처리
-            console.log('수정이 성공적으로 처리되었습니다.');
-            $('#editModal').modal('hide'); // 모달 닫기
-            location.reload(); // 현재 페이지 새로고침
-        },
-        error: function(xhr, status, error) {
-            // 오류 처리
-            console.error('수정 중 오류가 발생했습니다: ' + error);
-        }
-    });
-}
-
-$('#product_table_body > tr').on('click', function() {
-	let productNumvver = $(this).attr("id").split("_")[2];
-	console.log(productNumvver)
-	window.location.href='/product_detail?PRO_NO='+productNumvver;
-});
-
-
-</script>
+		<div class="modal fade" id="editProductModal" tabindex="-1"
+			role="dialog" aria-labelledby="editProductModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="editProductModalLabel">상품 수정</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form id="editProductForm">
+							<div class="form-group">
+								<label for="editPRO_NAME">상품이름</label> <input type="text"
+									class="form-control" id="editPRO_NAME" name="editPRO_NAME">
+							</div>
+							<div class="form-group">
+								<label for="editPRO_PRICE">가격</label> <input type="text"
+									class="form-control" id="editPRO_PRICE" name="editPRO_PRICE">
+							</div>
+							<div class="form-group">
+								<label for="editPRO_QUANTITY">수량</label> <input type="text"
+									class="form-control" id="editPRO_QUANTITY"
+									name="editPRO_QUANTITY">
+							</div>
+							<input type="hidden" id="editProductId" name="editProductId">
+							<button type="submit" class="btn btn-primary">저장</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 	</main>
 	<footer>
 		<div id="first_footer" class="p-3"></div>
 		<div id="second_footer"></div>
 		<div id="third_footer"></div>
 	</footer>
-	
-	 <sec:authorize access="isAuthenticated()">
-	 
-	 <sec:authorize access="hasRole('ROLE_VENDOR')">
-        <input type="hidden" id="isVendorCheck" value="1">
-    </sec:authorize>
-	 
-  <script src="/js/login_user_tab.js"> </script>
-</sec:authorize>
+
+	<sec:authorize access="isAuthenticated()">
+
+		<sec:authorize access="hasRole('ROLE_VENDOR')">
+			<input type="hidden" id="isVendorCheck" value="1">
+		</sec:authorize>
+
+		<script src="/js/login_user_tab.js">
+			
+		</script>
+	</sec:authorize>
 </body>
+<script>
+	$(document).ready(function() {
+		$('body').on('click', '#modifyProductBtn', function() {
+			var $btn = $(this); // 클릭된 버튼을 변수에 저장
+			var $row = $btn.closest('tr'); // 클릭된 버튼의 부모 tr 요소 가져오기
+
+			// 테이블에서 해당 열의 정보 가져오기
+			var proId = $row.find('td:eq(0)').text();
+			var proname = $row.find('#item_info_div span:eq(1)').text();
+			var proprice = $row.find('td:eq(2)').text();
+			var quantity = $row.find('td:eq(3)').text();
+
+			// 모달 창에 정보 채우기
+			$('#editProductModal').find('#editPRO_NAME').val(proname);
+			$('#editProductModal').find('#editPRO_PRICE').val(proprice);
+			$('#editProductModal').find('#editPRO_QUANTITY').val(quantity);
+			$('#editProductModal').find('#editProductId').val(proId);
+
+			// 모달 창 띄우기
+			$('#editProductModal').modal('show');
+		});
+	});
+</script>
+<script>
+	$(document)
+			.ready(
+					function() {
+						$('#editProductForm')
+								.submit(
+										function() {
+
+											var formData = {
+												PRO_NO : $('#editProductId')
+														.val(),
+												PRO_NAME : $('#editPRO_NAME')
+														.val(),
+												PRO_PRICE : $('#editPRO_PRICE')
+														.val(),
+												PRO_QUANTITY : $(
+														'#editPRO_QUANTITY')
+														.val()
+											};
+
+											var csrfToken = $(
+													'meta[name="_csrf"]').attr(
+													'content'); // CSRF 토큰 가져오기
+											var csrfHeader = $(
+													'meta[name="_csrf_header"]')
+													.attr('content'); // CSRF 헤더 이름 가져오기
+
+											// AJAX를 이용한 문의 수정 요청
+											$
+													.ajax({
+														type : 'POST',
+														url : '/adminPage/modifyProduct',
+														data : JSON
+																.stringify(formData), // JSON 형식으로 데이터 전송
+														contentType : 'application/json', // 요청 데이터 타입 지정
+														beforeSend : function(
+																xhr) {
+															xhr
+																	.setRequestHeader(
+																			csrfHeader,
+																			csrfToken); // CSRF 토큰을 헤더에 포함
+														},
+														success : function(
+																response) {
+															console
+																	.log('문의 수정 성공');
+															// 모달 창 닫기
+															$(
+																	'#editProductModal')
+																	.modal(
+																			'hide');
+															// 테이블에서 해당 행 업데이트
+															var $row = $(
+																	'#productstable')
+																	.find(
+																			'td:contains('
+																					+ formData.PRO_NO
+																					+ ')')
+																	.closest(
+																			'tr');
+															$row
+																	.find(
+																			'#item_info_div span:eq(1)')
+																	.text(
+																			formData.PRO_NAME);
+															$row
+																	.find(
+																			'td:eq(2)')
+																	.text(
+																			formData.PRO_PRICE);
+															$row
+																	.find(
+																			'td:eq(3)')
+																	.text(
+																			formData.PRO_QUANTITY);
+														},
+														error : function(xhr,
+																status, error) {
+															console.error(
+																	'상품 수정 오류',
+																	error);
+														}
+													});
+										});
+					});
+</script>
+<script>
+	$('body').on('click', '#deleteProductBtn', function() {
+		var $row = $(this).closest('tr');
+		var productId = $row.find('td:first').text();
+
+		$.ajax({
+			type : "POST",
+			url : "/adminPage/removeProduct",
+			data : JSON.stringify({
+				PRO_NO : productId
+			}),
+			contentType : "application/json",
+			success : function(response) {
+				console.log('삭제 성공');
+				$row.remove();
+			},
+			error : function(xhr, status, error) {
+				console.error('삭제 오류', error);
+			}
+		});
+	});
+</script>
 <script>
 	function productsSearchList() {
 		$.ajax({

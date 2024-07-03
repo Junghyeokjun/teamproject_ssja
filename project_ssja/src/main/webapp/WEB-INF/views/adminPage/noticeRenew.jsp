@@ -38,6 +38,9 @@ border-bottom:1px solid #ccc;
 border-left:1px solid #ccc;
 min-height:400px;
 }
+#adminPage_Info_Select{
+padding:0;
+}
 
   </style>
 </head>

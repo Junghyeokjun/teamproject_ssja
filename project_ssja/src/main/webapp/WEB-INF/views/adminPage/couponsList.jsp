@@ -29,12 +29,17 @@
 <meta name="_csrf_header" content="${_csrf.headerName}" />
 <script src="/js/barscript_admin.js"></script>
 <script src="/js/footer.js"></script>
- <link href="/css/board.css?after" rel="stylesheet">
+<link href="/css/board.css?after" rel="stylesheet">
 <link href="/css/footerstyle.css?after" rel="stylesheet">
 <link href="/css/barstyle_admin.css?after" rel="stylesheet">
 
 <link rel="stylesheet"
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
+<style>
+#adminPage_Info_Select {
+	padding: 0;
+}
+</style>
 </head>
 <body>
 	<header>
@@ -42,8 +47,8 @@
 			<div class="py-2 px-1" id="top-bar">
 				<button type="toggle-button" class="top_btn" id="top_btn"></button>
 				<a id="logo_toHome" href=""><img id="logo_img"
-					src="/images/utilities/logoSSJA.png"></a>
-					<a id="user_link" href="/login" style="margin-left:auto;"><img id="login_img" ></a>
+					src="/images/utilities/logoSSJA.png"></a> <a id="user_link"
+					href="/login" style="margin-left: auto;"><img id="login_img"></a>
 			</div>
 		</div>
 		<nav id="total_bar"></nav>
@@ -89,9 +94,10 @@
 				</div>
 				<div id="adminInfo_dv3" class="my-3 mx-3"
 					style="display: flex; flex-wrap: nowrap; justify-content: center;">
-					<div style="flex: 1; margin-right: 10px; ">
+					<div style="flex: 1; margin-right: 10px;">
 						<h4 style="display: inline-block;">쿠폰 현황</h4>
-						<button type="button" class="btn btn-dark ms-auto" id="newCouponBtn">신규 쿠폰 발급</button>
+						<button type="button" class="btn btn-dark ms-auto"
+							id="newCouponBtn">신규 쿠폰 발급</button>
 						<p>현재 사용가능한 쿠폰을 조회합니다.</p>
 						<div class="table-responsive">
 							<table class="table" style="text-align: center;">
@@ -101,6 +107,7 @@
 										<th scope="col">쿠폰 이름</th>
 										<th scope="col">할인율</th>
 										<th scope="col">사용기간</th>
+										<th scope="col"></th>
 									</tr>
 								</thead>
 								<tbody class="table-group-divider">
@@ -111,11 +118,11 @@
 											<td>${coupon.c_dcper}%</td>
 											<td><fmt:formatDate value="${coupon.c_startdate}"
 													pattern="yyyy-MM-dd" />~<fmt:formatDate
-													value="${coupon.c_duedate}" pattern="yyyy-MM-dd" />
-												<button type="button" class="btn btn-outline-dark"
-													id="modifyCouponBtn" style="margin-left:1rem;">수정</button>
+													value="${coupon.c_duedate}" pattern="yyyy-MM-dd" /></td>
+											<td><button type="button" class="btn btn-outline-dark"
+													id="modifyCouponBtn" style="margin-left: 1rem;">수정</button>
 												<button type="button" class="btn btn-outline-danger"
-													id="deleteCouponBtn" style="margin-left:1rem;">삭제</button></td>
+													id="deleteCouponBtn" style="margin-left: 1rem;">삭제</button></td>
 										</tr>
 									</c:forEach>
 								</tbody>
@@ -390,17 +397,21 @@
 		<div id="second_footer"></div>
 		<div id="third_footer"></div>
 	</footer>
-	
-	
-	 <sec:authorize access="isAuthenticated()">
-	 
-	 <sec:authorize access="hasRole('ROLE_VENDOR')">
-        <input type="hidden" id="isVendorCheck" value="1">
-    </sec:authorize>
-	 
-  <script src="/js/login_user_tab.js"> </script>
-  <script src="/js/user_cart_tab.js"> </script>
-</sec:authorize>
-	
+
+
+	<sec:authorize access="isAuthenticated()">
+
+		<sec:authorize access="hasRole('ROLE_VENDOR')">
+			<input type="hidden" id="isVendorCheck" value="1">
+		</sec:authorize>
+
+		<script src="/js/login_user_tab.js">
+			
+		</script>
+		<script src="/js/user_cart_tab.js">
+			
+		</script>
+	</sec:authorize>
+
 </body>
 </html>

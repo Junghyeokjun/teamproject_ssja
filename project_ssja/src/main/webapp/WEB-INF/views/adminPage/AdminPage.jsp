@@ -36,6 +36,20 @@
 	href="https://webfontworld.github.io/NanumSquare/NanumSquare.css">
 <script
 	src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<style>
+#adminPage_Info_Select {
+	padding: 0;
+}
+/* 모달 중앙 정렬 */
+.modal-dialog {
+    position: fixed;
+    top: 30%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    max-width: 90%; /* 모달의 최대 너비 설정 */
+}
+
+</style>
 </head>
 <body>
 	<header>
@@ -43,8 +57,8 @@
 			<div class="py-2 px-1" id="top-bar">
 				<button type="toggle-button" class="top_btn" id="top_btn"></button>
 				<a id="logo_toHome" href=""><img id="logo_img"
-					src="/images/utilities/logoSSJA.png"></a>
-					<a id="user_link" href="/login" style="margin-left:auto;"><img id="login_img" ></a>
+					src="/images/utilities/logoSSJA.png"></a> <a id="user_link"
+					href="/login" style="margin-left: auto;"><img id="login_img"></a>
 			</div>
 		</div>
 		<nav id="total_bar"></nav>
@@ -92,19 +106,20 @@
 					<div id="AdminPage_content_container">
 						<div id="adminInfo_dv2" class="my-3 mx-3"
 							style="background-color: rgb(238, 238, 238);">
-							<div id="userInfo_orders" style="cursor: auto;">
+							<div id="dailyPrice" style="cursor: auto;">
 								<h4>TODAY 총 매출액</h4>
 								<fmt:formatNumber value="${dailyPrice}" pattern="#,###원" />
 							</div>
-							<div id="userInfo_wishs" style="cursor: auto;">
+							<div id="dailyPurcount" style="cursor: auto;"
+								data-bs-toggle="modal" data-bs-target="#exampleModal">
 								<h4>TODAY 주문 건수</h4>
 								<span>${dailyPurcount}건</span>
 							</div>
-							<div id="adminInfo_points" style="cursor: auto;">
-								<h4>TODAY 문의</h4>
+							<div id="dailyQnaCount" style="cursor: auto;">
+								<h4>TODAY 문의 건수</h4>
 								<span>${dailyQnaCount}건</span>
 							</div>
-							<div id="adminInfo_coupons" style="cursor: auto;">
+							<div id="dailyMCount" style="cursor: auto;">
 								<h4>TODAY 가입자</h4>
 								<span>${dailyMCount}명</span>
 							</div>
@@ -115,7 +130,6 @@
 								<h4 class="mx-5 my-3">
 									일일매출
 									<p style="font-size: 0.5em; display: inline;">(최근일주일)</p>
-
 								</h4>
 								<canvas id="dailySalesChart" width="50" height="50"></canvas>
 							</div>
@@ -124,7 +138,6 @@
 								<h4 class="mx-5 my-3">
 									일일가입자
 									<p style="font-size: 0.5em; display: inline;">(최근일주일)</p>
-
 								</h4>
 								<canvas id="dailyMCountsChart" width="50" height="50"></canvas>
 							</div>
@@ -133,7 +146,6 @@
 								<h4 class="mx-5 my-3">
 									일일방문자
 									<p style="font-size: 0.5em; display: inline;">(최근일주일)</p>
-
 								</h4>
 								<canvas id="dailyVisitCountsChart" width="50" height="50"></canvas>
 							</div>
@@ -141,24 +153,181 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="modal" id="totalInfoModal" tabindex="-1"
-			aria-labelledby="totalInfoModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content"
-					style="width: 800px; height: 700px; background-color: white;">
-					<div class="modal-header">
-						<h5 class="modal-title" id="totalInfoModalLabel"></h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
-					</div>
-					<div class="modal-body" id="totalInfoContent"></div>
-					<div class="modal-footer d-flex flex-row justify-content-center"
-						id="totlaInfoTooter"></div>
-				</div>
-			</div>
-		</div>
+		</div>	
+		 <!-- 주문 목록 모달 -->
+    <div id="orderListModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">주문 목록</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <table class="table" id="orderCountTable" style="text-align: center;">
+                    <thead>
+                        <tr>
+                           <td scope="col">주문번호</td>
+								<td scope="col">회원번호</td>
+								<td scope="col">총 금액</td>
+								<td scope="col">결제수단</td>
+								<td scope="col">주문일자</td>
+								<td scope="col">주소</td>
+								<td scope="col">배송업체</td>
+                        </tr>
+                    </thead>
+                    <tbody id="orderCountTableBody">
+                        <!-- 여기에 데이터가 동적으로 추가됩니다 -->
+                    </tbody>
+                </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 문의건수 모달 -->
+    <div id="qnaCountModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">문의 건수</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <table class="table" id="qnaCountTable" style="text-align: center;">
+                    <thead>
+                        <tr>
+                           <td scope="col">글번호</td>
+								<td scope="col">회원번호</td>
+								<td scope="col">작성자</td>
+								<td scope="col">제목</td>
+								<td scope="col">내용</td>
+								<td scope="col">날짜</td>
+                        </tr>
+                    </thead>
+                    <tbody id="qnaCountTableBody">
+                        <!-- 여기에 데이터가 동적으로 추가됩니다 -->
+                    </tbody>
+                </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 가입자 수 모달 -->
+    <div id="mCountModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">가입자 수</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+ <table class="table" id="MCountTable" style="text-align: center;">
+                    <thead>
+                        <tr>
+                            <td scope="col">회원번호</td>
+								<td scope="col">아이디</td>
+								<td scope="col">이름</td>
+								<td scope="col">주소</td>
+								<td scope="col">생일</td>                                                       
+                        </tr>
+                    </thead>
+                    <tbody id="MCountTableBody">
+                        <!-- 여기에 데이터가 동적으로 추가됩니다 -->
+                    </tbody>
+                </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
 	</main>
+	<script>
+    // 주문 목록 클릭 시 모달에 데이터 동적으로 로드
+    $('#dailyPurcount').on('click', function (event) {
+        // 서버에서 주문 목록 데이터를 가져오는 API 호출 예시
+        $.ajax({
+            url: '/adminPage/dailyPurList',  // API 엔드포인트 URL
+            method: 'GET',
+            success: function (data) {
+                var modal = $('#orderListModal');
+                var tableBody = modal.find('#orderCountTableBody');
+                tableBody.empty(); // 기존 목록 초기화
+                
+                //수정해야함
+                /* data.forEach(function (order) {
+                    var row = '<tr><td>' + order.orderNumber 
+                    + '</td><td>' + order.memberNumber 
+                    + '</td><td>' + order.totalAmount 
+                    + '</td><td>' + order.paymentMethod 
+                    + '</td><td>' + order.orderDate + '</td><td>' 
+                    + order.address + '</td><td>' 
+                    + order.deliveryCompany + '</td></tr>';
+                    tableBody.append(row);
+                }); */
+                modal.modal('show'); // 모달 열기
+            },
+            error: function () {
+                console.error('Failed to fetch order list.');
+            }
+        });
+    });
+
+ // 문의 건수 클릭 시 모달에 데이터 동적으로 로드
+    $('#dailyQnaCount').on('click', function (event) {
+        $.ajax({
+            url: '/adminPage/dailyQnaList',  // API 엔드포인트 URL
+            method: 'GET',
+            success: function (data) {
+                var modal = $('#qnaCountModal');
+                var tableBody = modal.find('#qnaCountTableBody');
+                tableBody.empty(); // 기존 목록 초기화
+                data.forEach(function (qna) {
+                    var row = '<tr><td>' + qna.b_NO + '</td><td>' + qna.m_NO + '</td><td>' + qna.b_WRITER 
+                    + '</td><td>' + qna.b_TITLE + '</td><td>' + qna.b_CONTENT + '</td><td>' + qna.b_DATE + '</td></tr>';
+
+                    tableBody.append(row);
+                });
+                modal.modal('show'); // 모달 열기
+            },
+            error: function () {
+                console.error('Failed to fetch qna count.');
+            }
+        });
+    });
+    // 가입자 수 클릭 시 모달에 데이터 동적으로 로드
+    $('#dailyMCount').on('click', function (event) {
+        // 서버에서 가입자 수 데이터를 가져오는 API 호출 예시
+        $.ajax({
+            url:  '/adminPage/dailyMList',  // API 엔드포인트 URL
+            method: 'GET',
+            success: function (data) {
+                var modal = $('#mCountModal');
+                var tableBody = modal.find('#MCountTableBody');
+                tableBody.empty(); // 기존 목록 초기화
+                data.forEach(function (member) {
+                    var row = '<tr><td>' + member.m_NO 
+                    + '</td><td>' + member.m_ID 
+                    + '</td><td>' + member.m_NAME 
+                    + '</td><td>' + member.m_ADDRESS1 
+                    + '</td><td>' + member.m_BIRTH + '</td></tr>';
+                    tableBody.append(row);
+                });
+                modal.modal('show'); // 모달 열기
+            },
+            error: function () {
+                console.error('Failed to fetch member count.');
+            }
+        });
+    });
+</script>
+	
 	<script>
         document.addEventListener('DOMContentLoaded', function() {
             var dailySalesString = '${dailySales}';
@@ -301,17 +470,18 @@
 		<div id="second_footer"></div>
 		<div id="third_footer"></div>
 	</footer>
-	
-	
-	 <sec:authorize access="isAuthenticated()">
-	 
-	 <sec:authorize access="hasRole('ROLE_VENDOR')">
-        <input type="hidden" id="isVendorCheck" value="1">
-    </sec:authorize>
-	 
-  <script src="/js/login_user_tab.js"> </script>
-  <script src="/js/user_cart_tab.js"> </script>
-</sec:authorize>
-	
+
+
+	<sec:authorize access="isAuthenticated()">
+
+		<sec:authorize access="hasRole('ROLE_VENDOR')">
+			<input type="hidden" id="isVendorCheck" value="1">
+		</sec:authorize>
+
+		<script src="/js/login_user_tab.js"> </script>
+		<script src="/js/user_cart_tab.js"> </script>
+	</sec:authorize>
+
 </body>
+<!-- <script src="/js/adminPage/adminInfoPage.js"></script> -->
 </html>
