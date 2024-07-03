@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.MembersDto;
 import teamproject.ssja.dto.MembersSearchDto;
+import teamproject.ssja.dto.OrderDetailsDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ProductsSearchDto;
 import teamproject.ssja.dto.PurchaseDto;
@@ -99,7 +100,7 @@ public class AdminPageController {
 	
 	@GetMapping("/dailyPurList")
     @ResponseBody
-    public List<PurchaseDto> getDailyPurList() {
+    public List<OrderDetailsDto> getDailyPurList() {
         return adminInfoListService.getDailyPurList();
     }
 

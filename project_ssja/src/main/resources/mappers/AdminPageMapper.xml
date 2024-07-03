@@ -4,11 +4,24 @@
 <mapper namespace="teamproject.ssja.mapper.AdminPageMapper">
 
 	<!-- 일일주문내역 -->	
-	<select id="getDailyPurList" resultType="PurchaseDto">
+	<select id="getDailyPurList" resultType="OrderDetailsDto">
 	    <![CDATA[		
-	   SELECT *
-		FROM purchase
-		WHERE TRUNC(pur_date) =  TRUNC(sysdate)
+	   SELECT
+    o.O_NO,
+    pur.M_NO,
+    p.PRO_NAME,
+    o.O_QUANTITY    
+FROM
+    orders o
+JOIN
+    product p ON o.pro_no = p.pro_no
+JOIN
+    purchase pur ON o.pur_no = pur.pur_no
+
+WHERE TRUNC(pur_date) =  TRUNC(sysdate)
+
+ORDER BY
+    o.o_no
 	     ]]>
 	</select>
 	

@@ -168,11 +168,8 @@
                         <tr>
                            <td scope="col">주문번호</td>
 								<td scope="col">회원번호</td>
-								<td scope="col">총 금액</td>
-								<td scope="col">결제수단</td>
-								<td scope="col">주문일자</td>
-								<td scope="col">주소</td>
-								<td scope="col">배송업체</td>
+								<td scope="col">상품명</td>
+								<td scope="col">주문수량</td>
                         </tr>
                     </thead>
                     <tbody id="orderCountTableBody">
@@ -260,17 +257,13 @@
                 var tableBody = modal.find('#orderCountTableBody');
                 tableBody.empty(); // 기존 목록 초기화
                 
-                //수정해야함
-                /* data.forEach(function (order) {
-                    var row = '<tr><td>' + order.orderNumber 
-                    + '</td><td>' + order.memberNumber 
-                    + '</td><td>' + order.totalAmount 
-                    + '</td><td>' + order.paymentMethod 
-                    + '</td><td>' + order.orderDate + '</td><td>' 
-                    + order.address + '</td><td>' 
-                    + order.deliveryCompany + '</td></tr>';
+               data.forEach(function (order) {
+                    var row = '<tr><td>' + order.o_NO 
+                    + '</td><td>' + order.m_NO 
+                    + '</td><td>' + order.pro_NAME 
+                    + '</td><td>' + order.o_QUANTITY + '</td></tr>';
                     tableBody.append(row);
-                }); */
+                }); 
                 modal.modal('show'); // 모달 열기
             },
             error: function () {

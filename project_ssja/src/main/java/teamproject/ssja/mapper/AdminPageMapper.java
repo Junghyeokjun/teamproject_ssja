@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Update;
 import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.MembersDto;
 import teamproject.ssja.dto.MembersSearchDto;
+import teamproject.ssja.dto.OrderDetailsDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ProductsSearchDto;
 import teamproject.ssja.dto.ProfitDto;
@@ -121,7 +122,7 @@ public interface AdminPageMapper {
 		int insertAdminProduct(ProductDto productDto);
 
 		//일일 조회 리스트들
-		List<PurchaseDto> getDailyPurList();
+		List<OrderDetailsDto> getDailyPurList();
 
 		List<MembersDto> getDailyMList();
 
