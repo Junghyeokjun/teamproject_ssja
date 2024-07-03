@@ -796,6 +796,7 @@ color:black;
 	    let nowQuantity = $('#product_orgin_quantity_dv').val();
 	    console.log(nowQuantity)
 	    if(nowQuantity === '0' || parseInt(nowQuantity) === 0){
+	    	alert('해당 상품은 수량이 존재하지 않아 구매 및 장바구니가 불가능합니다.')
 	    	$('#cart_btn').prop('disabled', true);
 	    	$('#purchase_btn').prop('disabled', true);
 	    	$('#cart_btn2').prop('disabled', true);
