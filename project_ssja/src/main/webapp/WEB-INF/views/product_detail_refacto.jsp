@@ -459,7 +459,7 @@ color:black;
 												<hr>
 											</c:forEach>
 										</div>
-										<nav aria-label="Page navigation example " id="paging_div">
+										<nav aria-label="Page navigation example" id="paging_div">
 											<ul class="pagination justify-content-center">
 												<c:if test="${reviewData.prev == true }"><!-- prev -->
 													<li class="page-item"><a class="page-link"

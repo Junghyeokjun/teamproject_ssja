@@ -31,12 +31,11 @@ public class VendorServiceImpl implements VendorService{
 	
 	@Autowired
 	VendorMapper vendorMapper;
-	
-	
+
 	// 파일을 저장할 디렉터리 경로
 	private String productImgDir = System.getProperty("user.dir") + "/src/main/resources/static/images/";
 	// 배포 시 경로에 문제가 있다면, 이는 아래 부분에 작성하도록 하기
-	// private String productImgDir = "";	
+	// private String productImgDir = "/home/ubuntu/images";	
 			
 	// 폴더명
 	private String bannerDir = "product_banner";

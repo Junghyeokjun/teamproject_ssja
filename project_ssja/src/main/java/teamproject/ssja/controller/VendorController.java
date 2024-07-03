@@ -65,12 +65,6 @@ public class VendorController {
 		return "/vendor/vendor_view";
 	}
 	
-//	@PostMapping("/vendorInfo")
-//	public String getVendorInfo(@RequestParam("vendorData") long vendorNo, Model model) {
-//		model.addAttribute("vendorObj", vendorService.getVendor(vendorNo));
-//	}
-	
-
 	@GetMapping("/product/write")
 	public String writeProduct(Model model) {
 		log.info("writeProduct()..");
