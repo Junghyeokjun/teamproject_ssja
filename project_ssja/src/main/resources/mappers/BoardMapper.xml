@@ -271,27 +271,35 @@
 
 	<!-- 검색조건에 맞는 게시글 총 개수  -->
 	<select id="selectSearchTotalCount" resultType="long">
-    	SELECT  count(*) FROM board where b_c_no= #{bcno} and b_writer != '관리자' and             
+    	SELECT  count(*) FROM board b,board_imgs bi where b.b_c_no= #{bcno} and b.b_writer != '관리자' and b.b_no=bi.b_no and             
                <choose>
                <when test="#{option} != null and option.equals('all')">
-                (B_TITLE like '%${keyword}%' or B_CONTENT like '%${keyword}%' or B_WRITER like '%${keyword}%' )
+                (b.B_TITLE like '%${keyword}%' or b.B_CONTENT like '%${keyword}%' or b.B_WRITER like '%${keyword}%' )
                </when>      
                <when test="#{option} != null and option.equals('title')">
-                B_TITLE like '%${keyword}%'
+                b.B_TITLE like '%${keyword}%'
                </when> 
                <when test="#{option} != null and option.equals('content')">
-                B_CONTENT like '%${keyword}%'
+                b.B_CONTENT like '%${keyword}%'
                </when> 
                <when test="#{option} != null and option.equals('title_and_content')">
-                (B_TITLE like '%${keyword}%' or B_CONTENT like '%${keyword}%')
+                (b.B_TITLE like '%${keyword}%' or b.B_CONTENT like '%${keyword}%')
                </when> 
                <when test="#{option} != null and option.equals('writer')">
-                B_WRITER like '%${keyword}%'
+                b.B_WRITER like '%${keyword}%'
                </when> 
 
                </choose>
 
 	</select>
+	<!-- 커뮤니티 게시글 총개수 -->
+	<select id="selectCommunityTotalCount" parameterType="long" resultType="long">
+    	<![CDATA[
+        	SELECT count(*) FROM board b, board_imgs bi where b.B_C_NO = 40 and b.b_writer != '관리자' and b.b_no=bi.b_no
+        ]]>
+	</select>
+	
+	
 	<!-- 게시글 이미지 체크  -->
 	<select id="selectBoardImg" resultType="int">
 		select count(*) from board_imgs WHERE b_no=#{bno}

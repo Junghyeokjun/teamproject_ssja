@@ -75,7 +75,7 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public long getCommunityTotal() {
 		
-		return boardMapper.selectTotalCount(40);
+		return boardMapper.selectCommunityTotalCount();
 	}
 	
 	@Override
