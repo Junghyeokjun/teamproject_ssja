@@ -44,7 +44,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
 	public ListObjectPagingDTO getItemsReview(Long productNum, Integer pageNum) {
 		
 		List<ProductReviewDTO> list = productDetailMapper.getItemsReview(productNum, pageNum);
-		if(list.size() == 0) {
+		if(list.isEmpty()) {
 			return null;
 		}
 		long total = list.get(0).getTotal();

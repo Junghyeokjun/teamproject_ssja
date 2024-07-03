@@ -398,6 +398,7 @@ color:black;
             This is a toast message.
         </div>
     </div>
+    
 			<section class="bg-light border-top py-4" id="product_detail_section">
 				<div class="container">
 					<div class="row gx-4">
@@ -434,7 +435,7 @@ color:black;
 										role="tabpanel" aria-labelledby="ex1-tab-2" id="product_review">
 										<div class="comment-body">
 											<c:forEach var="review" items="${reviewData.objectList }"><!-- 리뷰 forEach문 -->
-												<div class="user-profile">
+												<div class="user-profile" class="mx-4">
 													<div class="user-info">
 														<span class="user-name">${review.b_writer }</span>
 														<!-- 별점 구현 -->
@@ -454,8 +455,14 @@ color:black;
 													</div>
 													<div class="ml-5" style="color:#aaa;">${review.b_date }</div>
 												</div>
-												<div class="user-comment" id="review_content_div">
-													${review.b_content }</div>
+													<c:if test="${review.rv_img != null}">
+													<img src="${review.rv_img }" style="with:22%; height:5.5rem;margin-left:3.5rem;border-radius:3px;">
+												</c:if>
+												<div class="user-comment d-flex flex-row" id="review_content_div">
+												
+											
+													${review.b_content }
+													</div>
 												<hr>
 											</c:forEach>
 										</div>
@@ -546,6 +553,7 @@ color:black;
 			</section>
 		</div>
 	</main>
+	
 	<footer>
 		<div id="first_footer" class="p-3"></div>
 		<div id="second_footer"></div>

@@ -69,4 +69,7 @@ public interface ReplyMapper {
 	
 	@Insert("insert into points values (pt_seq.nextval, #{id}, 1, 1000, '리뷰 포인트', sysdate)")
 	void reviewGiftPoint(long id);
+	
+	@Insert("insert into board_imgs values(b_img_seq.nextval, b_seq.currval, #{imgs})")
+	void insertReviewImg(String imgs);
 } 

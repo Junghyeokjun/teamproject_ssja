@@ -251,13 +251,13 @@
 	<select id="selectReview" resultMap="BoardDtoMap">
     	<![CDATA[
 
-		    select
+		    (select
 		        A.*
 		    from 
 		    (SELECT b.* FROM board b 
 		     WHERE b.B_C_NO=30 and b.m_no=#{mno}
 		     ORDER BY b.B_DATE desc) A 
-	    	where rownum <= 2 
+	    	where rownum <= 5)
 	    
         ]]>
 	</select>
@@ -363,6 +363,7 @@
 		<result property="bhit" column="b_hit"/>
 		<result property="beval" column="b_eval"/>
 		<result property="prono" column="pro_no"/>
+		<result property="rv_img" column="rv"/>
 	</resultMap>
 		<resultMap type="teamproject.ssja.dto.BoardDto" id="BoardDtoAndTotMap">
 		<id property="bno" column="b_no"/>

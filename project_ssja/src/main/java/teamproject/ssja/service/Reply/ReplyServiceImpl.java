@@ -1,7 +1,11 @@
 package teamproject.ssja.service.Reply;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -85,14 +89,40 @@ public class ReplyServiceImpl implements ReplyService {
 	public long getTotal(long bno) {
 		return replyMapper.selectReplyCount(bno);
 	}
-
+	
+	@Transactional
 	@Override
 	public void appleReview(ReviewForm form) {
+		try {
+			Long id = InfoProvider.getM_NO();
+			form.setId(id);
+			replyMapper.applyReview(form);
+			replyMapper.reviewGiftPoint(form.getId());
+			
+			//리뷰 사진이 있을 경우
+		
+			if(form.getRv_image() != null || !form.getRv_image().isEmpty() ) {
+				
+				 String originalFilename = form.getRv_image().getOriginalFilename();
+		            String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+		            String fileName = "rv_img_" + form.getProNum() + fileExtension;
+		            String filePath = "./src/main/resources/static/images/review";
+		          // 배포 이미지 경로  //String filePath = "/home/ubuntu/images/review";
 
-		Long id = InfoProvider.getM_NO();
-		form.setId(id);
-		replyMapper.applyReview(form);
-		replyMapper.reviewGiftPoint(form.getId());
+		            // 파일 저장을 위한 디렉토리 생성 및 파일 쓰기
+		            Path directory = Paths.get(filePath);
+		            Files.createDirectories(directory);
+		            Path fileFullPath = directory.resolve(fileName);
+		            Files.write(fileFullPath, form.getRv_image().getBytes());
+		            replyMapper.insertReviewImg("/images/review/"+fileName);
+		            // 배포 이미지 경로  // replyMapper.insertReviewImg("/images/review"+fileName);
+		            log.info("imageinfo {}", fileFullPath.toString());
+			}
+
+		} catch (Exception e) {
+			
+			throw new RuntimeException("리뷰 작성 오류");
+		}
 	}
 
 }

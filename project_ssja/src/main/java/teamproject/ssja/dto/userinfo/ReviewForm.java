@@ -1,5 +1,7 @@
 package teamproject.ssja.dto.userinfo;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,4 +16,5 @@ public class ReviewForm {
 	private String content;
 	private int eval;
 	private Long proNum;
+	private MultipartFile rv_image;
 }

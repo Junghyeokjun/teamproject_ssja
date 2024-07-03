@@ -42,6 +42,7 @@ public class BoardDto {
 	private long prono;
 	private long total;
 	private int existAns;
+	private String rv_img;
 	
 	// 자바 스크립트 버전으로 할지, 자바로 할지 선택하는 '날짜 형태 변환'
 	// 자바 스크립트로 하기 싫다면 아래 메서드를 활용해서 날짜를 가져오기
@@ -81,6 +82,7 @@ public class BoardDto {
         }
 	}
 	
+	
 	private String mTuning(String time) {
 		int m = Integer.valueOf(time);
 		if(m < 10) {
@@ -88,5 +90,24 @@ public class BoardDto {
 		}else {
 			return String.valueOf(m);
 		}
+	}
+
+
+	public BoardDto(long bno, long bmno, long bbcno, String bwriter, String btitle, String bcontent, String bdate,
+			long blike, long bhit, long beval, long prono, long total, int existAns) {
+		super();
+		this.bno = bno;
+		this.bmno = bmno;
+		this.bbcno = bbcno;
+		this.bwriter = bwriter;
+		this.btitle = btitle;
+		this.bcontent = bcontent;
+		this.bdate = bdate;
+		this.blike = blike;
+		this.bhit = bhit;
+		this.beval = beval;
+		this.prono = prono;
+		this.total = total;
+		this.existAns = existAns;
 	}
 }

@@ -15,5 +15,6 @@ public class ProductReviewDTO {
 	private double b_eval;
 	private Long pro_no;
 	private int total;
+	private String rv_img;
 
 }

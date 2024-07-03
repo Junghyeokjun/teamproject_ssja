@@ -91,11 +91,17 @@
 
 
 <select id="getItemsReview" resultType="teamproject.ssja.dto.product.ProductReviewDTO">
-	select *
-	from (select b.* , 
-		 row_number() over(order by b_date desc) as rnum, COUNT(*) OVER () AS total
-  		 from board b where pro_no = #{productNum}) a
-	where a.rnum between ${pageNum} * 10 - 9 and ${pageNum} * 10
+
+
+	SELECT a.*, b.rv_img FROM (
+		SELECT b.*, row_number() over(order by b_date desc) as rnum,
+		COUNT(*) OVER () AS total FROM board b
+		WHERE pro_no = #{productNum} and b_c_no = 30) a
+	left JOIN (
+		SELECT B_IMG_PATH as rv_img, b_no FROM board_imgs) b 
+	ON a.B_NO = b.B_NO
+	WHERE a.rnum BETWEEN ${pageNum} * 10 - 9 and ${pageNum} * 10
+
 	</select>
 	
 <select id="getProductDetailInfo" resultMap="productMap">
