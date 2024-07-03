@@ -1,6 +1,8 @@
 package teamproject.ssja.dto;
 
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,4 +46,16 @@ public class MembersDto {
 	private int M_POINT;
 	private String M_DATE;
 	private String M_NICKNAME;
+	
+	
+	public void setM_BIRTH(String M_BIRTH) {
+		java.util.Date date = null;
+		 SimpleDateFormat format = new SimpleDateFormat("yyMMdd");
+		 try {
+			date= format.parse(M_BIRTH);
+		} catch (ParseException e) {
+		}
+		 this.M_BIRTH =(new Date(date.getTime()));
+
+	}
 }

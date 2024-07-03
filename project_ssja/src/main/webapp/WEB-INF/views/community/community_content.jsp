@@ -148,12 +148,12 @@
           async : false,
           dataType : 'json',  
           success : function(result) {
-            $("#product_link").attr("href","/product_detail?PRO_NO="+result.product.pro_NO);
-            $("#pro_img").attr("src",result.product.pro_BANNERIMG);
-            $("#pro_bizname").text(result.product.pro_BIZNAME);
-            $("#pro_name").text(result.product.pro_NAME);
+            $("#product_link").attr("href","/product_detail?PRO_NO="+result.product.PRO_NO);
+            $("#pro_img").attr("src",result.product.PRO_BANNERIMG);
+            $("#pro_bizname").text(result.product.PRO_BIZNAME);
+            $("#pro_name").text(result.product.PRO_NAME);
             $("#pro_category").text(result.pcname);
-            $("#pro_wish").text(result.product.pro_WISH);
+            $("#pro_wish").text(result.product.PRO_WISH);
           },    
           error : function(request, status, error) {
             alert(error);
@@ -238,7 +238,7 @@
 
       //게시글 삭제 메서드
       let deletePost=function(){
-        var imgList=[];
+        var imgList=[1,2];
         
         $("#content img").each(function(idx, item){
           imgList.push(item.getAttribute("src"));
@@ -714,7 +714,7 @@
 
             </sec:authorize>
 
-              <c:if test="${principal.userInfo.m_No == content.bmno and not (principal.userInfo.auth eq 'ROLE_ADMIN')}">
+              <c:if test="${(principal.getMemberNum() == content.bmno or principal.userInfo.m_No == content.bmno) and not (principal.userInfo.auth eq 'ROLE_ADMIN')}">
                 <button class="btn btn-outline-primary" id="update_btn" >수정하기</button>
                 <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">삭제하기</button>
               </c:if> 

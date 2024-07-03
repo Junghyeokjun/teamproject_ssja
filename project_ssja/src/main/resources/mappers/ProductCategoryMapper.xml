@@ -30,9 +30,9 @@
     	<![CDATA[
               	SELECT ROWNUM AS ROW_NUM, P_C_SUBNAME
 				FROM (
-				    SELECT DISTINCT
+				    SELECT 
 				        SUBSTR(P_C_NAME, 1, INSTR(P_C_NAME, '-') - 1) AS P_C_SUBNAME
-				    FROM PRODUCT_CATEGORY
+				    FROM (select* from PRODUCT_CATEGORY where p_c_no like '%1' ORDER BY p_c_no asc) 
 				)
         ]]>
 	</select>

@@ -270,4 +270,11 @@ public class CommunityController {
 		return mv;
 	}
 	
+	//닉네임 획득
+	@GetMapping("/nickName/{mno}")
+	public String getNickname( @PathVariable("mno") long mno ){
+		
+		
+		return communityService.getUser(mno).getM_NICKNAME();
+	}
 }

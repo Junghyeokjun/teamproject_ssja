@@ -80,6 +80,7 @@ public interface CommunityService {
 	
 	//editor이미지 삽입 메서드
 	String updateEditorImage(MultiValueMap<String, MultipartFile> multiValueMap);
+
 	
 	
 	

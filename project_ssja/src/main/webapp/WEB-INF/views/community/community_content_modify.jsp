@@ -156,11 +156,11 @@
                 productlist.append($("<h1>해당 상품은 존재하지 않습니다.</h1>"))
               };
               data.forEach(function (e) {
-                productlist.append($('<div class="product" class="my-2" style="background-color: white;" imgPath="' + e.pro_BANNERIMG + '" pro_no="' + e.pro_NO + '"  pro_name="' + e.pro_NAME + '" >' +
+                productlist.append($('<div class="product" class="my-2" style="background-color: white;" imgPath="' + e.PRO_BANNERIMG + '" pro_no="' + e.PRO_NO + '"  pro_name="' + e.PRO_NAME + '" >' +
                   '<div class="d-flex flex-row align-items-center my-3">' +
-                  '<img src="' + e.pro_BANNERIMG + '" >' +
-                  '<div class="d-flex flex-column justify-content-center" id="orders_product_Info" style=" overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-left: 1em;"><span style="font-weight: bold;">' + e.pro_BIZNAME + '</span>' +
-                  '<span style="color: black; text-decoration: none; font-weight: bold;">' + e.pro_NAME + '</span>' +
+                  '<img src="' + e.PRO_BANNERIMG + '" >' +
+                  '<div class="d-flex flex-column justify-content-center" id="orders_product_Info" style=" overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-left: 1em;"><span style="font-weight: bold;">' + e.PRO_BIZNAME + '</span>' +
+                  '<span style="color: black; text-decoration: none; font-weight: bold;">' + e.PRO_NAME + '</span>' +
                   '</div>' +
                   '</div>' +
                   '</div>'))
@@ -186,30 +186,30 @@
 
 
                 content.append('<div id="product_link" class="mt-2 w-75">' +
-                  '<div id="product" pno="' + result.product.pro_NO + '">' +
+                  '<div id="product" pno="' + result.product.PRO_NO + '">' +
                   '<div class="d-flex flex-row align-items-center" >' +
-                  '<img src="' + result.product.pro_BANNERIMG + '" id="pro_img">' +
+                  '<img src="' + result.product.PRO_BANNERIMG + '" id="pro_img">' +
                   '<div class="d-flex flex-column justify-content-between" id="orders_product_Info" >' +
                   '<span class="d-flex justify-content-between ">' +
-                  '<span class="fs-6 pt-2 ps-2 " id="pro_bizname">' + result.product.pro_BIZNAME + '</span>' +
+                  '<span class="fs-6 pt-2 ps-2 " id="pro_bizname">' + result.product.PRO_BIZNAME + '</span>' +
                   '<span class="fs-6 pt-2 pe-2" >' +
-                  '<span id="pro_wish" style="color: rgb(240, 101, 117);">' + result.product.pro_WISH + '</span>' +
+                  '<span id="pro_wish" style="color: rgb(240, 101, 117);">' + result.product.PRO_WISH + '</span>' +
                   '<img src="/images/utilities/wish_icon.png" style="width: 1.5em; height: 1.5em ;">' +
                   '</span>' +
                   '</span>' +
                   '<span class="fs-6 ps-2" id="pro_category">' + result.pcname + '</span>' +
-                  '<span class="fs-5" id="pro_name">' + result.product.pro_NAME + '</span>' +
+                  '<span class="fs-5" id="pro_name">' + result.product.PRO_NAME + '</span>' +
                   '</div>' +
                   '</div>' +
                   '</div>' +
                   '</div>')
               } else {
-                $("#product").attr("pno", result.product.pro_NO)
-                $("#pro_img").attr("src", result.product.pro_BANNERIMG);
-                $("#pro_bizname").text(result.product.pro_BIZNAME);
-                $("#pro_name").text(result.product.pro_NAME);
+                $("#product").attr("pno", result.product.PRO_NO)
+                $("#pro_img").attr("src", result.product.PRO_BANNERIMG);
+                $("#pro_bizname").text(result.product.PRO_BIZNAME);
+                $("#pro_name").text(result.product.PRO_NAME);
                 $("#pro_category").text(result.pcname);
-                $("#pro_wish").text(result.product.pro_WISH);
+                $("#pro_wish").text(result.product.PRO_WISH);
               }
             },
             error: function (request, status, error) {

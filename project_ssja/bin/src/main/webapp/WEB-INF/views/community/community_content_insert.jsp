@@ -141,13 +141,14 @@
       let randomNum = (new Date().getTime());
 
       function getProductList(keyword) {
+        console.log(keyword);
         $.ajax({
           type: 'GET',
           url: '/community/product',
           contentType: 'text',
           data: { keyword: keyword },
           success: function (data) {
-
+            console.log(data);
             if (data.length == 0) {
               productlist.append($("<h1>해당 상품은 존재하지 않습니다.</h1>"))
             };
