@@ -633,12 +633,14 @@ main, footer {
 		for (let i = 0; i < ratings.length; i++) {
 			total += ratings[i];
 		}
-		let average = total / ratings.length;
+		// NaN이면 0, 아니면 값을 출력
+		let average = isNaN(total / ratings.length) ? 0 : (total / ratings.length);
 
 		// 평균을 소수점 첫 번째 자리까지 반올림하여 표시합니다.
 		// <i class="fa fa-star yellowStar" aria-hidden="true"></i>
 		$('#averageRating').append( $('<i>').addClass('fa fa-star yellowStar').attr('aria-hidden', 'true'));
 		$('#averageRating').text(average.toFixed(1));
+			
 	}
 
 	$(document).ready(function(){
