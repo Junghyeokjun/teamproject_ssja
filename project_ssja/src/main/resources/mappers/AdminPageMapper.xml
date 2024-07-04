@@ -4,7 +4,7 @@
 <mapper namespace="teamproject.ssja.mapper.AdminPageMapper">
 
 	<!-- 일일주문내역 -->	
-	<select id="getDailyPurList" resultType="OrderDetailsDto">
+ <select id="getDailyPurList" resultType="OrderDetailsDto">
 	    <![CDATA[		
 	   SELECT
     o.O_NO,
@@ -23,7 +23,7 @@ WHERE TRUNC(pur_date) =  TRUNC(sysdate)
 ORDER BY
     o.o_no desc
 	     ]]>
-	</select>
+	</select> 
 	
 		<!-- 일일가입자내역 -->		
 	<select id="getDailyMList" resultType="MembersDto">
@@ -253,6 +253,9 @@ order by v.v_no desc
                <when test="#{type} != null and type.equals('PRO_BIZNAME')">
                 PRO_BIZNAME = '${keyword}'
                </when> 
+               <when test="#{type} != null and type.equals('PRO_NAME')">
+                PRO_NAME LIKE '%${keyword}%'
+               </when> 
                         
                </choose>                          
 	</select>	
@@ -278,6 +281,39 @@ order by v.v_no desc
 	PRO_WISH=0, PRO_SELLCOUNT=0, PRO_HIT=0 where PRO_NO = #{PRO_NO}
 	 ]]>
 </update>
+
+ 	<select id="getReviewsByProductId"  resultType="ProductReviewsDto">    
+    <![CDATA[	
+      SELECT B.B_WRITER, 
+       B.B_CONTENT, 
+       NVL(TO_CHAR(B.B_DATE, 'YYYY-MM-DD'), '0000-00-00') AS B_DATE, 
+       B.B_EVAL, B.B_NO
+  FROM PRODUCT P
+ INNER JOIN BOARD B ON P.PRO_NO = B.PRO_NO
+ WHERE P.PRO_NO = #{PRO_NO}
+    ]]>
+	</select> 
+	
+	<select id="getReplyReviewsByProductId"  resultType="ProductReviewReplyDto">    
+    <![CDATA[	
+      SELECT r.r_WRITER,r.r_CONTENT,        
+NVL(TO_CHAR(r.r_DATE, 'YYYY-MM-DD'), '0000-00-00') AS r_DATE, 
+r.r_NO FROM BOARD B, REPLYS R WHERE B.B_NO=R.B_NO and R.B_NO=#{B_NO}
+    ]]>
+	</select>
+	
+	
+	<delete id="deleteReviewProduct" parameterType="ProductReviewsDto">
+		 <![CDATA[
+        	delete FROM BOARD where B_NO= #{B_NO}
+        ]]>
+	</delete>
+	
+	<delete id="deleteReplyReviewProduct" parameterType="ProductReviewReplyDto">
+		 <![CDATA[
+        	delete FROM REPLYS where R_NO= #{R_NO}
+        ]]>
+	</delete>
 	
 	<resultMap id="PurchasesListMap" type="PurchaseDto">
 		<id property="PUR_NO" column="PUR_NO" />
