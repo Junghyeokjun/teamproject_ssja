@@ -229,7 +229,7 @@ padding:0;
             <div class="modal-body">
                 <div class="table-responsive">
                     <h5>리뷰</h5>
-                    <table class="table table-bordered text-center">
+                    <table class="table  text-center">
                         <thead>
                             <tr>
                                 <th scope="col">작성자</th>
@@ -246,7 +246,7 @@ padding:0;
                 </div>
                 <div id="commentSection" style="display: none;">
                     <h5>댓글</h5>
-                    <table class="table table-bordered text-center">
+                    <table class="table text-center">
                         <thead>
                             <tr>
                                 <th scope="col">작성자</th>
@@ -349,8 +349,8 @@ $(document).on('click', '#reviewProductBtn', function() {
                             + '<td>' + review.b_CONTENT + '</td>'
                             + '<td>' + review.b_DATE + '</td>'
                             + '<td>' + review.b_EVAL + '</td>'
-                            + '<td><button class="view-comment-btn" data-id="' + review.b_NO + '">댓글확인</button></td>'
-                            + '<td><button class="delete-review-btn" data-id="' + review.b_NO + '">삭제</button></td>'
+                            + '<td><button class="btn btn-outline-dark" id="view-comment-btn" data-id="' + review.b_NO + '">댓글확인</button></td>'
+                            + '<td><button class="btn btn-outline-danger" id="delete-review-btn" data-id="' + review.b_NO + '">삭제</button></td>'
                             + '</tr>';
                     modalBodyContent.append(row);
                 });
@@ -368,7 +368,7 @@ $(document).on('click', '#reviewProductBtn', function() {
     noCommentAlert.hide();
 });
 //각 리뷰의 댓글 확인 버튼 클릭 이벤트 핸들러
-$(document).on('click', '.view-comment-btn', function() {
+$(document).on('click', '#view-comment-btn', function() {
     var reviewId = $(this).data('id'); // 댓글 확인 버튼에 설정된 리뷰 번호 가져오기
 
     // reviewId를 이용해 원하는 작업 수행
@@ -415,7 +415,7 @@ $(document).on('click', '.view-comment-btn', function() {
 });
 </script>
 <script>
-    $(document).on('click', '.delete-review-btn', function() {
+    $(document).on('click', '#delete-review-btn', function() {
         var reviewId = $(this).data('id'); // 삭제할 리뷰의 ID 가져오기
         
         console.log(reviewId);
