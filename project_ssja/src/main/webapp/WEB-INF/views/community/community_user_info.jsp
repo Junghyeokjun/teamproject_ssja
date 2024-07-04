@@ -72,10 +72,12 @@
                 width: 450px; 
                 height: 27px; 
                 overflow: hidden;
-                margin-left: 100px;
 
               }
-
+              .product{
+                background-color: #eee;
+                padding-bottom: 5px;
+              }
 
             </style>
             <script>
@@ -87,8 +89,9 @@
                   async : false,
                   dataType : 'json',  
                   success : function(result) {
-                    $(element.children[0]).text(result.pro_BIZNAME);
-                    $(element.children[1]).text(result.pro_NAME);
+                    $(element.childNodes[1].childNodes[1].childNodes[1]).attr("src",result.product.PRO_BANNERIMG)
+                    $(element.childNodes[1].childNodes[3].childNodes[1]).text(result.product.PRO_BIZNAME);
+                    $(element.childNodes[1].childNodes[3].childNodes[3]).text(result.product.PRO_NAME);
                   },    
                   error : function(request, status, error) {
                     alert(error);
@@ -154,34 +157,45 @@
                         <c:when test="${reviews.size()!=0}">
                           
                           <c:forEach var="review" items="${reviews}">
-                            <div class="product mt-3 ms-2" prono="${review.prono}">
-                                <a href="${pageContext.request.contextPath}/product_detail?PRO_NO=${review.prono}" class="fs-5 fw-bold text-dark" style=" text-decoration: none;">
-                                    상호명
-                                </a>
-                                <a href="${pageContext.request.contextPath}/product_detail?PRO_NO=${review.prono}" class="fs-5 fw-bold pro_name ps-4 text-dark d-inline-block" style=" width: 620px; text-decoration: none;">
-                                    상품이름
-                                </a>  
+                            <div class="product mt-3 ms-2 d-flex justify-content-between" prono="${review.prono}">
+                                <span class="product_view d-flex align-items-top" style="max-width: 640px; overflow: hidden;">
+                                  <a href="${pageContext.request.contextPath}/product_detail?PRO_NO=${review.prono}" class="mt-2 fs-5 fw-bold text-dark" style=" text-decoration: none;">
+                                    <img src="" alt="" style="width: 70px; height: 70px; margin-left: 20px;"> 
+                                  </a>
+                                  <span class="d-flex flex-column justify-content-end ms-2">
+                                    <a href="${pageContext.request.contextPath}/product_detail?PRO_NO=${review.prono}" class="mt-2 fs-5 fw-bold text-dark" style=" text-decoration: none;">
+                                      
+                                    </a>
+                                    <a href="${pageContext.request.contextPath}/product_detail?PRO_NO=${review.prono}" class="mt-2 fs-5 fw-bold text-dark" style=" text-decoration: none;">
+                                    </a>
+                                  </span>
+                                </span>
+                                <span class="pe-4">
+                                  <c:forEach var="i"
+                                  begin="1" end="5">
+                                  <c:choose>
+                                    <c:when test="${review.beval >= i }">
+                                      <i class="fa fa-star yellowStar" aria-hidden="true"></i>
+                                    </c:when>
+                                    <c:otherwise>
+                                      <i class="fa fa-star" aria-hidden="true"></i>
+                                    </c:otherwise>
+                                  </c:choose>
+                                  </c:forEach>
+                                </span>
                             </div>
-                            <div class="user_review pb-3 d-flex justify-content-between">
-                              <span class="d-flex align-items-center" style="height: 27px;">
-                                 
-                                  <span class="fs-5 text-dark d-inline-block review_content">${review.bcontent}</span>
-                                </a>
+                            <div class="user_review pb-3">
+                              
+                              <span class="d-flex align-items-center mt-2" style="height: 100px;">
+                                <c:if test='${review.rv_img!=null}'>
+                                  <img src="${review.rv_img}" alt="" class="ms-5" style="width: 100px; height: 100px;">
+                                </c:if>
+                                <c:if test='${review.rv_img==null}'>
+                                  <span style="width: 100px; height: 100px; margin: 0px; display: inline-block;"></span>
+                                </c:if>
+                                  <span class="fs-5 ms-2 text-dark d-inline-block review_content">${review.bcontent}</span>
                               </span>
-                              <span class="pe-4">
-                                <span>${review.bwriter}</span>
-                                <c:forEach var="i"
-                                begin="1" end="5">
-                                <c:choose>
-                                  <c:when test="${review.beval >= i }">
-                                    <i class="fa fa-star yellowStar" aria-hidden="true"></i>
-                                  </c:when>
-                                  <c:otherwise>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                  </c:otherwise>
-                                </c:choose>
-                                </c:forEach>
-                              </span>
+                              
                             </div>
                             <!-- <div class="border"></div> -->
                           </c:forEach>   

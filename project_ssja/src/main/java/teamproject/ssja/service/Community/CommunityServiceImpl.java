@@ -280,7 +280,12 @@ public class CommunityServiceImpl implements CommunityService {
 
 	@Override
 	public List<BoardDto> getReviews(long mno) {
-		return boardMapper.selectReview(mno);
+		List<BoardDto> reviews= boardMapper.selectReview(mno);
+		for (BoardDto boardDto : reviews) {
+			boardDto.setRv_img(boardMapper.getBoardImg(boardDto.getBno()));
+		}
+		
+		return reviews;
 	}
 
 	@Override

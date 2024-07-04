@@ -257,7 +257,7 @@
 		    (SELECT b.* FROM board b 
 		     WHERE b.B_C_NO=30 and b.m_no=#{mno}
 		     ORDER BY b.B_DATE desc) A 
-	    	where rownum <= 5)
+	    	where rownum <= 2)
 	    
         ]]>
 	</select>
@@ -303,6 +303,11 @@
 	<!-- 게시글 이미지 체크  -->
 	<select id="selectBoardImg" resultType="int">
 		select count(*) from board_imgs WHERE b_no=#{bno}
+	</select>
+	
+	<!-- 게시글 이미지 얻기  -->
+	<select id="getBoardImg" resultType="String">
+		select B_IMG_PATH from board_imgs WHERE b_no=#{bno}
 	</select>
 	
 	<!-- 게시글 이미지경로 추가  -->

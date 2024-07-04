@@ -243,7 +243,13 @@ text-decoration:none;
 color:black;
 }
 </style>
-
+<script>
+	$(document).ready(function(){
+		document.addEventListener("mousedown",function(event){
+			event.stopPropagation();
+		})
+	})
+</script>
 
 </head>
 

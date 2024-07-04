@@ -79,6 +79,9 @@ public interface BoardMapper {
 	// 게시글의 이미지가 존재하는지 체크하는 메서드
 	int selectBoardImg(long bno);
 		
+	// 게시글의 이미지를 얻어오는 메서드
+	String getBoardImg(long bno);
+	
 	// 게시글의 이미지경로를 DB에 업로드하는 메서드
 	int insertBoardImg(BoardImgsDto boardImg);
 
