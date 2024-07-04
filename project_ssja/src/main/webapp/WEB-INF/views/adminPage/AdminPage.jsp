@@ -174,11 +174,11 @@
                     <tbody id="orderCountTableBody">
                     </tbody>
                 </table>
-                <nav>
+                <!-- <nav>
                             <ul class="pagination" id="pagination">
-                                <!-- 페이징 버튼이 여기에 동적으로 추가됩니다 -->
+                                페이징 버튼이 여기에 동적으로 추가됩니다
                             </ul>
-                        </nav>
+                        </nav> -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
@@ -248,97 +248,7 @@
         </div>
     </div>
 	</main>
-	<script>
-        $(document).ready(function() {
-            var pageSize = 10; // 한 페이지당 표시할 주문 수
-
-            $('#dailyPurcount').on('click', function (event) {
-                // 페이지 초기화
-                var currentPage = 1;
-
-                // 서버에서 주문 목록 데이터를 가져오는 API 호출 예시
-                fetchOrderList(currentPage);
-
-                // 페이지 번호 클릭 시 이벤트 처리
-                $('#pagination').on('click', 'li.page-item', function() {
-                    currentPage = $(this).data('page');
-                    fetchOrderList(currentPage);
-                });
-
-                function fetchOrderList(page) {
-                    $.ajax({
-                        url: '/adminPage/dailyPurList',  // API 엔드포인트 URL
-                        method: 'GET',
-                        data: {
-                            page: page,
-                            pageSize: pageSize
-                        },
-                        success: function (data) {
-                            var modal = $('#orderListModal');
-                            var tableBody = modal.find('#orderCountTableBody');
-                            var pagination = $('#pagination');
-                            tableBody.empty(); // 기존 목록 초기화
-
-                            // 주문 목록 테이블에 추가
-                            data.forEach(function (order) {
-                                var row = '<tr><td>' + order.o_NO 
-                                    + '</td><td>' + order.m_NO 
-                                    + '</td><td>' + order.pro_NAME 
-                                    + '</td><td>' + order.o_QUANTITY + '</td></tr>';
-                                tableBody.append(row);
-                            }); 
-
-                            // 페이징 버튼 생성
-                            renderPagination(page);
-
-                            modal.modal('show'); // 모달 열기
-                        },
-                        error: function () {
-                            console.error('Failed to fetch order list.');
-                        }
-                    });
-                }
-
-                // 페이징 버튼 생성 함수
-                function renderPagination(currentPage) {
-                    $.ajax({
-                        url: '/adminPage/dailyPurList', // 페이징 처리를 위한 API 호출 예시
-                        method: 'GET',
-                        data: {
-                            page: currentPage,
-                            pageSize: pageSize
-                        },
-                        success: function(data) {
-                            var pagination = $('#pagination');
-                            pagination.empty(); // 기존 페이징 초기화
-
-                            // 전체 페이지 수 계산
-                            var totalPages = Math.ceil(data.totalCount / pageSize);
-
-                            // 이전 버튼
-                            var prevButton = '<li class="page-item"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
-                            pagination.append(prevButton);
-
-                            // 페이지 번호 버튼들
-                            for (var i = 1; i <= totalPages; i++) {
-                                var activeClass = (i === currentPage) ? 'active' : '';
-                                var pageButton = '<li class="page-item ' + activeClass + '" data-page="' + i + '"><a class="page-link" href="#">' + i + '</a></li>';
-                                pagination.append(pageButton);
-                            }
-
-                            // 다음 버튼
-                            var nextButton = '<li class="page-item"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
-                            pagination.append(nextButton);
-                        },
-                        error: function() {
-                            console.error('Failed to fetch pagination data.');
-                        }
-                    });
-                }
-            });
-        });
-    </script>
-	<!-- <script>
+  <script>
     // 주문 목록 클릭 시 모달에 데이터 동적으로 로드
     $('#dailyPurcount').on('click', function (event) {
         // 서버에서 주문 목록 데이터를 가져오는 API 호출 예시
@@ -350,7 +260,7 @@
                 var tableBody = modal.find('#orderCountTableBody');
                 tableBody.empty(); // 기존 목록 초기화
                 
-               data.forEach(function (order) {
+                data.forEach(function (order) {
                     var row = '<tr><td>' + order.o_NO 
                     + '</td><td>' + order.m_NO 
                     + '</td><td>' + order.pro_NAME 
@@ -363,7 +273,9 @@
                 console.error('Failed to fetch order list.');
             }
         });
-    }); -->
+    }); 
+    </script> 
+
 <script>
  // 문의 건수 클릭 시 모달에 데이터 동적으로 로드
     $('#dailyQnaCount').on('click', function (event) {

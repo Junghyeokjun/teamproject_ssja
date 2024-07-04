@@ -140,7 +140,7 @@ public class AdminExpansionController {
 	                    cell4.setCellStyle(bodyCellStyle);
 	                } 
 
-	                // 연 먀출
+	                // 연 매출
 	                if (i < yearlyData.size()) {
 	                    ProfitDto yearly = yearlyData.get(i);
 	                    Cell cell5 = row.createCell(4);
