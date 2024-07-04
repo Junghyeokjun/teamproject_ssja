@@ -415,8 +415,17 @@ main, footer {
 							</form>
 						</div>
 						<div class="border p-5 text-center w-50 review" style="overflow-y: auto">
-							<div>
-								리뷰
+							<div class="d-flex justify-content-between">
+								<span class="h5">리뷰</span>
+								<div>
+									<span>
+									평균 별점 : 
+									<c:forEach var="i" begin="1" end="1">
+										<i class="fa fa-star yellowStar" aria-hidden="true"></i>
+									</c:forEach>
+									</span>
+									<span id="averageRating"></span>									
+								</div>
 							</div>
 							<div>
 								<hr class="border border-2 opacity-75">
@@ -433,11 +442,12 @@ main, footer {
 											</div>
 										</c:when>
 										<c:otherwise>
-											<c:forEach var="review" items="${reviewData.objectList }"><!-- 리뷰 forEach문 -->
+											<c:forEach var="review" items="${reviewData.objectList}"><!-- 리뷰 forEach문 -->
 												<div class="d-flex justify-content-between">
 													<div class="user-profile">												
 														<div class="user-info">
 															<input type="hidden" class="review-no" value="${review.b_no}" disabled="disabled"/>
+															<input type="hidden" class="review-stars" value="${review.b_eval}" disabled="disabled"/>
 															<span class="user-name">${review.b_writer }</span>
 															<!-- 별점 구현 -->
 															<span class="user-stars"> 
@@ -606,10 +616,37 @@ main, footer {
 		return writeReviewReply;
 	}
 
+	function getReviewStarAvg(){
+		// 숨겨진 input 요소에서 값을 가져옵니다.
+		let reviewStars = $('.review-stars');
+
+		// 값들을 저장할 배열을 초기화합니다.
+		let ratings = [];
+
+		// 모든 숨겨진 input 요소의 값을 배열에 추가합니다.
+		reviewStars.each(function() {
+			ratings.push(parseFloat($(this).val()));
+		});
+
+		// 배열의 평균을 계산합니다.
+		let total = 0;
+		for (let i = 0; i < ratings.length; i++) {
+			total += ratings[i];
+		}
+		let average = total / ratings.length;
+
+		// 평균을 소수점 첫 번째 자리까지 반올림하여 표시합니다.
+		// <i class="fa fa-star yellowStar" aria-hidden="true"></i>
+		$('#averageRating').append( $('<i>').addClass('fa fa-star yellowStar').attr('aria-hidden', 'true'));
+		$('#averageRating').text(average.toFixed(1));
+	}
+
 	$(document).ready(function(){
 		$('.review').height($('.product-info').height()); 
 
 		getReply();
+
+		getReviewStarAvg();
 
 		// 버튼마다 하나만 활성화되도록 하기 위한 변수
 		let activeBtn = null;
