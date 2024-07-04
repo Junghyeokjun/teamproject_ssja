@@ -45,6 +45,8 @@
 <script src="/js/footer.js">
 
   </script>
+<script src="/js/board.js">
+</script>
 <link href="/css/footerstyle.css?after" rel="stylesheet">
 <link href="/css/vendorbarstyle.css?after" rel="stylesheet">
 <link href="/css/board.css?after" rel="stylesheet">
@@ -351,7 +353,7 @@ main, footer {
 								method="post" autocomplete="off" >
 								<sec:csrfInput />
 								<input type="hidden" name="PRO_NO" readonly="readonly" value="${product.getPRO_NO()}">
-								<input type="hidden" name="V_NO" readonly="readonly" value="${product.getV_NO()})"> <input
+								<input type="hidden" name="V_NO" readonly="readonly" value="${product.getV_NO()}"> <input
 									type="hidden" name="PRO_BIZNAME" readonly="readonly" value="${product.getPRO_BIZNAME()}">
 								<div id="ProductCategory" class="p-2 input-group w-100">
 									<label class="mx-2 m-auto input-group-text">1차 분류</label>
@@ -501,6 +503,9 @@ main, footer {
 </sec:authorize>
 
 <script type="text/javascript">
+
+	let token = $("meta[name='_csrf']").attr("content");
+	let header = $("meta[name='_csrf_header']").attr("content");
 	// 보통 페이지를 닫기 전에 사용자에게 중요한 경고 메시지를 보여주는 등의 용도로 사용
 	// 해당 페이지 return 반영은 나중에. 현재는 return 값이 없으면 작동을 안하는데, return 값을 넣어도 text가 기본 브라우저 텍스트로만 나옴
 	$(window).on('beforeunload', function() {
@@ -508,9 +513,8 @@ main, footer {
 	});
 
 	// vendorData = memberNum
-	$('.scrollable-textarea').on('input', function() {
-		this.style.height = 'auto'; // 높이 초기화
-		this.style.height = (this.scrollHeight) + 'px'; // 스크롤 높이로 설정
+	$('#inputReplyCon').on('input', function() {
+		textareaAutoHeight(this);
 	});
 
 	function getReply(){
@@ -521,8 +525,8 @@ main, footer {
 				data : {'bno' :  $(element).val()},
 				success : function(response){
 					// 해당 리뷰 댓글 개수가 0이면
-					if(response.replys.length == 0){
-						let reviewReplyAdd = $('.review-reply-add');
+					let reviewReplyAdd = $('.review-reply-add');
+					if(response.replys.length == 0){						
 						if(reviewReplyAdd.data('rbno') == $(element).val()){
 							reviewReplyAdd.find('.add-button-area').append(
 								$('<button>').addClass('btn btn-success btn-format reply-write-form')
@@ -531,8 +535,10 @@ main, footer {
 											.text('작성'));
 						}						
 					}else{
-						let writeReviewReply = makeWriteReviewReply($(element).parent().parent().parent().parent().find('.review-reply-add'))
-						reviewReplyAdd.append(writeReviewReply);
+						let writtenReviewReply = makeWrittenReviewReply($(element).parent().parent().parent().parent().find('.review-reply-add'))
+						writtenReviewReply.find('#inputReplyCon').val(response.replys[0].rcontent);
+						writtenReviewReply.find('.h5.m-1.p-1').text(response.replys[0].rwriter);
+						reviewReplyAdd.append(writtenReviewReply);
 					}
 				},
 				error : function(xhr, status, error) {
@@ -540,6 +546,34 @@ main, footer {
 				}
 			});
 		});
+	}
+	// 클래스명만 다르게.
+	function makeWrittenReviewReply(element){
+		let writeReviewReply = $('<div>').addClass('written-review-reply');
+		let hr = $('<hr>').addClass('border border-1 opacity-75');
+		let dFlexBetween = $('<div>').addClass('d-flex justify-content-between');
+		let h5Title = $('<h5>').addClass('h5 m-1 p-1').text('답변');
+		let spanButton = $('<span>').addClass('mx-2 my-1');
+		let borderRounded = $('<div>').addClass('border rounded');
+		let textarea =$('<textarea>').attr({
+			id: 'inputReplyCon',
+			class: 'form-control rounded-top scrollable-textarea',
+			name: 'rcontent',
+			'data-rbno': $(element).data('rbno'), // 리뷰 번호 설정
+			'data-rmno': vendorData, // 회원 번호 설정
+			placeholder: '판매자로서, 답변을 다실 수 있습니다.'
+		}).attr('readonly',true).css({
+			'resize': 'none',
+			'overflow': 'hidden',
+			'height': 'auto',
+			'min-height' : '3em'
+		});
+
+		// 요소들을 구조에 맞게 추가
+		dFlexBetween.append(h5Title).append(spanButton);
+		writeReviewReply.append(hr).append(dFlexBetween).append(borderRounded.append(textarea));
+
+		return writeReviewReply;
 	}
 
 	function makeWriteReviewReply(element){
@@ -560,18 +594,17 @@ main, footer {
 		}).css({
 			'resize': 'none',
 			'overflow': 'hidden',
-			'height': 'auto'
+			'height': 'auto',
+			'min-height' : '3em'
 		});
 
 		// 요소들을 구조에 맞게 추가
 		spanButton.append(inputBtn);
 		dFlexBetween.append(h5Title).append(spanButton);
-		writeReviewReply.append(hr).append(dFlexBetween).append(borderRounded).append(textarea);
+		writeReviewReply.append(hr).append(dFlexBetween).append(borderRounded.append(textarea));
 
 		return writeReviewReply;
 	}
-
-
 
 	$(document).ready(function(){
 		$('.review').height($('.product-info').height()); 
@@ -579,37 +612,57 @@ main, footer {
 		getReply();
 
 		// 버튼마다 하나만 활성화되도록 하기 위한 변수
-		let eventInProgress = true;
+		let activeBtn = null;
 
 		$(document).on('click','.reply-write-form',function(){			
-			if (eventInProgress) {
-				return; // 다른 이벤트가 실행 중이면 클릭 무시
+			// 이미 다른 버튼이 활성화된 상태라면 초기화
+			if (activeBtn && activeBtn[0] !== $(this)[0]) {
+				// 이전 활성화된 버튼의 로직 초기화
+				activeBtn.text('작성');
+				activeBtn.parent().parent().find('.write-review-reply').remove();
 			}
 
+			// 현재 버튼을 활성화된 상태로 설정
 			let writeReviewReply = makeWriteReviewReply(this);
-			
 			let thisReviewReply = $(this).parent().parent();
 
-			if($(this).text() == '작성'){
+			if ($(this).text() === '작성') {				
 				thisReviewReply.append(writeReviewReply);
 				$(this).text('취소');
-				return;
-			}else{
-				thisReviewReply.find('.write-review-reply').remove();
-				$(this).text('작성');
-				return;
-			}			
-
-			eventInProgress = false;
+				activeBtn = $(this); // 활성화된 버튼으로 설정
+			} else{
+				let yesOrNo = confirm("정말로 답변 작성을 취소하시겠습니까?");
+				if(yesOrNo){
+					thisReviewReply.find('.write-review-reply').remove();
+					$(this).text('작성');
+					activeBtn = null;
+				}else{
+					activeBtn = $(this); // 활성화된 상태로 유지
+				}			
+			}
 		});
 
-		let rWriter = '${principal.userInfo.m_NickName}';
+		// memberNum 변수 값 유무에 따라 로그인 여부를 체크하는 함수(소셜 로그인도 해당 변수에 값이 들어간 상태라고 함)
+		function isLoggedIn(){
+			let memberNum = '${principal.memberNum}';
+			// console.log('isLoggedIn memberNum : ' + memberNum);
+			return memberNum != '' ? true : false;
+		}
 
 		$(document).on('click', '#inputReply', function(e){
 			// 기본 동작을 막음.
 			// 이후 폼 제출이나 링크 이동은 따로 선언해서 이벤트를 진행
 			e.preventDefault();
-					
+			let thisWriteReviewReply = $(this).parent().parent().parent();
+			let rbno = thisWriteReviewReply.find('#inputReplyCon').data('rbno');
+			let rmno = thisWriteReviewReply.find('#inputReplyCon').data('rmno');
+			let rWriter = $("input[name='PRO_BIZNAME']").val();
+			let rcontent = thisWriteReviewReply.find('#inputReplyCon').val();
+			// 나머지 경우에는 ajax를 통한 댓글 입력 실행.
+			console.log('useruser : ' + rWriter);
+			console.log('rbno : ' + rbno);
+			console.log('rmno : ' + rmno);
+			console.log('text : ' + $('#inputReplyCon').val());
 			if(!isLoggedIn()){
 				// 로그인이 안된 상태에서 버튼을 클릭 시
 				alert('댓글을 달 수 없습니다. 로그인 페이지로 이동합니다.');
@@ -621,40 +674,42 @@ main, footer {
 				$('#inputReplyCon').val('');
 				return;		
 			} else{
-				// 나머지 경우에는 ajax를 통한 댓글 입력 실행.
-				console.log('useruser : ' + rWriter);
-				console.log('rbno : ' + rbno);
-				console.log('rmno : ' + rmno);
-				console.log('text : ' + $('#inputReplyCon').val());
-				$.ajax({
-					url: 'api/replys/add',
-					type : 'POST',
-					beforeSend : function(xhr) {
-						xhr.setRequestHeader(header, token);
-					},
-					data : {
-						'rbno' : rbno,
-						'rmno' : rmno,
-						'rwriter' : rWriter,
-						'rcontent' : $('#inputReplyCon').val()
-					},
-					success :  function(response){
-						console.log(response);
-						// 댓글 입력을 하고 나면 입력 데이터를 없애기.
-						$('#inputReplyCon').val('');
-					},
-					error : function(xhr, status, error){
-						alert('댓글 처리가 제대로 되지 않았습니다!');
-						console.log("error : " + error);
-						console.log("response : " + xhr.responseText);
-					}
-				});
+				let yesOrNo = confirm("답변은 한번만 작성 가능합니다. 작성하시겠습니까?");
+				if(yesOrNo){					
+					$.ajax({
+						url: '/api/replys/add',
+						type : 'POST',
+						beforeSend : function(xhr) {
+							xhr.setRequestHeader(header, token);
+						},
+						data : {
+							'rbno' : rbno,
+							'rmno' : rmno,
+							'rwriter' : rWriter,
+							'rcontent' : rcontent
+						},
+						success :  function(response){
+							console.log(response);
+							
+							thisWriteReviewReply.removeClass('write-review-reply');
+							thisWriteReviewReply.addClass('written-review-reply');
+
+							// 입력 후 입력 버튼 없애기.
+							$('#inputReply').remove();
+							thisWriteReviewReply.parent().find('.reply-write-form').remove();
+							thisWriteReviewReply.find('.h5.m-1.p-1').text($("input[name='PRO_BIZNAME']").val());
+						},
+						error : function(xhr, status, error){
+							alert('답변 처리가 제대로 되지 않았습니다! 나중에 다시 시도하세요.');
+							console.log("error : " + error);
+							console.log("status : " + status);
+							console.log("response : " + xhr.responseText);
+						}
+					});
+				}				
 			}
 		});
 		
-		
-
-
 		$.ajax({
 			type : "POST",
 			url : "/api/vendor/vendorInfo",

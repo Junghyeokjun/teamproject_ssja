@@ -36,6 +36,7 @@ import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.login.CustomPrincipal;
 import teamproject.ssja.dto.product.ProductDetailTotalInfoDTO;
 import teamproject.ssja.dto.vendor.VendorInfoDTO;
+import teamproject.ssja.dto.vendor.VendorProfitDTO;
 import teamproject.ssja.page.Criteria;
 import teamproject.ssja.page.ListObjectPagingDTO;
 import teamproject.ssja.page.Page10VO;
