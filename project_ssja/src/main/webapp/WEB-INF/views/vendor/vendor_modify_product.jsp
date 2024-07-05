@@ -529,18 +529,22 @@ main, footer {
 
 	function getReply(){
 		$('.review-no').each(function(index, element){
+			let bno = $(element).val();
 			$.ajax({
 				type : "GET",
 				url : "/api/replys/list",
-				data : {'bno' :  $(element).val()},
-				success : function(response){
+				data : {'bno' :  bno},
+				success : function(response){					
+					// eq(index)를 넣지 않으면 기본적으로 첫번째 요소만 선택하므로, 반드시 넣어주기.
+					// 해당 부분 처리 완료/
+					let reviewReplyAdd = $('.review-reply-add').eq(index);
+
 					// 해당 리뷰 댓글 개수가 0이면
-					let reviewReplyAdd = $('.review-reply-add');
 					if(response.replys.length == 0){						
-						if(reviewReplyAdd.data('rbno') == $(element).val()){
+						if(reviewReplyAdd.data('rbno') == bno){
 							reviewReplyAdd.find('.add-button-area').append(
 								$('<button>').addClass('btn btn-success btn-format reply-write-form')
-											.attr('data-rbno', $(element).val())
+											.attr('data-rbno', bno)
 											.attr('data-rmno', vendorData)
 											.text('작성'));
 						}						
@@ -559,7 +563,7 @@ main, footer {
 	}
 	// 클래스명만 다르게.
 	function makeWrittenReviewReply(element){
-		let writeReviewReply = $('<div>').addClass('written-review-reply');
+		let writtenReviewReply = $('<div>').addClass('written-review-reply');
 		let hr = $('<hr>').addClass('border border-1 opacity-75');
 		let dFlexBetween = $('<div>').addClass('d-flex justify-content-between');
 		let h5Title = $('<h5>').addClass('h5 m-1 p-1').text('답변');
@@ -581,9 +585,9 @@ main, footer {
 
 		// 요소들을 구조에 맞게 추가
 		dFlexBetween.append(h5Title).append(spanButton);
-		writeReviewReply.append(hr).append(dFlexBetween).append(borderRounded.append(textarea));
+		writtenReviewReply.append(hr).append(dFlexBetween).append(borderRounded.append(textarea));
 
-		return writeReviewReply;
+		return writtenReviewReply;
 	}
 
 	function makeWriteReviewReply(element){
@@ -733,6 +737,7 @@ main, footer {
 							thisWriteReviewReply.removeClass('write-review-reply');
 							thisWriteReviewReply.addClass('written-review-reply');
 
+							thisWriteReviewReply.find('#inputReplyCon').attr('readonly',true);
 							// 입력 후 입력 버튼 없애기.
 							$('#inputReply').remove();
 							thisWriteReviewReply.parent().find('.reply-write-form').remove();

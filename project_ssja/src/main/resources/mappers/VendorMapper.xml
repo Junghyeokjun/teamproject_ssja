@@ -54,15 +54,77 @@
  	<!-- 페이징은 기본으로 깔고 가기 -->
 	<select id="selectVendorProducts" resultMap="ProductsListMap">
 		 <![CDATA[
-			select * from 
-        	(
-			    select
-			        rownum rnum , A.*
-			    from 
-			    (SELECT * FROM Product where v_no=#{vno} order by PRO_NO desc) A 
-		    	where rownum <= #{pageNum} * #{amount} 
-		    )
-			where rnum > (#{pageNum}-1) * #{amount}
+			SELECT * FROM 
+			(
+			    SELECT
+			        rownum rnum, A.*
+			    FROM 
+			    (
+			        SELECT 
+			            P.*, 
+			            NVL(B.REVIEW_COUNT, 0) AS REVIEW_COUNT
+			        FROM 
+			            Product P
+			        LEFT JOIN
+			            (SELECT 
+			                 pro_no, 
+			                 COUNT(*) AS REVIEW_COUNT 
+			             FROM 
+			                 board 
+			             WHERE 
+			                 b_c_no = 30 
+			             GROUP BY 
+			                 pro_no) B
+			        ON 
+			            P.PRO_NO = B.pro_no
+			        WHERE 
+			            P.v_no = #{vno}
+			        ORDER BY 
+			            P.PRO_NO DESC
+			    ) A 
+			    WHERE 
+			        rownum <= #{pageNum} * #{amount}
+			)
+			WHERE 
+			    rnum > (#{pageNum}-1) * #{amount}
+   		 ]]>
+	</select>
+
+	<select id="selectVendorProductsOrderbyReviewCount" resultMap="ProductsListMap">
+		 <![CDATA[
+			SELECT * FROM 
+			(
+			    SELECT
+			        rownum rnum, A.*
+			    FROM 
+			    (
+			        SELECT 
+			            P.*, 
+			            NVL(B.REVIEW_COUNT, 0) AS REVIEW_COUNT
+			        FROM 
+			            Product P
+			        LEFT JOIN
+			            (SELECT 
+			                 pro_no, 
+			                 COUNT(*) AS REVIEW_COUNT 
+			             FROM 
+			                 board 
+			             WHERE 
+			                 b_c_no = 30 
+			             GROUP BY 
+			                 pro_no) B
+			        ON 
+			            P.PRO_NO = B.pro_no
+			        WHERE 
+			            P.v_no = #{vno}
+			        ORDER BY 
+           				REVIEW_COUNT DESC
+			    ) A 
+			    WHERE 
+			        rownum <= #{pageNum} * #{amount}
+			)
+			WHERE 
+			    rnum > (#{pageNum}-1) * #{amount}
    		 ]]>
 	</select>
 
@@ -76,7 +138,26 @@
 			    select
 			        rownum rnum , A.*
 			    from 
-			    (SELECT * FROM Product where v_no=#{criteria.vno} and 
+			    (SELECT 
+			            P.*, 
+			            NVL(B.REVIEW_COUNT, 0) AS REVIEW_COUNT
+			        FROM 
+			            Product P
+			        LEFT JOIN
+			            (SELECT 
+			                 pro_no, 
+			                 COUNT(*) AS REVIEW_COUNT 
+			             FROM 
+			                 board 
+			             WHERE 
+			                 b_c_no = 30 
+			             GROUP BY 
+			                 pro_no) B
+			        ON 
+			            P.PRO_NO = B.pro_no
+			        WHERE 
+			            P.v_no = #{criteria.vno} and
+
 		 ]]>	    
 		<choose>     
 	        <when test="#{option} != null and option.equals('proNo')">
@@ -93,7 +174,8 @@
 	        </when> 
        	</choose>
          <![CDATA[			    
-			    order by PRO_NO desc) A 
+  			    ORDER BY 
+			            P.PRO_NO DESC) A 
 		    	where rownum <= #{criteria.pageNum} * #{criteria.amount} 
 		    )
 			where rnum > (#{criteria.pageNum}-1) * #{criteria.amount}
@@ -464,6 +546,7 @@
 		<result property="PRO_BIZNAME" column="PRO_BIZNAME" />
 		<result property="PRO_NAME" column="PRO_NAME" />
 		<result property="PRO_DATE" column="PRO_DATE" />
+		<result property="reviewCount" column="REVIEW_COUNT" />
 	</resultMap>
 	
 	<resultMap type="teamproject.ssja.dto.ProductImgDto" id="ProductImgsMap">

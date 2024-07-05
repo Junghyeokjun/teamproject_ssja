@@ -25,6 +25,9 @@ public interface VendorMapper {
 	// 판매자 자신의 판매 물품 목록 가져오기
 	List<ProductDto> selectVendorProducts(Criteria criteria);
 	
+	// 판매자 자신의 판매 물품 목록을 리뷰 개수 순으로 가져오기
+	List<ProductDto> selectVendorProductsOrderbyReviewCount(Criteria criteria);
+	
 	// 판매자 자신의 판매 물품 개수
 	long selectVendorProductsCount(Criteria criteria);
 	

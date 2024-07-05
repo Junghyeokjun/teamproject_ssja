@@ -70,4 +70,25 @@ public class ProductDto {
     @JsonProperty("countrv")
     private Integer countrv;
 	
+    @JsonProperty("reviewCount")
+    private long reviewCount;
+
+	public ProductDto(long pRO_NO, long v_NO, long p_C_NO, long pRO_PRICE, long pRO_QUANTITY, String pRO_BANNERIMG,
+			long pRO_WISH, long pRO_SELLCOUNT, long pRO_HIT, String pRO_BIZNAME, String pRO_NAME, String pRO_DATE,
+			long avgeval, Integer countrv) {
+		PRO_NO = pRO_NO;
+		V_NO = v_NO;
+		P_C_NO = p_C_NO;
+		PRO_PRICE = pRO_PRICE;
+		PRO_QUANTITY = pRO_QUANTITY;
+		PRO_BANNERIMG = pRO_BANNERIMG;
+		PRO_WISH = pRO_WISH;
+		PRO_SELLCOUNT = pRO_SELLCOUNT;
+		PRO_HIT = pRO_HIT;
+		PRO_BIZNAME = pRO_BIZNAME;
+		PRO_NAME = pRO_NAME;
+		PRO_DATE = pRO_DATE;
+		this.avgeval = avgeval;
+		this.countrv = countrv;
+	}      
 }
