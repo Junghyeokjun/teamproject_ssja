@@ -47,6 +47,9 @@
     transform: translate(-50%, -50%);
     max-width: 90%; /* 모달의 최대 너비 설정 */
 }
+#qna_title_a {
+	cursor: pointer;
+}
 
 </style>
 </head>
@@ -79,7 +82,7 @@
 				onclick="location.href='/adminPage/productsList'">상품 목록</button>
 			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
 				style="border: 1px solid #cccccc"
-				onclick="location.href='/adminPage/purchasesList'">주문 목록</button>
+				onclick="location.href='/adminPage/ordersList'">주문 목록</button>
 			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
 				style="border: 1px solid #cccccc"
 				onclick="location.href='/adminPage/couponsList'">쿠폰 관리</button>
@@ -287,8 +290,14 @@
                 var tableBody = modal.find('#qnaCountTableBody');
                 tableBody.empty(); // 기존 목록 초기화
                 data.forEach(function (qna) {
-                    var row = '<tr><td>' + qna.b_NO + '</td><td>' + qna.m_NO + '</td><td>' + qna.b_WRITER 
-                    + '</td><td>' + qna.b_TITLE + '</td><td>' + qna.b_CONTENT + '</td><td>' + qna.b_DATE + '</td></tr>';
+                    var row = '<tr>'
+                    	+ '<td>' + qna.b_NO + '</td>'
+                        + '<td>' + qna.m_NO + '</td>'
+                        + '<td>' + qna.b_WRITER + '</td>'
+                        + '<td><a id="product_title_a" href="/board/content_view/20?bno=' + qna.b_NO + '">' + qna.b_TITLE + '</a></td>'
+                        + '<td>' + qna.b_CONTENT + '</td>'
+                        + '<td>' + qna.b_DATE + '</td>'
+                        + '</tr>';
 
                     tableBody.append(row);
                 });

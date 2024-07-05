@@ -1,7 +1,6 @@
 package teamproject.ssja.controller.adminpage;
 
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,11 +20,11 @@ import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.MembersDto;
 import teamproject.ssja.dto.MembersSearchDto;
 import teamproject.ssja.dto.OrderDetailsDto;
+import teamproject.ssja.dto.OrdersSearchDto;
 import teamproject.ssja.dto.ProductReviewsDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ProductReviewReplyDto;
 import teamproject.ssja.dto.ProductsSearchDto;
-import teamproject.ssja.dto.PurchaseSearchDto;
 import teamproject.ssja.dto.QnaBoardDto;
 import teamproject.ssja.dto.QnaSearchDto;
 import teamproject.ssja.dto.VendorDetailsDto;
@@ -36,7 +35,7 @@ import teamproject.ssja.service.Admin.AdminInfoListService;
 import teamproject.ssja.service.Admin.CouponListService;
 import teamproject.ssja.service.Admin.MemberListService;
 import teamproject.ssja.service.Admin.ProductListService;
-import teamproject.ssja.service.Admin.PurchaseListService;
+import teamproject.ssja.service.Admin.OrdersListService;
 import teamproject.ssja.service.Admin.QnaListService;
 import teamproject.ssja.service.Admin.SalesListService;
 import teamproject.ssja.service.Product.ProductCategoryService;
@@ -59,7 +58,7 @@ public class AdminPageController {
 	private ProductListService productListService;
 
 	@Autowired
-	private PurchaseListService purchaseListService;
+	private OrdersListService ordersListService;
 
 	@Autowired
 	private CouponListService couponListService;
@@ -255,22 +254,22 @@ public class AdminPageController {
 		return "redirect:/adminPage/productsList";
 	}
 
-	@RequestMapping("/purchasesList")
-	public String purchasesList(Model model, Criteria criteria) {
-		log.info("purchasesList()..");
+	@RequestMapping("/ordersList")
+	public String ordersList(Model model, Criteria criteria) {
+		log.info("ordersList()..");
 
-		long Purchasestotal = purchaseListService.getPerchaseListTotalCount();
-		model.addAttribute("purchasepageMaker", new Page10VO(Purchasestotal, criteria));
-		model.addAttribute("purchases", purchaseListService.getPerchaseListWithPaging(criteria));
+		long Orderstotal = ordersListService.getOrdersListTotalCount();
+		model.addAttribute("orderspageMaker", new Page10VO(Orderstotal, criteria));
+		model.addAttribute("orders", ordersListService.getOrdersListWithPaging(criteria));
 
-		return "/adminPage/purchasesList";
+		return "/adminPage/ordersList";
 	}
 
-	@GetMapping("/purchasesSearchList")
-	public ResponseEntity<List<PurchaseSearchDto>> purchasesSearchList(@RequestParam("type") String type,
+	@GetMapping("/ordersSearchList")
+	public ResponseEntity<List<OrdersSearchDto>> ordersSearchList(@RequestParam("type") String type,
 			@RequestParam("keyword") String keyword) {
-		log.info("purchasesSearchList()..");
-		List<PurchaseSearchDto> searchResults = purchaseListService.getPurchasesSearchList(type, keyword);
+		log.info("orderSearchList()..");
+		List<OrdersSearchDto> searchResults = ordersListService.getOrdersSearchList(type, keyword);
 		return ResponseEntity.ok(searchResults);
 	}
 

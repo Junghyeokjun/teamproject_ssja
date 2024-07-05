@@ -48,13 +48,4 @@ public class AdminInfoListService {
 		return  adminPageMapper.getDailyQnaList();
 	}
 
-	/*
-	 * public long getDailyPurListTotalCount() { return
-	 * adminPageMapper.getDailyPurListTotalCount(); }
-	 * 
-	 * public List<OrderDetailsDto> getDailyPurListWithPaging(Criteria cri) {
-	 * log.info("getDailyPurListWithPaging().."); return
-	 * adminPageMapper.getDailyPurListWithPaging(cri); }
-	 */
-	
 }

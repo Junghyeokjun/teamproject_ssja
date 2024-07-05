@@ -107,7 +107,7 @@ padding:0;
 				onclick="location.href='/adminPage/productsList'">상품 목록</button>
 			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
 				style="border: 1px solid #cccccc"
-				onclick="location.href='/adminPage/purchasesList'">주문 목록</button>
+				onclick="location.href='/adminPage/ordersList'">주문 목록</button>
 			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
 				style="border: 1px solid #cccccc"
 				onclick="location.href='/adminPage/couponsList'">쿠폰 관리</button>
@@ -260,7 +260,7 @@ padding:0;
                     </table>
                 </div>
                 <div id="noCommentAlert" class="alert alert-warning" role="alert" style="display: none;">
-                    해당 후기에 대한 댓글이 없습니다.
+                    해당 후기에 대한 답글이 없습니다.
                 </div>
             </div>
             <div class="modal-footer">
@@ -349,7 +349,7 @@ $(document).on('click', '#reviewProductBtn', function() {
                             + '<td>' + review.b_CONTENT + '</td>'
                             + '<td>' + review.b_DATE + '</td>'
                             + '<td>' + review.b_EVAL + '</td>'
-                            + '<td><button class="btn btn-outline-dark" id="view-comment-btn" data-id="' + review.b_NO + '">댓글확인</button></td>'
+                            + '<td><button class="btn btn-outline-dark" id="view-comment-btn" data-id="' + review.b_NO + '">답글확인</button></td>'
                             + '<td><button class="btn btn-outline-danger" id="delete-review-btn" data-id="' + review.b_NO + '">삭제</button></td>'
                             + '</tr>';
                     modalBodyContent.append(row);
@@ -370,9 +370,6 @@ $(document).on('click', '#reviewProductBtn', function() {
 //각 리뷰의 댓글 확인 버튼 클릭 이벤트 핸들러
 $(document).on('click', '#view-comment-btn', function() {
     var reviewId = $(this).data('id'); // 댓글 확인 버튼에 설정된 리뷰 번호 가져오기
-
-    // reviewId를 이용해 원하는 작업 수행
-    console.log('댓글 확인 버튼 클릭 - 리뷰 번호:', reviewId);
 
  // 댓글 확인 버튼 클릭 시 해당 리뷰의 댓글을 가져오는 AJAX 요청
     $.ajax({
@@ -427,7 +424,9 @@ $(document).on('click', '#view-comment-btn', function() {
             data: JSON.stringify({ b_NO: reviewId }), // 삭제할 리뷰의 ID를 JSON 형식으로 전송
             contentType: 'application/json',
             success: function(response) {
-                console.log('리뷰 삭제 성공');
+            	commentBodyContent.empty();
+            	noCommentAlert.show();
+                alert('리뷰 삭제 성공');                
             },
             error: function(xhr, status, error) {
                 console.error('리뷰 삭제 실패', error);
@@ -448,7 +447,7 @@ $(document).on('click', '#view-comment-btn', function() {
             data: JSON.stringify({ r_NO: replyId }), // 삭제할 리뷰의 ID를 JSON 형식으로 전송
             contentType: 'application/json',
             success: function(response) {
-                console.log('리뷰 삭제 성공');
+            	alert('답변 삭제 성공');
             },
             error: function(xhr, status, error) {
                 console.error('리뷰 삭제 실패', error);
@@ -603,9 +602,14 @@ $(document).on('click', '#view-comment-btn', function() {
 				if (result.length >= 1) {
 					$("#paging_dv").empty();
 					result.forEach(function(product) {
-						var str = '<tr>';
+						var str = '<tr style="text-align: center; vertical-align: middle;">';
 						str += "<td>" + product.pro_NO + "</td>";
-						str += "<td>" + product.pro_NAME + "</td>";
+						str += '<td><a id="product_title_a" href="/product_detail?PRO_NO=' + product.pro_NO + '">';
+						str += '<div class="d-flex flex-row py-2" id="product_info_dv">';
+						str += '<img id="product_banner_img" src="' + product.pro_BANNERIMG + '">';
+						str += '<div id="item_info_div" class="d-flex flex-column align-items-start justify-content-center p-3">';
+						str += '<span>' + product.pro_BIZNAME + '</span> <span>' + product.pro_NAME + '</span>';
+						str += '</div></div></a></td>';					
 						str += "<td>" + product.pro_PRICE + "</td>";
 						str += "<td>" + product.pro_QUANTITY + "</td>";
 						str += "<td>" + product.pro_WISH + "</td>";

@@ -11,13 +11,12 @@ import teamproject.ssja.dto.BoardDto;
 import teamproject.ssja.dto.MembersDto;
 import teamproject.ssja.dto.MembersSearchDto;
 import teamproject.ssja.dto.OrderDetailsDto;
+import teamproject.ssja.dto.OrdersSearchDto;
 import teamproject.ssja.dto.ProductReviewsDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.ProductReviewReplyDto;
 import teamproject.ssja.dto.ProductsSearchDto;
 import teamproject.ssja.dto.ProfitDto;
-import teamproject.ssja.dto.PurchaseDto;
-import teamproject.ssja.dto.PurchaseSearchDto;
 import teamproject.ssja.dto.QnaBoardDto;
 import teamproject.ssja.dto.QnaSearchDto;
 import teamproject.ssja.dto.VendorDetailsDto;
@@ -39,12 +38,11 @@ public interface AdminPageMapper {
 	//검색
 	List<ProductsSearchDto> getProductsSearchList(String type, String keyword);
 
-	long getPerchaseListTotalCount();
+	long getOrdersListTotalCount();
 
-	List<PurchaseDto> getPerchaseListWithPaging(Criteria criteria);
-
-	//검색
-	List<PurchaseSearchDto> getPurchasesSearchList(String type, String keyword);
+	List<OrderDetailsDto> getOrdersListWithPaging(Criteria criteria);
+		//검색
+	List<OrdersSearchDto> getOrdersSearchList(String type, String keyword);	
 
 	long getCouponListTotalCount();
 
@@ -141,6 +139,7 @@ public interface AdminPageMapper {
 
 		int deleteReviewProduct(ProductReviewsDto productReviewsDto);
 
-		int deleteReplyReviewProduct(ProductReviewReplyDto productReviewReplyDto);	
+		int deleteReplyReviewProduct(ProductReviewReplyDto productReviewReplyDto);
 
+	
 }
