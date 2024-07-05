@@ -43,6 +43,7 @@
 /* 모달 중앙 정렬 */
 .modal-dialog {
     position: fixed;
+    top: 30%;
     left: 30%;
     transform: translate(-50%, -50%);
     max-width: 90%; /* 모달의 최대 너비 설정 */

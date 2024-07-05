@@ -134,7 +134,9 @@ padding:0;
 									<td>${order.getM_NO()}</td>
 									<td>${order.getPRO_NAME()}</td>
 									<td>${order.getO_QUANTITY()}</td>
-									<td>${order.getPUR_TOT()}</td>
+									<td>
+									<fmt:formatNumber value="${order.getPUR_TOT()}" pattern="#,###원" />		
+									</td>
 									<td>${order.getPUR_DATE()}</td>
 									<td>${order.getPUR_DVADDRESS()}</td>
 									<td>${order.getPUR_DV()}</td>
@@ -208,7 +210,7 @@ padding:0;
 						str += "<td>" + order.m_NO + "</td>";
 						str += "<td>" + order.pro_NAME + "</td>";
 						str += "<td>" + order.o_QUANTITY + "</td>";
-						str += "<td>" + order.pur_TOT + "</td>";
+						str += "<td>" + formatCurrency(order.pur_TOT) + "</td>";
 						str += "<td>" + order.pur_DATE + "</td>";
 						str += "<td>" + order.pur_DVADDRESS + "</td>";
 						str += "<td>" + order.pur_DV + "</td>";
@@ -218,6 +220,10 @@ padding:0;
 				}
 			}
 		});
+		// 숫자 포맷팅 함수 정의
+		function formatCurrency(amount) {
+		    return new Intl.NumberFormat('ko-KR').format(amount) + '원';
+		}
 	}
 </script>
 </html>

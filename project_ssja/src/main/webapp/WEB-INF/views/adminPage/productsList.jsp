@@ -221,10 +221,7 @@ padding:0;
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="reviewProductListModalLabel">리뷰 관리</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title" id="reviewProductListModalLabel">리뷰 관리</h5>                
             </div>
             <div class="modal-body">
                 <div class="table-responsive">
@@ -396,7 +393,7 @@ $(document).on('click', '#view-comment-btn', function() {
                                     + '<td>' + reply.r_WRITER + '</td>'
                                     + '<td>' + reply.r_CONTENT + '</td>'
                                     + '<td>' + reply.r_DATE + '</td>'
-                                    + '<td><button class="delete-reply-btn" data-id="' + reply.r_NO + '">삭제</button></td>'
+                                    + '<td><button class="btn btn-outline-danger" id="delete-reply-btn" data-id="' + reply.r_NO + '">삭제</button></td>'
                                     + '</tr>';
                     commentBodyContent.append(commentRow);
                 });
@@ -435,7 +432,7 @@ $(document).on('click', '#view-comment-btn', function() {
     });
 </script>
 <script>
-    $(document).on('click', '.delete-reply-btn', function() {
+    $(document).on('click', '#delete-reply-btn', function() {
         var replyId = $(this).data('id'); // 삭제할 리뷰의 ID 가져오기
         
         console.log(replyId);
