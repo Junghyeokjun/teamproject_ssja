@@ -75,10 +75,7 @@
 #adminPage_Info_Select{
 padding:0;
 }
-/* #product_table_body > tr:hover{
-background-color:#eee;
-cursor:pointer;
-} */
+
 </style>
 </head>
 <body>
@@ -110,7 +107,7 @@ cursor:pointer;
 				onclick="location.href='/adminPage/productsList'">상품 목록</button>
 			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
 				style="border: 1px solid #cccccc"
-				onclick="location.href='/adminPage/purchasesList'">주문 목록</button>
+				onclick="location.href='/adminPage/ordersList'">주문 목록</button>
 			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
 				style="border: 1px solid #cccccc"
 				onclick="location.href='/adminPage/couponsList'">쿠폰 관리</button>
@@ -137,7 +134,8 @@ cursor:pointer;
 					<select name="type">
 						<option selected value="">선택</option>
 						<option value="PRO_NO">상품번호</option>
-						<option value="PRO_BIZNAME">사업자이름</option>
+						<option value="PRO_BIZNAME">상호명</option>
+						<option value="PRO_NAME">상품명</option>
 					</select> <input type="text" name="keyword" value=""> <input
 						type="button" onclick="productsSearchList()"
 						class="btn btn-outline-dark mr-2" value="검색">
@@ -177,6 +175,8 @@ cursor:pointer;
 									<td class="p-3 py-5">${product.getPRO_WISH()}</td>
 									<td class="p-3 py-5">${product.getPRO_SELLCOUNT()}</td>
 									<td class="p-3 py-5">
+									<button type="button" class="btn btn-outline-dark"
+											id="reviewProductBtn">리뷰 관리</button>
 										<button type="button" class="btn btn-outline-dark"
 											id="modifyProductBtn">수정</button>
 										<button type="button" class="btn btn-outline-danger"
@@ -217,11 +217,62 @@ cursor:pointer;
 				</div>
 			</div>
 		</div>		
+<div class="modal fade" id="reviewProductListModal" tabindex="-1" aria-labelledby="reviewProductListModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reviewProductListModalLabel">리뷰 관리</h5>                
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <h5>리뷰</h5>
+                    <table class="table  text-center">
+                        <thead>
+                            <tr>
+                                <th scope="col">작성자</th>
+                                <th scope="col">내용</th>
+                                <th scope="col">작성 날짜</th>
+                                <th scope="col">평점</th>
+                                <th scope="col">댓글 확인</th>
+                                <th scope="col">삭제</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reviewProductListModalBodyContent">
+                        </tbody>
+                    </table>
+                </div>
+                <div id="commentSection" style="display: none;">
+                    <h5>댓글</h5>
+                    <table class="table text-center">
+                        <thead>
+                            <tr>
+                                <th scope="col">작성자</th>
+                                <th scope="col">내용</th>
+                                <th scope="col">작성 날짜</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="commentProductListModalBodyContent">
+                        </tbody>
+                    </table>
+                </div>
+                <div id="noCommentAlert" class="alert alert-warning" role="alert" style="display: none;">
+                    해당 후기에 대한 답글이 없습니다.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+		
 		<!-- 모달 창 -->
 		<div class="modal fade" id="editProductModal" tabindex="-1"
 			role="dialog" aria-labelledby="editProductModalLabel"
 			aria-hidden="true">
-			<div class="modal-dialog" role="document">
+			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="editProductModalLabel">상품 수정</h5>
@@ -270,6 +321,141 @@ cursor:pointer;
 		</script>
 	</sec:authorize>
 </body>
+<script>
+$(document).on('click', '#reviewProductBtn', function() {
+    var $row = $(this).closest('tr');
+    var productId = $row.find('td:first').text(); // 상품번호 가져오기
+
+    $.ajax({
+        url: '/adminPage/reviewProductList', // 서버에서 후기 데이터를 가져올 URL
+        method: 'GET',
+        data: { PRO_NO: productId },
+        success: function(reviews) {
+            var modal = $('#reviewProductListModal');
+            var modalBodyContent = modal.find('#reviewProductListModalBodyContent');
+            modalBodyContent.empty(); // 기존 목록 초기화
+            
+            if (reviews.length === 0) {
+                // 데이터가 없는 경우 알림 메시지 표시
+                alert('해당 상품에 대한 리뷰가 존재하지 않습니다.');
+            } else {
+                // 데이터가 있을 경우 테이블에 추가
+                reviews.forEach(function(review) {
+                    var row = '<tr>'
+                            + '<td>' + review.b_WRITER + '</td>'
+                            + '<td>' + review.b_CONTENT + '</td>'
+                            + '<td>' + review.b_DATE + '</td>'
+                            + '<td>' + review.b_EVAL + '</td>'
+                            + '<td><button class="btn btn-outline-dark" id="view-comment-btn" data-id="' + review.b_NO + '">답글확인</button></td>'
+                            + '<td><button class="btn btn-outline-danger" id="delete-review-btn" data-id="' + review.b_NO + '">삭제</button></td>'
+                            + '</tr>';
+                    modalBodyContent.append(row);
+                });
+                
+                modal.modal('show'); // 모달 열기
+            }
+        },
+        error: function() {
+            console.error('Failed to fetch product reviews.');
+        }
+    });
+    var commentSection = $('#commentSection');
+    var noCommentAlert = $('#noCommentAlert');
+    commentSection.hide();
+    noCommentAlert.hide();
+});
+//각 리뷰의 댓글 확인 버튼 클릭 이벤트 핸들러
+$(document).on('click', '#view-comment-btn', function() {
+    var reviewId = $(this).data('id'); // 댓글 확인 버튼에 설정된 리뷰 번호 가져오기
+
+ // 댓글 확인 버튼 클릭 시 해당 리뷰의 댓글을 가져오는 AJAX 요청
+    $.ajax({
+        url: '/adminPage/replyReviewProductList', // 서버에서 댓글 데이터를 가져올 URL
+        method: 'GET',
+        data: {  B_NO: reviewId },
+        success: function(replys) {
+            var modal = $('#reviewProductListModal');
+            var commentBodyContent = modal.find('#commentProductListModalBodyContent');            
+            var commentSection = modal.find('#commentSection');
+            var noCommentAlert = modal.find('#noCommentAlert');
+            
+            // 댓글 영역 초기화
+            commentBodyContent.empty();
+            noCommentAlert.hide();
+
+            if (replys.length === 0) {
+                // 댓글이 없는 경우 알림 메시지 표시
+                noCommentAlert.show();
+            } else {
+                // 댓글이 있는 경우 테이블에 추가
+                replys.forEach(function(reply) {
+                    var commentRow = '<tr>'
+                                    + '<td>' + reply.r_WRITER + '</td>'
+                                    + '<td>' + reply.r_CONTENT + '</td>'
+                                    + '<td>' + reply.r_DATE + '</td>'
+                                    + '<td><button class="btn btn-outline-danger" id="delete-reply-btn" data-id="' + reply.r_NO + '">삭제</button></td>'
+                                    + '</tr>';
+                    commentBodyContent.append(commentRow);
+                });
+
+                // 댓글 영역 보이기
+                commentSection.show();
+            }
+        },
+        error: function() {
+            console.error('Failed to fetch comments.');
+        }
+    });
+});
+</script>
+<script>
+    $(document).on('click', '#delete-review-btn', function() {
+        var reviewId = $(this).data('id'); // 삭제할 리뷰의 ID 가져오기
+        
+        console.log(reviewId);
+
+         // AJAX를 이용해 리뷰 삭제 요청
+        $.ajax({
+            type: 'POST',
+            url: '/adminPage/removeReviewProduct', // 리뷰 삭제를 처리할 서버의 URL
+            data: JSON.stringify({ b_NO: reviewId }), // 삭제할 리뷰의 ID를 JSON 형식으로 전송
+            contentType: 'application/json',
+            success: function(response) {
+            	commentBodyContent.empty();
+            	noCommentAlert.show();
+                alert('리뷰 삭제 성공');                
+            },
+            error: function(xhr, status, error) {
+                console.error('리뷰 삭제 실패', error);
+            }
+        }); 
+    });
+</script>
+<script>
+    $(document).on('click', '#delete-reply-btn', function() {
+        var replyId = $(this).data('id'); // 삭제할 리뷰의 ID 가져오기
+        
+        console.log(replyId);
+
+         // AJAX를 이용해 리뷰 삭제 요청
+        $.ajax({
+            type: 'POST',
+            url: '/adminPage/removeReplyReviewProduct', // 리뷰 삭제를 처리할 서버의 URL
+            data: JSON.stringify({ r_NO: replyId }), // 삭제할 리뷰의 ID를 JSON 형식으로 전송
+            contentType: 'application/json',
+            success: function(response) {
+            	alert('답변 삭제 성공');
+            },
+            error: function(xhr, status, error) {
+                console.error('리뷰 삭제 실패', error);
+            }
+        }); 
+    });
+</script>
+
+
+
+
 <script>
 	$(document).ready(function() {
 		$('body').on('click', '#modifyProductBtn', function() {
@@ -413,9 +599,14 @@ cursor:pointer;
 				if (result.length >= 1) {
 					$("#paging_dv").empty();
 					result.forEach(function(product) {
-						var str = '<tr>';
+						var str = '<tr style="text-align: center; vertical-align: middle;">';
 						str += "<td>" + product.pro_NO + "</td>";
-						str += "<td>" + product.pro_NAME + "</td>";
+						str += '<td><a id="product_title_a" href="/product_detail?PRO_NO=' + product.pro_NO + '">';
+						str += '<div class="d-flex flex-row py-2" id="product_info_dv">';
+						str += '<img id="product_banner_img" src="' + product.pro_BANNERIMG + '">';
+						str += '<div id="item_info_div" class="d-flex flex-column align-items-start justify-content-center p-3">';
+						str += '<span>' + product.pro_BIZNAME + '</span> <span>' + product.pro_NAME + '</span>';
+						str += '</div></div></a></td>';					
 						str += "<td>" + product.pro_PRICE + "</td>";
 						str += "<td>" + product.pro_QUANTITY + "</td>";
 						str += "<td>" + product.pro_WISH + "</td>";

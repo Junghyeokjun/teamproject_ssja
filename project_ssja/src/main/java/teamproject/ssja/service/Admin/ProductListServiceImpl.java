@@ -7,7 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.MembersDto;
+import teamproject.ssja.dto.ProductReviewsDto;
 import teamproject.ssja.dto.ProductDto;
+import teamproject.ssja.dto.ProductReviewReplyDto;
 import teamproject.ssja.dto.ProductsSearchDto;
 import teamproject.ssja.dto.userinfo.CouponDTO;
 import teamproject.ssja.mapper.AdminPageMapper;
@@ -60,6 +62,27 @@ public class ProductListServiceImpl implements ProductListService {
 		return adminPageMapper.insertAdminProduct(productDto);
 	}
 
-	
+	@Override
+	public List<ProductReviewsDto> getReviewsByProductId(int productId) {
+		return adminPageMapper.getReviewsByProductId(productId);
+	}
+
+	@Override
+	public List<ProductReviewReplyDto> getReplyReviewsByProductId(int productId) {
+		return adminPageMapper.getReplyReviewsByProductId(productId);
+
+	}
+
+	@Override
+	public int removeReviewProduct(ProductReviewsDto productReviewsDto) {
+		log.info("deleteReviewProduct()..");
+		return adminPageMapper.deleteReviewProduct(productReviewsDto); 			
+	}
+
+	@Override
+	public int removeReplyReviewProduct(ProductReviewReplyDto productReviewReplyDto) {
+		log.info("deleteReplyReviewProduct()..");
+		return adminPageMapper.deleteReplyReviewProduct(productReviewReplyDto); 			
+	}	
 	
 }

@@ -50,6 +50,9 @@ cursor:pointer;
 #adminPage_Info_Select{
 padding:0;
 }
+.hidden-column {
+	display: none;
+}
 </style>
 </head>
 <body>
@@ -81,7 +84,7 @@ padding:0;
 				onclick="location.href='/adminPage/productsList'">상품 목록</button>
 			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
 				style="border: 1px solid #cccccc"
-				onclick="location.href='/adminPage/purchasesList'">주문 목록</button>
+				onclick="location.href='/adminPage/ordersList'">주문 목록</button>
 			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
 				style="border: 1px solid #cccccc"
 				onclick="location.href='/adminPage/couponsList'">쿠폰 관리</button>
@@ -122,7 +125,7 @@ padding:0;
 								<td scope="col">회원번호</td>
 								<td scope="col">작성자</td>
 								<td scope="col">제목</td>
-								<td scope="col">내용</td>
+								<td scope="col"class="hidden-column">내용</td>
 								<td scope="col">날짜</td>
 								<td scope="col"></td>
 							</tr>
@@ -134,7 +137,7 @@ padding:0;
 									<td>${qna.getM_NO()}</td>
 									<td>${qna.getB_WRITER()}</td>
 									<td><a  id="qna_title_a"  href="/board/content_view/20?bno=${qna.getB_NO() }">${qna.getB_TITLE()}</a></td>
-									<td>${qna.getB_CONTENT()}</td>
+									<td class="hidden-column">${qna.getB_CONTENT()}</td>
 									<td>${qna.getB_DATE()}</td>
 									<td><button type="button" class="btn btn-outline-dark"
 											id="modifyQnaBtn">수정</button>
@@ -347,7 +350,7 @@ $(document).ready(function() {
 						str += "<td>" + qna.m_NO + "</td>";
 						str += "<td>" + qna.b_WRITER + "</td>";
 						str += "<td>" + qna.b_TITLE + "</td>";
-						str += "<td>" + qna.b_CONTENT + "</td>";
+						str += "<td class='hidden-column'>" + qna.b_CONTENT + "</td>";
 						str += "<td>" + qna.b_DATE + "</td>";
 						str += "</tr>";
 						$('#qnastable > tbody').append(str);

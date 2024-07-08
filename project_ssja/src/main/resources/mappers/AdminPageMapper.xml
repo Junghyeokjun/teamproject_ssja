@@ -4,7 +4,7 @@
 <mapper namespace="teamproject.ssja.mapper.AdminPageMapper">
 
 	<!-- 일일주문내역 -->	
-	<select id="getDailyPurList" resultType="OrderDetailsDto">
+ <select id="getDailyPurList" resultType="OrderDetailsDto">
 	    <![CDATA[		
 	   SELECT
     o.O_NO,
@@ -23,7 +23,7 @@ WHERE TRUNC(pur_date) =  TRUNC(sysdate)
 ORDER BY
     o.o_no desc
 	     ]]>
-	</select>
+	</select> 
 	
 		<!-- 일일가입자내역 -->		
 	<select id="getDailyMList" resultType="MembersDto">
@@ -253,6 +253,9 @@ order by v.v_no desc
                <when test="#{type} != null and type.equals('PRO_BIZNAME')">
                 PRO_BIZNAME = '${keyword}'
                </when> 
+               <when test="#{type} != null and type.equals('PRO_NAME')">
+                PRO_NAME LIKE '%${keyword}%'
+               </when> 
                         
                </choose>                          
 	</select>	
@@ -278,46 +281,87 @@ order by v.v_no desc
 	PRO_WISH=0, PRO_SELLCOUNT=0, PRO_HIT=0 where PRO_NO = #{PRO_NO}
 	 ]]>
 </update>
+
+ 	<select id="getReviewsByProductId"  resultType="ProductReviewsDto">    
+    <![CDATA[	
+      SELECT B.B_WRITER, 
+       B.B_CONTENT, 
+       NVL(TO_CHAR(B.B_DATE, 'YYYY-MM-DD'), '0000-00-00') AS B_DATE, 
+       B.B_EVAL, B.B_NO
+  FROM PRODUCT P
+ INNER JOIN BOARD B ON P.PRO_NO = B.PRO_NO
+ WHERE b_c_no=30 and P.PRO_NO = #{PRO_NO}
+    ]]>
+	</select> 
 	
-	<resultMap id="PurchasesListMap" type="PurchaseDto">
-		<id property="PUR_NO" column="PUR_NO" />
+	<select id="getReplyReviewsByProductId"  resultType="ProductReviewReplyDto">    
+    <![CDATA[	
+      SELECT r.r_WRITER,r.r_CONTENT,        
+NVL(TO_CHAR(r.r_DATE, 'YYYY-MM-DD'), '0000-00-00') AS r_DATE, 
+r.r_NO FROM BOARD B, REPLYS R WHERE B.B_NO=R.B_NO and R.B_NO=#{B_NO}
+    ]]>
+	</select>
+	
+	
+	<delete id="deleteReviewProduct" parameterType="ProductReviewsDto">
+		 <![CDATA[
+        	delete FROM BOARD where B_NO= #{B_NO}
+        ]]>
+	</delete>
+	
+	<delete id="deleteReplyReviewProduct" parameterType="ProductReviewReplyDto">
+		 <![CDATA[
+        	delete FROM REPLYS where R_NO= #{R_NO}
+        ]]>
+	</delete>
+	
+	<resultMap id="OrdersListMap" type="OrderDetailsDto">
+		<id property="O_NO" column="O_NO" />
 		<result property="M_NO" column="M_NO" />
+		<result property="PRO_NAME" column="PRO_NAME" />
+		<result property="O_QUANTITY" column="O_QUANTITY" />
 		<result property="PUR_TOT" column="PUR_TOT" />
-		<result property="PUR_DC" column="PUR_DC" />
-		<result property="PUR_PAY" column="PUR_PAY" />
-		<result property="PUR_PAYMENT" column="PUR_PAYMENT" />
 		<result property="PUR_DATE" column="PUR_DATE" />
 		<result property="PUR_DVADDRESS" column="PUR_DVADDRESS" />
 		<result property="PUR_DV" column="PUR_DV" />
 	</resultMap>
 
-	<select id="getPerchaseListTotalCount" resultType="long">    
+	<select id="getOrdersListTotalCount" resultType="long">    
     <![CDATA[
-              	SELECT count(*) FROM purchase 
+              	SELECT count(*) from orders o, purchase p, product pro 
+where o.pur_no=p.pur_no
+and pro.pro_no=o.pro_no order by o.o_no desc 
         ]]>
 	</select>
 
-	<select id="getPerchaseListWithPaging" 	resultMap="PurchasesListMap">    
+	<select id="getOrdersListWithPaging" 	resultType="OrderDetailsDto">    
     <![CDATA[
 	select * from 
         	(
 			    select
 			        rownum rnum , A.*
 			    from 
-			    (SELECT  * FROM purchase order by PUR_NO desc) A 
+			    (select o.o_no,p.m_no,
+			    CASE 
+        WHEN LENGTH(pro.pro_name) <= 12 THEN pro.pro_name
+        ELSE SUBSTR(pro.pro_name, 1, 12) || ', 외'
+    END AS pro_name,
+			    o.o_quantity, p.pur_tot,p.pur_date,p.pur_dvaddress,p.pur_dv 
+from orders o, purchase p, product pro 
+where o.pur_no=p.pur_no
+and pro.pro_no=o.pro_no order by o.o_no desc) A 
 		    	where rownum <= #{pageNum} * #{amount} 
 		    )
 			where rnum > (#{pageNum}-1) * #{amount}
     ]]>
 	</select>
 	
-	<resultMap id="PurchasesSearchListMap"  type="PurchaseSearchDto">
-		<id property="PUR_NO" column="PUR_NO" />
+	<resultMap id="OrdersSearchListMap"  type="OrdersSearchDto">
+		<id property="O_NO" column="O_NO" />
 		<result property="M_NO" column="M_NO" />
+		<result property="PRO_NAME" column="PRO_NAME" />
+		<result property="O_QUANTITY" column="O_QUANTITY" />
 		<result property="PUR_TOT" column="PUR_TOT" />
-		<result property="PUR_DC" column="PUR_DC" />
-		<result property="PUR_PAY" column="PUR_PAY" />
-		<result property="PUR_PAYMENT" column="PUR_PAYMENT" />
 		<result property="PUR_DATE" column="PUR_DATE" />
 		<result property="PUR_DVADDRESS" column="PUR_DVADDRESS" />
 		<result property="PUR_DV" column="PUR_DV" />
@@ -325,16 +369,19 @@ order by v.v_no desc
 		<result property="keyword" column="keyword" />
 	</resultMap>
 	
-	<select id="getPurchasesSearchList"  parameterType="string"   resultMap="PurchasesSearchListMap">    
+	<select id="getOrdersSearchList"  parameterType="string"   resultMap="OrdersSearchListMap">    
 	
-	SELECT  * FROM   purchase            
-                where                
+	select o.o_no,p.m_no,
+	pro.pro_name,o.o_quantity, p.pur_tot,p.pur_date,p.pur_dvaddress,p.pur_dv 
+from orders o, purchase p, product pro 
+where o.pur_no=p.pur_no
+and pro.pro_no=o.pro_no               
                <choose>
-               <when test="#{type} != null and type.equals('PUR_NO')">
-                PUR_NO = '${keyword}'
+               <when test="#{type} != null and type.equals('O_NO')">
+               and o.o_no = '${keyword}'
                </when>      
                <when test="#{type} != null and type.equals('M_NO')">
-                M_NO = '${keyword}'
+                and p.m_no = '${keyword}'
                </when>                         
                </choose>                          
 	
@@ -517,7 +564,7 @@ ORDER BY VISIT_DATE
 			    select
 			        rownum rnum , A.*
 			    from 
-			    (SELECT * FROM board where b_c_no=20 order by b_date desc ) A 
+			    (SELECT * FROM board where b_c_no=20 order by b_no desc ) A 
 		    	where rownum <= #{pageNum} * #{amount} 
 		    )
 			where rnum > (#{pageNum}-1) * #{amount}

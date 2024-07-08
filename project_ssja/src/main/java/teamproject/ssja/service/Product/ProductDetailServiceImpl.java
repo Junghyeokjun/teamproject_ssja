@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.ProductDetailDto;
-import teamproject.ssja.dto.ProductDetailReplyDto;
+import teamproject.ssja.dto.ProductReviewsDto;
 import teamproject.ssja.dto.ProductDto;
 import teamproject.ssja.dto.product.ProductDetailTotalInfoDTO;
 import teamproject.ssja.dto.product.ProductReviewDTO;
@@ -35,7 +35,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
 	}
 
 	@Override
-	public List<ProductDetailReplyDto> getListWithPaging(Criteria cri) {
+	public List<ProductReviewsDto> getListWithPaging(Criteria cri) {
 		log.info("getListWithPaging()..");
 		return productDetailMapper.getListWithPaging(cri);
 	}

@@ -25,8 +25,13 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class OrderDetailsDto {
+	
 	private long O_NO;
 	private long M_NO;
 	private String PRO_NAME;
 	private long O_QUANTITY;	
+	private long PUR_TOT;
+	private String PUR_DATE;
+	private String PUR_DVADDRESS;
+	private String PUR_DV;
 }

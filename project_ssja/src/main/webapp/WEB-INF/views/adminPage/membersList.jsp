@@ -85,7 +85,7 @@ cursor:pointer;
 				onclick="location.href='/adminPage/productsList'">상품 목록</button>
 			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
 				style="border: 1px solid #cccccc"
-				onclick="location.href='/adminPage/purchasesList'">주문 목록</button>
+				onclick="location.href='/adminPage/ordersList'">주문 목록</button>
 			<button class="AdminPage_btn w-100" id="adminPage_Info_Select"
 				style="border: 1px solid #cccccc"
 				onclick="location.href='/adminPage/couponsList'">쿠폰 관리</button>

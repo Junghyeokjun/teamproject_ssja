@@ -20,9 +20,11 @@ import lombok.extern.slf4j.Slf4j;
 import teamproject.ssja.dto.MembersDto;
 import teamproject.ssja.dto.MembersSearchDto;
 import teamproject.ssja.dto.OrderDetailsDto;
+import teamproject.ssja.dto.OrdersSearchDto;
+import teamproject.ssja.dto.ProductReviewsDto;
 import teamproject.ssja.dto.ProductDto;
+import teamproject.ssja.dto.ProductReviewReplyDto;
 import teamproject.ssja.dto.ProductsSearchDto;
-import teamproject.ssja.dto.PurchaseSearchDto;
 import teamproject.ssja.dto.QnaBoardDto;
 import teamproject.ssja.dto.QnaSearchDto;
 import teamproject.ssja.dto.VendorDetailsDto;
@@ -33,7 +35,7 @@ import teamproject.ssja.service.Admin.AdminInfoListService;
 import teamproject.ssja.service.Admin.CouponListService;
 import teamproject.ssja.service.Admin.MemberListService;
 import teamproject.ssja.service.Admin.ProductListService;
-import teamproject.ssja.service.Admin.PurchaseListService;
+import teamproject.ssja.service.Admin.OrdersListService;
 import teamproject.ssja.service.Admin.QnaListService;
 import teamproject.ssja.service.Admin.SalesListService;
 import teamproject.ssja.service.Product.ProductCategoryService;
@@ -56,7 +58,7 @@ public class AdminPageController {
 	private ProductListService productListService;
 
 	@Autowired
-	private PurchaseListService purchaseListService;
+	private OrdersListService ordersListService;
 
 	@Autowired
 	private CouponListService couponListService;
@@ -66,14 +68,13 @@ public class AdminPageController {
 
 	@Autowired
 	private QnaListService qnaListService;
-	
+
 	@Autowired
 	ProductCategoryService productCategoryService;
 
 	@Autowired
 	VendorService vendorService;
-	
-	
+
 	@GetMapping("")
 	public String AdminPage(Model model) {
 
@@ -81,7 +82,7 @@ public class AdminPageController {
 		model.addAttribute("dailyPurcount", adminInfoListService.getDailyPurcount());
 		model.addAttribute("dailyMCount", adminInfoListService.getDailyMcount());
 		model.addAttribute("dailyQnaCount", adminInfoListService.getDailyQnaCount());
-				
+
 		List<Map<String, Object>> dailySales = salesListService.getDailySales();
 		model.addAttribute("dailySales", dailySales);
 		List<Map<String, Object>> dailyMCounts = salesListService.dailyMCounts();
@@ -91,30 +92,31 @@ public class AdminPageController {
 
 		return "/adminPage/AdminPage";
 	}
-	
+
 	@GetMapping("/dailyPurList")
-    @ResponseBody
-    public List<OrderDetailsDto> getDailyPurList() {
-        return adminInfoListService.getDailyPurList();
-    }
 
-    @GetMapping("/dailyMList")
-    @ResponseBody
-    public List<MembersDto> getDailyMList() {
-        return adminInfoListService.getDailyMList();
-    }
+	@ResponseBody
+	public List<OrderDetailsDto> getDailyPurList() {
+		return adminInfoListService.getDailyPurList();
+	}
 
-    @GetMapping("/dailyQnaList")
-    @ResponseBody
-    public List<QnaBoardDto> getDailyQnaList() {
-        return adminInfoListService.getDailyQnaList();
-    }
-    
-    @GetMapping("/vendorsList")
-    @ResponseBody
-    public List<VendorDetailsDto> getVendorsList() {
-        return memberListService.getVendorsList();
-    }
+	@GetMapping("/dailyMList")
+	@ResponseBody
+	public List<MembersDto> getDailyMList() {
+		return adminInfoListService.getDailyMList();
+	}
+
+	@GetMapping("/dailyQnaList")
+	@ResponseBody
+	public List<QnaBoardDto> getDailyQnaList() {
+		return adminInfoListService.getDailyQnaList();
+	}
+	
+	@GetMapping("/vendorsList")
+	@ResponseBody
+	public List<VendorDetailsDto> getVendorsList() {
+		return memberListService.getVendorsList();
+	}
 
 	@GetMapping("/membersList")
 	public String membersList(Model model, Criteria criteria) {
@@ -133,7 +135,7 @@ public class AdminPageController {
 		List<MembersSearchDto> searchResults = memberListService.getMemberSearchList(type, keyword);
 		return ResponseEntity.ok(searchResults);
 	}
-	
+
 	@GetMapping("/modifyMember")
 	@ResponseBody
 	public MembersDto getMember(@RequestParam("M_NO") int M_NO) {
@@ -141,20 +143,20 @@ public class AdminPageController {
 
 		return memberListService.getMemberId(M_NO);
 	}
-	
+
 	@PostMapping("/modifyMember")
-    public String modifyMember(@RequestBody MembersDto membersDto) {
-        log.info("modifyMember()..");
-        memberListService.modifyMember(membersDto); 
-        return "redirect:/adminPage/membersList"; 
-    }	
-	
+	public String modifyMember(@RequestBody MembersDto membersDto) {
+		log.info("modifyMember()..");
+		memberListService.modifyMember(membersDto);
+		return "redirect:/adminPage/membersList";
+	}
+
 	@PostMapping("/removeMember")
 	public String removeMember(@RequestBody MembersDto membersDto) {
 		log.info("removeMember()..");
 		memberListService.removeMember(membersDto);
 		return "redirect:/adminPage/membersList";
-	}	
+	}
 
 	@RequestMapping("/productsList")
 	public String productsList(Model model, Criteria criteria) {
@@ -174,7 +176,7 @@ public class AdminPageController {
 		List<ProductsSearchDto> searchResults = productListService.getProductsSearchList(type, keyword);
 		return ResponseEntity.ok(searchResults);
 	}
-	
+
 	@GetMapping("/modifyProduct")
 	@ResponseBody
 	public ProductDto getProduct(@RequestParam("PRO_NO") int PRO_NO) {
@@ -182,21 +184,21 @@ public class AdminPageController {
 
 		return productListService.getProductId(PRO_NO);
 	}
-	
+
 	@PostMapping("/modifyProduct")
-    public String modifyProduct(@RequestBody  ProductDto productDto) {
-        log.info("modifyProduct()..");
-        productListService.modifyProduct(productDto); 
-        return "redirect:/adminPage/productsList"; 
-    }	
-	
+	public String modifyProduct(@RequestBody ProductDto productDto) {
+		log.info("modifyProduct()..");
+		productListService.modifyProduct(productDto);
+		return "redirect:/adminPage/productsList";
+	}
+
 	@PostMapping("/removeProduct")
 	public String removeProduct(@RequestBody ProductDto productDto) {
 		log.info("removeProduct()..");
 		productListService.removeProduct(productDto);
 		return "redirect:/adminPage/productsList";
 	}
-	
+
 	@GetMapping("/product/write")
 	public String writeProduct(Model model) {
 		log.info("writeProduct()..");
@@ -205,19 +207,44 @@ public class AdminPageController {
 
 		return "/adminPage/admin_write_product";
 	}
-		
-	// 파일 업로드
+	
+	@GetMapping("/reviewProductList")
+    @ResponseBody
+    public List<ProductReviewsDto> getProductReviews(@RequestParam("PRO_NO") int productId) {
+        List<ProductReviewsDto> reviews = productListService.getReviewsByProductId(productId);
+        return reviews;
+    }	
+	
+	@PostMapping("/removeReviewProduct")
+	public String removeReviewProduct(@RequestBody ProductReviewsDto productReviewsDto) {
+		log.info("removeReviewProduct()..");
+		productListService.removeReviewProduct(productReviewsDto);
+		return "redirect:/adminPage/productsList";
+	}
+	
+	@GetMapping("/replyReviewProductList")
+    @ResponseBody
+    public List<ProductReviewReplyDto> getProductReviewReplys(@RequestParam("B_NO") int productId) {
+        List<ProductReviewReplyDto> replys = productListService.getReplyReviewsByProductId(productId);
+        return replys;
+    }
+	
+	@PostMapping("/removeReplyReviewProduct")
+	public String removeReplyReviewProduct(@RequestBody ProductReviewReplyDto productReviewReplyDto) {
+		log.info("removeReplyReviewProduct()..");
+		productListService.removeReplyReviewProduct(productReviewReplyDto);
+		return "redirect:/adminPage/productsList";
+	}
+	
+		// 파일 업로드
 	@PostMapping("/product/add")
-	public String addOne(MultipartFile bannerFile, 
-						 List<MultipartFile> coverFile, 
-						 List<MultipartFile> explainFile,
-						 ProductDto productDto,
-						 Model model) {
-		log.info("addOne()..");	
-		
-		if(bannerFile.isEmpty() || coverFile.isEmpty() || explainFile.isEmpty()) {
+	public String addOne(MultipartFile bannerFile, List<MultipartFile> coverFile, List<MultipartFile> explainFile,
+			ProductDto productDto, Model model) {
+		log.info("addOne()..");
+
+		if (bannerFile.isEmpty() || coverFile.isEmpty() || explainFile.isEmpty()) {
 			vendorService.isEmpty(bannerFile, coverFile, explainFile, model);
-		}				
+		}
 		// 배너 이미지 처리 및 물품 추가
 		vendorService.addProduct(productDto, bannerFile);
 
@@ -226,23 +253,23 @@ public class AdminPageController {
 
 		return "redirect:/adminPage/productsList";
 	}
-	
-	@RequestMapping("/purchasesList")
-	public String purchasesList(Model model, Criteria criteria) {
-		log.info("purchasesList()..");
 
-		long Purchasestotal = purchaseListService.getPerchaseListTotalCount();
-		model.addAttribute("purchasepageMaker", new Page10VO(Purchasestotal, criteria));
-		model.addAttribute("purchases", purchaseListService.getPerchaseListWithPaging(criteria));
+	@RequestMapping("/ordersList")
+	public String ordersList(Model model, Criteria criteria) {
+		log.info("ordersList()..");
 
-		return "/adminPage/purchasesList";
+		long Orderstotal = ordersListService.getOrdersListTotalCount();
+		model.addAttribute("orderspageMaker", new Page10VO(Orderstotal, criteria));
+		model.addAttribute("orders", ordersListService.getOrdersListWithPaging(criteria));
+
+		return "/adminPage/ordersList";
 	}
 
-	@GetMapping("/purchasesSearchList")
-	public ResponseEntity<List<PurchaseSearchDto>> purchasesSearchList(@RequestParam("type") String type,
+	@GetMapping("/ordersSearchList")
+	public ResponseEntity<List<OrdersSearchDto>> ordersSearchList(@RequestParam("type") String type,
 			@RequestParam("keyword") String keyword) {
-		log.info("purchasesSearchList()..");
-		List<PurchaseSearchDto> searchResults = purchaseListService.getPurchasesSearchList(type, keyword);
+		log.info("orderSearchList()..");
+		List<OrdersSearchDto> searchResults = ordersListService.getOrdersSearchList(type, keyword);
 		return ResponseEntity.ok(searchResults);
 	}
 
@@ -309,7 +336,7 @@ public class AdminPageController {
 	public String getDailySales(Model model) {
 		log.info("salesList()..");
 		List<Map<String, Object>> weeklySales = salesListService.getWeeklySales();
-		model.addAttribute("weeklySales",weeklySales);
+		model.addAttribute("weeklySales", weeklySales);
 		List<Map<String, Object>> monthlySales = salesListService.getMonthlySales();
 		model.addAttribute("monthlySales", monthlySales);
 		List<Map<String, Object>> yearlySales = salesListService.getYearlySales();
@@ -344,14 +371,14 @@ public class AdminPageController {
 	}
 
 	@PostMapping("/modifyQna")
-    public String modifyQna(@RequestBody QnaBoardDto qnaBoardDto) {
-        log.info("modifyQna()..");
+	public String modifyQna(@RequestBody QnaBoardDto qnaBoardDto) {
+		log.info("modifyQna()..");
 
-        qnaListService.modifyQna(qnaBoardDto); // 서비스 메서드를 호출하여 문의 글 수정 처리
+		qnaListService.modifyQna(qnaBoardDto); // 서비스 메서드를 호출하여 문의 글 수정 처리
 
-        return "redirect:/adminPage/qnasList"; // 수정 후 목록 페이지로 리다이렉트
-    }
-		
+		return "redirect:/adminPage/qnasList"; // 수정 후 목록 페이지로 리다이렉트
+	}
+
 	@PostMapping("/removeQna")
 	public String removeQna(@RequestBody QnaBoardDto qnaBoardDto) {
 		log.info("removeQna()..");

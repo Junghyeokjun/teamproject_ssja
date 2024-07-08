@@ -2,9 +2,10 @@ package teamproject.ssja.service.Admin;
 
 import java.util.List;
 
+import teamproject.ssja.dto.ProductReviewsDto;
 import teamproject.ssja.dto.ProductDto;
+import teamproject.ssja.dto.ProductReviewReplyDto;
 import teamproject.ssja.dto.ProductsSearchDto;
-import teamproject.ssja.dto.QnaBoardDto;
 import teamproject.ssja.page.Criteria;
 
 public interface ProductListService {
@@ -21,6 +22,10 @@ public interface ProductListService {
 	void removeProduct(ProductDto productDto);
 	
 	int addProduct(ProductDto productDto);
-
+	
+	List<ProductReviewsDto> getReviewsByProductId(int productId);
+	List<ProductReviewReplyDto> getReplyReviewsByProductId(int productId);
+	int removeReviewProduct(ProductReviewsDto productReviewsDto);
+	int removeReplyReviewProduct(ProductReviewReplyDto productReviewReplyDto);
 
 }

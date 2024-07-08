@@ -12,6 +12,7 @@ package teamproject.ssja.dto;
 //PRO_HIT       NOT NULL NUMBER(10)    
 //PRO_BIZNAME   NOT NULL VARCHAR2(30)  
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
@@ -25,10 +26,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ProductDetailReplyDto {
+public class ProductReviewsDto {
+	long B_NO;
 	long PRO_NO;	
 	String B_WRITER;	
-	Timestamp B_DATE;
+	Date B_DATE;
 	String B_CONTENT;
 	int B_EVAL;
 }
