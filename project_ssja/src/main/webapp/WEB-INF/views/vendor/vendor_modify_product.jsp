@@ -45,6 +45,8 @@
 <script src="/js/footer.js">
 
   </script>
+<script src="/js/board.js">
+</script>
 <link href="/css/footerstyle.css?after" rel="stylesheet">
 <link href="/css/vendorbarstyle.css?after" rel="stylesheet">
 <link href="/css/board.css?after" rel="stylesheet">
@@ -347,11 +349,11 @@ main, footer {
 					<div id="main_container" class="d-flex flex-row align-items-center justify-content-center">
 						<div class="border p-5 text-center w-50 product-info">
 							<form id="productModify"
-								action="${pageContext.request.contextPath}/vendor/product/modify/${product.getV_NO()}"
+								action="${pageContext.request.contextPath}/vendor/product/modify"
 								method="post" autocomplete="off" >
 								<sec:csrfInput />
 								<input type="hidden" name="PRO_NO" readonly="readonly" value="${product.getPRO_NO()}">
-								<input type="hidden" name="V_NO" readonly="readonly" value="${product.getV_NO()})"> <input
+								<input type="hidden" name="V_NO" readonly="readonly" value="${product.getV_NO()}"> <input
 									type="hidden" name="PRO_BIZNAME" readonly="readonly" value="${product.getPRO_BIZNAME()}">
 								<div id="ProductCategory" class="p-2 input-group w-100">
 									<label class="mx-2 m-auto input-group-text">1차 분류</label>
@@ -413,8 +415,17 @@ main, footer {
 							</form>
 						</div>
 						<div class="border p-5 text-center w-50 review" style="overflow-y: auto">
-							<div>
-								리뷰
+							<div class="d-flex justify-content-between">
+								<span class="h5">리뷰</span>
+								<div>
+									<span>
+									평균 별점 : 
+									<c:forEach var="i" begin="1" end="1">
+										<i class="fa fa-star yellowStar" aria-hidden="true"></i>
+									</c:forEach>
+									</span>
+									<span id="averageRating"></span>									
+								</div>
 							</div>
 							<div>
 								<hr class="border border-2 opacity-75">
@@ -431,11 +442,12 @@ main, footer {
 											</div>
 										</c:when>
 										<c:otherwise>
-											<c:forEach var="review" items="${reviewData.objectList }"><!-- 리뷰 forEach문 -->
+											<c:forEach var="review" items="${reviewData.objectList}"><!-- 리뷰 forEach문 -->
 												<div class="d-flex justify-content-between">
 													<div class="user-profile">												
 														<div class="user-info">
 															<input type="hidden" class="review-no" value="${review.b_no}" disabled="disabled"/>
+															<input type="hidden" class="review-stars" value="${review.b_eval}" disabled="disabled"/>
 															<span class="user-name">${review.b_writer }</span>
 															<!-- 별점 구현 -->
 															<span class="user-stars"> 
@@ -501,6 +513,9 @@ main, footer {
 </sec:authorize>
 
 <script type="text/javascript">
+
+	let token = $("meta[name='_csrf']").attr("content");
+	let header = $("meta[name='_csrf_header']").attr("content");
 	// 보통 페이지를 닫기 전에 사용자에게 중요한 경고 메시지를 보여주는 등의 용도로 사용
 	// 해당 페이지 return 반영은 나중에. 현재는 return 값이 없으면 작동을 안하는데, return 값을 넣어도 text가 기본 브라우저 텍스트로만 나옴
 	$(window).on('beforeunload', function() {
@@ -508,31 +523,36 @@ main, footer {
 	});
 
 	// vendorData = memberNum
-	$('.scrollable-textarea').on('input', function() {
-		this.style.height = 'auto'; // 높이 초기화
-		this.style.height = (this.scrollHeight) + 'px'; // 스크롤 높이로 설정
+	$('#inputReplyCon').on('input', function() {
+		textareaAutoHeight(this);
 	});
 
 	function getReply(){
 		$('.review-no').each(function(index, element){
+			let bno = $(element).val();
 			$.ajax({
 				type : "GET",
 				url : "/api/replys/list",
-				data : {'bno' :  $(element).val()},
-				success : function(response){
+				data : {'bno' :  bno},
+				success : function(response){					
+					// eq(index)를 넣지 않으면 기본적으로 첫번째 요소만 선택하므로, 반드시 넣어주기.
+					// 해당 부분 처리 완료/
+					let reviewReplyAdd = $('.review-reply-add').eq(index);
+
 					// 해당 리뷰 댓글 개수가 0이면
-					if(response.replys.length == 0){
-						let reviewReplyAdd = $('.review-reply-add');
-						if(reviewReplyAdd.data('rbno') == $(element).val()){
+					if(response.replys.length == 0){						
+						if(reviewReplyAdd.data('rbno') == bno){
 							reviewReplyAdd.find('.add-button-area').append(
 								$('<button>').addClass('btn btn-success btn-format reply-write-form')
-											.attr('data-rbno', $(element).val())
+											.attr('data-rbno', bno)
 											.attr('data-rmno', vendorData)
 											.text('작성'));
 						}						
 					}else{
-						let writeReviewReply = makeWriteReviewReply($(element).parent().parent().parent().parent().find('.review-reply-add'))
-						reviewReplyAdd.append(writeReviewReply);
+						let writtenReviewReply = makeWrittenReviewReply($(element).parent().parent().parent().parent().find('.review-reply-add'))
+						writtenReviewReply.find('#inputReplyCon').val(response.replys[0].rcontent);
+						writtenReviewReply.find('.h5.m-1.p-1').text(response.replys[0].rwriter);
+						reviewReplyAdd.append(writtenReviewReply);
 					}
 				},
 				error : function(xhr, status, error) {
@@ -540,6 +560,34 @@ main, footer {
 				}
 			});
 		});
+	}
+	// 클래스명만 다르게.
+	function makeWrittenReviewReply(element){
+		let writtenReviewReply = $('<div>').addClass('written-review-reply');
+		let hr = $('<hr>').addClass('border border-1 opacity-75');
+		let dFlexBetween = $('<div>').addClass('d-flex justify-content-between');
+		let h5Title = $('<h5>').addClass('h5 m-1 p-1').text('답변');
+		let spanButton = $('<span>').addClass('mx-2 my-1');
+		let borderRounded = $('<div>').addClass('border rounded');
+		let textarea =$('<textarea>').attr({
+			id: 'inputReplyCon',
+			class: 'form-control rounded-top scrollable-textarea',
+			name: 'rcontent',
+			'data-rbno': $(element).data('rbno'), // 리뷰 번호 설정
+			'data-rmno': vendorData, // 회원 번호 설정
+			placeholder: '판매자로서, 답변을 다실 수 있습니다.'
+		}).attr('readonly',true).css({
+			'resize': 'none',
+			'overflow': 'hidden',
+			'height': 'auto',
+			'min-height' : '3em'
+		});
+
+		// 요소들을 구조에 맞게 추가
+		dFlexBetween.append(h5Title).append(spanButton);
+		writtenReviewReply.append(hr).append(dFlexBetween).append(borderRounded.append(textarea));
+
+		return writtenReviewReply;
 	}
 
 	function makeWriteReviewReply(element){
@@ -560,56 +608,104 @@ main, footer {
 		}).css({
 			'resize': 'none',
 			'overflow': 'hidden',
-			'height': 'auto'
+			'height': 'auto',
+			'min-height' : '3em'
 		});
 
 		// 요소들을 구조에 맞게 추가
 		spanButton.append(inputBtn);
 		dFlexBetween.append(h5Title).append(spanButton);
-		writeReviewReply.append(hr).append(dFlexBetween).append(borderRounded).append(textarea);
+		writeReviewReply.append(hr).append(dFlexBetween).append(borderRounded.append(textarea));
 
 		return writeReviewReply;
 	}
 
+	function getReviewStarAvg(){
+		// 숨겨진 input 요소에서 값을 가져옵니다.
+		let reviewStars = $('.review-stars');
 
+		// 값들을 저장할 배열을 초기화합니다.
+		let ratings = [];
+
+		// 모든 숨겨진 input 요소의 값을 배열에 추가합니다.
+		reviewStars.each(function() {
+			ratings.push(parseFloat($(this).val()));
+		});
+
+		// 배열의 평균을 계산합니다.
+		let total = 0;
+		for (let i = 0; i < ratings.length; i++) {
+			total += ratings[i];
+		}
+		// NaN이면 0, 아니면 값을 출력
+		let average = isNaN(total / ratings.length) ? 0 : (total / ratings.length);
+
+		// 평균을 소수점 첫 번째 자리까지 반올림하여 표시합니다.
+		// <i class="fa fa-star yellowStar" aria-hidden="true"></i>
+		$('#averageRating').append( $('<i>').addClass('fa fa-star yellowStar').attr('aria-hidden', 'true'));
+		$('#averageRating').text(average.toFixed(1));
+			
+	}
 
 	$(document).ready(function(){
 		$('.review').height($('.product-info').height()); 
 
 		getReply();
 
+		getReviewStarAvg();
+
 		// 버튼마다 하나만 활성화되도록 하기 위한 변수
-		let eventInProgress = true;
+		let activeBtn = null;
 
 		$(document).on('click','.reply-write-form',function(){			
-			if (eventInProgress) {
-				return; // 다른 이벤트가 실행 중이면 클릭 무시
+			// 이미 다른 버튼이 활성화된 상태라면 초기화
+			if (activeBtn && activeBtn[0] !== $(this)[0]) {
+				// 이전 활성화된 버튼의 로직 초기화
+				activeBtn.text('작성');
+				activeBtn.parent().parent().find('.write-review-reply').remove();
 			}
 
+			// 현재 버튼을 활성화된 상태로 설정
 			let writeReviewReply = makeWriteReviewReply(this);
-			
 			let thisReviewReply = $(this).parent().parent();
 
-			if($(this).text() == '작성'){
+			if ($(this).text() === '작성') {				
 				thisReviewReply.append(writeReviewReply);
 				$(this).text('취소');
-				return;
-			}else{
-				thisReviewReply.find('.write-review-reply').remove();
-				$(this).text('작성');
-				return;
-			}			
-
-			eventInProgress = false;
+				activeBtn = $(this); // 활성화된 버튼으로 설정
+			} else{
+				let yesOrNo = confirm("정말로 답변 작성을 취소하시겠습니까?");
+				if(yesOrNo){
+					thisReviewReply.find('.write-review-reply').remove();
+					$(this).text('작성');
+					activeBtn = null;
+				}else{
+					activeBtn = $(this); // 활성화된 상태로 유지
+				}			
+			}
 		});
 
-		let rWriter = '${principal.userInfo.m_NickName}';
+		// memberNum 변수 값 유무에 따라 로그인 여부를 체크하는 함수(소셜 로그인도 해당 변수에 값이 들어간 상태라고 함)
+		function isLoggedIn(){
+			let memberNum = '${principal.memberNum}';
+			// console.log('isLoggedIn memberNum : ' + memberNum);
+			return memberNum != '' ? true : false;
+		}
 
 		$(document).on('click', '#inputReply', function(e){
 			// 기본 동작을 막음.
 			// 이후 폼 제출이나 링크 이동은 따로 선언해서 이벤트를 진행
 			e.preventDefault();
-					
+			let thisWriteReviewReply = $(this).parent().parent().parent();
+			let rbno = thisWriteReviewReply.find('#inputReplyCon').data('rbno');
+			let rmno = thisWriteReviewReply.find('#inputReplyCon').data('rmno');
+			let rWriter = $("input[name='PRO_BIZNAME']").val();
+			let rcontent = thisWriteReviewReply.find('#inputReplyCon').val();
+			// 나머지 경우에는 ajax를 통한 댓글 입력 실행.
+			console.log('useruser : ' + rWriter);
+			console.log('rbno : ' + rbno);
+			console.log('rmno : ' + rmno);
+			console.log('text : ' + $('#inputReplyCon').val());
 			if(!isLoggedIn()){
 				// 로그인이 안된 상태에서 버튼을 클릭 시
 				alert('댓글을 달 수 없습니다. 로그인 페이지로 이동합니다.');
@@ -621,40 +717,43 @@ main, footer {
 				$('#inputReplyCon').val('');
 				return;		
 			} else{
-				// 나머지 경우에는 ajax를 통한 댓글 입력 실행.
-				console.log('useruser : ' + rWriter);
-				console.log('rbno : ' + rbno);
-				console.log('rmno : ' + rmno);
-				console.log('text : ' + $('#inputReplyCon').val());
-				$.ajax({
-					url: 'api/replys/add',
-					type : 'POST',
-					beforeSend : function(xhr) {
-						xhr.setRequestHeader(header, token);
-					},
-					data : {
-						'rbno' : rbno,
-						'rmno' : rmno,
-						'rwriter' : rWriter,
-						'rcontent' : $('#inputReplyCon').val()
-					},
-					success :  function(response){
-						console.log(response);
-						// 댓글 입력을 하고 나면 입력 데이터를 없애기.
-						$('#inputReplyCon').val('');
-					},
-					error : function(xhr, status, error){
-						alert('댓글 처리가 제대로 되지 않았습니다!');
-						console.log("error : " + error);
-						console.log("response : " + xhr.responseText);
-					}
-				});
+				let yesOrNo = confirm("답변은 한번만 작성 가능합니다. 작성하시겠습니까?");
+				if(yesOrNo){					
+					$.ajax({
+						url: '/api/replys/add',
+						type : 'POST',
+						beforeSend : function(xhr) {
+							xhr.setRequestHeader(header, token);
+						},
+						data : {
+							'rbno' : rbno,
+							'rmno' : rmno,
+							'rwriter' : rWriter,
+							'rcontent' : rcontent
+						},
+						success :  function(response){
+							console.log(response);
+							
+							thisWriteReviewReply.removeClass('write-review-reply');
+							thisWriteReviewReply.addClass('written-review-reply');
+
+							thisWriteReviewReply.find('#inputReplyCon').attr('readonly',true);
+							// 입력 후 입력 버튼 없애기.
+							$('#inputReply').remove();
+							thisWriteReviewReply.parent().find('.reply-write-form').remove();
+							thisWriteReviewReply.find('.h5.m-1.p-1').text($("input[name='PRO_BIZNAME']").val());
+						},
+						error : function(xhr, status, error){
+							alert('답변 처리가 제대로 되지 않았습니다! 나중에 다시 시도하세요.');
+							console.log("error : " + error);
+							console.log("status : " + status);
+							console.log("response : " + xhr.responseText);
+						}
+					});
+				}				
 			}
 		});
 		
-		
-
-
 		$.ajax({
 			type : "POST",
 			url : "/api/vendor/vendorInfo",
@@ -703,198 +802,7 @@ main, footer {
 			});
 		}); 
 
-
-		let bannerFile = $('#bannerFile');
-		let coverFile = $('#coverFile');
-		let explainFile = $('#explainFile');
-		let uploadedExplainFiles = $('#uploadedExplainFiles');
 		
-		// 파일 정보를 담는 files 속성을 담기 위한 배열 3가지
-		let selectedBannerFiles = [];
-		let selectedCoverFiles = [];
-		let selectedExplainFiles = [];
-		
-		function fileImageOnly(file){
-			if (!file.type.match("image/.*")) {
-					alert("이미지 파일만 업로드하셔야 합니다.");
-					return false; // 전체 로직 종료
-			}else{
-				return true;
-			}
-		}
-
-		// 배너 이미지 경로 가져오기
-		bannerFile.change(function(e){
-		    let filename = "";
-		    let files = e.target.files;
-		    let bannerDeleteButton = $('<button></button>').addClass('btn font-weight-bold').text('X').attr('id','BnDelBtn');
-
-		    if (files.length > 0) {
-		    	let file = files[0];
-		    	// if (!file.type.match("image/.*")) {
-				// 	alert("이미지 파일만 업로드하셔야 합니다.");
-				// 	return; // 전체 로직 종료
-				// }
-				if(!fileImageOnly(file)){
-					return;
-				}
-		        filename = files[0].name;
-		        $(this).siblings('#bannerFileText').val(filename);
-		        $('#bannerFileText').after(bannerDeleteButton);
-		        selectedBannerFiles.push(file);
-		    } else {
-		    	// 이외의 경우에는 취소로 받아들이고 경고창을 띄우겠음.
-		    	alert("배너 이미지 업로드가 취소되었습니다. 다시 올려주세요.");
-		    	$(this).siblings('#bannerFileText').val('파일을 선택하세요');
-				if($(this).children($('#BnDelBtn')).length !== 0){
-					$(this).children($('#BnDelBtn')).remove();
-				}
-		    }		    
-		    
-		    bannerDeleteButton.on('click',function(){
-		    	if($(this).parents().children('#bannerFileText').length != 0){
-		       		$(this).parents().children('#bannerFileText').each(function(){
-		       			// #bannerFileText의 텍스트 초기화
-		       			// this가 가리키는 요소가 다름.
-		       			$(this).val('');
-		       		});
-		       		$(this).remove();		
-		       		
-		       		let index = $(this).parent().index();
-		       		if(index > -1){
-		       			selectedBannerFiles.splice(index, 1);
-		       		}
-		       	}
-		    });
-
-			for(let i = 0; i < selectedBannerFiles.length ; i++){
-				console.log("bannerFile : " + selectedBannerFiles[i]);
-			}			
-		});
-		
-		function fileCount(files,max,count){
-			if ((count + files.length) > max) {
-				alert("이미지는 최대 " + max +"개까지만 업로드할 수 있습니다.");
-				return;
-			}
-		}
-		
-		function getMultiFiles(files, ul, text, delbtntext, selectFiles){
-			for (let i = 0; i < files.length; i++) {
-					let file = files[i];
-
-					// 이미지 타입에 맞는가, 맞지 않는가를 확인
-					// 정규식을 사용하여 MIME 타입이 image/로 시작하는지 확인
-					if (!fileImageOnly(file)) {				
-						return; // 전체 로직 종료
-					}
-
-					// 파일 리스트를 보여주기 위한 <li>
-					let newItem = $('<li></li>').addClass('list-group-item');				
-
-					// 현재 파일명
-					let fileName = file.name;
-
-					// 삭제 버튼
-					let deleteButton = $('<button></button>').addClass('btn font-weight-bold').text('X').attr('id', delbtntext);
-					
-					// <li>에 삭제 버튼 및 파일이름 추가
-					newItem.text(fileName).append(deleteButton);
-
-					// 새로운 li 요소 생성 및 ul에 추가
-					ul.append(newItem);
-
-					// 삭제 버튼을 클릭할 때 파일을 삭제하는 이벤트를 추가
-					deleteButton.on('click', function() {
-						// 삭제 버튼을 포함한 파일 아이템을 삭제
-						$(this).parent().remove();
-						text.val('');
-						
-						let index = $(this).parent().index();
-			       		if(index > -1){
-							selectFiles.splice(index, 1);
-			       		}
-					});
-				}
-		}
-
-		// 커버 이미지 경로 가져오기
-		coverFile.change(function(e) {
-			let files = e.target.files;
-			let maxFiles = 5;
-			let uploadedFilesCount = $('#uploadedCoverFiles li').length;
-			
-			// 파일을 선택한 경우 첫 번째 파일명 표시
-			if (files.length > 0 && (uploadedFilesCount + files.length) <= maxFiles) {			
-				getMultiFiles(files,$('#uploadedCoverFiles'), $('#coverFileText'), "cvDelBtn", selectedCoverFiles);
-
-				let filename = files[0].name;
-											
-				// explainFile의 형제인 #explainFileText(파일명 출력 공간)의 텍스트 값 입력
-				$(this).siblings('#coverFileText').val(filename);
-				
-				for (let i = 0; i < files.length; i++) {
-					selectedCoverFiles.push(files[i]);
-				}
-			} else {
-				
-				fileCount(files,maxFiles,uploadedFilesCount);
-				console.log(files);
-				if(files.length == 0){
-					alert("업로드가 취소되었습니다.");
-					return;
-				}
-				
-				if($(this).children($('#cvDelBtn')).length !== 0){
-					$(this).children($('#cvDelBtn')).remove();
-				}
-			}
-
-			for(let i = 0; i < selectedCoverFiles.length ; i++){
-				console.log("coverFile : " + selectedCoverFiles[i].name);
-			}
-			console.log("==")
-		});
-		
-		
-		// 설명 이미지 경로 가져오기
-		explainFile.change(function(e) {
-			let files = e.target.files;
-			let maxFiles = 30;
-			let uploadedFilesCount = $('#uploadedExplainFiles li').length;	
-
-			// 파일을 선택한 경우 첫 번째 파일명 표시
-			if (files.length > 0 && (uploadedFilesCount + files.length) < maxFiles) {
-				getMultiFiles(files,$('#uploadedExplainFiles'), $('#explainFileText'), "exDelBtn", selectedExplainFiles);
-
-				
-				let filename = files[0].name;
-				
-				// explainFile의 형제인 #explainFileText(파일명 출력 공간)의 텍스트 값 입력
-				$(this).siblings('#explainFileText').val(filename);
-
-				for (let i = 0; i < files.length; i++) {
-					selectedExplainFiles.push(files[i]);
-				}
-			} else {
-				fileCount(files,maxFiles,uploadedFilesCount);
-				
-				console.log(files);
-				if(files.length == 0){
-					alert("업로드가 취소되었습니다.");
-					return;
-				}
-				
-				if($(this).children($('#exDelBtn')).length !== 0){
-					$(this).children($('#exDelBtn')).remove();
-				}
-			}
-			for(let i = 0; i < selectedExplainFiles.length ; i++){
-				console.log("explainFile : " + selectedExplainFiles[i].name);
-			}
-			console.log("==")
-		});
-
 		console.log("proprice val 타입 : " + typeof $("#proPrice").val());
 
 		$('#productModify').on('submit',function(e){

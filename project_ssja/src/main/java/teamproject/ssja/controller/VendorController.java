@@ -155,6 +155,12 @@ public class VendorController {
 		return "/vendor/vendor_modify_product";
 	}
 	
+	@PostMapping("/product/modify")
+	public String modifyProduct(ProductDto productDto) {
+		productListService.modifyProduct(productDto);		
+		return "redirect:/vendor/product/list/" + productDto.getV_NO();
+	}
+	
 	@GetMapping("/question/{category}")
 	public String showQnaList(@AuthenticationPrincipal CustomPrincipal principal, Model model, Criteria criteria,@PathVariable("category") long bcno) {
 		log.info("showProductList()..");	

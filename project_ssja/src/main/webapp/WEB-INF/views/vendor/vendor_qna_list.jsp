@@ -456,6 +456,8 @@
 			if(amount == '' || amount == 'NaN'){
 				amount = 10;
 			}
+			
+			console.log("ajax 진입 전까지는 성공했음");
 
 			$.ajax({
 				type:"GET",
@@ -469,6 +471,7 @@
 					'bcno' : 20
 				},
 				success: function(response){
+					console.log("성공했음");
 					searchTotalText.css('display', 'block');
 					let total = response.pageVO.total;
 					searchTotalText.text('검색 결과 : ' + total);
@@ -611,7 +614,15 @@
 			}else{
 				window.location.href = $(this).attr('href');
 			}	
-		});		
+		});	
+		
+		// 검색창에서 엔터를 눌렀을 경우, 검색 버튼 클릭 이벤트 발생(함수로 묶어서 처리하지 않으려 한 흔적...)
+		$(document).on('keypress', 'input[name="keyword"]', function(e) {
+		    if (e.which === 13) { // 13은 엔터 키의 keyCode입니다
+		    	e.preventDefault();
+		        $('#vendor-searchBtn').trigger('click'); // 검색 버튼 클릭 이벤트 강제 발생
+		    }
+		});
 	});
 </script>
 

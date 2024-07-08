@@ -373,6 +373,7 @@
 								<tr class="table-secondary">
 									<td>상품번호</td>
 									<td>상품이름</td>
+									<td>리뷰 수</td>
 								</tr>
 							</thead>
 							<tbody>
@@ -380,6 +381,7 @@
 									<tr>
 										<td>${product.getPRO_NO()}</td>
 										<td><a href="${pageContext.request.contextPath}/vendor/product/modify_view?proNo=${product.getPRO_NO()}" class="product-pro-name link-opacity-50-hover link-underline-opacity-0">${product.getPRO_NAME()}</a></td>
+										<td>${product.reviewCount}</td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -519,7 +521,8 @@
 							let product = response.totalDataPro[i];
 							console.log("product.PRO_NO : " + product.PRO_NO);
 							let tr = $('<tr>').append($('<td>').text(product.PRO_NO))
-										.append($('<td>').append($('<a>').addClass('product-pro-name link-opacity-50-hover link-underline-opacity-0').attr('id','board_title').attr('href','${pageContext.request.contextPath}/vendor/product/modify_view?proNo=' + product.PRO_NO).text(product.PRO_NAME)));
+										.append($('<td>').append($('<a>').addClass('product-pro-name link-opacity-50-hover link-underline-opacity-0').attr('id','board_title').attr('href','${pageContext.request.contextPath}/vendor/product/modify_view?proNo=' + product.PRO_NO).text(product.PRO_NAME)))
+										.append($('<td>').text(product.reviewCount));							
 							$('tbody').append(tr);
 						}
 					}					
@@ -640,7 +643,15 @@
 			}else{
 				window.location.href = $(this).attr('href');
 			}	
-		}); 	
+		}); 
+		
+		// 검색창에서 엔터를 눌렀을 경우, 검색 버튼 클릭 이벤트 발생(함수로 묶어서 처리하지 않으려 한 흔적...)
+		$(document).on('keypress', 'input[name="keyword"]', function(e) {
+		    if (e.which === 13) { // 13은 엔터 키의 keyCode입니다
+		    	e.preventDefault();
+		        $('#vendor-searchBtn').trigger('click'); // 검색 버튼 클릭 이벤트 강제 발생
+		    }
+		});
 	});
 
 </script>
