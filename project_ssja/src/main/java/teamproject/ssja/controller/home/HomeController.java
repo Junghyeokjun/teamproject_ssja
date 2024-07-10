@@ -87,5 +87,9 @@ public class HomeController {
 		
 		return "/product/searchResults";
 	}
-
+	
+	@RequestMapping("/dupl-login")
+	public String duplLogin() {
+		return "/duplicateLogin";
+	}
 }

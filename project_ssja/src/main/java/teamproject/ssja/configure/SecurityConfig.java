@@ -111,11 +111,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
               http//중복로그인 설정
                 .sessionManagement()
                 .maximumSessions(1)
-                .expiredUrl("/home") 
+                .expiredUrl("/dupl-login") 
                 .maxSessionsPreventsLogin(false)
                 .sessionRegistry(sessionRegistry())
-                
-                .and()// 세션 고정 공격 보호
+                .and()
+                .invalidSessionUrl("/home")
                 .sessionFixation()
                 .newSession();
 
