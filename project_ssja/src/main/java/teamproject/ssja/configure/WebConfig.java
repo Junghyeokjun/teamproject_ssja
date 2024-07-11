@@ -14,7 +14,7 @@ public class WebConfig implements WebMvcConfigurer {
     	registry.addResourceHandler("/images/board_content/**")
     	.addResourceLocations("file:/home/ubuntu/images/");
     	registry.addResourceHandler("/images/review/**")
-    	.addResourceLocations("file:/home/ubuntu/images/");
+    	.addResourceLocations("file:/home/ubuntu/images/review/");
 //    	registry.addResourceHandler("/images/board_content/**")
 //      .addResourceLocations("file://desktop-rduhp84/board_content/");
     }

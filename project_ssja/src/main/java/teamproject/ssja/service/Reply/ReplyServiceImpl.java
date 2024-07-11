@@ -117,7 +117,7 @@ public class ReplyServiceImpl implements ReplyService {
 		            Files.write(fileFullPath, form.getRv_image().getBytes());
 //		            replyMapper.insertReviewImg("/images/review/"+fileName);
 		            // 배포 이미지 경로  // 
-		            replyMapper.insertReviewImg("/images/review"+fileName);
+		            replyMapper.insertReviewImg("/images/review/"+fileName);
 		            log.info("imageinfo {}", fileFullPath.toString());
 			}
 
