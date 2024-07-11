@@ -43,7 +43,7 @@
 					dataType : "json", // 받을 데이터의 유형 지정
 					success : function(data) {
 						const userInfo = data;
-						console.log(userInfo);
+						//(userInfo);
 						let $h2title = $("<h2>").attr('id','myPageTitle').text("회원 정보");
 						let $myPageContent = $("#MyPage_content_container").removeClass().empty();
 						let $myPageTitle = $("#MyPage_content_name");
@@ -75,12 +75,12 @@
 //									},
 //									url : "/user/delete/cancel", 
 //									success : function(data) {
-//										console.log(data);
+//										//(data);
 //										alert('회원 탈퇴를 취소하셨습니다. \n 앞으로 정상회원으로 저희 서비스를 재이용 가능합니다.');
 //										location.reload();
 //									},
 //									error : function(xhr ,status, e){
-//										console.log("error!! : "+e + " status : " + status);
+//										//("error!! : "+e + " status : " + status);
 //									}
 //								})
 //								
@@ -390,11 +390,11 @@
 //	        contentType: "application/json",
 //	        url: "/user/email/auth",
 //	        success: function(data) {
-//	        	console.log(email_auth_code);
+//	        	//(email_auth_code);
 //	        	
 //	            alert('해당 이메일로 인증번호를 전송하였습니다. \n 인증을 완료해주세요.');
 //	            email_auth_code = data.authNum;
-//	            console.log(email_auth_code);
+//	            //(email_auth_code);
 //	        }
 //	    });
 //	};
@@ -416,8 +416,6 @@
 	};
 
 	let search_address = function() {
-
-		console.log('눌림');
 
 		new daum.Postcode({
 			onComplete : function(data) {
@@ -483,7 +481,6 @@
     
     //1번째 칸
     	let getTotalInfo_order = function(totalInfo_pageNum) {
-    	console.log(totalInfo_pageNum)
 	    $.ajax({
 	        type: "post",
 	        beforeSend : function(xhr) {
@@ -492,7 +489,6 @@
 	        contentType: "application/json",
 	        url: "/user-info/total/order?pageNum=" + totalInfo_pageNum,
 	        success: function(data) {
-	        	console.log(data);
 	        	let $totalInfoContent = $("#totalInfoContent");
 	        	$totalInfoContent.children().remove();
 	        	let $total_dv = $("<div>").css({'border-top':'1px solid black','border-bottom':'1px solid black'})
@@ -523,7 +519,7 @@
     
     //4번째 칸
     let getTotalInfo_coupon= function(totalInfo_pageNum, condition) {
-    	console.log(totalInfo_pageNum)
+    	//(totalInfo_pageNum)
 	    $.ajax({
 	        type: "post",
 	        beforeSend : function(xhr) {
@@ -532,7 +528,7 @@
 	        contentType: "application/json",
 	        url: "/user-info/total/coupon?pageNum=" + totalInfo_pageNum + '&condition='+condition,
 	        success: function(data) {
-	        	console.log(data);
+	        	//(data);
 	        	let $totalInfoContent = $("#totalInfoContent");
 	        	$totalInfoContent.empty();
 	        	$("<div>").addClass('d-flex flex-row justify-content-center my-4').attr("id", 'coupon_select_dv').append(
@@ -572,7 +568,7 @@
     };
   //3번째 칸
     let getTotalInfo_point = function(totalInfo_pageNum) {
-    	console.log(totalInfo_pageNum)
+    	//(totalInfo_pageNum)
 	    $.ajax({
 	        type: "post",
 	        beforeSend : function(xhr) {
@@ -581,7 +577,7 @@
 	        contentType: "application/json",
 	        url: "/user-info/total/point?pageNum=" + totalInfo_pageNum,
 	        success: function(data) {
-	        	console.log(data);
+	        	//(data);
 	        	let $totalInfoContent = $("#totalInfoContent");
 	        	$totalInfoContent.children().remove();
 	        	$totalInfoContent.addClass('d-flex flex-column ');
@@ -612,7 +608,7 @@
     };
   //2번째 칸
     let getTotalInfo_wish= function(totalInfo_pageNum) {
-    	console.log(totalInfo_pageNum)
+    	//(totalInfo_pageNum)
 	    $.ajax({
 	        type: "post",
 	        beforeSend : function(xhr) {
@@ -621,7 +617,7 @@
 	        contentType: "application/json",
 	        url: "/user-info/total/wish?pageNum=" + totalInfo_pageNum,
 	        success: function(data) {
-	        	console.log(data);
+	        	//(data);
 	        	let $totalInfoContent = $("#totalInfoContent");
 	        	$totalInfoContent.empty();
 	        	let $total_dv = $("<div>").css({'border-top':'1px solid black','border-bottom':'1px solid black'})
@@ -720,7 +716,7 @@
 	        contentType: "application/json",
 	        url: "/wishlist?productNum=" + productNum,
 	        success: function(data) {
-	        	console.log(data);
+	        	//(data);
 	        }
 		})
 	}

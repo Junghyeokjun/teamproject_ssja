@@ -56,7 +56,6 @@ public class SignController {
 	
 	@PostMapping("/signUp")
 	public ModelAndView signUp(MembersDto member,String email, String domain ,ModelAndView mv) {
-		System.out.println(member);
 //		패스워드 엔코더 추가후
 //		member.setM_PW(passwordEncoder.encode(member.getM_PW()));
 		member.setM_EMAIL(email+"@"+domain);

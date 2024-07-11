@@ -60,13 +60,13 @@ public class HomeController {
 	public String  sheckSocial(Model model, @AuthenticationPrincipal CustomPrincipal user) {
 		String username = "";
 		 if (user != null && user.isOAuth2User()) {
-	       log.info("사용자는 소셜 로그인 유저입니다.");
+	       //("사용자는 소셜 로그인 유저입니다.");
 	       model.addAttribute("isSocial","소셜로그인 유저");
 	       model.addAttribute("snum",user.getMemberNum());
 	      
 		 }else if(user != null && !user.isOAuth2User()) {
 			 
-			 log.info("사용자는 세션 로그인 유저입니다.");
+			 //("사용자는 세션 로그인 유저입니다.");
 			 model.addAttribute("isSocial","세션 로그인 유저");
 		 }
 		 
@@ -82,7 +82,7 @@ public class HomeController {
 	}
 	@GetMapping("/search")
 	public String searchPage(Model model, @RequestParam("keyword") String keyword) {
-		log.info("keyword");
+		//("keyword");
 		model.addAttribute("keyword", keyword);
 		
 		return "/product/searchResults";

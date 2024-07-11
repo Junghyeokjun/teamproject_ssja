@@ -38,7 +38,7 @@ public class HomeRestController {
 	}
 	@GetMapping("/home/mainpage/data")
 	public ResponseEntity<MainPageDTO> mainPageData(@RequestParam("bestPageNum")int bestPageNum){
-		log.info("bestPageNum {}", bestPageNum);
+		//("bestPageNum {}", bestPageNum);
 		MainPageDTO data = mainPageService.getMainPageData(bestPageNum);
 		
 		return ResponseEntity.ok(data);
@@ -48,7 +48,7 @@ public class HomeRestController {
 	public ResponseEntity<SearchResultsWithConditionDTO> searchitems(@RequestBody SearchForm form){
 		try {
 			
-		log.info("fornm {}", form);
+		//("fornm {}", form);
 		
 		SearchResultsWithConditionDTO data = productService.getSearchItems(form);
 		
@@ -67,11 +67,11 @@ public class HomeRestController {
 //	public ResponseEntity<String> logoutProcess() {
 //		ResponseEntity<String> entity = null;
 //		try {
-//			log.info("로그아웃 통신 확인");
+//			//("로그아웃 통신 확인");
 //			entity = new ResponseEntity<String>("success", HttpStatus.OK);
 //
 //		} catch (Exception e) {
-//			log.info("실패");
+//			//("실패");
 //			entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 //		}
 //		return entity;

@@ -57,11 +57,11 @@ public class MyPageUserInfoService implements MyPageService {
 		myPageMapper.deleteUserEnroll(userId);
 
 		LocalDate today = LocalDate.now();
-		log.info("오늘{}", today);
+		//("오늘{}", today);
 		LocalDate EnrollDeleteDate = today.plusDays(7);
 		DateTimeFormatter formatString = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		String EnrollDelDate = EnrollDeleteDate.format(formatString);
-		log.info("EnrollDelDate {}", EnrollDelDate);
+		//("EnrollDelDate {}", EnrollDelDate);
 
 		return EnrollDelDate;
 	}

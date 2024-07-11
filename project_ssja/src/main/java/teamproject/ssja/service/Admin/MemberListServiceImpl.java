@@ -20,19 +20,19 @@ public class MemberListServiceImpl implements MemberListService {
 
 	@Override
 	public long getMemberListTotalCount() {
-		log.info("getMemberListTotalCount()..");
+		//("getMemberListTotalCount()..");
 		return adminPageMapper.getMemberListTotalCount();
 	}
 
 	@Override
 	public List<MembersDto> getMemberListWithPaging(Criteria cri) {
-		log.info("getMemberListWithPaging()..");
+		//("getMemberListWithPaging()..");
 		return adminPageMapper.getMemberListWithPaging(cri);
 	}
 
 	@Override
 	public List<MembersSearchDto> getMemberSearchList(String type, String keyword) {
-		log.info("getMemberSearchList()..");
+		//("getMemberSearchList()..");
 
 		return adminPageMapper.getMemberSearchList(type,keyword);
 	}

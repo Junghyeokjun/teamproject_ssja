@@ -50,8 +50,7 @@ public class VendorServiceImpl implements VendorService{
 	// 배너
 	@Override
 	public void addProduct(ProductDto productDto, MultipartFile bannerFile) {
-		// System.getProperty("user.dir") : 현재 작업 디렉토리를 반환하는 Java 시스템 프로퍼티
-		log.info("addProduct()..");
+		//("addProduct()..");
 		String bannerFileDir = productImgDir + bannerDir;
 		
 		
@@ -81,7 +80,7 @@ public class VendorServiceImpl implements VendorService{
 	
 	@Override
 	public void addProductImgs(List<MultipartFile> coverFile, List<MultipartFile> explainFile, long pro_no) {
-		log.info("addProductImgs()..");
+		//("addProductImgs()..");
 		String coverFileDir = productImgDir + coverDir;
 		String explainFileDir = productImgDir + explainDir;
 		
@@ -89,8 +88,8 @@ public class VendorServiceImpl implements VendorService{
 		File directoryCover = new File(coverFileDir);
 		File directoryExplain = new File(explainFileDir);
 		
-		log.info("cover : " + directoryCover);
-		log.info("explain : " + directoryExplain);
+		//("cover : " + directoryCover);
+		//("explain : " + directoryExplain);
 		
 		// 디렉터리 파일을 담는 배열
 		File[] productDirectorys = {directoryCover,directoryExplain};
@@ -102,7 +101,7 @@ public class VendorServiceImpl implements VendorService{
 //			}
 //		});
 
-		log.info(coverFile.size() + "개의 커버 파일이 있음");
+		//(coverFile.size() + "개의 커버 파일이 있음");
 		
 		for(int i=0; i < coverFile.size(); i++) {
 			fileTransferTo(coverFileDir, coverFile.get(i), i+1);
@@ -156,7 +155,7 @@ public class VendorServiceImpl implements VendorService{
 			String formatBannerfileName = ssjaFileNameFormat(originalFileName, i);
 
 			String filePath = fileDir + "/" + formatBannerfileName; 
-			log.info("filePath : " + filePath);
+			//("filePath : " + filePath);
 			file.transferTo(new File(filePath));
 		} catch (IllegalStateException e) {
 			// TODO Auto-generated catch block

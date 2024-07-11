@@ -31,7 +31,7 @@ class CommunityServiceImplTest {
 	void selectCommunityTest() {
 		
 		for (CommunityBoardDto dto : communityService.getPost(1,10)) {
-			log.info(dto.toString());
+			//(dto.toString());
 		}
 	}
 	//@Disabled
@@ -39,7 +39,7 @@ class CommunityServiceImplTest {
 	void selectBestCommunityTest() {
 		
 		for (CommunityBoardDto dto : communityService.getBestPost()) {
-			log.info(dto.toString());
+			//(dto.toString());
 		}
 	}
 
@@ -47,7 +47,7 @@ class CommunityServiceImplTest {
 	@Test
 	void selectCommunityContentTest() {
 		
-		log.info( communityService.getContent(600).toString());
+		//( communityService.getContent(600).toString());
 		
 	}
 	
@@ -56,7 +56,7 @@ class CommunityServiceImplTest {
 	void selectCommunityPartReplyTest() {
 		
 		for (ReplysDto dto : communityService.getReply(1,20,11620)) {
-			log.info(dto.toString());
+			//(dto.toString());
 		}
 		
 	}
@@ -64,30 +64,30 @@ class CommunityServiceImplTest {
 	//@Disabled
 	@Test
 	void selectCommunityReplyTotalTest() {
-		log.info(communityService.getReplyTotal(11620)+"");
+		//(communityService.getReplyTotal(11620)+"");
 	}
 	
 	//@Disabled
 	@Test
 	void insertCommunityReplyTest() {
-		log.info(communityService.insertReply(new ReplysDto(0, 11620, 21, "test", "test", null, 0, 0, 0, 0))+"");
+		//(communityService.insertReply(new ReplysDto(0, 11620, 21, "test", "test", null, 0, 0, 0, 0))+"");
 	}
 	
 	//@Disabled
 	@Test
 	void selcetCommunityBoardLikedTotalTest() {
-		log.info(communityService.getBoardLikedTotal(11620)+"");
+		//(communityService.getBoardLikedTotal(11620)+"");
 	}
 	
 	//@Disabled
 	@Test
 	void insertCommunityBoardLikedTest() {
-		log.info(communityService.insertBoardLiked(new BoardIsLikedDto(11620, 26))+"");
+		//(communityService.insertBoardLiked(new BoardIsLikedDto(11620, 26))+"");
 	}
 	@Disabled
 	//@Test
 	void selcetCommunityBoardLikedTest() {
-		log.info(communityService.getBoardLiked(new BoardIsLikedDto(11620, 21))+"");
+		//(communityService.getBoardLiked(new BoardIsLikedDto(11620, 21))+"");
 	}
 
 }

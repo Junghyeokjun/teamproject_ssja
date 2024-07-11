@@ -34,7 +34,7 @@ class ProductServiceImplTest {
 		assertNotNull(list);
 		for(CartItemsDTO d : list) {
 			
-		log.info("item {}",d);	
+		//("item {}",d);	
 		}
 	}
 	@Test
@@ -42,7 +42,7 @@ class ProductServiceImplTest {
 	void 메인카테고리상품() {
 		List<ProductItemDto> list = productService.getCategoryItems(1, 1);
 		Assertions.assertThat(list.size()).isNotIn(0);
-		log.info("list{}", list);
+		//("list{}", list);
 	}
 
 }

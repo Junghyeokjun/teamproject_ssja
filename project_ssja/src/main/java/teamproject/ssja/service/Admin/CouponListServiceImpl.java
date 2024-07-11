@@ -19,20 +19,20 @@ public class CouponListServiceImpl implements CouponListService {
 
 	@Override
 	public long getCouponListTotalCount() {
-		log.info("getCouponListTotalCount()..");	
+		//("getCouponListTotalCount()..");	
 		return adminPageMapper.getCouponListTotalCount();
 	}
 
 	@Override
 	public List<CouponDTO> getCouponListWithPaging(Criteria cri) {
-		log.info("getCouponListWithPaging()..");
+		//("getCouponListWithPaging()..");
 		return adminPageMapper.getCouponListWithPaging(cri);
 	}
 
 	@Transactional
 	@Override
 	public int addCoupon(CouponDTO couponDto) {
-		log.info("addCoupon()..");
+		//("addCoupon()..");
 		try {
 			int result = adminPageMapper.insertCoupon(couponDto);
 	    	List<Long> list = adminPageMapper.getListMemberNo();
@@ -59,7 +59,7 @@ public class CouponListServiceImpl implements CouponListService {
     
     @Override
 	public int removeCoupon(CouponDTO couponDto) {
-		log.info("removeCoupon()..");
+		//("removeCoupon()..");
 		return adminPageMapper.deleteCoupon(couponDto);
 	}
 	

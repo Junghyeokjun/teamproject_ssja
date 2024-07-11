@@ -29,36 +29,36 @@ class TestServiceImplTest {
 	@Disabled
 	@Test
 	void testIdCheck() {
-		log.info(signUpService.idCheck("testUser1")+"");
+		//(signUpService.idCheck("testUser1")+"");
 	}
 	
 	@Disabled
 	@Test
 	void testNameCheck() {
-		log.info(signUpService.nickNameCheck("tam")+"");
+		//(signUpService.nickNameCheck("tam")+"");
 	}
 
 	@Disabled
 	@Test
 	void testEmailCheck() {
-		log.info(signUpService.emailCheck("user@gmail.com")+"");
+		//(signUpService.emailCheck("user@gmail.com")+"");
 	}
 	@Disabled
 	@Test
 	void testSelcteEmail() {
-		log.info(signUpService.getEmail("test"));
+		//(signUpService.getEmail("test"));
 	}
 	
 	@Disabled
 	@Test
 	void testQuantityCheck() {
-		log.info(signUpService.quantityCheck(1,3)+"");
+		//(signUpService.quantityCheck(1,3)+"");
 	}
 	@Disabled
 	@Test
 	void testSignUp() {
 		MembersDto member= new MembersDto(0,"testUser2","testUser2","testUser2","수원시","팔달구","21231",Date.valueOf("990408"),null,"user@naver.com","01023451234",0,null,"pop");
-		log.info(signUpService.signUp(member)+"");
+		//(signUpService.signUp(member)+"");
 	}
 
 	@Disabled

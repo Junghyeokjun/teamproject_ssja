@@ -14,7 +14,7 @@ let getListBestToServer = function (bestPageNum) {
         url: "/product/best-mainpage",
         data: { 'page': bestPageNum },
         success: function (data) {
-            console.log(data);
+            //(data);
             //$best_item_content.empty();
 
             let $list_content_dv = $("<div>").addClass("d-flex flex-column");
@@ -62,7 +62,7 @@ let getListBestToServer = function (bestPageNum) {
                     .text(formatNumber(e.pro_PRICE) + "원")
                     .css({ "margin-left": "auto", "margin-right": "1em" });
 
-                console.log(e.rating_avg.toFixed(2) );
+                //(e.rating_avg.toFixed(2) );
                 
                 let $item_review_wish_dv = $("<div>").addClass("d-flex flex-row justify-content-between")
                 .attr('id', 'item-review-wish-div')
@@ -90,7 +90,7 @@ let getListBestToServer = function (bestPageNum) {
             $best_item_content.append($list_content_dv);
         },
         error: function (xhr, status, error) {
-            console.log("Error:", xhr.responseText);
+            //("Error:", xhr.responseText);
         }
     });
 }
@@ -113,7 +113,7 @@ let wish_click = function (productnumber) {
         success: function (data) {
             count = data;
         }, error: function (e) {
-            console.log(e);
+            //(e);
             window.location.href = "/login";
         }
     });

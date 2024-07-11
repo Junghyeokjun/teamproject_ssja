@@ -30,7 +30,7 @@ class EventServiceTest {
 		List<EventInfoDTO> eventList = eventService.getEventList();
 		
 		for (EventInfoDTO eventInfoDTO : eventList) {
-			log.info("eventInfoDTO {} ", eventInfoDTO);
+			//("eventInfoDTO {} ", eventInfoDTO);
 		}
 		
 		Assertions.assertThat(eventList.size()).isEqualTo(3);
@@ -41,7 +41,7 @@ class EventServiceTest {
 		List<EventInfoDTO> eventList = eventMapper.getEventList();
 		
 		for (EventInfoDTO eventInfoDTO : eventList) {
-			log.info("eventInfoDTO {} ", eventInfoDTO);
+			//("eventInfoDTO {} ", eventInfoDTO);
 		}
 		
 		Assertions.assertThat(eventList.size()).isEqualTo(3);
@@ -52,7 +52,7 @@ class EventServiceTest {
 	@DisplayName("이벤트 이미지 데이터 가죠오기 테스트")
 	void evnetPageTest() {
 		EventPageDTO ev = eventService.getEventPageInfo(2);
-		log.info("ev {} ", ev);
+		//("ev {} ", ev);
 		Assertions.assertThat(ev.getEv_no()).isEqualTo(2);
 	}
 }

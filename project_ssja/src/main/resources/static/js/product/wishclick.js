@@ -10,7 +10,7 @@ $.ajax({
 	success:function(data){
 		
 	},error: function(xhr, status, error) {
-		console.log("Error:", xhr.responseText);
+		//("Error:", xhr.responseText);
 	}
 	
 }

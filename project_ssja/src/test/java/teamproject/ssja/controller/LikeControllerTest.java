@@ -63,7 +63,6 @@ public class LikeControllerTest {
 
 		// Check if redirect occurred
 		if (response.getStatus() == 302) {
-			System.out.println("Redirect URL: " + response.getHeader("Location"));
 		}
 	}
 

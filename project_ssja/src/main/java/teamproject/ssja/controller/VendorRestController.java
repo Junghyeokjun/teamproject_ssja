@@ -49,7 +49,7 @@ public class VendorRestController {
 	public ResponseEntity<VendorInfoDTO> getInfo(@RequestParam("vendorData") long vendorNo) {
 		try {
 			VendorInfoDTO vendorInfo = vendorService.getVendor(vendorNo);
-			log.info("vendorInfo: " + vendorInfo);
+			//("vendorInfo: " + vendorInfo);
 			return ResponseEntity.ok(vendorInfo);
 		} catch (Exception e) {
 			e.printStackTrace(); // 예외 스택 트레이스를 콘솔에 출력
@@ -63,7 +63,7 @@ public class VendorRestController {
 	public ResponseEntity<List<ProductCategoryGroupDto>> getPCSub(@RequestParam("categoryNo") long categoryNo) {
 		try {
 			List<ProductCategoryGroupDto> thePCSubs = productCategoryService.getPCSub(categoryNo);
-			log.info("thePCSubs: " + thePCSubs);
+			//("thePCSubs: " + thePCSubs);
 			return ResponseEntity.ok(thePCSubs);
 		} catch (Exception e) {
 			e.printStackTrace(); // 예외 스택 트레이스를 콘솔에 출력
@@ -75,7 +75,7 @@ public class VendorRestController {
 	@GetMapping("/totalInfo")
 	public ResponseEntity<TotalVendorInfoDto> getTotalInfoVendor(@RequestParam String bizname) {
 
-		log.info("판매자 명 : {}", bizname);
+		//("판매자 명 : {}", bizname);
 		try {
 
 			TotalVendorInfoDto data = vendorService.getVendorTotalInfo(bizname, 1);
@@ -94,7 +94,7 @@ public class VendorRestController {
 																@RequestParam("start") int start,
 																@RequestParam("end") int end,
 																@RequestParam("order") String order) {
-		log.info("seller {}, page {} ,{} ~ {}, ordered {}", bizname, pageNum,start,end, order);
+		//("seller {}, page {} ,{} ~ {}, ordered {}", bizname, pageNum,start,end, order);
 		VendorItemCondition condition =  new VendorItemCondition(bizname, pageNum,start,end, order);
 		try {
 			return ResponseEntity.ok(vendorService.getVendorItemList(condition));

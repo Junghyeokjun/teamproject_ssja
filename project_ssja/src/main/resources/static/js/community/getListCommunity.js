@@ -48,7 +48,7 @@ let getListPostToServer = function(condition){
 		   dataType:"json",
 		   url : "/community/post",
 		   success : function(data){  
-			   console.log(data);
+			   //(data);
 			   community_content.empty();
 			   $paging_dv.empty();
 			   let $list_content_dv = $("<div>").attr("id","list_content_dv").addClass("d-flex flex-column");
@@ -164,7 +164,7 @@ let getListPostToServer = function(condition){
 				   community_content.append('<h1 class="text-center mt-4"> 게시글이 존재하지 않습니다</h1>');
 			   }
 		   },error: function(xhr, status, error) {
-			   console.log("Error:", error);
+			   //("Error:", error);
 		   }
 	   })
 	   
@@ -183,7 +183,7 @@ let getListSearchPostToServer = function(condition,option,keyword){
 		   dataType:"json",
 		   url : "/community/search",
 		   success : function(data){  
-			   console.log(data);
+			   //(data);
 			   community_content.empty();
 			   $paging_dv.empty();
 			   let $list_content_dv = $("<div>").attr("id","list_content_dv").addClass("d-flex flex-column");
@@ -299,7 +299,7 @@ let getListSearchPostToServer = function(condition,option,keyword){
 				   community_content.append('<h1 class="text-center mt-4"> 게시글이 존재하지 않습니다</h1>');
 			   }
 		   },error: function(xhr, status, error) {
-			   console.log("Error:", error);
+			   //("Error:", error);
 		   }
 	   })
 	   
@@ -326,7 +326,7 @@ search_btn.on("click",function(){
 //         success: function(data) {
 //             count = data;
 //         }, error : function(e) {
-//         	console.log(e);
+//         	//(e);
 //         	//window.location.href="/login";
 //         }
 //     });

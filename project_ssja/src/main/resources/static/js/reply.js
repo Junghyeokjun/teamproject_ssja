@@ -10,8 +10,8 @@
 //  //csrf추가
   let token = $("meta[name='_csrf']").attr("content");
   let header = $("meta[name='_csrf_header']").attr("content");
-  console.log(token);
-  console.log(header);
+  //(token);
+  //(header);
   $(document).ajaxSend(function(e, xhr, options) {
       xhr.setRequestHeader(header, token);
   });
@@ -24,11 +24,11 @@ $(document).ready(function() {
     	event.preventDefault();
     	
         let rno = $(this).data('likerno');
-        console.log(rno);
+        //(rno);
         let likebmno = $(this).data('likebmno'); // 현재 상태 확인
-		console.log(likebmno);
-	        // console.log(JSON.stringify({ no : bno, liked : liked })); 
-	        // console.log(liked);
+		//(likebmno);
+	        // //(JSON.stringify({ no : bno, liked : liked })); 
+	        // //(liked);
         $.ajax({
             url: '/api/likes/rtoggle/' + rno,
             type: 'POST',
@@ -38,14 +38,14 @@ $(document).ready(function() {
             	'rno' : rno, 'mno' : likebmno	            	
             },
             success: function(response) {
-            	console.log("successed");
-            	console.log(response);
+            	//("successed");
+            	//(response);
                 $('#like-count').text(response.afterLikes);
                 $('#like-button').text(response.isLiked == 1  ? '좋아요 취소' : '좋아요');
             },
             error: function(xhr, status, error) {
-                console.log("Error: " + error);
-                console.log("Response: " + xhr.responseText);
+                //("Error: " + error);
+                //("Response: " + xhr.responseText);
                 alert('좋아요를 할 수 없는 상태입니다. 로그인하십시오.');
             }
         });

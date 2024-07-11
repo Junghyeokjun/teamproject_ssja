@@ -32,7 +32,7 @@ public class BoardController {
 	
 	@GetMapping("/list/{category}")
 	public String boardList(Model model, Criteria criteria, @PathVariable("category") long bcno) {
-		log.info("boardList()..");
+		//("boardList()..");
 		model.addAttribute("bc", boardService.showBoardCategory(bcno));
 		criteria.setBcno(bcno);
 
@@ -52,14 +52,14 @@ public class BoardController {
 	
 //	@GetMapping("/content_view")
 //	public String showView(HttpServletRequest request, HttpServletResponse response, Model model) {
-//		log.info("showView()..");
+//		//("showView()..");
 //		model.addAttribute("content_view", boardService.showContent(request, response));
 //		return "/qna/content_view";
 //	}
 	
 	@GetMapping("/content_view/{category}")
 	public String showView(@PathVariable("category") long bcno,HttpServletRequest request, HttpServletResponse response, Model model) {
-		log.info("showView()..");
+		//("showView()..");
 		model.addAttribute("content_view", boardService.showContent(request, response));
 		model.addAttribute("bcNo", bcno);		
 		return "/qna/content_view";
@@ -67,7 +67,7 @@ public class BoardController {
 
 	@GetMapping("/write_view/{category}")
 	public String writeView(Model model, @PathVariable("category") long bcno) {
-		log.info("writeView()..");
+		//("writeView()..");
 		model.addAttribute("bcno", bcno);
 		return "/qna/write_view";
 	}
@@ -80,7 +80,7 @@ public class BoardController {
 		}else {
 			writer = user.getOAuth2Response().getName();
 		}
-		log.info("writer {} ", writer);
+		//("writer {} ", writer);
 		boardDto.setBmno(InfoProvider.getM_NO());
 		boardDto.setBwriter(writer);
 		boardDto.setBbcno(20);
@@ -90,7 +90,7 @@ public class BoardController {
 
 	@PostMapping("/modify_view")
 	public String modifyView(@AuthenticationPrincipal CustomPrincipal principal, BoardDto boardDto, Model model) {
-		log.info("modifyView()..");
+		//("modifyView()..");
 		model.addAttribute("modify_view", boardDto);
 		return "/qna/modify_view";
 	}
@@ -104,21 +104,21 @@ public class BoardController {
 	@GetMapping("/delete")
 	@PostMapping("/delete")
 	public String removeOne(BoardDto boardDto) {
-		log.info("removeOne()..");
+		//("removeOne()..");
 		boardService.removeBoard(boardDto);
 		return "redirect:/board/list/20" ;
 	}
 
 //	@GetMapping("/reply_view")
 //	public String replyView(BoardDto boardDto, Model model) {
-//		log.info("replyView()..");
+//		//("replyView()..");
 //		model.addAttribute("reply_view", boardService.showReply(boardDto));
 //		return "/qna/reply_view";
 //	}
 //	
 //	@PostMapping("/reply")
 //	public String reply(BoardDto boardDto) {
-//		log.info("reply()..");
+//		//("reply()..");
 //		boardService.writeReply(boardDto);
 //		return "redirect:/qna/list";
 //	}

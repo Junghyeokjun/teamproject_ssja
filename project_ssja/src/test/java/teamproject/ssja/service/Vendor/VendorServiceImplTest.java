@@ -18,7 +18,7 @@ class VendorServiceImplTest {
 	
 	@Test
 	void testGetVendor() {
-		log.info("vender : " + vendorService.getVendor(25));		
+		//("vender : " + vendorService.getVendor(25));		
 	}
 
 }

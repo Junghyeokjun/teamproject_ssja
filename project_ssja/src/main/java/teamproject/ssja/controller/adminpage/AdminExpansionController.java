@@ -188,7 +188,6 @@ public class AdminExpansionController {
 	public ResponseEntity<ListObjectPagingDTO> getNoticeLists(@RequestParam("pageNum") int pageNum,
 			@RequestParam("keyword") String keyword) {
 		try {
-			log.info("pageNum  = {}, keyword = {}", pageNum, keyword);
 			BoardForm form = new BoardForm();
 			form.setPageNum(pageNum);
 			form.setKeyword(keyword);
@@ -205,7 +204,6 @@ public class AdminExpansionController {
 	@DeleteMapping("/notice/list")
 	public ResponseEntity<String> deleteNotice(@RequestBody Long boardNum) {
 		try {
-			log.info("삭제할 공지 번호 {}", boardNum);
 			adminService.deleteNoticeContent(boardNum);
 			return ResponseEntity.ok("seccess");
 		} catch (Exception e) {

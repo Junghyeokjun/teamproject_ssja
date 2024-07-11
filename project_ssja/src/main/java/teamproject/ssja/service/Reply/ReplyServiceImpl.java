@@ -118,7 +118,7 @@ public class ReplyServiceImpl implements ReplyService {
 //		            replyMapper.insertReviewImg("/images/review/"+fileName);
 		            // 배포 이미지 경로  // 
 		            replyMapper.insertReviewImg("/images/review/"+fileName);
-		            log.info("imageinfo {}", fileFullPath.toString());
+		            //("imageinfo {}", fileFullPath.toString());
 			}
 
 		} catch (Exception e) {

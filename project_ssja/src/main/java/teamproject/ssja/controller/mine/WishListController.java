@@ -31,7 +31,7 @@ public class WishListController {
 	
 	@PatchMapping("")
 	public ResponseEntity<Integer> changWishOfItem(@RequestBody Map<String, Object> data){
-		log.info("data {}",data);
+		//("data {}",data);
 		long memberNum = InfoProvider.getM_NO();
 			
 		Long itemNum = ((Integer) data.get("pro_no")).longValue();

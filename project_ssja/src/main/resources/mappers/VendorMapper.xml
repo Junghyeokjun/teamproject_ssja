@@ -137,24 +137,35 @@
         	(
 			    select
 			        rownum rnum , A.*
-			    from 
-			    (SELECT 
-			            P.*, 
-			            NVL(B.REVIEW_COUNT, 0) AS REVIEW_COUNT
+			    from ( 
+			    SELECT
+           P.PRO_NO,
+            P.V_NO,
+            P.P_C_NO,
+            P.PRO_PRICE,
+            P.PRO_QUANTITY,
+            P.PRO_BANNERIMG,
+            P.PRO_WISH,
+            P.PRO_SELLCOUNT,
+            P.PRO_HIT,
+            P.PRO_BIZNAME,
+            P.PRO_NAME,
+            P.PRO_DATE,
+            NVL(B.REVIEW_COUNT, 0) AS REVIEW_COUNT
 			        FROM 
 			            Product P
 			        LEFT JOIN
 			            (SELECT 
-			                 pro_no, 
+			                bd.pro_no as boadpronum, 
 			                 COUNT(*) AS REVIEW_COUNT 
 			             FROM 
-			                 board 
+			                 board bd
 			             WHERE 
 			                 b_c_no = 30 
 			             GROUP BY 
 			                 pro_no) B
 			        ON 
-			            P.PRO_NO = B.pro_no
+			            P.PRO_NO = B.boadpronum
 			        WHERE 
 			            P.v_no = #{criteria.vno} and
 

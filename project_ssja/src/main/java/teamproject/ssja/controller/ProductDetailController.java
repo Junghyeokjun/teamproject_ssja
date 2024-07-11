@@ -88,7 +88,7 @@ public class ProductDetailController {
 	//리팩토링 후 안씀 혹시 몰라 지우진 않았습니다.
 	//@GetMapping("/product_detail")
 	public String product_detail(@RequestParam("PRO_NO") long PRO_NO, Criteria criteria, Model model) {
-		log.info("product_detail()..");
+		//("product_detail()..");
 		model.addAttribute("productdetail", productDetailService.get(PRO_NO));
 		
 		long total = productDetailService.getTotal(PRO_NO);

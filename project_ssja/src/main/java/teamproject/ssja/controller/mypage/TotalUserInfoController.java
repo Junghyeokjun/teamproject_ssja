@@ -45,7 +45,7 @@ public class TotalUserInfoController {
 	}
 	@PostMapping("/coupon")
 	public ResponseEntity<ListObjectPagingDTO> getTotalPointInfo(@RequestParam int pageNum, @RequestParam String condition){
-		log.info("pagenum {}, ordered {}", pageNum, condition);
+		//("pagenum {}, ordered {}", pageNum, condition);
 		ListObjectPagingDTO data = totalService.getMyCouponInfo(pageNum,condition);
 		
 		return ResponseEntity.ok(data);

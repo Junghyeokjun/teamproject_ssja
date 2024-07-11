@@ -29,19 +29,19 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
 
 	@Override
 	public long getTotal() {
-		log.info("getTotal()..");
+		//("getTotal()..");
 		return noticeBoardMapper.selectTotalCount();
 	}
 
 	@Override
 	public List<BoardDto> showListWithPaging(Criteria criteria) {
-		log.info("showListWithPaging()..");
+		//("showListWithPaging()..");
 		return noticeBoardMapper.selectListWithPaging(criteria);
 	}
 
 	@Override
 	public List<NoticeSearchDto> getNoticeSearchList(String type, String keyword) {
-		log.info("getNoticeSearchList()..");
+		//("getNoticeSearchList()..");
 		return noticeBoardMapper.getNoticeSearchList(type,keyword);
 	}
 }

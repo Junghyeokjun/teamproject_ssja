@@ -19,7 +19,7 @@ class BoardServiceTest {
 	@Test
 	void testShowBoardCategorys() {
 		for(BoardCategoryDto dto : boardService.showBoardCategorys()) {
-			log.info("BS BC dto : " + dto);
+			//("BS BC dto : " + dto);
 		}
 		assertNotNull(boardService.showBoardCategorys());
 	}

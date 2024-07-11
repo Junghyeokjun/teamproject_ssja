@@ -50,9 +50,9 @@ public class ProductReseachRestController {
 	ResponseEntity<List<ProductItemDto>> mainPageCategoryItems(@RequestParam("categoryNum") int categoryNum,
 																@RequestParam("pageNum") int pageNum){
 		
-		log.info("category {}, pageNum {}", categoryNum, pageNum);
+		//("category {}, pageNum {}", categoryNum, pageNum);
 		List<ProductItemDto> list = productService.getCategoryItems(categoryNum, pageNum);
-		log.info("list = {}", list);
+		//("list = {}", list);
 		return ResponseEntity.ok(list);
 	}
 

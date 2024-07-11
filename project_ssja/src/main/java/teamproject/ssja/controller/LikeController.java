@@ -33,7 +33,7 @@ public class LikeController {
 			@RequestParam("mno") String mno) {
 		try {
 			LikesVO currentLikes = boardService.getBoardLikes(no1, mno);
-			log.info("Current likes: " + currentLikes);
+			//("Current likes: " + currentLikes);
 			return ResponseEntity.ok(currentLikes);
 		} catch (Exception e) {
 			e.printStackTrace(); // 예외 스택 트레이스를 콘솔에 출력
@@ -55,7 +55,7 @@ public class LikeController {
 		
 		try {
 			LikesVO currentLikes = boardService.modifyGetBoardLikes(no1, mno);
-			log.info("Current likes: " + currentLikes);
+			//("Current likes: " + currentLikes);
 			return ResponseEntity.ok(currentLikes);
 		} catch (Exception e) {
 			e.printStackTrace(); // 예외 스택 트레이스를 콘솔에 출력
@@ -73,7 +73,7 @@ public class LikeController {
 			@RequestParam("mno") String mno) {
 		try {
 			LikesVO currentLikes = replyService.modifyGetReplyLikes(rno1, mno);
-			log.info("Current likes: " + currentLikes);
+			//("Current likes: " + currentLikes);
 			return ResponseEntity.ok(currentLikes);
 		} catch (Exception e) {
 			e.printStackTrace(); // 예외 스택 트레이스를 콘솔에 출력

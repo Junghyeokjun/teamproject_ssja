@@ -106,7 +106,7 @@ $(document).ready(function(){
         // 평균 색상에 따라 텍스트 색상을 결정하는 함수
         function calculateTextColor(r, g, b,a) {
 
-            console.log(r+" "+g+" "+b+" "+a);
+            //(r+" "+g+" "+b+" "+a);
             if(a==0){
                 return 'black';
             }

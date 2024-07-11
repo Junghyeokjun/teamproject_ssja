@@ -37,7 +37,6 @@ public class VisitManagerImpl implements VisitManager{
             	beforeCookie.setPath("/");
             	beforeCookie.setMaxAge(expireToTodaySeconds());
             	response.addCookie(beforeCookie);
-            	log.info("방문쿠키 추가");
             	return;
             }
             
@@ -49,7 +48,6 @@ public class VisitManagerImpl implements VisitManager{
             newCookie.setPath("/");
             newCookie.setMaxAge(expireToTodaySeconds());
             response.addCookie(newCookie);
-            log.info("방문 쿠키 생성");
             return;
         }
 	}

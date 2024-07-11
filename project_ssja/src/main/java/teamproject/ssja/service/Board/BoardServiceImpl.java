@@ -35,7 +35,7 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public int addBoard(BoardDto boardDto) {
-		log.info("boardDto : {}", boardDto);
+		//("boardDto : {}", boardDto);
 		return boardMapper.insertBoard(boardDto);
 	}
 
@@ -87,7 +87,7 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public long getTotal(long category) {
-		log.info("getTotal()..");
+		//("getTotal()..");
 		return boardMapper.selectTotalCount(20);
 	}
 
@@ -95,7 +95,7 @@ public class BoardServiceImpl implements BoardService {
 	// 페이징
 	@Override
 	public List<BoardDto> showListWithPaging(Criteria criteria) {
-		log.info("showListWithPaging()..");
+		//("showListWithPaging()..");
 		criteria.setPRO_NO(20);
 		return boardMapper.selectListWithPaging(criteria);
 	}
@@ -104,7 +104,7 @@ public class BoardServiceImpl implements BoardService {
 	public LikesVO getBoardLikes(String bno, String mno) {
 		long bnoLong = Long.valueOf(bno);
 		long mnoLong = Long.valueOf(mno);
-		log.info("bno : " + bno + ", mno : " + mno);
+		//("bno : " + bno + ", mno : " + mno);
 		
 		long likes = boardMapper.selectBoardLikes(bnoLong);
 		
@@ -116,7 +116,7 @@ public class BoardServiceImpl implements BoardService {
 			// 좋아요 테이블에 데이터가 있는지 확인
 			BoardIsLikedDto isLiked = boardMapper.selectBIsLiked(new BoardIsLikedDto(bnoLong, mnoLong));
 
-			log.info("likes : " + likes + ", isLiked : " + isLiked);
+			//("likes : " + likes + ", isLiked : " + isLiked);
 			
 			// 데이터가 있으면 isLiked 값을 변화시킴
 			if (isLiked != null) {

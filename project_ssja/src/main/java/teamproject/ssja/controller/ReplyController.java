@@ -41,9 +41,9 @@ public class ReplyController {
 		try {
 			// criteria.setBno(bno);
 			responseData.put("replys", replyService.showReplys(criteria.getBno()));
-			log.info("replys : " + responseData.get("replys"));
+			//("replys : " + responseData.get("replys"));
 			responseData.put("pageMaker", new PageVO(replyService.getTotal(criteria.getBno()), criteria));
-			log.info("pageMaker : " + responseData.get("pageMaker"));			
+			//("pageMaker : " + responseData.get("pageMaker"));			
 			return ResponseEntity.ok().body(responseData);			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -62,9 +62,9 @@ public class ReplyController {
 //			criteria.setPageNum(pageNum);
 //			criteria.setAmount(amount);
 			responseData.put("replys", replyService.showReplys(criteria.getBno()));
-			log.info("replys : " + responseData.get("replys"));
+			//("replys : " + responseData.get("replys"));
 			responseData.put("pageMaker", new PageVO(replyService.getTotal(criteria.getBno()), criteria));
-			log.info("pageMaker : " + responseData.get("pageMaker"));
+			//("pageMaker : " + responseData.get("pageMaker"));
 			return ResponseEntity.ok().body(responseData);			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -75,7 +75,7 @@ public class ReplyController {
 	
 	@PostMapping(value="/apply")
 	public ResponseEntity<String> applyReview(ReviewForm form,  @AuthenticationPrincipal CustomPrincipal user){
-		log.info("data {}", form);
+		//("data {}", form);
 		try {
 		if(user.isOAuth2User()) {
 			form.setWriter(user.getEmail());

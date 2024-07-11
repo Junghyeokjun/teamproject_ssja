@@ -18,7 +18,7 @@ let pageNum = 1;
 let selectedCondition = '';
 
 let getListProductToServer = function(keyword,start,end,pageNum,selectedCondition){
-	console.log(keyword);
+	//(keyword);
 	 $.ajax({
 			type : "post",
 			beforeSend : function(xhr) {
@@ -35,7 +35,7 @@ let getListProductToServer = function(keyword,start,end,pageNum,selectedConditio
 			dataType:"json",
 			url : "/search/items",
 			success : function(data){  
-				console.log(data);
+				//(data);
 				if(data.itemList.length < 1){
 					let $main_container = $("#main_container");
 					$main_container.empty();
@@ -170,7 +170,7 @@ let getListProductToServer = function(keyword,start,end,pageNum,selectedConditio
 				
 				$product_content.append($list_content_dv);
 			},error: function(xhr, status, error) {
-				console.log("Error:", xhr.responseText);
+				//("Error:", xhr.responseText);
 			}
 		})
 		
@@ -192,7 +192,7 @@ let wish_click = function(productnumber) {
         success: function(data) {
             count = data;
         }, error : function(e) {
-        	console.log(e);
+        	//(e);
         	//window.location.href="/login";
         }
     });

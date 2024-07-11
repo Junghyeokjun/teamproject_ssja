@@ -17,7 +17,7 @@ let payAccount = function(order){
 
 let pageNum = 1;
 $("#myPage_orderInfo_Select").on('click', function() {
-	console.log($("#h2title").text());
+	//($("#h2title").text());
 	if($("#h2title").text() === '주문 사항')return false;
 	myPageOrderInfo(pageNum);
 });
@@ -35,7 +35,7 @@ $("#myPage_orderInfo_Select").on('click', function() {
 				$("#totalInfoModalLabel").text('리뷰 작성')
 		    	.css({'font-size':'1.5em','font-weight':"bold",'margin-left':'2em'});
 				const orderInfo = data;
-				console.log(orderInfo);
+				//(orderInfo);
 				let $h2title = $("<h2>").attr('id','h2title').text("주문 사항");
 				 $("#MyPage_content_container").empty();
 				
@@ -204,11 +204,11 @@ $("#myPage_orderInfo_Select").on('click', function() {
 				    						
 				    					
 				    						   if ($("#review_image")[0] && $("#review_image")[0].files.length > 0) {
-				    							   console.log($("#review_image")[0].files.length);
-				    							   console.log($("#review_image")[0].files);
+				    							   //($("#review_image")[0].files.length);
+				    							   //($("#review_image")[0].files);
 				    						        apply_review(order.pro_NO, rv_content, rv_evalu, $("#review_image")[0].files[0]);
 				    						    } else {
-				    						    	console.log("이미지 없음")
+				    						    	//("이미지 없음")
 				    						    	apply_review(order.pro_NO, rv_content, rv_evalu, null);
 				    						    }   
 				    						

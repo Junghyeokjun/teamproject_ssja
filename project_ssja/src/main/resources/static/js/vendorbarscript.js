@@ -15,13 +15,13 @@ $(document).ready(function () {
   
   let $vendorData = $('#vendorData').val();
 
-  console.log("$vendorData : " + $vendorData);
+  //("$vendorData : " + $vendorData);
   
   // 사이드 링크 관련
   const sideLink1 = "/vendor";
   const sideLink2 = "/vendor/product/write";
   let sideLink3 = "";
-  console.log("sideLink3 : " + sideLink3);
+  //("sideLink3 : " + sideLink3);
   let sideLink4 = "/vendor/question/20";
   let vendorNo = '';
   function getVno(vno){
@@ -53,7 +53,7 @@ $(document).ready(function () {
     
     //  상단에 필요해져서 해당 부분은 위에 추가
     //	let $vendorData = $('#vendorData').val();
-    //	console.log("$vendorData : " + $vendorData);
+    //	//("$vendorData : " + $vendorData);
     
     // value 기본값은 "" 이다. 빈 문자열이 아니라는 의미는, 값이 들어갔다는 의미이다.
       if($vendorData != ""){
@@ -66,13 +66,13 @@ $(document).ready(function () {
           url : "/api/vendor/vendorInfo",
           data : { 'vendorData' : $vendorData },
           success : function(response){
-            console.log("response : " + response);
+            //("response : " + response);
             if($vendorData == response.id){
               $('.vendorNames').append(' [ ' +  response.v_bizName + ' ]');
               $('#vendorNo').val(response.v_no);
-              console.log("#vendorNo : " +  response.v_no);
+              //("#vendorNo : " +  response.v_no);
             }else{
-              console.log("warning : " + vendorData + "와(과) 일치하지 않음");
+              //("warning : " + vendorData + "와(과) 일치하지 않음");
             } 
             
             totals(response.v_no);
@@ -156,7 +156,7 @@ $(document).ready(function () {
         
         $('#sales').empty();
 
-        // console.log(response);
+        // //(response);
 
         if (!$('#chart-table').hasClass('border')) {
           $('#chart-table').addClass('border');
@@ -293,12 +293,12 @@ $(document).ready(function () {
           data.labels.push(formattedDate);
         }
 
-        console.log(labels);
-        console.log(data.datasets[0].data);
+        //(labels);
+        //(data.datasets[0].data);
         $('#sales').append(tbody);
 
-        console.log("label : " + labels);
-        console.log(data);
+        //("label : " + labels);
+        //(data);
 
 
         // 차트 옵션 설정
@@ -367,27 +367,27 @@ $(document).ready(function () {
           let comparisonTable = $('<table>').addClass('table text-center').append($('<tr>').append($('<td>').text('')).append($('<th>').text('단위 판매가')).append($('<th>').text('단위 주문 건수')))
           .append($('<tr>').addClass('comparison').append($('<th>').text('상승률')));
 
-          console.log('lastTotalSales : ' + lastTotalSales);
-          console.log('lastPurchaseCount : ' + lastPurchaseCount);
+          //('lastTotalSales : ' + lastTotalSales);
+          //('lastPurchaseCount : ' + lastPurchaseCount);
 
           if(lastTotalSales < sum && lastTotalSales != 0){          
-          console.log('매출 증가 퍼센트 : ' + ((sum-lastTotalSales)/lastTotalSales * 100).toFixed(2));
+          //('매출 증가 퍼센트 : ' + ((sum-lastTotalSales)/lastTotalSales * 100).toFixed(2));
           comparisonTable.find('.comparison').first().append($('<td>').addClass('text-info table-light border-black').text(((sum-lastTotalSales)/lastTotalSales * 100).toFixed(2) + '% UP'));
           }else if(lastTotalSales == 0 && (sum- lastTotalSales) > 500){
           comparisonTable.find('.comparison').first().append($('<td>').addClass('text-info table-light border-black').text('500% 이상 UP'));
           }else{
-          console.log('매출 감소 퍼센트 : ' + ((sum-lastTotalSales)/lastTotalSales * 100).toFixed(2));
+          //('매출 감소 퍼센트 : ' + ((sum-lastTotalSales)/lastTotalSales * 100).toFixed(2));
           comparisonTable.find('.comparison').first().append($('<td>').addClass('text-danger table-light border-end border-black').text(((sum-lastTotalSales)/lastTotalSales * 100).toFixed(2) + '% DOWN'));
           }        
 
 
           if(lastPurchaseCount < orderSum && lastPurchaseCount != 0){          
-          console.log('주문 증가 퍼센트 : ' + ((orderSum-lastPurchaseCount)/lastPurchaseCount * 100).toFixed(2));
+          //('주문 증가 퍼센트 : ' + ((orderSum-lastPurchaseCount)/lastPurchaseCount * 100).toFixed(2));
           comparisonTable.find('.comparison').first().append($('<td>').addClass('text-info table-light border-black').text(((orderSum-lastPurchaseCount)/lastPurchaseCount * 100).toFixed(2) + '% UP'));
           }else if(lastPurchaseCount == 0 && (orderSum-lastPurchaseCount) > 500){
           comparisonTable.find('.comparison').first().append($('<td>').addClass('text-info table-light border-black').text('500% 이상 UP'));
           }else{
-          console.log('주문 감소 퍼센트: ' + ((orderSum-lastPurchaseCount)/lastPurchaseCount * 100).toFixed(2));
+          //('주문 감소 퍼센트: ' + ((orderSum-lastPurchaseCount)/lastPurchaseCount * 100).toFixed(2));
           comparisonTable.find('.comparison').first().append($('<td>').addClass('text-danger table-light border-end border-black').text(((orderSum-lastPurchaseCount)/lastPurchaseCount * 100).toFixed(2) + '% DOWN'));
           }
                     
@@ -412,7 +412,7 @@ $(document).ready(function () {
         $('#main_container').append(divHr2);
       },
       error: function(xhr, status, error) {
-          console.log("가져오기 실패");
+          //("가져오기 실패");
           alert("매출 내역을 가져오는데 실패했습니다.");
           console.error(xhr.responseText);
         }
@@ -517,8 +517,8 @@ $(document).ready(function () {
           dataType:'text',
           success: function(data) {
         	// window.location.href="/";
-        	  console.log(data);
-        	  console.log('로그아웃 눌림');
+        	  //(data);
+        	  //('로그아웃 눌림');
           },
           error: function(xhr, status, error) {
               console.error(xhr.responseText);
@@ -569,9 +569,9 @@ $(document).ready(function () {
   let $category2 = $("<button>").addClass("category align-middle").text("등록 상품 목록").on('click',function(e){
 	    e.stopPropagation();
 	    window.location.href = sideLink3;
-      // console.log("click... vendorNo :" + vendorNo);
-      // console.log(typeof vendorNo);
-      // console.log('sideLink3 : ' + sideLink3);
+      // //("click... vendorNo :" + vendorNo);
+      // //(typeof vendorNo);
+      // //('sideLink3 : ' + sideLink3);
   });
   
 //  let $category1 = $("<button>").addClass("category").text("가구").on('click',function(e){
@@ -764,7 +764,7 @@ $(document).ready(function () {
 		$barbtn.addClass("active");
 		
 		let currentUrl = window.location.href;
-		console.log("currentUrl : " + currentUrl);
+		//("currentUrl : " + currentUrl);
 		//
 		if (currentUrl.includes(sideLink1)) {
 			$side_container1.addClass("active");

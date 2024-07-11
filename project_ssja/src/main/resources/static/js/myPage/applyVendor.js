@@ -13,7 +13,7 @@ $("#vendor_apply").on('click', function(){
 		type : "get",
 		url : "/user/check/apply-vendor", 
 		success :function(data){
-				console.log(data);
+				//(data);
 			if(data === 'Y'){
 				alert('이미 판매자 신청을 하셨습니다. \n 현재 승인 과정을 치루고 있는 중이오니 기다려주시길 바랍니다.')
 				//window.location.href="/myPage";
@@ -62,7 +62,7 @@ let email_check = function(address){
 		url : "/user/email/check", 
 		success :function(data){
 			let authNum = data;
-			console.log(authNum);
+			//(authNum);
 			let $auth_input_dv = $("<div>").attr('id','auth_input_dv')
 			.addClass("d-flex flex-row m-2").appendTo($("#v_auth_form_dv"));
 			$('<input>').attr('id','auth_key').addClass('mx-2').css({'width':'7em','border-radius':'5px'}).appendTo($auth_input_dv);
@@ -72,7 +72,7 @@ let email_check = function(address){
 					
 					return false;
 				}
-					console.log('인증 키 같음 인증 완료');
+					//('인증 키 같음 인증 완료');
 					let $success_auth = $('<div>').addClass("d-flex flex-column");
 					$("<span>").text("인증완료").css('color','blue').appendTo($success_auth);
 					$('<button>').text("다음").addClass('btn btn-dark m-3').css({'width':'7em','height':'4em'}).on('click',function(){
@@ -98,13 +98,13 @@ let bizname_dupl_check = function(name){
 	    contentType: "application/json",
 		url : "/user/bizname/check-duplicate", 
 		success :function(data){
-			console.log('중복 없읍 : '+ data)
+			//('중복 없읍 : '+ data)
 			let successname = data;
 			$("#input_hidden_bizname").val(successname);
 			$("<span>").text('완료').appendTo("#dv_bizname");
 			},
 			error:function(e){
-			console.log('중복 O')
+			//('중복 O')
 				}
 			})
 		};
@@ -230,14 +230,14 @@ let getVendorInfo = function(){
 		type : "post",
 		url : "/user/info/vendor", 
 		success :function(data){
-			console.log(data);
+			//(data);
 			$('<span>').text('판매자 번호 : ' + data.v_no).appendTo('#vendorInfo_div');
 			$('<span>').text('사업자 명: ' + data.v_bizName).appendTo('#vendorInfo_div');
 			$('<span>').text('사업자 번호 : ' + data.v_license).appendTo('#vendorInfo_div');
 			
 			},
 			error:function(e){
-				console.log(e);
+				//(e);
 				//window.location.href="/myPage";
 				}
 			})

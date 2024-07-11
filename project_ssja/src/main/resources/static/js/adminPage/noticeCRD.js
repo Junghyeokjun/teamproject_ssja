@@ -13,7 +13,7 @@ let getNoticeList = function(pageNum, keyword){
 		data:{pageNum:pageNum,
 			keyword:keyword},
 		success:function(data){
-			console.log(data);
+			//(data);
 			$adimnPage_notic_content.empty();
 			let $notice_content = $("<div>").appendTo($adimnPage_notic_content);
 			

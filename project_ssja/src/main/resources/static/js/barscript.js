@@ -121,8 +121,8 @@ $(document).ready(function () {
           dataType:'text',
           success: function(data) {
         	// window.location.href="/";
-        	  console.log(data);
-        	  console.log('로그아웃 눌림');
+        	  //(data);
+        	  //('로그아웃 눌림');
           },
           error: function(xhr, status, error) {
               console.error(xhr.responseText);

@@ -10,8 +10,8 @@ let getBoardInfoCommus = function(commu_pageNum) {
 		contentType : "application/json",
 		async:false,
 		success : function(data) {
-			console.log("commu : " );
-			console.log(data);
+			//("commu : " );
+			//(data);
 			let $commuDV = $myPageContent.find('#commuDV');
 			if ($commuDV.length) {
 			    $commuDV.empty();
@@ -31,7 +31,7 @@ let getBoardInfoCommus = function(commu_pageNum) {
 					$("<div>").attr('id','commuInfoPaging')	
 			).appendTo($commuDV);
 			if(data === null || data === ''){
-				console.log('data is null')
+				//('data is null')
 				return;
 				}
 			goScrollFunction('#commuInfoTitle')
@@ -86,8 +86,8 @@ let getBoardInfoQnAs = function(qna_pageNum) {
 		contentType : "application/json",
 		async:false,
 		success : function(data) {
-			console.log("qna : " );
-			console.log(data)
+			//("qna : " );
+			//(data)
 			
 			let $qnaDV = $myPageContent.find('#qnaDV');
 			
@@ -109,7 +109,7 @@ let getBoardInfoQnAs = function(qna_pageNum) {
 					$("<div>").attr('id','qnaInfoPaging')	
 			).appendTo($qnaDV);
 			if(data === null || data === ''){
-				console.log('data is null')
+				//('data is null')
 				return;
 				}
 			goScrollFunction('#qnaInfoTitle')
@@ -155,10 +155,10 @@ let getBoardInfoQnAs = function(qna_pageNum) {
 
 $('#myPage_boardInfo_Select').on('click', function() {
 	if($($myPageContent).text() == "내가 쓴 글"){
-		console.log('내가 쓴 글 이미 눌림')
+		//('내가 쓴 글 이미 눌림')
 		return false;
 	}
-	console.log('내가 쓴 글 눌림')
+	//('내가 쓴 글 눌림')
 	let $h2title = $("<h2>").attr('id','myPageTitle').text("내가 쓴 글");
 	let $myPageTitle = $("#MyPage_content_name");
 	$("#MyPage_content_container").empty();

@@ -8,7 +8,7 @@ let homePageRender = function(bestPageNum){
 		data: { 'bestPageNum': bestPage },
 		contentType: "application/json",
 	    success: function(data) {
-	    	console.log(data);
+	    	//(data);
 	    	
 	        data.eventList.forEach(function(e,index){
 	        	let now_slide= index + 1;
@@ -70,7 +70,7 @@ let homePageRender = function(bestPageNum){
                 .append($("<p>").text(e.pro_NAME));
                 
                 let $item_bizname_dv = $("<div>").addClass("item-bizname-div")
-                    .text(e.pro_BIZNAME + " 확인용 상품번호: " + e.pro_NO)
+                    .text(e.pro_BIZNAME )
                     .css({ "font-weight": "bold", "font-size": "0.9em", "margin-bottom": "0.5em" }); 
 
                 let $item_price_dv = $("<div>").addClass("item-price-div")
@@ -140,7 +140,7 @@ let homePageRender = function(bestPageNum){
                 .append($("<p>").text(item.pro_NAME));
                 
                 let $item_bizname_dv = $("<div>").addClass("item-bizname-div")
-                    .text(item.pro_BIZNAME + " 확인용 상품번호: " + item.pro_NO)
+                    .text(item.pro_BIZNAME )
                     .css({ "font-weight": "bold", "font-size": "0.9em", "margin-bottom": "0.5em" }); 
 
                 let $item_price_dv = $("<div>").addClass("item-price-div")
@@ -198,7 +198,7 @@ let getListBestToServer = function (bestPageNum) {
         url: "/product/best-mainpage",
         data: { 'page': bestPageNum },
         success: function (data) {
-            console.log(data);
+            //(data);
             //$best_item_content.empty();
 
             let $list_content_dv = $("<div>").addClass("d-flex flex-column");
@@ -447,7 +447,7 @@ let getCategoryItems = function(categoryNum, categoyPageNum){
 		})
 	
 	$("#event_default_link").on('click', function(event){
-		console.log($("#user_link").attr("href"))
+		//($("#user_link").attr("href"))
 		if($("#user_link").attr("href") == "/login"){
 			return true;
 		}

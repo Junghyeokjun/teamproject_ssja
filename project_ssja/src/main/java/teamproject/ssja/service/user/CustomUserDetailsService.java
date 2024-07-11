@@ -47,7 +47,7 @@ public class CustomUserDetailsService implements UserDetailsService  {
 	
 	public Boolean changePasswordProcess(String username, ChangePasswordForm passwordForm) {
 		
-		log.info("before passwordForm{}",passwordForm);
+		//("before passwordForm{}",passwordForm);
 		
 		UserInfoDTO userData = loginMapper.findByUsername(username);
 	

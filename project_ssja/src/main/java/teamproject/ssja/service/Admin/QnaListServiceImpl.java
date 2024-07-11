@@ -21,20 +21,20 @@ public class QnaListServiceImpl implements  QnaListService{
 	
 	@Override
 	public long getQnaListTotalCount() {
-		log.info("getQnaListTotalCount()..");
+		//("getQnaListTotalCount()..");
 		return adminPageMapper.getQnaListTotalCount();
 	}
 	
 	@Override
 	public List<QnaBoardDto> getQnaListWithPaging(Criteria cri){
-		log.info("getMemberListWithPaging()..");
+		//("getMemberListWithPaging()..");
 		return adminPageMapper.getQnaListWithPaging(cri);
 	}
 	
 	//검색리스트
 	@Override
 	public List<QnaSearchDto> getQnaSearchList(String type, String keyword) {
-		log.info("getQnaSearchList()..");
+		//("getQnaSearchList()..");
 		return adminPageMapper.getQnaSearchList(type,keyword);
 	}
 
@@ -50,7 +50,7 @@ public class QnaListServiceImpl implements  QnaListService{
     
     @Override
 	public int removeQna(QnaBoardDto qnaBoardDto) {
-		log.info("deleteQna()..");
+		//("deleteQna()..");
 		return adminPageMapper.deleteQna(qnaBoardDto);
 	}
 }

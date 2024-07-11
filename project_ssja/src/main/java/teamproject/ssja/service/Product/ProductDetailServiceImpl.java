@@ -24,19 +24,19 @@ public class ProductDetailServiceImpl implements ProductDetailService {
 
 	@Override
 	public ProductDetailDto get(long PRO_NO) {
-		log.info("read..");
+		//("read..");
 		return productDetailMapper.read(PRO_NO);
 	}
 
 	@Override
 	public long getTotal(long PRO_NO) {
-		log.info("getTotal()..");
+		//("getTotal()..");
 		return productDetailMapper.getTotalCount(PRO_NO);
 	}
 
 	@Override
 	public List<ProductReviewsDto> getListWithPaging(Criteria cri) {
-		log.info("getListWithPaging()..");
+		//("getListWithPaging()..");
 		return productDetailMapper.getListWithPaging(cri);
 	}
 

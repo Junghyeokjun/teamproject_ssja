@@ -24,19 +24,19 @@ public class ProductListServiceImpl implements ProductListService {
 
 	@Override
 	public long getProductListTotalCount() {
-		log.info("getProductListTotalCount()..");
+		//("getProductListTotalCount()..");
 		return adminPageMapper.getProductListTotalCount();
 	}
 
 	@Override
 	public List<ProductDto> getProductListWithPaging(Criteria cri) {
-		log.info("getProductListWithPaging()..");
+		//("getProductListWithPaging()..");
 		return adminPageMapper.getProductListWithPaging(cri);
 	}
 
 	@Override
 	public List<ProductsSearchDto> getProductsSearchList(String type, String keyword) {
-		log.info("getProductsSearchList()..");
+		//("getProductsSearchList()..");
 
 		return adminPageMapper.getProductsSearchList(type,keyword);
 	}
@@ -75,13 +75,13 @@ public class ProductListServiceImpl implements ProductListService {
 
 	@Override
 	public int removeReviewProduct(ProductReviewsDto productReviewsDto) {
-		log.info("deleteReviewProduct()..");
+		//("deleteReviewProduct()..");
 		return adminPageMapper.deleteReviewProduct(productReviewsDto); 			
 	}
 
 	@Override
 	public int removeReplyReviewProduct(ProductReviewReplyDto productReviewReplyDto) {
-		log.info("deleteReplyReviewProduct()..");
+		//("deleteReplyReviewProduct()..");
 		return adminPageMapper.deleteReplyReviewProduct(productReviewReplyDto); 			
 	}	
 	

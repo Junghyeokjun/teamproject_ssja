@@ -76,7 +76,7 @@ public class VendorController {
 	
 	@GetMapping("/product/write")
 	public String writeProduct(Model model) {
-		log.info("writeProduct()..");
+		//("writeProduct()..");
 		// 카테고리
 		model.addAttribute("pcMains", productCategoryService.getPCMain());
 
@@ -90,25 +90,25 @@ public class VendorController {
 						 List<MultipartFile> explainFile,
 						 ProductDto productDto,
 						 Model model) {
-		log.info("addOne()..");	
+		//("addOne()..");	
 		
 //		// 데이터 넘어오는 것은 확인함
-//		log.info("bannerFile : {} " , bannerFile);
-//		log.info("coverFiles : {} " , coverFile);
-//		log.info("explainFiles : {} " , explainFile);
+//		//("bannerFile : {} " , bannerFile);
+//		//("coverFiles : {} " , coverFile);
+//		//("explainFiles : {} " , explainFile);
 //		
-//		log.info("Cover Files:");
+//		//("Cover Files:");
 //		for (MultipartFile file : coverFile) {
-//		    log.info("File Name: " + file.getOriginalFilename());
-//		    log.info("Content Type: " + file.getContentType());
-//		    log.info("File Size: " + file.getSize());
+//		    //("File Name: " + file.getOriginalFilename());
+//		    //("Content Type: " + file.getContentType());
+//		    //("File Size: " + file.getSize());
 //		}
 //
-//		log.info("Explain Files:");
+//		//("Explain Files:");
 //		for (MultipartFile file : explainFile) {
-//		    log.info("File Name: " + file.getOriginalFilename());
-//		    log.info("Content Type: " + file.getContentType());
-//		    log.info("File Size: " + file.getSize());
+//		    //("File Name: " + file.getOriginalFilename());
+//		    //("Content Type: " + file.getContentType());
+//		    //("File Size: " + file.getSize());
 //		}
 		
 		if(bannerFile.isEmpty() || coverFile.isEmpty() || explainFile.isEmpty()) {
@@ -127,7 +127,7 @@ public class VendorController {
 
 	@GetMapping("/product/list/{vno}")
 	public String showProductList(@AuthenticationPrincipal CustomPrincipal principal, Model model, Criteria criteria, @PathVariable("vno") long vno) {
-		log.info("ProductList()..");
+		//("ProductList()..");
 		if(principal != null) {
 			criteria.setBmno(principal.getMemberNum());
 			// 일시적으로 목록을 불러오기 위해 사용. 판매자 자신의 상품 목록 리스트는 요구 메서드가 다름
@@ -163,7 +163,7 @@ public class VendorController {
 	
 	@GetMapping("/question/{category}")
 	public String showQnaList(@AuthenticationPrincipal CustomPrincipal principal, Model model, Criteria criteria,@PathVariable("category") long bcno) {
-		log.info("showProductList()..");	
+		//("showProductList()..");	
 		criteria.setBmno(principal.getMemberNum());
 		model.addAttribute("bc", boardService.showBoardCategory(bcno));
 		criteria.setBcno(bcno);
@@ -179,7 +179,7 @@ public class VendorController {
 	
 	@GetMapping("/question/content_view/{category}")
 	public String showView(@PathVariable("category") long bcno,HttpServletRequest request, HttpServletResponse response, Model model) {
-		log.info("showView()..");
+		//("showView()..");
 		model.addAttribute("content_view", boardService.showContent(request, response));
 		model.addAttribute("bcNo", bcno);		
 		return "/vendor/content_view";
@@ -187,14 +187,14 @@ public class VendorController {
 
 	@GetMapping("/question/write_view/{category}")
 	public String writeView(Model model, @PathVariable("category") long bcno) {
-		log.info("writeView()..");
+		//("writeView()..");
 		model.addAttribute("bcno", bcno);
 		return "/vendor/write_view";
 	}
 
 	@PostMapping("/question/write")
 	public String addOne(@AuthenticationPrincipal CustomPrincipal principal, BoardDto boardDto) {
-		log.info("addOne()..");		
+		//("addOne()..");		
 		// 관리자 영역. 추후 수정이 필요하거나, 수정하지 않아도 됨.
 		boardService.addBoard(boardDto);
 		return "redirect:/vendor/question/" + boardDto.getBbcno();
@@ -202,7 +202,7 @@ public class VendorController {
 
 	@PostMapping("/question/modify_view")
 	public String modifyView(@AuthenticationPrincipal CustomPrincipal principal, BoardDto boardDto, Model model) {
-		log.info("modifyView()..");
+		//("modifyView()..");
 		model.addAttribute("modify_view", boardDto);
 		return "/vendor/modify_view";
 	}
@@ -215,7 +215,7 @@ public class VendorController {
 
 	@GetMapping("/question/delete")
 	public String removeOne(BoardDto boardDto) {
-		log.info("removeOne()..");
+		//("removeOne()..");
 		boardService.removeBoard(boardDto);
 		return "redirect:/vendor/question/20" ;
 	}

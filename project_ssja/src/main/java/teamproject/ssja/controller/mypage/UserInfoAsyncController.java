@@ -97,7 +97,7 @@ public class UserInfoAsyncController {
 	    	
 	        String username = userDetails.getUsername();
 	        boolean isChanged = userService.changePasswordProcess(username, changePasswordForm);
-	        log.info("isChanged? {}",isChanged);
+	        //("isChanged? {}",isChanged);
 
 	        if (isChanged) {
 	            return ResponseEntity.ok("success");
@@ -110,10 +110,10 @@ public class UserInfoAsyncController {
 	 public ResponseEntity<String> deleteUserEnroll(@AuthenticationPrincipal CustomPrincipal userDetails){
 		 long userId= userDetails.getMemberNum();
 		 
-		 log.info("{} 유저 삭제 요청",userId);
+		 //("{} 유저 삭제 요청",userId);
 		String EnrollDeleteDate= myPageService.deleteUserEnroll(userId);
 	
-		 log.info("삭제 등록 날짜 {}",EnrollDeleteDate);
+		 //("삭제 등록 날짜 {}",EnrollDeleteDate);
 	            return ResponseEntity.ok(EnrollDeleteDate);
 	      
 	 }
@@ -121,10 +121,10 @@ public class UserInfoAsyncController {
 	 @PostMapping("/email/auth")
 	 public ResponseEntity<MailDTO> requestEmailAuth(@RequestBody MailDTO email) {
 		 
-		 log.info("email {}", email);
+		 //("email {}", email);
 		 
 		 MailDTO autheticatedMail = mailService.CreateMailRequestAuth(email);
-		 log.info("autheticatedMail{}",autheticatedMail);
+		 //("autheticatedMail{}",autheticatedMail);
 		 
 		 return ResponseEntity.ok().body(autheticatedMail);
 	 }
@@ -178,7 +178,7 @@ public class UserInfoAsyncController {
 	 
 	 @PostMapping("/info/apply-vendor")
 	 public ResponseEntity enrollVendor(@RequestBody VendorInfoDTO venderInfo) {
-		 log.info("vendor INfo{}", venderInfo);
+		 //("vendor INfo{}", venderInfo);
 		 try {
 			
 			 myPageService.enrollVendor(venderInfo);
@@ -221,7 +221,7 @@ public class UserInfoAsyncController {
 	 
 	 @DeleteMapping("/cart/items")
 	 public ResponseEntity<String> deleteItemFromCart(@RequestBody List<Integer> deleteList){
-		 log.info("값 확인 {}", deleteList);
+		 //("값 확인 {}", deleteList);
 		 try {
 			
 			 myPageService.deleteItemFromCart(deleteList);

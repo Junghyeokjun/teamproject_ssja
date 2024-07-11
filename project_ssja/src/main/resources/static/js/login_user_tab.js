@@ -27,7 +27,7 @@ $(window).on('scroll resize', function() {
                 window.location.href = "/myPage/orderInfo";
             }).appendTo($login_user_div);
         
-        console.log(($('#isVendorCheck').length >0) )
+        //(($('#isVendorCheck').length >0) )
         if($('#isVendorCheck').length > 0 ){
         	
       	  $("<button>").text("판매 관리")

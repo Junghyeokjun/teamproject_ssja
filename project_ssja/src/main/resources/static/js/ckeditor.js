@@ -81,7 +81,7 @@ ClassicEditor
 	.then(editor => {
 		$(".ck-editor").addClass("w-100");
 
-		console.log(editor);
+		//(editor);
 	})
 	.catch(error => {
 		console.error(error);

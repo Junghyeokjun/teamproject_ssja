@@ -73,13 +73,13 @@ let getListProductToServer = function (condition) {
 		dataType:"json",
 		url : "/product/lists",
         	success : function(data){  
-				console.log(data);
+				//(data);
 				$product_content.empty();
 				$paging_dv.empty();
 				
 				//상품이 존재하지 않을 경우
 				if(data.itemList.length == 0){
-					console.log('없음');
+					//('없음');
 					$("#product_search_select").empty();
 					let $logo_img = $("<img>").css({'width':'10em','height': '7em','margin-left':'4em','margin-right':'auto'}).attr('src','/images/utilities/logoSSJA.png');
 					
@@ -211,7 +211,7 @@ let getListProductToServer = function (condition) {
 				
 				$product_content.append($list_content_dv);
 			},error: function(xhr, status, error) {
-				console.log("Error:", xhr.responseText);
+				//("Error:", xhr.responseText);
 			}
 		})
 		
@@ -232,7 +232,7 @@ let wish_click = function(productnumber) {
         success: function(data) {
             count = data;
         }, error : function(e) {
-        	console.log(e);
+        	//(e);
         	//window.location.href="/login";
         }
     });

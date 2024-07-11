@@ -28,7 +28,7 @@ public class NoticeBoardController {
 	
 	@GetMapping("/notice")
 	public String noticeList(Model model, Criteria criteria) {
-		log.info("noticeList()..");
+		//("noticeList()..");
 		model.addAttribute("notics",  noticeBoardService.showListWithPaging(criteria));
 		
 		long total = noticeBoardService.getTotal();
@@ -39,14 +39,14 @@ public class NoticeBoardController {
 	@GetMapping("/noticeSearchList")
 	public ResponseEntity<List<NoticeSearchDto>> noticeSearchList(@RequestParam("type") String type,
 			@RequestParam("keyword") String keyword) {
-		log.info("noticeSearchList()..");
+		//("noticeSearchList()..");
 		List<NoticeSearchDto> searchResults = noticeBoardService.getNoticeSearchList(type, keyword);
 		return ResponseEntity.ok(searchResults);
 	}
 	
 	@GetMapping("/notice_view")
 	public String notice_view(HttpServletRequest request, HttpServletResponse response, Model model) {
-		log.info("notice_view()..");
+		//("notice_view()..");
 		model.addAttribute("notice_view", noticeBoardService.showContent(request, response));
 		return "/notice_view";
 	}
