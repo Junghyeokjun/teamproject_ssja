@@ -323,14 +323,14 @@ $.ajax({
 	                            $item_title_dv.css({ "text-overflow": "ellipsis", "white-space": "nowrap" });
 	                        }
 	                    ).on('click', function() {
-	                        window.location.href = '/product_detail?PRO_NO=' + e.pro_NO;
+	                        window.location.href = '/product_detail?PRO_NO=' + e.PRO_NO;
 	                    });
 
 	                let $item_img_dv = $("<div>").addClass("item-img-div mx-1")
 	                    .css({
 	                        "max-width": "100%",
 	                        "min-height": "55%",
-	                        "background-image": 'url(' + e.pro_BANNERIMG + ')',
+	                        "background-image": 'url(' + e.PRO_BANNERIMG + ')',
 	                        "background-size": "cover",
 	                        "background-position": "center",
 	                        "overflow": "hidden"
@@ -352,10 +352,10 @@ $.ajax({
 	                        "text-overflow": "ellipsis",  
 	                        "white-space": "nowrap"
 	                    })
-	                    .append($("<p>").text(e.pro_NAME));
+	                    .append($("<p>").text(e.PRO_NAME));
 
 	                let $item_bizname_dv = $("<div>").addClass("item-bizname-div")
-	                    .text(e.pro_BIZNAME)
+	                    .text(e.PRO_BIZNAME)
 	                    .css({ 
 	                        "font-weight": "bold", 
 	                        "font-size": "0.9em", 
@@ -363,7 +363,7 @@ $.ajax({
 	                    });
 
 	                let $item_price_dv = $("<div>").addClass("item-price-div")
-	                    .text(formatNumber(e.pro_PRICE) + "원")
+	                    .text(formatNumber(e.PRO_PRICE) + "원")
 	                    .css({ "margin-left": "auto", "margin-right": "1em" });
 
 	                let $item_review_wish_dv = $("<div>").addClass("d-flex flex-row justify-content-between")
@@ -374,11 +374,11 @@ $.ajax({
 	                            $("<span>").text(e.avgeval)
 	                        ),
 	                        $("<div>").append(
-	                            $("<span>").text(e.pro_WISH).css("color", "#f06575"),
+	                            $("<span>").text(e.PRO_WISH).css("color", "#f06575"),
 	                            $("<img>").attr("src", "/images/utilities/wish_icon.png").css("width", "1.5em")
 	                                .on("click", function(event) {
 	                                    event.preventDefault();
-	                                    let countwish = wish_click(e.pro_NO);
+	                                    let countwish = wish_click(e.PRO_NO);
 	                                    $(this).prev("span").text(countwish);
 	                                    return false; // 상품상세 링크 이동 방지
 	                                })
