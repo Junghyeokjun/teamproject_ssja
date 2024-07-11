@@ -308,7 +308,10 @@ $("#myPage_orderInfo_Select").on('click', function() {
 	    formData.append('proNum', proNum);
 	    formData.append('content', reviewContent);
 	    formData.append('eval', reviewEval);
+	    if(rv_image !=null){
+	    	
 	    formData.append('rv_image', rv_image);
+	    }
      
 		 $.ajax({
 		        type: "post",

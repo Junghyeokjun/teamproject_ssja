@@ -477,7 +477,7 @@ $(document).ready(function () {
   $searchBtn.appendTo($searchForm);
  
   // 판매자의 경우 로고 클릭 시 판매자 홈으로 이동.
-  $("#logo_img").parent().attr('href','/vendor');
+  $("#logo_img").parent().attr('href','/home');
   
   let $cartLink = $("#cart_link").attr("href", " http://www.naver.com");//카트 이미지 버튼 링크
   let $cartImgPath = $("#cart_img").attr("src", "/images/utilities/cartShop.png");//카트 이미지 경로

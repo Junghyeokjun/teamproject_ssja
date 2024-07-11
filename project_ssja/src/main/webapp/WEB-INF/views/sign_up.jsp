@@ -19,8 +19,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
       </script>
+       <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> 
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+       <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
    <style>
     body{
@@ -62,6 +64,13 @@
         //csrf토큰 변수
         var header = $("meta[name='_csrf_header']").attr('content');
         var token = $("meta[name='_csrf']").attr('content');
+        var today = new Date();
+      
+
+        let year = today.getFullYear().toString().slice(2); 
+        let month = (today.getMonth() + 1).toString().padStart(2, '0'); 
+        let day = today.getDate().toString().padStart(2, '0'); 
+        let todayDate = year + month + day;
         
 
         $(document).ready(function(){
@@ -348,9 +357,11 @@
                 }else if(name.val()===""){
                     alert("이름 입력을 완료해주세요.")
                     name.focus();
-                }else if(birth.val()===""||birth.val().length!=6){
+                }else if(birth.val()===""){
                     alert("생년월일 입력을 완료해주세요.")
                     birth.focus();
+
+                	
                 }else if(post.val()===""){
                     alert("우편번호를 입력해주세요")
                     post.focus();
@@ -484,5 +495,29 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         </form>
     </div>
+    <script>
+
+    $("#birth").datepicker({
+        dateFormat: "yy-mm-dd",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "1900:2024",
+        onClose: function(dateText) {
+ 
+            var selectedDate = new Date($("#birth").val());
+
+           
+            today.setHours(0, 0, 0, 0); 
+            
+            if (selectedDate > today) {
+                alert("선택한 날짜가 오늘의 날짜를 넘을 수 없습니다.");
+                $("#birth").val(""); 
+            } else {
+                console.log("선택한 날짜는 유효합니다.");
+            }
+        }
+    });
+
+    </script>
 </body>
 </html>

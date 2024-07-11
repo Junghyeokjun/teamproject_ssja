@@ -98,10 +98,11 @@ public class ReplyServiceImpl implements ReplyService {
 			form.setId(id);
 			replyMapper.applyReview(form);
 			replyMapper.reviewGiftPoint(form.getId());
+			log.info("사진 {}", form.getRv_image());
 			
 			//리뷰 사진이 있을 경우
 		
-			if(form.getRv_image() != null || !form.getRv_image().isEmpty() ) {
+			if(form.getRv_image() != null  ) {
 				
 				 String originalFilename = form.getRv_image().getOriginalFilename();
 		            String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));

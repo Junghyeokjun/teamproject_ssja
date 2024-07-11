@@ -48,7 +48,8 @@ public class ProductDetailTotalInfoDTO {
 			return Collections.emptyList();
 		}
 		List<String> list = imgList.stream()
-				.filter(e -> e != null && e.getPiPath() != null && e.getPiPath().startsWith("product_cover/"))
+				.filter(e -> e != null && e.getPiPath() != null &&
+				(e.getPiPath().startsWith("/images/product_cover/") || e.getPiPath().startsWith("/home/ubuntu/images/product_cover")))
 				.map(ProductImgDto::getPiPath).collect(Collectors.toList());
 
 		return list.isEmpty() ? Collections.emptyList() : list;
@@ -61,7 +62,8 @@ public class ProductDetailTotalInfoDTO {
 		}
 
 		List<String> list = imgList.stream()
-				.filter(e -> e != null && e.getPiPath() != null && e.getPiPath().startsWith("product_details/"))
+				.filter(e -> e != null && e.getPiPath() != null &&
+				(e.getPiPath().startsWith("/images/product_details/") ||  e.getPiPath().startsWith("/home/ubuntu/images/product_details")))
 				.map(ProductImgDto::getPiPath).collect(Collectors.toList());
 
 		return list.isEmpty() ? Collections.emptyList() : list;

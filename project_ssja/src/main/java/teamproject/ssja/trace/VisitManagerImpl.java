@@ -40,7 +40,6 @@ public class VisitManagerImpl implements VisitManager{
             	return;
             }
             
-            log.info("이미 방문");
             return;
         } else {
             Cookie newCookie = new Cookie("visit","Y");

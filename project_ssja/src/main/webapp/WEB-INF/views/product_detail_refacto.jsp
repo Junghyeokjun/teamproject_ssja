@@ -313,7 +313,7 @@ color:black;
 									</div>
 									<c:forEach var="image"	items="${productData.findCoverImg()}">
 										<div class="carousel-item">
-											<img src="/images/${image}" class="d-block w-100" alt="...">
+											<img src="${image}" class="d-block w-100" alt="...">
 											<!-- 추후 상품 메인 이미지 개발 시 넣기 -->
 										</div>
 									</c:forEach>
@@ -433,7 +433,7 @@ color:black;
 									<div class="tab-pane fade show active" id="ex1-pills-1"
 										role="tabpanel" aria-labelledby="ex1-tab-1"><!-- 상품 상세 이미지 가져와야함 -->
 										<c:forEach var="mainImg" items="${productData.findMainImg() }" varStatus="stat">
-										<img src="/images/${mainImg }" class="d-block w-100">
+										<img src="${mainImg }" class="d-block w-100">
 										</c:forEach>
 									</div>
 									<!-- 리뷰 구현 -->

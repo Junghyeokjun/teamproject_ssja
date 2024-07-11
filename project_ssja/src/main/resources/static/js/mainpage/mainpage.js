@@ -1,5 +1,6 @@
 
 let bestPageNum = 1;
+
 let homePageRender = function(bestPageNum){
 	let bestPage = bestPageNum;
 	$.ajax({
@@ -60,8 +61,7 @@ let homePageRender = function(bestPageNum){
                         "max-width": "100%", "min-height": "40%", "background-image": 'url(' + e.pro_BANNERIMG + ')',
                         "background-size": "cover", "background-position": "center", "overflow": "hidden"
                     });
-
-
+                
                 let $item_info_dv = $("<div>").addClass("m-0 mx-1").attr('id', 'item-info-div')
                     .css({ "margin": "1em", "width": "100%", 'height': '10em', "padding-bottom": "1em" ,'padding':'1em'});
 
@@ -165,7 +165,7 @@ let homePageRender = function(bestPageNum){
                                      })
                         )
                     );
-
+              
                 $item_info_dv.append($item_title_dv, $item_bizname_dv, $item_price_dv, $item_review_wish_dv);
                 $item_content_dv.append($item_img_dv, $item_info_dv);
                 $row_category.append($item_content_dv);
@@ -189,7 +189,7 @@ let header = $("meta[name='_csrf_header']").attr("content");
 function formatNumber(num) {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
-let bestItemPageNum = 0;
+let bestItemPageNum = 1;
 
 let getListBestToServer = function (bestPageNum) {
     $.ajax({
@@ -308,14 +308,16 @@ let changePageNum = function () {
     }
 }
 let MovePageBest = function () {
+	
     changePageNum();
     getListBestToServer(bestItemPageNum);
 }
 $("#show_more_bestItem").on('click', function(){
-	 if (bestItemPageNum < 2) {
+console.log(bestItemPageNum);
+	 if (bestItemPageNum < 3) {
 	        bestItemPageNum++;
 	        getListBestToServer(bestItemPageNum);
-	        if (bestItemPageNum ===2){
+	        if (bestItemPageNum ===3){
 	        	$(this).css('display','none');
 	        }
 	    }

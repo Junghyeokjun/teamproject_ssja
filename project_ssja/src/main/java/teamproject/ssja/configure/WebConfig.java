@@ -17,5 +17,15 @@ public class WebConfig implements WebMvcConfigurer {
     	.addResourceLocations("file:/home/ubuntu/images/review/");
 //    	registry.addResourceHandler("/images/board_content/**")
 //      .addResourceLocations("file://desktop-rduhp84/board_content/");
+    	
+    	registry.addResourceHandler("/home/ubuntu/images/product_banner/**")
+        .addResourceLocations("file:/home/ubuntu/images/product_banner/");
+    	
+        registry.addResourceHandler("/home/ubuntu/images/product_cover/**")
+        .addResourceLocations("file:/home/ubuntu/images/product_cover/");
+        
+        registry.addResourceHandler("/home/ubuntu/images/product_details/**")
+        .addResourceLocations("file:/home/ubuntu/images/product_details/");
+    	
     }
 }

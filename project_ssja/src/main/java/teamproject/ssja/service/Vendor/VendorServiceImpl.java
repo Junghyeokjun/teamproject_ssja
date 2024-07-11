@@ -69,7 +69,7 @@ public class VendorServiceImpl implements VendorService{
 		String extracted = productImgDir.substring(productImgDir.length() - 8);
 		
 		// /images/product_banner/파일명.확장자
-		productDto.setPRO_BANNERIMG(extracted + bannerDir + "/" + ssjaFileNameFormat(bannerFile.getOriginalFilename(),1));
+		productDto.setPRO_BANNERIMG(bannerFileDir + "/" + ssjaFileNameFormat(bannerFile.getOriginalFilename(),1));
 		vendorMapper.insertProduct(productDto);
 	}
 
@@ -107,7 +107,7 @@ public class VendorServiceImpl implements VendorService{
 			fileTransferTo(coverFileDir, coverFile.get(i), i+1);
 			ProductImgDto pImgDto = new ProductImgDto();
 			pImgDto.setPNo(pro_no);
-			pImgDto.setPiPath(coverDir + "/" + ssjaFileNameFormat(coverFile.get(i).getOriginalFilename(),i+1));
+			pImgDto.setPiPath(coverFileDir + "/" + ssjaFileNameFormat(coverFile.get(i).getOriginalFilename(),i+1));
 			vendorMapper.insertProductImgs(pImgDto);
 		}
 		
@@ -115,7 +115,7 @@ public class VendorServiceImpl implements VendorService{
 			fileTransferTo(explainFileDir, explainFile.get(i), i+1);
 			ProductImgDto pImgDto = new ProductImgDto();
 			pImgDto.setPNo(pro_no);
-			pImgDto.setPiPath(explainDir + "/" + ssjaFileNameFormat(explainFile.get(i).getOriginalFilename(),i+1));
+			pImgDto.setPiPath(explainFileDir + "/" + ssjaFileNameFormat(explainFile.get(i).getOriginalFilename(),i+1));
 			vendorMapper.insertProductImgs(pImgDto);
 		}
 	}

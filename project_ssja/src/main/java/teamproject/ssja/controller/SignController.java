@@ -106,10 +106,10 @@ public class SignController {
 	 }
 	@RequestMapping("/sign_up_before")
 	public ModelAndView signUpBefore(ModelAndView mv) {
-		List<String> terms=signUpService.getTerms();
+		//List<String> terms=signUpService.getTerms();
 		
-		mv.addObject("term1", terms.get(0));
-		mv.addObject("term2", terms.get(1));
+		mv.addObject("term1", "약관 1");
+		mv.addObject("term2", "약관 2");
 		mv.setViewName("sign_up_terms");
 		return mv;
 	}
