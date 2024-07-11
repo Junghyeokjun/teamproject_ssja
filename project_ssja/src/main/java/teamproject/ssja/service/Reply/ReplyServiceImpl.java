@@ -106,16 +106,18 @@ public class ReplyServiceImpl implements ReplyService {
 				 String originalFilename = form.getRv_image().getOriginalFilename();
 		            String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
 		            String fileName = "rv_img_" + form.getProNum() + fileExtension;
-		            String filePath = "./src/main/resources/static/images/review";
-		          // 배포 이미지 경로  //String filePath = "/home/ubuntu/images/review";
+//		            String filePath = "./src/main/resources/static/images/review";
+		          // 배포 이미지 경로  
+		            String filePath = "/home/ubuntu/images/review";
 
 		            // 파일 저장을 위한 디렉토리 생성 및 파일 쓰기
 		            Path directory = Paths.get(filePath);
 		            Files.createDirectories(directory);
 		            Path fileFullPath = directory.resolve(fileName);
 		            Files.write(fileFullPath, form.getRv_image().getBytes());
-		            replyMapper.insertReviewImg("/images/review/"+fileName);
-		            // 배포 이미지 경로  // replyMapper.insertReviewImg("/images/review"+fileName);
+//		            replyMapper.insertReviewImg("/images/review/"+fileName);
+		            // 배포 이미지 경로  // 
+		            replyMapper.insertReviewImg("/images/review"+fileName);
 		            log.info("imageinfo {}", fileFullPath.toString());
 			}
 
