@@ -9,14 +9,15 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import teamproject.ssja.dto.userinfo.UserInfoDTO;
 
-@Getter
-@Setter
-@ToString
+@Data
+@EqualsAndHashCode(of= {"memberNum"})
 public class CustomPrincipal implements UserDetails, OAuth2User {
 //세션, 소셜 로그인 인터페이스 2개를 다 구현한 통합 스프링 시큐리티 Authentication에 담을 구현체입니다.
     
@@ -108,5 +109,6 @@ public class CustomPrincipal implements UserDetails, OAuth2User {
     public boolean isOAuth2User() {
         return isOAuth2User;
     }
+    
 
 }

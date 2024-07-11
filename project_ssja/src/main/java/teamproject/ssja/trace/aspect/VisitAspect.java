@@ -27,12 +27,11 @@ public class VisitAspect {
 			 "!@annotation(org.springframework.web.bind.annotation.ResponseBody)")
 	public Object execute(ProceedingJoinPoint joinPoint) throws Throwable {
 		try {
-			HttpServletRequest request =
-					((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		     HttpServletResponse response =
-		        	((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+			HttpServletRequest request =((ServletRequestAttributes) 
+					 RequestContextHolder.getRequestAttributes()).getRequest();
+		     HttpServletResponse response =((ServletRequestAttributes) 
+		    		 RequestContextHolder.getRequestAttributes()).getResponse();
 		     visitManager.validVisit(request, response);
-			log.info("방문 {}", joinPoint.getSignature().getName());
 			Object result = joinPoint.proceed();
 			
 			return result;	

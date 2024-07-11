@@ -1,5 +1,8 @@
 package teamproject.ssja.trace;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,7 +35,7 @@ public class VisitManagerImpl implements VisitManager{
             	beforeCookie.setValue(beforeCookie.getValue() + "Y");
             	aspectService.addVisitCount();
             	beforeCookie.setPath("/");
-            	beforeCookie.setMaxAge(60 * 60 * 24);
+            	beforeCookie.setMaxAge(expireToTodaySeconds());
             	response.addCookie(beforeCookie);
             	log.info("방문쿠키 추가");
             	return;
@@ -44,10 +47,16 @@ public class VisitManagerImpl implements VisitManager{
             Cookie newCookie = new Cookie("visit","Y");
           	aspectService.addVisitCount();
             newCookie.setPath("/");
-            newCookie.setMaxAge(60 * 60 * 24);
+            newCookie.setMaxAge(expireToTodaySeconds());
             response.addCookie(newCookie);
             log.info("방문 쿠키 생성");
             return;
         }
 	}
+	  private int expireToTodaySeconds() {
+	        LocalDateTime now = LocalDateTime.now();
+	        LocalDateTime endOfDay = now.toLocalDate().atTime(23, 59, 59);
+	        long seconds = ChronoUnit.SECONDS.between(now, endOfDay);
+	        return (int)seconds+1;
+	    }
 }
