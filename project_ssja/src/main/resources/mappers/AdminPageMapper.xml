@@ -468,8 +468,8 @@ ORDER BY m_date
 
 SELECT TO_CHAR(p_date, 'MM-DD') AS p_date, p_price 
 FROM profit 
-WHERE p_date >= SYSDATE - 7
-AND p_date <= SYSDATE +1
+WHERE p_date >= TRUNC(SYSDATE) - 7
+AND p_date < TRUNC(SYSDATE) +1
 ORDER BY p_date
         ]]>
 	</select>
