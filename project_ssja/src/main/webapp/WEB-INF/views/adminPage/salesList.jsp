@@ -154,7 +154,7 @@ padding:0;
                     data: {
                         labels: dates,
                         datasets: [{
-                            label: '일일매출액',
+                            label: '주간매출액',
                             data: totalPays,
                             backgroundColor: "#8e5ea2"
                         }]

@@ -478,15 +478,18 @@ ORDER BY p_date
     <![CDATA[
 SELECT 
     TO_CHAR(p_date, 'MM') || '-' || 
-    (1 + MOD(CEIL((EXTRACT(DAY FROM p_date) - 1) / 7.0) - 1, 4)) || '주차' AS week,
+    (1 + MOD(CEIL((EXTRACT(DAY FROM p_date) - 1) / 7) - 1, 4)) || '주차' AS week,
     SUM(p_price) AS WeeklyTotalPay
 FROM 
     profit
+WHERE 
+    p_date >= TRUNC(SYSDATE) - (4 * 7)  -- 최근 4주간 데이터만 선택
 GROUP BY
     TO_CHAR(p_date, 'MM'),
-    1 + MOD(CEIL((EXTRACT(DAY FROM p_date) - 1) / 7.0) - 1, 4)
+    1 + MOD(CEIL((EXTRACT(DAY FROM p_date) - 1) / 7) - 1, 4)
 ORDER BY 
     TO_CHAR(p_date, 'MM')
+
         ]]>
 	</select>
 
