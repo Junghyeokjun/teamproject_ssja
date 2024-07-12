@@ -100,7 +100,7 @@ public interface AdminPageMapper {
 
 		void deleteMember(MembersDto membersDto);
 		
-		MembersDto readMemberId(int memberId);
+		MembersDto readMemberId(long memberId);
 		
 		void updateMember(MembersDto membersDto);
 		
