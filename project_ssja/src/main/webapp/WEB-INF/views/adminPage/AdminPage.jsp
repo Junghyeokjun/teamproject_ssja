@@ -405,7 +405,10 @@
                             },
                             x: {
                                 ticks: {
-                                    autoSkip: false // x축 레이블 자동 생략 비활성화
+                                    autoSkip: false, // x축 레이블 자동 생략 비활성화
+                                    font: {
+                                        size: 11 // x축 레이블 폰트 사이즈 설정
+                                    }
                                 }
                             }
                         }
