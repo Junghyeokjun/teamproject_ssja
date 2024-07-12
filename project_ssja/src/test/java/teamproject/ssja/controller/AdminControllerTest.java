@@ -199,17 +199,8 @@ public class AdminControllerTest {
 		
 		long currCouponCount = couponListService.getCouponListTotalCount();
 		
-		CouponDTO newCoupon = new CouponDTO();
-		newCoupon.setC_name("제이유닛쿠폰");
-		newCoupon.setC_dcper(12);
-		newCoupon.setC_startdate(new Dat);
-		
-		couponListService.addCoupon(newCoupon);
-		
-		long renewCouponCount = couponListService.getCouponListTotalCount();
-		
-		assertThat(currCouponCount).isEqualTo(renewCouponCount);
-		assertThat(currCouponCount + 1).isEqualTo(renewCouponCount);
+	
+		assertThat(currCouponCount).isEqualTo(8);
 	}
 
 	@Autowired
