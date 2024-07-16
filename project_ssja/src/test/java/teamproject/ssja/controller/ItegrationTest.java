@@ -25,8 +25,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
+import teamproject.ssja.dto.mainpage.MainPageDTO;
 import teamproject.ssja.dto.product.SearchForm;
 import teamproject.ssja.dto.userinfo.ChangePasswordForm;
+import teamproject.ssja.page.ListObjectPagingDTO;
 
 @SpringBootTest
 @Slf4j
@@ -53,7 +55,7 @@ public class ItegrationTest {
 	void myPageApiTest() throws Exception {
 		
 		
-		ChangePasswordForm changePasswordForm = new ChangePasswordForm("1234", "1111");	
+		ChangePasswordForm changePasswordForm = new ChangePasswordForm("1111", "1234");	
 		  
 		 MvcResult result = mockMvc.perform(post("/user/password-change")
 				 .with(csrf())
@@ -64,6 +66,23 @@ public class ItegrationTest {
 		 log.info("result : {}", result);
 		 assertNotNull(result);
 		 
+	}
+	
+	
+
+	@Test
+	@WithUserDetails(value="test1", userDetailsServiceBeanName = "customUserDetail")
+	void testPwChangeCurrentPwWrong() throws Exception {
+		
+		
+		ChangePasswordForm changePasswordForm = new ChangePasswordForm("1234", "4224");	
+		  
+			mockMvc.perform(post("/user/password-change")
+				 .with(csrf())
+	                .contentType(MediaType.APPLICATION_JSON)
+	                .content(objectMapper.writeValueAsString(changePasswordForm)))
+	                .andExpect(status().isBadRequest());
+	          
 	}
 	
 	@Test
@@ -93,5 +112,21 @@ public class ItegrationTest {
 		                
 	}
 	
+	@Test
+	void testMainBestItems() throws  Exception {
+		MvcResult mvcResult = mockMvc.perform(get("/home/mainpage/data")
+				.param("bestPageNum", "1"))
+				.andExpect(status().isOk())
+				.andReturn();
+		
+		 String jsonResponse = mvcResult.getResponse().getContentAsString();
+		 MainPageDTO data = 
+		    		objectMapper.readValue(jsonResponse, MainPageDTO.class);
+		    
+		    log.info("resultData{} : ", data);
+		    assertThat(data.getBestList()).isNotEmpty();
+		    assertThat(data.getCategoryItemList()).isNotEmpty();
+		    assertThat(data.getEventList()).isNotEmpty();
+	}
 	
 }
