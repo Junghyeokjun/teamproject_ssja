@@ -36,6 +36,7 @@ public class VisitManagerImpl implements VisitManager{
             	aspectService.addVisitCount();
             	beforeCookie.setPath("/");
             	beforeCookie.setMaxAge(expireToTodaySeconds());
+            	beforeCookie.setHttpOnly(true);
             	response.addCookie(beforeCookie);
             	return;
             }
@@ -46,6 +47,7 @@ public class VisitManagerImpl implements VisitManager{
           	aspectService.addVisitCount();
             newCookie.setPath("/");
             newCookie.setMaxAge(expireToTodaySeconds());
+            newCookie.setHttpOnly(true);
             response.addCookie(newCookie);
             return;
         }
