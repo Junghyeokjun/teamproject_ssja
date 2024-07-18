@@ -457,7 +457,7 @@
 				amount = 10;
 			}
 			
-			console.log("ajax 진입 전까지는 성공했음");
+			//console.log("ajax 진입 전까지는 성공했음");
 
 			$.ajax({
 				type:"GET",
@@ -471,7 +471,7 @@
 					'bcno' : 20
 				},
 				success: function(response){
-					console.log("성공했음");
+					//console.log("성공했음");
 					searchTotalText.css('display', 'block');
 					let total = response.pageVO.total;
 					searchTotalText.text('검색 결과 : ' + total);

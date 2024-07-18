@@ -277,7 +277,7 @@ body {
 													<span class="mx-2 my-1"><button id="inputReply" class="btn btn-primary btn-format">입력</button></span>
 												</div>												
 												<div class="border rounded">								
-													<!-- <input id="inputReplyCon" type="text" class="form-control" name="rcontent" data-rbno="${content_view.bno}" data-rmno="${principal.memberNum}" placeholder="댓글을 입력하세요."> -->
+													<!-- <input id="inputReplyCon" type="text" class="form-control" name="rcontent" data-rbno="${content_view.bno}" data-rmno="${principal.memberNum}" placeholder="답변을 입력하세요."> -->
 													<textarea id="inputReplyCon" class="form-control board-textarea rounded-top" name="rcontent" data-rbno="${content_view.bno}" data-rmno="${principal.memberNum}" placeholder="관리자만 답변할 수 있습니다."></textarea>																						
 												</div>	   						    					
 											</td>
@@ -364,22 +364,22 @@ body {
 		let token = $("meta[name='_csrf']").attr("content");
 		let header = $("meta[name='_csrf_header']").attr("content");
 		
-		// 댓글 url
+		// 답변 url
 		let replysUrl = '/api/replys';
 
-		// 댓글 쪽에 달린, 게시글 번호 관련 정보
+		// 답변 쪽에 달린, 게시글 번호 관련 정보
 		let rbno = $('#inputReplyCon').data('rbno');
 
 		console.log("inputReplyBno : " + rbno);		
 		
 
-		// 댓글 리스트 가져오는 함수. 재사용성을 위해서 변수에 할당함.
+		// 답변 리스트 가져오는 함수. 재사용성을 위해서 변수에 할당함.
 		let getReplyLists = function(response){
 			$('#replys').empty(); // 기존 내용 비우기
 			let html1 = '';
 
-			// 관리자 댓글 외형
-			// 현재 페이지에서는 관리자 댓글 외형을 입히기 위해 ajax에 댓글 헤드를 꾸미는 함수를 집어넣었음.
+			// 관리자 답변 외형
+			// 현재 페이지에서는 관리자 답변 외형을 입히기 위해 ajax에 답변 헤드를 꾸미는 함수를 집어넣었음.
 			$.each(response.replys, function(index, reply_view) {
 				html1 += '<div class="rounded border m-2">';
 				html1 += '<div class="replyhead1 text-center"><h2 class="h2 disabled border-0 m-0 pt-2">관리자 답변</h2></div><div class="d-flex flex-row-reverse replyhead2">'	
@@ -387,7 +387,7 @@ body {
 					html1 += '<div><button class="reply-modify btn border-0" data-rno="' + reply_view.rno + '">수정</button><button class="reply-delete btn border-0" data-rno="' + reply_view.rno + '">X</button></div>';
 				}
 				html1 += '<div class="btn disabled border-0">' + reply_view.rdate + '</div></div><div class="input-group">'; 
-				// 댓글 만들기
+				// 답변 만들기
 				for (let i = 1; i <= reply_view.rindent; i++) {
 					html1 += '<span class=""></span>';
 				}
@@ -400,14 +400,14 @@ body {
 			});
 
 			if(html1 == ''){
-				html1 += '<div class="m-2"><h2 class="h2 text-center no-data-font">현재 댓글이 없습니다.</h2></div>'
+				html1 += '<div class="m-2"><h2 class="h2 text-center no-data-font">현재 답변이 없습니다.</h2></div>'
 				$('#replys').before(html1);				
 			}else{
 				$('#replys').html(html1);
 			}
 
 			// 페이지네이션 부분
-			// qna에서는 댓글에 해당 부분이 필요하지 않다. 주석으로 처리하면 된다.
+			// qna에서는 답변에 해당 부분이 필요하지 않다. 주석으로 처리하면 된다.
 
     		// $('#pagination').empty(); // 기존 내용을 비우기.
 			// // 서버로부터 받은 데이터를 HTML로 바꿔서 특정 요소에 추가
@@ -447,7 +447,7 @@ body {
 			$('.h5.m-1.p-1').text('답변 ' + response.pageMaker.total);
 		};
 
-		// 관리자 댓글 헤드 꾸미기 함수
+		// 관리자 답변 헤드 꾸미기 함수
 		let adminReplyHead = function(){
 			$('.replyhead1').css({
 				'border-radius' : '0.375em 0.375em 0 0',
@@ -460,7 +460,7 @@ body {
 		};
 
 		console.log(replysUrl);
-		// 기본적인 댓글 리스트 가져오기
+		// 기본적인 답변 리스트 가져오기
 		function getQnaContentList(){
 			$.ajax({
 				url: replysUrl + '/list',
@@ -521,13 +521,13 @@ body {
 			return memberNum != '' ? true : false;
 		}
 
-		// 댓글 입력 관련
+		// 답변 입력 관련
 
 
-		// 제약 1 : 댓글 내용 칸 클릭 시, 로그인이 되어 있지 않다면 로그인 상태를 방지
+		// 제약 1 : 답변 내용 칸 클릭 시, 로그인이 되어 있지 않다면 로그인 상태를 방지
 		$(document).on('click', '#inputReplyCon', function(){
 			if(principal.auth != "ROLE_ADMIN"){
-				alert('관리자만 댓글을 달 수 있습니다');
+				alert('관리자만 답변을 달 수 있습니다');
 				return;
 			}
 		});
@@ -535,7 +535,7 @@ body {
 
 		let rWriter = '${principal.userInfo.m_NickName}';
 		let rmno = $('#inputReplyCon').data('rmno');
-		//  댓글 제한
+		//  답변 제한
 		//$('#inputReply').click(function(e){
 		$(document).on('click', '#inputReply', function(e){
 			// 기본 동작을 막음.
@@ -544,7 +544,7 @@ body {
 					
 			if(!isLoggedIn()){
 				// 로그인이 안된 상태에서 버튼을 클릭 시
-				alert('댓글을 달 수 없습니다. 로그인 페이지로 이동합니다.');
+				alert('답변을 달 수 없습니다. 로그인 페이지로 이동합니다.');
 				$(location).attr('href', '/login');
 				return;		
 			}else if($('#inputReplyCon').val().length <= 9){
@@ -553,7 +553,7 @@ body {
 				$('#inputReplyCon').val('');
 				return;		
 			} else{
-				// 나머지 경우에는 ajax를 통한 댓글 입력 실행.
+				// 나머지 경우에는 ajax를 통한 답변 입력 실행.
 				console.log('useruser : ' + rWriter);
 				console.log('rbno : ' + rbno);
 				console.log('rmno : ' + rmno);
@@ -571,18 +571,18 @@ body {
 						'rcontent' : $('#inputReplyCon').val()
 					},
 					success :  function(response){
-						// 댓글이 없는 게시글에 달려있는, 댓글 없음을 알리는 문장
+						// 답변이 없는 게시글에 달려있는, 답변 없음을 알리는 문장
 						if($('.h2.text-center.no-data-font').length > 0){
 							$('.h2.text-center.no-data-font').text('');
 						}						
 
 						$('#replys').empty();
 						getQnaContentList();
-						// 댓글 입력을 하고 나면 입력 데이터를 없애기.
+						// 답변 입력을 하고 나면 입력 데이터를 없애기.
 						$('#inputReplyCon').val('');
 					},
 					error : function(xhr, status, error){
-						alert('댓글 처리가 제대로 되지 않았습니다!');
+						alert('답변 처리가 제대로 되지 않았습니다!');
 						console.log("error : " + error);
 						console.log("response : " + xhr.responseText);
 					}
@@ -676,7 +676,7 @@ body {
 			}
 		})
 
-		// 댓글 좋아요 버튼 클릭 시 관련 처리
+		// 답변 좋아요 버튼 클릭 시 관련 처리
 		// //$('.reply-likes').click(function(e){
 		// $(document).on('click', '.reply-likes', function(){	
 		// 	e.preventDefault();

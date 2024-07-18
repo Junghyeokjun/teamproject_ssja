@@ -317,7 +317,7 @@ $(document).ready(function () {
               }
             }, 
 
-            //3.x 버전에서는 막대 그래프를 구현할 때 데이터셋에 backgroundColor와 borderColor 속성을 설정하여 막대 그래프를 표현
+            // 3.x 버전에서는 막대 그래프를 구현할 때 데이터셋에 backgroundColor와 borderColor 속성을 설정하여 막대 그래프를 표현
             // 물론 여기다가 type 지정했다간 제대로 작동 안함. datasets 배열 내 객체에 type 설정하면 잘 됨. 여기는 주로 position 설정을 위해 남겨두기.
             dayPurchaseCount: {              
               position: 'right',
@@ -369,26 +369,30 @@ $(document).ready(function () {
 
           //('lastTotalSales : ' + lastTotalSales);
           //('lastPurchaseCount : ' + lastPurchaseCount);
-
+          
           if(lastTotalSales < sum && lastTotalSales != 0){          
           //('매출 증가 퍼센트 : ' + ((sum-lastTotalSales)/lastTotalSales * 100).toFixed(2));
-          comparisonTable.find('.comparison').first().append($('<td>').addClass('text-info table-light border-black').text(((sum-lastTotalSales)/lastTotalSales * 100).toFixed(2) + '% UP'));
+        	  comparisonTable.find('.comparison').first().append($('<td>').addClass('text-info table-light border-black').text(((sum-lastTotalSales)/lastTotalSales * 100).toFixed(2) + '% UP'));
           }else if(lastTotalSales == 0 && (sum- lastTotalSales) > 500){
-          comparisonTable.find('.comparison').first().append($('<td>').addClass('text-info table-light border-black').text('500% 이상 UP'));
-          }else{
+        	  comparisonTable.find('.comparison').first().append($('<td>').addClass('text-info table-light border-black').text('500% 이상 UP'));
+          }else if(isNaN(((sum-lastTotalSales)/lastTotalSales * 100).toFixed(2))){
+        	  comparisonTable.find('.comparison').first().append($('<td>').addClass(' table-light border-black').text('알 수 없음'));
+          }else{          
           //('매출 감소 퍼센트 : ' + ((sum-lastTotalSales)/lastTotalSales * 100).toFixed(2));
-          comparisonTable.find('.comparison').first().append($('<td>').addClass('text-danger table-light border-end border-black').text(((sum-lastTotalSales)/lastTotalSales * 100).toFixed(2) + '% DOWN'));
+        	  comparisonTable.find('.comparison').first().append($('<td>').addClass('text-danger table-light border-end border-black').text(((sum-lastTotalSales)/lastTotalSales * 100).toFixed(2) + '% DOWN'));
           }        
 
 
           if(lastPurchaseCount < orderSum && lastPurchaseCount != 0){          
           //('주문 증가 퍼센트 : ' + ((orderSum-lastPurchaseCount)/lastPurchaseCount * 100).toFixed(2));
-          comparisonTable.find('.comparison').first().append($('<td>').addClass('text-info table-light border-black').text(((orderSum-lastPurchaseCount)/lastPurchaseCount * 100).toFixed(2) + '% UP'));
+        	  comparisonTable.find('.comparison').first().append($('<td>').addClass('text-info table-light border-black').text(((orderSum-lastPurchaseCount)/lastPurchaseCount * 100).toFixed(2) + '% UP'));
           }else if(lastPurchaseCount == 0 && (orderSum-lastPurchaseCount) > 500){
-          comparisonTable.find('.comparison').first().append($('<td>').addClass('text-info table-light border-black').text('500% 이상 UP'));
+        	  comparisonTable.find('.comparison').first().append($('<td>').addClass('text-info table-light border-black').text('500% 이상 UP'));
+          }else if(isNaN(((sum-lastTotalSales)/lastTotalSales * 100).toFixed(2))){
+        	  comparisonTable.find('.comparison').first().append($('<td>').addClass(' table-light border-black').text('알 수 없음'));
           }else{
           //('주문 감소 퍼센트: ' + ((orderSum-lastPurchaseCount)/lastPurchaseCount * 100).toFixed(2));
-          comparisonTable.find('.comparison').first().append($('<td>').addClass('text-danger table-light border-end border-black').text(((orderSum-lastPurchaseCount)/lastPurchaseCount * 100).toFixed(2) + '% DOWN'));
+        	  comparisonTable.find('.comparison').first().append($('<td>').addClass('text-danger table-light border-end border-black').text(((orderSum-lastPurchaseCount)/lastPurchaseCount * 100).toFixed(2) + '% DOWN'));
           }
                     
           let compareDiv = $('<div>').addClass('px-5 py-1');
